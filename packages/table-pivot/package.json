@@ -1,0 +1,46 @@
+{
+  "name": "@analys/table-pivot",
+  "version": "0.0.0",
+  "description": "A cross-table-pivot analytics tool",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/test.index.js"
+  },
+  "dependencies": {
+    "@analys/pivot": "^0.0.0",
+    "@analys/cubic": "^0.0.0",
+    "@analys/table": "^0.0.0",
+    "@analys/crostab": "^0.0.0",
+    "@analys/enum-pivot-mode": "^0.0.0"
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table-pivot",
+    "crostab",
+    "cross-table-pivot",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme"
+}
