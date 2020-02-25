@@ -1,6 +1,6 @@
 {
   "name": "@analys/table",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,29 +15,28 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "borel": "^0.1.40",
-    "veho": "^0.2.23",
+    "@analys/table-pivot": "^0.0.1",
+    "@analys/util-pivot": "^0.0.1",
     "@aryth/comparer": "^0.0.10",
     "@aryth/distinct-column": "^0.0.10",
-    "@analys/util-pivot": "^0.0.0",
-    "@analys/table-pivot": "^0.0.0",
     "@spare/util": "^0.1.5",
-    "@typen/typ": "^0.0.1",
     "@typen/num-strict": "^0.0.1",
+    "@typen/typ": "^0.0.1",
     "@vect/column-mapper": "^0.0.26",
     "@vect/columns-mapper": "^0.0.26",
     "@vect/columns-select": "^0.0.26",
     "@vect/columns-update": "^0.0.26",
     "@vect/entries-unwind": "^0.0.26",
     "@vect/matrix": "^0.0.26",
+    "@vect/matrix-mapper": "^0.0.26",
     "@vect/object-init": "^0.0.26",
     "@vect/object-mapper": "^0.0.26",
     "@vect/vector": "^0.0.26",
-    "@vect/vector-update": "^0.0.26",
     "@vect/vector-mapper": "^0.0.26",
-    "@vect/matrix-mapper": "^0.0.26"
+    "@vect/vector-update": "^0.0.26",
+    "borel": "^0.1.40",
+    "veho": "^0.2.23"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"
