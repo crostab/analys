@@ -3,21 +3,15 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var veho = require('veho');
-var utilPivot = require('@analys/util-pivot');
 var comparer = require('@aryth/comparer');
 var vectorMapper = require('@vect/vector-mapper');
-var vectorSelect = require('@vect/vector-select');
 var vectorZipper = require('@vect/vector-zipper');
-var entriesUnwind = require('@vect/entries-unwind');
 var matrix = require('@vect/matrix');
 var matrixInit = require('@vect/matrix-init');
 var matrixMapper = require('@vect/matrix-mapper');
 var columnMapper = require('@vect/column-mapper');
 var columnGetter = require('@vect/column-getter');
-var columnsSelect = require('@vect/columns-select');
-var columnsMapper = require('@vect/columns-mapper');
 var columnsUpdate = require('@vect/columns-update');
-var objectInit = require('@vect/object-init');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -33,6 +27,322 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
+
+const unwind = (entries, h) => {
+  h = h || entries && entries.length;
+  let keys = Array(h),
+      values = Array(h);
+
+  for (let r; --h >= 0 && (r = entries[h]);) {
+    keys[h] = r[0];
+    values[h] = r[1];
+  }
+
+  return [keys, values];
+};
+
+const select = (vec, indexes, hi) => {
+  hi = hi || indexes.length;
+  const vc = Array(hi);
+
+  for (--hi; hi >= 0b0; hi--) vc[hi] = vec[indexes[hi]];
+
+  return vc;
+};
+
+const selectKeyedRows = function (labels) {
+  var _lookupIndexes$call;
+
+  let {
+    rows
+  } = this,
+      side,
+      indexes;
+  [side, indexes] = (_lookupIndexes$call = lookupIndexes.call(this, labels), unwind(_lookupIndexes$call));
+  rows = select(rows, indexes);
+  return {
+    side,
+    rows
+  };
+};
+/**
+ *
+ * @param {(str|[*,*])[]} labels
+ * @returns {[str,number][]}
+ */
+
+const lookupIndexes = function (labels) {
+  return vectorMapper.mapper.call(this, labels, lookupIndex);
+};
+/**
+ *
+ * @param {str|[*,*]} [label]
+ * @returns {[str,number]}
+ */
+
+const lookupIndex = function (label) {
+  const {
+    side
+  } = this;
+  if (!Array.isArray(label)) return [label, side.indexOf(label)];
+  let [current, projected] = label;
+  return [projected, side.indexOf(current)];
+};
+
+/**
+ * @param {*[][]} mx
+ * @param {number[]} ys
+ * @returns {*}
+ */
+
+const select$1 = (mx, ys) => {
+  const hi = ys.length;
+  if (hi === 0) return mx;
+  if (hi === 1) return columnGetter.column(mx, ys[0]);
+  return mx.map(row => select(row, ys, hi));
+};
+
+const selectKeyedColumns = function (labels) {
+  var _lookupIndexes$call;
+
+  let {
+    rows
+  } = this,
+      head,
+      indexes;
+  [head, indexes] = (_lookupIndexes$call = lookupIndexes$1.call(this, labels), unwind(_lookupIndexes$call));
+  rows = select$1(rows, indexes);
+  return {
+    head,
+    rows
+  };
+};
+/**
+ *
+ * @param {(str|[*,*])[]} labels
+ * @returns {[str,number][]}
+ */
+
+const lookupIndexes$1 = function (labels) {
+  return vectorMapper.mapper.call(this, labels, lookupIndex$1);
+};
+/**
+ *
+ * @param {str|[*,*]} [label]
+ * @returns {[str,number]}
+ */
+
+const lookupIndex$1 = function (label) {
+  const {
+    head
+  } = this;
+  if (!Array.isArray(label)) return [label, head.indexOf(label)];
+  let [current, projected] = label;
+  return [projected, head.indexOf(current)];
+};
+
+const toKeyComparer = comparer => {
+  return (a, b) => comparer(a[0], b[0]);
+};
+
+/**
+ * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
+ * @param {function(*,*):number} comparer
+ * @param {number} [index]
+ * @returns {{side:*[], rows:*[][]}}
+ */
+
+const sortKeyedRows = function (comparer, index) {
+  var _zipper$sort;
+
+  if (index < 0) return sortRowsByKeys.call(this, comparer);
+  let {
+    side,
+    rows
+  } = this;
+  /** Columns of [row[i]s, side, rows]  */
+
+  const Cols = (_zipper$sort = vectorZipper.zipper(side, rows, (key, row) => [row[index], key, row]).sort(toKeyComparer(comparer)), columnGetter.Columns(_zipper$sort));
+  return {
+    side: Cols(1),
+    rows: Cols(2)
+  };
+};
+/**
+ *
+ * @param comparer
+ * @returns {{side:*[], rows:*[][]}}
+ */
+
+const sortRowsByKeys = function (comparer) {
+  var _zipper$sort2;
+
+  let {
+    side,
+    rows
+  } = this;
+  [side, rows] = (_zipper$sort2 = vectorZipper.zipper(side, rows, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort2));
+  return {
+    side,
+    rows
+  };
+};
+
+/**
+ * Transpose a 2d-array.
+ * @param {*[][]} mx
+ * @param {number} [h]
+ * @param {number} [w]
+ * @returns {*[][]}
+ */
+
+const transpose = (mx, h, w) => {
+  var _mx$;
+
+  h = h || (mx === null || mx === void 0 ? void 0 : mx.length), w = w || h && ((_mx$ = mx[0]) === null || _mx$ === void 0 ? void 0 : _mx$.length);
+  const cols = Array(w);
+
+  for (--w; w >= 0; w--) cols[w] = vectorMapper.mapper(mx, r => r[w], h);
+
+  return cols;
+};
+
+/**
+ * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
+ * @param {function(*,*):number} comparer
+ * @param {number} [index]
+ * @returns {{head:*[], rows:*[][]}}
+ */
+
+const sortKeyedColumns = function (comparer, index) {
+  var _zipper$sort;
+
+  if (index < 0) return sortColumnsByKeys.call(this, comparer);
+  let {
+    head,
+    rows
+  } = this,
+      columns = transpose(rows);
+  /** [column[i]s, head, columns]  */
+
+  const Keyed = (_zipper$sort = vectorZipper.zipper(head, columns, (key, column) => [column[index], key, column]).sort(toKeyComparer(comparer)), columnGetter.Columns(_zipper$sort));
+  return {
+    head: Keyed(1),
+    rows: transpose(Keyed(2))
+  };
+};
+/**
+ *
+ * @param comparer
+ * @returns {{head:*[], rows:*[][]}}
+ */
+
+const sortColumnsByKeys = function (comparer) {
+  var _zipper$sort2;
+
+  let {
+    head,
+    rows
+  } = this,
+      columns = transpose(rows);
+  [head, columns] = (_zipper$sort2 = vectorZipper.zipper(head, columns, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort2));
+  rows = transpose(columns);
+  return {
+    head,
+    rows
+  };
+};
+
+const selectSamples = function (fieldIndexPairs) {
+  const {
+    rows
+  } = this,
+        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
+  return vectorMapper.mapper(rows, row => {
+    let o = {};
+    vectorMapper.iterate(fieldIndexPairs, ([field, index]) => o[field] = row[index], depth);
+    return o;
+  });
+};
+/**
+ *
+ * @param {(str|[*,*])[]} labels
+ * @returns {[str,number][]}
+ */
+
+
+const lookupIndexes$2 = function (labels) {
+  return vectorMapper.mapper.call(this, labels, lookupIndex$2);
+};
+/**
+ *
+ * @param {str|[*,*]} [label]
+ * @returns {[str,number]}
+ */
+
+
+const lookupIndex$2 = function (label) {
+  const {
+    head
+  } = this;
+  if (!Array.isArray(label)) return [label, head.indexOf(label)];
+  let [current, projected] = label;
+  return [projected, head.indexOf(current)];
+};
+
+const selectSamplesByHead = function (labels) {
+  const fieldIndexes = lookupIndexes$2.call(this, labels);
+  return selectSamples.call(this, fieldIndexes);
+};
+
+const selectSamples$1 = function (fieldIndexPairs) {
+  const {
+    rows
+  } = this,
+        columns = transpose(rows),
+        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
+  return vectorMapper.mapper(columns, column => {
+    let o = {};
+    vectorMapper.iterate(fieldIndexPairs, ([field, index]) => o[field] = column[index], depth);
+    return o;
+  });
+};
+/**
+ *
+ * @param {(str|[*,*])[]} labels
+ * @returns {[str,number][]}
+ */
+
+
+const lookupIndexes$3 = function (labels) {
+  return vectorMapper.mapper.call(this, labels, lookupIndex$3);
+};
+/**
+ *
+ * @param {str|[*,*]} [label]
+ * @returns {[str,number]}
+ */
+
+
+const lookupIndex$3 = function (label) {
+  const {
+    side
+  } = this;
+  if (!Array.isArray(label)) return [label, side.indexOf(label)];
+  let [current, projected] = label;
+  return [projected, side.indexOf(current)];
+};
+
+const selectSamplesBySide = function (labels) {
+  const fieldIndexes = lookupIndexes$3.call(this, labels);
+  return selectSamples$1.call(this, fieldIndexes);
+};
+
+const ob = (indexName, indexValue) => {
+  const o = {};
+  o[indexName] = indexValue;
+  return o;
+};
 
 /**
  * A number, or a string containing a number.
@@ -64,46 +374,36 @@ class CrosTab {
   /**
    *
    * @param {*[]} side
-   * @param {*[]} banner
-   * @param {*[][]} matrix
+   * @param {*[]} head
+   * @param {*[][]} rows
    * @param {string} [title]
    */
-  constructor(side, banner, matrix, title) {
+  constructor(side, head, rows, title) {
     _defineProperty(this, "side", void 0);
 
-    _defineProperty(this, "banner", void 0);
+    _defineProperty(this, "head", void 0);
 
-    _defineProperty(this, "matrix", void 0);
+    _defineProperty(this, "rows", void 0);
 
     _defineProperty(this, "title", void 0);
 
     this.side = side;
-    this.banner = banner;
-    this.matrix = matrix;
+    this.head = head;
+    this.rows = rows;
     this.title = title || '';
   }
-  /**
-   * Shallow copy
-   * @param {*[]} side
-   * @param {*[]} banner
-   * @param {*[][]} matrix
-   * @param {string} [title]
-   * @return {CrosTab}
-   */
 
-
-  static from({
-    side,
-    banner,
-    matrix,
-    title
-  }) {
-    return new CrosTab(side, banner, matrix, title);
+  static from(ob) {
+    const side = ob.side,
+          head = ob.head || ob.banner || [],
+          rows = ob.rows || ob.matrix || [[]],
+          title = ob.title || '';
+    return new CrosTab(side, head, rows, title);
   }
   /**
    * Shallow copy
    * @param {*[]} side
-   * @param {*[]} banner
+   * @param {*[]} head
    * @param {function(number,number):*} func
    * @param {string} [title]
    * @return {CrosTab}
@@ -112,66 +412,36 @@ class CrosTab {
 
   static init({
     side,
-    banner,
+    head,
     func,
     title
   }) {
-    const matrix = matrixInit.init(side === null || side === void 0 ? void 0 : side.length, banner === null || banner === void 0 ? void 0 : banner.length, (x, y) => func(x, y));
+    const rows = matrixInit.init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y));
     return CrosTab.from({
       side,
-      banner,
-      matrix,
+      head,
+      rows,
       title
     });
   }
-  /**
-   *
-   * @param {number} direct - rowwise:1, columnwise:2
-   * @param {*[]|boolean} [sideLabels]
-   * @param {*[]|boolean} [bannerLabels]
-   * @returns {*}
-   */
 
+  rowwiseSamples(headFields, indexed = false, indexName = '_') {
+    const samples = selectSamplesByHead.call(this, headFields);
+    return indexed ? vectorZipper.zipper(this.side, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
+  }
 
-  toSamples({
-    direct = matrix.ROWWISE,
-    side: sideLabels,
-    banner: bannerLabels
-  }) {
-    const {
-      side,
-      banner,
-      matrix: matrix$1
-    } = this.select({
-      side: sideLabels,
-      banner: bannerLabels,
-      mutate: false
-    });
-
-    if (direct === matrix.ROWWISE) {
-      const samples = vectorMapper.mapper(matrix$1, row => objectInit.wind(banner, row));
-      return vectorZipper.zipper(side, samples, (label, samples) => Object.assign({
-        index: label
-      }, samples));
-    }
-
-    if (direct === matrix.COLUMNWISE) {
-      const samples = columnsMapper.mapper(matrix$1, column => objectInit.wind(side, column));
-      return vectorZipper.zipper(banner, samples, (label, samples) => Object.assign({
-        index: label
-      }, samples));
-    }
-
-    return [];
+  columnwiseSamples(sideFields, indexed = false, indexName = '_') {
+    const samples = selectSamplesBySide.call(this, sideFields);
+    return indexed ? vectorZipper.zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
   }
 
   get toJson() {
-    var _this$matrix;
+    var _this$rows;
 
     return {
       side: this.side.slice(),
-      banner: this.banner.slice(),
-      matrix: (_this$matrix = this.matrix, veho.clone(_this$matrix)),
+      head: this.head.slice(),
+      rows: (_this$rows = this.rows, veho.clone(_this$rows)),
       title: this.title
     };
   }
@@ -179,7 +449,7 @@ class CrosTab {
 
 
   get columns() {
-    return matrix.transpose(this.matrix);
+    return matrix.transpose(this.rows);
   }
 
   get size() {
@@ -193,9 +463,9 @@ class CrosTab {
   }
 
   get wd() {
-    var _this$banner;
+    var _this$head;
 
-    return (_this$banner = this.banner) === null || _this$banner === void 0 ? void 0 : _this$banner.length;
+    return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
   }
 
   roin(r) {
@@ -203,7 +473,7 @@ class CrosTab {
   }
 
   coin(c) {
-    return this.banner.indexOf(c);
+    return this.head.indexOf(c);
   }
 
   cell(r, c) {
@@ -211,7 +481,7 @@ class CrosTab {
   }
 
   element(x, y) {
-    return this.matrix[x][y];
+    return this.rows[x][y];
   }
 
   coordinate(r, c) {
@@ -222,15 +492,30 @@ class CrosTab {
   }
 
   row(r) {
-    return this.matrix[this.roin(r)];
+    return this.rows[this.roin(r)];
   }
 
   column(c) {
-    return columnGetter.column(this.matrix, this.coin(c), this.ht);
+    return columnGetter.column(this.rows, this.coin(c), this.ht);
+  }
+
+  transpose(newTitle, {
+    mutate = true
+  } = {}) {
+    const {
+      head: side,
+      side: head,
+      columns: rows
+    } = this;
+    return this.boot(mutate, {
+      rows,
+      side,
+      head
+    });
   }
 
   setRow(r, row) {
-    return this.matrix[this.roin(r)] = row, this;
+    return this.rows[this.roin(r)] = row, this;
   }
 
   setRowBy(r, fn) {
@@ -238,18 +523,18 @@ class CrosTab {
   }
 
   setColumn(c, column) {
-    return columnMapper.mutate(this.matrix, this.coin(c), (_, i) => column[i], this.ht), this;
+    return columnMapper.mutate(this.rows, this.coin(c), (_, i) => column[i], this.ht), this;
   }
 
   setColumnBy(c, fn) {
-    return columnMapper.mutate(this.matrix, this.coin(c), fn, this.ht), this;
+    return columnMapper.mutate(this.rows, this.coin(c), fn, this.ht), this;
   }
 
   map(fn, {
     mutate = true
   } = {}) {
     return this.boot(mutate, {
-      matrix: matrixMapper.mapper(this.matrix, fn, this.ht, this.wd)
+      rows: matrixMapper.mapper(this.rows, fn, this.ht, this.wd)
     });
   }
 
@@ -265,134 +550,92 @@ class CrosTab {
     mutate = true
   } = {}) {
     return this.boot(mutate, {
-      banner: vectorMapper.mapper(this.banner, fn)
+      head: vectorMapper.mapper(this.head, fn)
     });
   }
 
   pushRow(label, row) {
-    return this.side.push(label), this.matrix.push(row), this;
+    return this.side.push(label), this.rows.push(row), this;
   }
 
   unshiftRow(label, row) {
-    return this.side.unshift(label), this.matrix.unshift(row), this;
+    return this.side.unshift(label), this.rows.unshift(row), this;
   }
 
   pushColumn(label, col) {
-    return this.banner.push(label), columnsUpdate.push(this.matrix, col), this;
+    return this.head.push(label), columnsUpdate.push(this.rows, col), this;
   }
 
   unshiftColumn(label, col) {
-    return this.banner.unshift(label), columnsUpdate.unshift(this.matrix, col), this;
+    return this.head.unshift(label), columnsUpdate.unshift(this.rows, col), this;
   }
 
   popRow() {
-    return this.matrix.pop();
+    return this.rows.pop();
   }
 
   shiftRow() {
-    return this.matrix.shift();
+    return this.rows.shift();
   }
 
   popColumn() {
-    return columnsUpdate.pop(this.matrix);
+    return columnsUpdate.pop(this.rows);
   }
 
   shiftColumn() {
-    return columnsUpdate.shift(this.matrix);
-  }
-  /**
-   *
-   * @param {str|[*,*]} [label]
-   * @returns {[str,number]}
-   */
-
-
-  lookUpSideIndex(label) {
-    if (!Array.isArray(label)) return [label, this.coin(label)];
-    let [currS, newS] = label;
-    return [newS, this.roin(currS)];
-  }
-  /**
-   *
-   * @param {(str|[*,*])[]} sides
-   * @returns {[str,number][]}
-   */
-
-
-  lookUpSideIndexes(sides) {
-    return vectorMapper.mapper(sides, this.lookUpSideIndex.bind(this));
-  }
-  /**
-   *
-   * @param {str|[*,*]} [label]
-   * @returns {[str,number]}
-   */
-
-
-  lookUpBannerIndex(label) {
-    if (!Array.isArray(label)) return [label, this.coin(label)];
-    let [currB, newB] = label;
-    return [newB, this.roin(currB)];
-  }
-  /**
-   *
-   * @param {(str|[*,*])[]} banners
-   * @returns {[str,number][]}
-   */
-
-
-  lookUpBannerIndexes(banners) {
-    return vectorMapper.mapper(banners, this.lookUpBannerIndex.bind(this));
+    return columnsUpdate.shift(this.rows);
   }
 
   selectRows(sideLabels, mutate = false) {
-    const sideIndexes = this.lookUpSideIndexes(sideLabels);
-    const [side, indexes] = entriesUnwind.unwind(sideIndexes);
-    const matrix = vectorSelect.select(this.matrix, indexes, this.ht);
+    const {
+      side,
+      rows
+    } = selectKeyedRows.call(this, sideLabels);
     return this.boot(mutate, {
-      matrix,
-      side
+      side,
+      rows
     });
   }
 
-  selectColumns(bannerLabels, mutate = false) {
-    const bannerIndexes = this.lookUpBannerIndexes(bannerLabels);
-    const [banner, indexes] = entriesUnwind.unwind(bannerIndexes);
-    const matrix = columnsSelect.select(this.matrix, indexes);
+  selectColumns(headLabels, mutate = false) {
+    const {
+      head,
+      rows
+    } = selectKeyedColumns.call(this, headLabels);
     return this.boot(mutate, {
-      matrix,
-      banner
+      head,
+      rows
     });
   }
 
   select({
-    side: sideLabels,
-    banner: bannerLabels,
+    side: sls,
+    head: bls,
     mutate = false
   } = {}) {
     let {
-      matrix,
+      rows,
       side,
-      banner
-    } = this,
-        indexes;
-
-    if (sideLabels === null || sideLabels === void 0 ? void 0 : sideLabels.length) {
-      let sideIndexes = this.lookUpSideIndexes(sideLabels);
-      [side, indexes] = entriesUnwind.unwind(sideIndexes);
-      matrix = vectorSelect.select(matrix, indexes, this.ht);
-    }
-
-    if (bannerLabels === null || bannerLabels === void 0 ? void 0 : bannerLabels.length) {
-      const bannerIndexes = this.lookUpBannerIndexes(bannerLabels);
-      [banner, indexes] = entriesUnwind.unwind(bannerIndexes);
-      matrix = columnsSelect.select(matrix, indexes);
-    }
-
+      head
+    } = this;
+    if (bls === null || bls === void 0 ? void 0 : bls.length) ({
+      head,
+      rows
+    } = selectKeyedColumns.call({
+      head,
+      rows
+    }, bls));
+    if (sls === null || sls === void 0 ? void 0 : sls.length) ({
+      side,
+      rows
+    } = selectKeyedRows.call({
+      side,
+      rows
+    }, sls));
     return this.boot(mutate, {
-      matrix,
+      rows,
       side,
-      banner
+      head
     });
   }
 
@@ -405,15 +648,15 @@ class CrosTab {
   } = {}) {
     let {
       side: s,
-      banner: b,
-      matrix: mx
+      head: b,
+      rows: mx
     } = this;
     if (top || bottom) s = s.slice(top, bottom), mx = mx.slice(top, bottom);
     if (left || right) b = b.slice(left, right), mx = mx.map(row => row.slice(left, right));
     return this.boot(mutate, {
-      matrix: mx,
+      rows: mx,
       side: s,
-      banner: b
+      head: b
     });
   }
 
@@ -425,29 +668,28 @@ class CrosTab {
   } = {}) {
     let {
       side,
-      banner,
-      matrix: matrix$1
+      head,
+      rows
     } = this;
-
-    if (direct === matrix.ROWWISE) {
-      [side, matrix$1] = utilPivot.sortKeyedVectors(side, matrix$1, comparer$1, this.coin(field));
-      return this.boot(mutate, {
-        matrix: matrix$1,
-        side,
-        banner
-      });
-    }
-
-    if (direct === matrix.COLUMNWISE) {
-      [banner, matrix$1] = utilPivot.sortKeyedVectors(banner, matrix.transpose(matrix$1), comparer$1, this.roin(field));
-      return this.boot(mutate, {
-        matrix: matrix.transpose(matrix$1),
-        side,
-        banner
-      });
-    }
-
-    return this.boot(mutate);
+    if (direct === matrix.ROWWISE) ({
+      side,
+      rows
+    } = sortKeyedRows.call({
+      side,
+      rows
+    }, comparer$1, this.coin(field)));
+    if (direct === matrix.COLUMNWISE) ({
+      head,
+      rows
+    } = sortKeyedColumns.call({
+      head,
+      rows
+    }, comparer$1, this.roin(field)));
+    return this.boot(mutate, {
+      rows,
+      side,
+      head
+    });
   }
 
   sortByLabels({
@@ -457,79 +699,63 @@ class CrosTab {
   }) {
     let {
       side,
-      banner,
-      matrix: matrix$1
+      head,
+      rows
     } = this;
-
-    if (direct === matrix.ROWWISE) {
-      [side, matrix$1] = utilPivot.sortKeyedVectors(side, matrix$1, comparer$1);
-      return this.boot(mutate, {
-        matrix: matrix$1,
-        side,
-        banner
-      });
-    }
-
-    if (direct === matrix.COLUMNWISE) {
-      [banner, matrix$1] = utilPivot.sortKeyedVectors(banner, matrix.transpose(matrix$1), comparer$1);
-      return this.boot(mutate, {
-        matrix: matrix.transpose(matrix$1),
-        side,
-        banner
-      });
-    }
-
-    return this.boot(mutate);
-  }
-
-  transpose(newTitle, {
-    mutate = true
-  } = {}) {
-    const {
-      banner: side,
-      side: banner,
-      columns: matrix
-    } = this;
-    return this.boot(mutate, {
-      matrix,
+    if (direct === matrix.ROWWISE) ({
       side,
-      banner
+      rows
+    } = sortRowsByKeys.call({
+      side,
+      rows
+    }, comparer$1));
+    if (direct === matrix.COLUMNWISE) ({
+      head,
+      rows
+    } = sortColumnsByKeys.call({
+      head,
+      rows
+    }, comparer$1));
+    return this.boot(mutate, {
+      rows,
+      side,
+      head
     });
   }
 
   boot(mutate, {
-    matrix,
+    rows,
     side,
-    banner
+    head
   } = {}) {
-    return mutate ? this.reboot(matrix, side, banner) : this.clone(matrix, side, banner);
+    return mutate ? this.reboot(rows, side, head) : this.clone(rows, side, head);
   }
   /**
    *
-   * @param {*[][]} [matrix]
+   * @param {*[][]} [rows]
    * @param {*[]} [side]
-   * @param {*[]} [banner]
+   * @param {*[]} [head]
    * @returns {CrosTab}
    */
 
 
-  reboot(matrix, side, banner) {
-    if (matrix) this.matrix = matrix;
+  reboot(rows, side, head) {
+    if (rows) this.rows = rows;
     if (side) this.side = side;
-    if (banner) this.banner = banner;
+    if (head) this.head = head;
     return this;
   }
   /**
    * Shallow copy
-   * @param {*[][]} [matrix]
+   * @param {*[][]} [rows]
    * @param {*[]} [side]
-   * @param {*[]} [banner]
+   * @param {*[]} [head]
    * @return {CrosTab}
    */
 
 
-  clone(matrix, side, banner) {
-    return new CrosTab(side || this.side.slice(), banner || this.banner.slice(), matrix || veho.Mx.clone(this.matrix), this.title);
+  clone(rows, side, head) {
+    return new CrosTab(side || this.side.slice(), head || this.head.slice(), rows || veho.Mx.clone(this.rows), this.title);
   }
 
 }

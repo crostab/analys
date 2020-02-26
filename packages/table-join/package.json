@@ -17,11 +17,11 @@
   "dependencies": {
     "@analys/table": "^0.0.1",
     "@aryth/comparer": "^0.0.10",
-    "@vect/columns-update": "^0.0.26",
-    "@vect/matrix-size": "^0.0.26",
-    "@vect/vector-init": "^0.0.26",
-    "@vect/vector-select": "^0.0.26",
-    "@vect/vector-update": "^0.0.26",
+    "@vect/columns-update": "^0.0.27",
+    "@vect/matrix-size": "^0.0.27",
+    "@vect/vector-init": "^0.0.27",
+    "@vect/vector-select": "^0.0.27",
+    "@vect/vector-update": "^0.0.27",
     "veho": "^0.2.23"
   },
   "repository": {

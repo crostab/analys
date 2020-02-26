@@ -220,10 +220,7 @@ class Table {
   } = {}) {
     if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return mutate ? this : this.clone();
     const fieldToIndexes = this.lookUpFieldIndexes(fields);
-    const {
-      indexes,
-      head
-    } = unwind(fieldToIndexes);
+    const [head, indexes] = unwind(fieldToIndexes);
     const rows = select(this.rows, indexes);
     return this.boot(mutate, {
       rows,

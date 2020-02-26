@@ -119,7 +119,7 @@ export class Table {
   select (fields, { mutate = true } = {}) {
     if (!fields?.length) return mutate ? this : this.clone()
     const fieldToIndexes = this.lookUpFieldIndexes(fields)
-    const { indexes, head } = unwind(fieldToIndexes)
+    const [head, indexes] = unwind(fieldToIndexes)
     const rows = selectColumn(this.rows, indexes)
     return this.boot(mutate, { rows, head })
   }

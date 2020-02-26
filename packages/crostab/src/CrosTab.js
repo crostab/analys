@@ -1,21 +1,22 @@
 import { clone, Mx } from 'veho'
-import { sortKeyedVectors } from '@analys/util-pivot'
 import { NUM_ASC, STR_ASC } from '@aryth/comparer'
 import { mapper, mutate } from '@vect/vector-mapper'
-import { select } from '@vect/vector-select'
 import { zipper } from '@vect/vector-zipper'
-import { unwind } from '@vect/entries-unwind'
 import { transpose, ROWWISE, COLUMNWISE } from '@vect/matrix'
 import { init as initMatrix } from '@vect/matrix-init'
 import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import { column } from '@vect/column-getter'
-import { select as selectColumns } from '@vect/columns-select'
-import { mapper as mapperColumns } from '@vect/columns-mapper'
 import {
   push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn
 } from '@vect/columns-update'
-import { wind as windOb } from '@vect/object-init'
+import { selectKeyedRows } from '../../keyed-rows/src/selectKeyedRows'
+import { selectKeyedColumns } from '../../keyed-columns/src/selectKeyedColumns'
+import { sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows/src/sortKeyedRows'
+import { sortColumnsByKeys, sortKeyedColumns } from '@analys/keyed-columns/src/sortKeyedColumns'
+import { selectSamplesByHead } from '@analys/keyed-columns'
+import { selectSamplesBySide } from '@analys/keyed-rows'
+import { ob } from '../utils/addIndex'
 
 /**
  * A number, or a string containing a number.
@@ -36,241 +37,157 @@ import { wind as windOb } from '@vect/object-init'
  */
 export class CrosTab {
   /** @type {*[]} */ side
-  /** @type {*[]} */ banner
-  /** @type {*[][]} */ matrix
+  /** @type {*[]} */ head
+  /** @type {*[][]} */ rows
   /** @type {string} */ title
 
   /**
    *
    * @param {*[]} side
-   * @param {*[]} banner
-   * @param {*[][]} matrix
+   * @param {*[]} head
+   * @param {*[][]} rows
    * @param {string} [title]
    */
-  constructor (side, banner, matrix, title) {
+  constructor (side, head, rows, title) {
     this.side = side
-    this.banner = banner
-    this.matrix = matrix
+    this.head = head
+    this.rows = rows
     this.title = title || ''
   }
 
-  /**
-   * Shallow copy
-   * @param {*[]} side
-   * @param {*[]} banner
-   * @param {*[][]} matrix
-   * @param {string} [title]
-   * @return {CrosTab}
-   */
-  static from ({ side, banner, matrix, title }) {
-    return new CrosTab(side, banner, matrix, title)
+  static from (ob) {
+    const side = ob.side, head = ob.head || ob.banner || [], rows = ob.rows || ob.matrix || [[]], title = ob.title || ''
+    return new CrosTab(side, head, rows, title)
   }
 
   /**
    * Shallow copy
    * @param {*[]} side
-   * @param {*[]} banner
+   * @param {*[]} head
    * @param {function(number,number):*} func
    * @param {string} [title]
    * @return {CrosTab}
    */
-  static init ({ side, banner, func, title }) {
-    const matrix = initMatrix(side?.length, banner?.length, (x, y) => func(x, y))
-    return CrosTab.from({ side, banner, matrix, title })
+  static init ({ side, head, func, title }) {
+    const rows = initMatrix(side?.length, head?.length, (x, y) => func(x, y))
+    return CrosTab.from({ side, head, rows, title })
   }
 
-  /**
-   *
-   * @param {number} direct - rowwise:1, columnwise:2
-   * @param {*[]|boolean} [sideLabels]
-   * @param {*[]|boolean} [bannerLabels]
-   * @returns {*}
-   */
-  toSamples ({ direct = ROWWISE, side: sideLabels, banner: bannerLabels }) {
-    const { side, banner, matrix } = this.select({ side: sideLabels, banner: bannerLabels, mutate: false })
-    if (direct === ROWWISE) {
-      const samples = mapper(matrix, row => windOb(banner, row))
-      return zipper(side, samples, (label, samples) => Object.assign({ index: label }, samples))
-    }
-    if (direct === COLUMNWISE) {
-      const samples = mapperColumns(matrix, column => windOb(side, column))
-      return zipper(banner, samples, (label, samples) => Object.assign({ index: label }, samples))
-    }
-    return []
+  rowwiseSamples (headFields, indexed = false, indexName = '_') {
+    const samples = selectSamplesByHead.call(this, headFields)
+    return indexed ? zipper(this.side, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples
   }
-
+  columnwiseSamples (sideFields, indexed = false, indexName = '_') {
+    const samples = selectSamplesBySide.call(this, sideFields)
+    return indexed ? zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples
+  }
   get toJson () {
     return {
       side: this.side.slice(),
-      banner: this.banner.slice(),
-      matrix: this.matrix |> clone,
+      head: this.head.slice(),
+      rows: this.rows |> clone,
       title: this.title
     }
   }
 
   /** @returns {*[][]} */
-  get columns () { return transpose(this.matrix) }
+  get columns () { return transpose(this.rows) }
   get size () { return [this.ht, this.wd] }
   get ht () { return this.side?.length }
-  get wd () { return this.banner?.length }
+  get wd () { return this.head?.length }
   roin (r) { return this.side.indexOf(r) }
-  coin (c) { return this.banner.indexOf(c) }
+  coin (c) { return this.head.indexOf(c) }
   cell (r, c) { return (r = this.row(this.roin(r))) ? r[this.coin(c)] : null }
-  element (x, y) { return this.matrix[x][y] }
+  element (x, y) { return this.rows[x][y] }
   coordinate (r, c) { return { x: this.roin(r), y: this.coin(c) } }
-  row (r) { return this.matrix[this.roin(r)] }
-  column (c) { return column(this.matrix, this.coin(c), this.ht) }
-  setRow (r, row) { return this.matrix[this.roin(r)] = row, this }
+  row (r) { return this.rows[this.roin(r)] }
+  column (c) { return column(this.rows, this.coin(c), this.ht) }
+  transpose (newTitle, { mutate = true } = {}) {
+    const { head: side, side: head, columns: rows } = this
+    return this.boot(mutate, { rows, side, head })
+  }
+  setRow (r, row) { return this.rows[this.roin(r)] = row, this }
   setRowBy (r, fn) { return mutate(this.row(r), fn, this.wd), this }
-  setColumn (c, column) { return mutateColumn(this.matrix, this.coin(c), (_, i) => column[i], this.ht), this }
-  setColumnBy (c, fn) { return mutateColumn(this.matrix, this.coin(c), fn, this.ht), this }
+  setColumn (c, column) { return mutateColumn(this.rows, this.coin(c), (_, i) => column[i], this.ht), this }
+  setColumnBy (c, fn) { return mutateColumn(this.rows, this.coin(c), fn, this.ht), this }
 
   map (fn, { mutate = true } = {}) {
-    return this.boot(mutate, { matrix: mapperMatrix(this.matrix, fn, this.ht, this.wd) })
+    return this.boot(mutate, { rows: mapperMatrix(this.rows, fn, this.ht, this.wd) })
   }
   mapSide (fn, { mutate = true } = {}) { return this.boot(mutate, { side: mapper(this.side, fn) }) }
-  mapBanner (fn, { mutate = true } = {}) { return this.boot(mutate, { banner: mapper(this.banner, fn) }) }
+  mapBanner (fn, { mutate = true } = {}) { return this.boot(mutate, { head: mapper(this.head, fn) }) }
 
-  pushRow (label, row) { return this.side.push(label), this.matrix.push(row), this }
-  unshiftRow (label, row) { return this.side.unshift(label), this.matrix.unshift(row), this }
-  pushColumn (label, col) { return this.banner.push(label), pushColumn(this.matrix, col), this }
-  unshiftColumn (label, col) { return this.banner.unshift(label), unshiftColumn(this.matrix, col), this }
-  popRow () { return this.matrix.pop() }
-  shiftRow () { return this.matrix.shift() }
-  popColumn () { return popColumn(this.matrix) }
-  shiftColumn () { return shiftColumn(this.matrix) }
-
-  /**
-   *
-   * @param {str|[*,*]} [label]
-   * @returns {[str,number]}
-   */
-  lookUpSideIndex (label) {
-    if (!Array.isArray(label)) return [label, this.coin(label)]
-    let [currS, newS] = label
-    return [newS, this.roin(currS)]
-  }
-
-  /**
-   *
-   * @param {(str|[*,*])[]} sides
-   * @returns {[str,number][]}
-   */
-  lookUpSideIndexes (sides) { return mapper(sides, this.lookUpSideIndex.bind(this)) }
-
-  /**
-   *
-   * @param {str|[*,*]} [label]
-   * @returns {[str,number]}
-   */
-  lookUpBannerIndex (label) {
-    if (!Array.isArray(label)) return [label, this.coin(label)]
-    let [currB, newB] = label
-    return [newB, this.roin(currB)]
-  }
-
-  /**
-   *
-   * @param {(str|[*,*])[]} banners
-   * @returns {[str,number][]}
-   */
-  lookUpBannerIndexes (banners) { return mapper(banners, this.lookUpBannerIndex.bind(this)) }
+  pushRow (label, row) { return this.side.push(label), this.rows.push(row), this }
+  unshiftRow (label, row) { return this.side.unshift(label), this.rows.unshift(row), this }
+  pushColumn (label, col) { return this.head.push(label), pushColumn(this.rows, col), this }
+  unshiftColumn (label, col) { return this.head.unshift(label), unshiftColumn(this.rows, col), this }
+  popRow () { return this.rows.pop() }
+  shiftRow () { return this.rows.shift() }
+  popColumn () { return popColumn(this.rows) }
+  shiftColumn () { return shiftColumn(this.rows) }
 
   selectRows (sideLabels, mutate = false) {
-    const sideIndexes = this.lookUpSideIndexes(sideLabels)
-    const [side, indexes] = unwind(sideIndexes)
-    const matrix = select(this.matrix, indexes, this.ht)
-    return this.boot(mutate, { matrix, side })
+    const { side, rows } = selectKeyedRows.call(this, sideLabels)
+    return this.boot(mutate, { side, rows })
   }
-  selectColumns (bannerLabels, mutate = false) {
-    const bannerIndexes = this.lookUpBannerIndexes(bannerLabels)
-    const [banner, indexes] = unwind(bannerIndexes)
-    const matrix = selectColumns(this.matrix, indexes)
-    return this.boot(mutate, { matrix, banner })
+  selectColumns (headLabels, mutate = false) {
+    const { head, rows } = selectKeyedColumns.call(this, headLabels)
+    return this.boot(mutate, { head, rows })
   }
-  select ({ side: sideLabels, banner: bannerLabels, mutate = false } = {}) {
-    let { matrix, side, banner } = this, indexes
-    if (sideLabels?.length) {
-      let sideIndexes = this.lookUpSideIndexes(sideLabels);
-      ([side, indexes] = unwind(sideIndexes))
-      matrix = select(matrix, indexes, this.ht)
-    }
-    if (bannerLabels?.length) {
-      const bannerIndexes = this.lookUpBannerIndexes(bannerLabels);
-      ([banner, indexes] = unwind(bannerIndexes))
-      matrix = selectColumns(matrix, indexes)
-    }
-    return this.boot(mutate, { matrix, side, banner })
+  select ({ side: sls, head: bls, mutate = false } = {}) {
+    let { rows, side, head } = this
+    if (bls?.length) ({ head, rows } = selectKeyedColumns.call({ head, rows }, bls))
+    if (sls?.length) ({ side, rows } = selectKeyedRows.call({ side, rows }, sls))
+    return this.boot(mutate, { rows, side, head })
   }
 
   slice ({ top, bottom, left, right, mutate = true } = {}) {
-    let { side: s, banner: b, matrix: mx } = this
+    let { side: s, head: b, rows: mx } = this
     if (top || bottom) s = s.slice(top, bottom), mx = mx.slice(top, bottom)
     if (left || right) b = b.slice(left, right), mx = mx.map(row => row.slice(left, right))
-    return this.boot(mutate, { matrix: mx, side: s, banner: b })
+    return this.boot(mutate, { rows: mx, side: s, head: b })
   }
-
   sort ({ direct = ROWWISE, field, comparer = NUM_ASC, mutate = false } = {}) {
-    let { side, banner, matrix } = this
-    if (direct === ROWWISE) {
-      [side, matrix] = sortKeyedVectors(side, matrix, comparer, this.coin(field))
-      return this.boot(mutate, { matrix, side, banner })
-    }
-    if (direct === COLUMNWISE) {
-      [banner, matrix] = sortKeyedVectors(banner, transpose(matrix), comparer, this.roin(field))
-      return this.boot(mutate, { matrix: transpose(matrix), side, banner })
-    }
-    return this.boot(mutate)
+    let { side, head, rows } = this
+    if (direct === ROWWISE) ({ side, rows } = sortKeyedRows.call({ side, rows }, comparer, this.coin(field)))
+    if (direct === COLUMNWISE) ({ head, rows } = sortKeyedColumns.call({ head, rows }, comparer, this.roin(field)))
+    return this.boot(mutate, { rows, side, head })
   }
-
   sortByLabels ({ direct = ROWWISE, comparer = STR_ASC, mutate = false }) {
-    let { side, banner, matrix } = this
-    if (direct === ROWWISE) {
-      [side, matrix] = sortKeyedVectors(side, matrix, comparer)
-      return this.boot(mutate, { matrix, side, banner })
-    }
-    if (direct === COLUMNWISE) {
-      [banner, matrix] = sortKeyedVectors(banner, transpose(matrix), comparer)
-      return this.boot(mutate, { matrix: transpose(matrix), side, banner })
-    }
-    return this.boot(mutate)
+    let { side, head, rows } = this
+    if (direct === ROWWISE) ({ side, rows } = sortRowsByKeys.call({ side, rows }, comparer))
+    if (direct === COLUMNWISE) ({ head, rows } = sortColumnsByKeys.call({ head, rows }, comparer))
+    return this.boot(mutate, { rows, side, head })
   }
 
-  transpose (newTitle, { mutate = true } = {}) {
-    const { banner: side, side: banner, columns: matrix } = this
-    return this.boot(mutate, { matrix, side, banner })
+  boot (mutate, { rows, side, head } = {}) {
+    return (mutate) ? this.reboot(rows, side, head) : this.clone(rows, side, head)
   }
-
-  boot (mutate, { matrix, side, banner } = {}) {
-    return (mutate) ? this.reboot(matrix, side, banner) : this.clone(matrix, side, banner)
-  }
-
   /**
    *
-   * @param {*[][]} [matrix]
+   * @param {*[][]} [rows]
    * @param {*[]} [side]
-   * @param {*[]} [banner]
+   * @param {*[]} [head]
    * @returns {CrosTab}
    */
-  reboot (matrix, side, banner) {
-    if (matrix) this.matrix = matrix
+  reboot (rows, side, head) {
+    if (rows) this.rows = rows
     if (side) this.side = side
-    if (banner) this.banner = banner
+    if (head) this.head = head
     return this
   }
-
   /**
    * Shallow copy
-   * @param {*[][]} [matrix]
+   * @param {*[][]} [rows]
    * @param {*[]} [side]
-   * @param {*[]} [banner]
+   * @param {*[]} [head]
    * @return {CrosTab}
    */
-  clone (matrix, side, banner) {
+  clone (rows, side, head) {
     return new CrosTab(
       side || this.side.slice(),
-      banner || this.banner.slice(),
-      matrix || Mx.clone(this.matrix),
+      head || this.head.slice(),
+      rows || Mx.clone(this.rows),
       this.title
     )
   }
