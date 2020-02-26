@@ -1,6 +1,6 @@
 {
   "name": "@analys/table",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,10 +15,10 @@
     "test": "node -r @babel/register test/table.select.test.js"
   },
   "dependencies": {
-    "@analys/keyed-columns": "^0.0.3",
-    "@analys/table-filter": "^0.0.3",
-    "@analys/table-init": "^0.0.3",
-    "@analys/table-pivot": "^0.0.3",
+    "@analys/keyed-columns": "^0.0.4",
+    "@analys/table-filter": "^0.0.4",
+    "@analys/table-init": "^0.0.4",
+    "@analys/table-pivot": "^0.0.4",
     "@aryth/comparer": "^0.0.10",
     "@aryth/distinct-column": "^0.0.10",
     "@typen/num-strict": "^0.0.1",
