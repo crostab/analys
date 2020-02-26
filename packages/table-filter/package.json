@@ -15,11 +15,6 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.0.3",
-    "@analys/cubic": "^0.0.3",
-    "@analys/enum-pivot-mode": "^0.0.3",
-    "@analys/pivot": "^0.0.3",
-    "@analys/table": "^0.0.3"
   },
   "repository": {
     "type": "git",
