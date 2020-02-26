@@ -15,11 +15,14 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.0.2",
-    "@analys/cubic": "^0.0.2",
-    "@analys/enum-pivot-mode": "^0.0.2",
     "@analys/pivot": "^0.0.2",
-    "@analys/table": "^0.0.2"
+    "@analys/cubic": "^0.0.2",
+    "@analys/crostab": "^0.0.2",
+    "@analys/table-init": "^0.0.2",
+    "@analys/table-filter": "^0.0.2",
+    "@analys/enum-pivot-mode": "^0.0.2",
+    "@vect/vector-mapper": "^0.0.27",
+    "@typen/enums": "^0.0.1"
   },
   "repository": {
     "type": "git",

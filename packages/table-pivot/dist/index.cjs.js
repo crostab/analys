@@ -4,40 +4,78 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var pivot = require('@analys/pivot');
 var cubic = require('@analys/cubic');
-require('@analys/table');
 var crostab = require('@analys/crostab');
+var tableInit = require('@analys/table-init');
+var tableFilter = require('@analys/table-filter');
 var enumPivotMode = require('@analys/enum-pivot-mode');
+var vectorMapper = require('@vect/vector-mapper');
+var enums = require('@typen/enums');
 
+const parseCell = (cell, defaultField) => {
+  switch (typeof cell) {
+    case enums.OBJ:
+      if (Array.isArray(cell)) return cell.length ? cell : {
+        field: defaultField,
+        mode: enumPivotMode.COUNT
+      };
+      if (!cell.field) cell.field = defaultField;
+      if (!cell.mode) cell.mode = enumPivotMode.COUNT;
+      return cell;
+
+    case enums.STR:
+    case enums.NUM:
+      return {
+        field: cell,
+        mode: enumPivotMode.INCRE
+      };
+
+    default:
+      return {
+        field: defaultField,
+        mode: enumPivotMode.COUNT
+      };
+  }
+};
 /**
  *
- * @param {Table} table
- * @param {str} s
- * @param {str} b
+ * @param {TableObject} table
+ * @param {str} side
+ * @param {str} banner
  * @param {CubeCell[]|CubeCell} [cell]
  * @param {Filter[]|Filter} [filter]
  * @param {function():number} formula - formula is valid only when cell is CubeCell array.
  * @returns {CrosTab}
  */
 
+
 const tablePivot = (table, {
-  side: s,
-  banner: b,
+  side,
+  banner,
   cell,
   filter,
   formula
 }) => {
-  // spec |> console.log
-  table = table.filter(filter, {
-    mutate: false
-  });
-  const [x, y] = [table.coin(s), table.coin(b)];
-  if (!cell || !cell.length) cell = {
-    field: s,
-    mode: enumPivotMode.COUNT
-  };
-  let pivot$1 = Array.isArray(cell) ? cubic.Cubic.build(x, y, cell) : pivot.Pivot.build(x, y, cell.field, cell.mode);
-  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(table.rows));
-  if (formula) crostab$1.map(ar => formula.apply(null, ar));
+  cell = parseCell(cell, side);
+
+  if (filter) {
+    var _table;
+
+    table = tableFilter.tableFilter.call((_table = table, tableInit.slice(_table)), filter);
+  } // table |> decoTable |> logger
+  // table.rows |> decoMatrix |> logger
+  // cell |> deco |> logger
+
+
+  const {
+    head,
+    rows
+  } = table,
+        [x, y] = [head.indexOf(side), head.indexOf(banner)]; // ({ x, y }) |> delogger
+
+  let calc, z;
+  const pivot$1 = Array.isArray(cell) ? (vectorMapper.iterate(cell, c => c.index = head.indexOf(c.field)), calc = true, cubic.Cubic.build(x, y, cell)) : (z = head.indexOf(cell.field), calc = false, pivot.Pivot.build(x, y, z, cell.mode));
+  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
+  if (calc && formula) crostab$1.map(ar => formula.apply(null, ar));
   return crostab$1;
 };
 

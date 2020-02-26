@@ -1,36 +1,21 @@
-import { clone, Mx } from 'veho'
+import { sortKeyedRows, sortRowsByKeys, selectKeyedRows, selectSamplesBySide } from '@analys/keyed-rows'
+import { sortColumnsByKeys, sortKeyedColumns, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
+import { shallow, slice } from '@analys/crostab-init'
 import { NUM_ASC, STR_ASC } from '@aryth/comparer'
+import { transpose, ROWWISE, COLUMNWISE } from '@vect/matrix'
 import { mapper, mutate } from '@vect/vector-mapper'
 import { zipper } from '@vect/vector-zipper'
-import { transpose, ROWWISE, COLUMNWISE } from '@vect/matrix'
 import { init as initMatrix } from '@vect/matrix-init'
 import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import { column } from '@vect/column-getter'
 import {
-  push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn
+  push as pushColumn,
+  pop as popColumn,
+  shift as shiftColumn,
+  unshift as unshiftColumn
 } from '@vect/columns-update'
-import { selectKeyedRows } from '../../keyed-rows/src/selectKeyedRows'
-import { selectKeyedColumns } from '../../keyed-columns/src/selectKeyedColumns'
-import { sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows/src/sortKeyedRows'
-import { sortColumnsByKeys, sortKeyedColumns } from '@analys/keyed-columns/src/sortKeyedColumns'
-import { selectSamplesByHead } from '@analys/keyed-columns'
-import { selectSamplesBySide } from '@analys/keyed-rows'
 import { ob } from '../utils/addIndex'
-
-/**
- * A number, or a string containing a number.
- * @typedef {(number|string)} str
- * @typedef {{field:str,mode:number,filter:}} CubeCell
- * @typedef {{field:str,filter:function(*):boolean}} Filter
- * @typedef {{
- *  side:string,
- *  head:string,
- *  filter:Filter[]|Filter,
- *  cell:CubeCell[]|CubeCell,
- *  formula:function():number,
- * }} TableSpec
- */
 
 /**
  *
@@ -55,9 +40,8 @@ export class CrosTab {
     this.title = title || ''
   }
 
-  static from (ob) {
-    const side = ob.side, head = ob.head || ob.banner || [], rows = ob.rows || ob.matrix || [[]], title = ob.title || ''
-    return new CrosTab(side, head, rows, title)
+  static from (o) {
+    return new CrosTab(o.side, o.head || o.banner, o.rows || o.matrix, o.title)
   }
 
   /**
@@ -81,14 +65,7 @@ export class CrosTab {
     const samples = selectSamplesBySide.call(this, sideFields)
     return indexed ? zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples
   }
-  get toJson () {
-    return {
-      side: this.side.slice(),
-      head: this.head.slice(),
-      rows: this.rows |> clone,
-      title: this.title
-    }
-  }
+  toJson (mutate = false) { return mutate ? this |> slice : this |> shallow }
 
   /** @returns {*[][]} */
   get columns () { return transpose(this.rows) }
@@ -102,9 +79,9 @@ export class CrosTab {
   coordinate (r, c) { return { x: this.roin(r), y: this.coin(c) } }
   row (r) { return this.rows[this.roin(r)] }
   column (c) { return column(this.rows, this.coin(c), this.ht) }
-  transpose (newTitle, { mutate = true } = {}) {
+  transpose (title, { mutate = true } = {}) {
     const { head: side, side: head, columns: rows } = this
-    return this.boot(mutate, { rows, side, head })
+    return this.boot({ side, head, rows, title }, mutate)
   }
   setRow (r, row) { return this.rows[this.roin(r)] = row, this }
   setRowBy (r, fn) { return mutate(this.row(r), fn, this.wd), this }
@@ -112,10 +89,10 @@ export class CrosTab {
   setColumnBy (c, fn) { return mutateColumn(this.rows, this.coin(c), fn, this.ht), this }
 
   map (fn, { mutate = true } = {}) {
-    return this.boot(mutate, { rows: mapperMatrix(this.rows, fn, this.ht, this.wd) })
+    return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate)
   }
-  mapSide (fn, { mutate = true } = {}) { return this.boot(mutate, { side: mapper(this.side, fn) }) }
-  mapBanner (fn, { mutate = true } = {}) { return this.boot(mutate, { head: mapper(this.head, fn) }) }
+  mapSide (fn, { mutate = true } = {}) { return this.boot({ side: mapper(this.side, fn) }, mutate) }
+  mapBanner (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
 
   pushRow (label, row) { return this.side.push(label), this.rows.push(row), this }
   unshiftRow (label, row) { return this.side.unshift(label), this.rows.unshift(row), this }
@@ -126,69 +103,60 @@ export class CrosTab {
   popColumn () { return popColumn(this.rows) }
   shiftColumn () { return shiftColumn(this.rows) }
 
+  slice ({ top, bottom, left, right, mutate = true } = {}) {
+    let { side, head, rows } = this
+    if (top || bottom) side = side.slice(top, bottom), rows = rows.slice(top, bottom)
+    if (left || right) head = head.slice(left, right), rows = rows.map(row => row.slice(left, right))
+    return this.boot({ side, head, rows }, mutate)
+  }
+
   selectRows (sideLabels, mutate = false) {
-    const { side, rows } = selectKeyedRows.call(this, sideLabels)
-    return this.boot(mutate, { side, rows })
+    let o = mutate ? this : this |> slice
+    selectKeyedRows.call(o, sideLabels)
+    return mutate ? this : this.copy(o)
   }
   selectColumns (headLabels, mutate = false) {
-    const { head, rows } = selectKeyedColumns.call(this, headLabels)
-    return this.boot(mutate, { head, rows })
+    let o = mutate ? this : this |> slice
+    selectKeyedColumns.call(this, headLabels)
+    return mutate ? this : this.copy(o)
   }
-  select ({ side: sls, head: bls, mutate = false } = {}) {
-    let { rows, side, head } = this
-    if (bls?.length) ({ head, rows } = selectKeyedColumns.call({ head, rows }, bls))
-    if (sls?.length) ({ side, rows } = selectKeyedRows.call({ side, rows }, sls))
-    return this.boot(mutate, { rows, side, head })
+  select ({ side, head, mutate = false } = {}) {
+    let o = mutate ? this : this |> slice
+    if (head?.length) selectKeyedColumns.call(o, head)
+    if (side?.length) selectKeyedRows.call(o, side)
+    return mutate ? this : this.copy(o)
   }
 
-  slice ({ top, bottom, left, right, mutate = true } = {}) {
-    let { side: s, head: b, rows: mx } = this
-    if (top || bottom) s = s.slice(top, bottom), mx = mx.slice(top, bottom)
-    if (left || right) b = b.slice(left, right), mx = mx.map(row => row.slice(left, right))
-    return this.boot(mutate, { rows: mx, side: s, head: b })
-  }
   sort ({ direct = ROWWISE, field, comparer = NUM_ASC, mutate = false } = {}) {
-    let { side, head, rows } = this
-    if (direct === ROWWISE) ({ side, rows } = sortKeyedRows.call({ side, rows }, comparer, this.coin(field)))
-    if (direct === COLUMNWISE) ({ head, rows } = sortKeyedColumns.call({ head, rows }, comparer, this.roin(field)))
-    return this.boot(mutate, { rows, side, head })
+    let o = mutate ? this : this |> slice
+    if (direct === ROWWISE) sortKeyedRows.call(o, comparer, this.coin(field))
+    if (direct === COLUMNWISE) sortKeyedColumns.call(o, comparer, this.roin(field))
+    return mutate ? this : this.copy(o)
   }
   sortByLabels ({ direct = ROWWISE, comparer = STR_ASC, mutate = false }) {
-    let { side, head, rows } = this
-    if (direct === ROWWISE) ({ side, rows } = sortRowsByKeys.call({ side, rows }, comparer))
-    if (direct === COLUMNWISE) ({ head, rows } = sortColumnsByKeys.call({ head, rows }, comparer))
-    return this.boot(mutate, { rows, side, head })
+    let o = mutate ? this : this |> slice
+    if (direct === ROWWISE) sortRowsByKeys.call(o, comparer)
+    if (direct === COLUMNWISE) sortColumnsByKeys.call(o, comparer)
+    return mutate ? this : this.copy(o)
   }
 
-  boot (mutate, { rows, side, head } = {}) {
-    return (mutate) ? this.reboot(rows, side, head) : this.clone(rows, side, head)
+  boot ({ side, head, rows, title } = {}, mutate) {
+    if (mutate) {
+      if (side) this.side = side
+      if (head) this.head = head
+      if (rows) this.rows = rows
+      if (title) this.title = title
+      return this
+    } else {
+      return this.copy({ side, head, rows, title })
+    }
   }
-  /**
-   *
-   * @param {*[][]} [rows]
-   * @param {*[]} [side]
-   * @param {*[]} [head]
-   * @returns {CrosTab}
-   */
-  reboot (rows, side, head) {
-    if (rows) this.rows = rows
-    if (side) this.side = side
-    if (head) this.head = head
-    return this
-  }
-  /**
-   * Shallow copy
-   * @param {*[][]} [rows]
-   * @param {*[]} [side]
-   * @param {*[]} [head]
-   * @return {CrosTab}
-   */
-  clone (rows, side, head) {
-    return new CrosTab(
-      side || this.side.slice(),
-      head || this.head.slice(),
-      rows || Mx.clone(this.rows),
-      this.title
-    )
+
+  copy ({ side, head, rows, title } = {}) {
+    if (!side) side = this.side.slice()
+    if (!head) head = this.head.slice()
+    if (!rows) rows = this.rows.map(row => row.slice())
+    if (!title) title = this.title
+    return new CrosTab(side, head, rows, title)
   }
 }

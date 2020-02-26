@@ -2,14 +2,16 @@ import { mapper } from '@vect/vector-mapper'
 import { unwind } from '@vect/entries-unwind'
 import { select as selectVecs } from '@vect/vector-select'
 
+/**
+ * @param {(str|[*,*])[]} labels
+ * @return {KeyedRows} - mutated 'this' {side, rows}
+ */
 export const selectKeyedRows = function (labels) {
-  let { rows } = this, side, indexes;
-  [side, indexes] = lookupIndexes.call(this, labels) |> unwind
-  rows = selectVecs(rows, indexes)
-  return { side, rows }
+  let indexes;
+  [this.side, indexes] = lookupIndexes.call(this, labels) |> unwind
+  this.rows = selectVecs(this.rows, indexes)
+  return this
 }
-
-
 
 /**
  *

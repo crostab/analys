@@ -1,22 +1,15 @@
 import { mapper, iterate } from '@vect/vector-mapper';
 import { select } from '@vect/columns-select';
 import { unwind } from '@vect/entries-unwind';
-import { toKeyComparer } from '@analys/util-keyed-vectors';
-import { zipper } from '@vect/vector-zipper';
-import { Columns } from '@vect/column-getter';
 import { transpose } from '@vect/matrix-transpose';
+import { zipper } from '@vect/vector-zipper';
+import { toKeyComparer } from '@analys/util-keyed-vectors';
+import { Columns } from '@vect/column-getter';
 
-const selectSamples = function (fieldIndexPairs) {
-  const {
-    rows
-  } = this,
-        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
-  return mapper(rows, row => {
-    let o = {};
-    iterate(fieldIndexPairs, ([field, index]) => o[field] = row[index], depth);
-    return o;
-  });
-};
+/**
+ * @param {(str|[*,*])[]} labels
+ * @return {TableObject} - mutated 'this' {head, rows}
+ */
 
 const selectKeyedColumns = function (labels) {
   var _lookupIndexes$call;
@@ -24,14 +17,10 @@ const selectKeyedColumns = function (labels) {
   let {
     rows
   } = this,
-      head,
       indexes;
-  [head, indexes] = (_lookupIndexes$call = lookupIndexes.call(this, labels), unwind(_lookupIndexes$call));
-  rows = select(rows, indexes);
-  return {
-    head,
-    rows
-  };
+  [this.head, indexes] = (_lookupIndexes$call = lookupIndexes.call(this, labels), unwind(_lookupIndexes$call));
+  this.rows = select(rows, indexes);
+  return this;
 };
 /**
  *
@@ -57,16 +46,52 @@ const lookupIndex = function (label) {
   return [projected, head.indexOf(current)];
 };
 
+const selectSamples = function (fieldIndexPairs) {
+  const {
+    rows
+  } = this,
+        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
+  return mapper(rows, row => {
+    let o = {};
+    iterate(fieldIndexPairs, ([field, index]) => o[field] = row[index], depth);
+    return o;
+  });
+};
+
+/**
+ * @param labels
+ * @returns {Object[]} - 'this' remains unchanged
+ */
+
 const selectSamplesByHead = function (labels) {
   const fieldIndexes = lookupIndexes.call(this, labels);
   return selectSamples.call(this, fieldIndexes);
 };
 
 /**
+ *
+ * @param comparer
+ * @return {TableObject} - mutated 'this' {head, rows}
+ */
+
+const sortColumnsByKeys$1 = function (comparer) {
+  var _zipper$sort;
+
+  let {
+    head,
+    rows
+  } = this,
+      columns = transpose(rows);
+  [this.head, columns] = (_zipper$sort = zipper(head, columns, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort));
+  this.rows = transpose(columns);
+  return this;
+};
+
+/**
  * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
  * @param {function(*,*):number} comparer
  * @param {number} [index]
- * @returns {{head:*[], rows:*[][]}}
+ * @returns {TableObject} - mutated 'this' {head, rows}
  */
 
 const sortKeyedColumns = function (comparer, index) {
@@ -81,31 +106,7 @@ const sortKeyedColumns = function (comparer, index) {
   /** [column[i]s, head, columns]  */
 
   const Keyed = (_zipper$sort = zipper(head, columns, (key, column) => [column[index], key, column]).sort(toKeyComparer(comparer)), Columns(_zipper$sort));
-  return {
-    head: Keyed(1),
-    rows: transpose(Keyed(2))
-  };
-};
-/**
- *
- * @param comparer
- * @returns {{head:*[], rows:*[][]}}
- */
-
-const sortColumnsByKeys = function (comparer) {
-  var _zipper$sort2;
-
-  let {
-    head,
-    rows
-  } = this,
-      columns = transpose(rows);
-  [head, columns] = (_zipper$sort2 = zipper(head, columns, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort2));
-  rows = transpose(columns);
-  return {
-    head,
-    rows
-  };
+  return this.head = Keyed(1), this.rows = transpose(Keyed(2)), this;
 };
 
-export { selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys, sortKeyedColumns };
+export { selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys$1 as sortColumnsByKeys, sortKeyedColumns };

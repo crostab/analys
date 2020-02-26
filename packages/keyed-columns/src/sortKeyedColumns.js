@@ -1,14 +1,13 @@
 import { toKeyComparer } from '@analys/util-keyed-vectors'
 import { zipper } from '@vect/vector-zipper'
 import { Columns } from '@vect/column-getter'
-import { unwind } from '@vect/entries-unwind'
 import { transpose } from '@vect/matrix-transpose'
 
 /**
  * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
  * @param {function(*,*):number} comparer
  * @param {number} [index]
- * @returns {{head:*[], rows:*[][]}}
+ * @returns {TableObject} - mutated 'this' {head, rows}
  */
 export const sortKeyedColumns = function (comparer, index) {
   if (index < 0) return sortColumnsByKeys.call(this, comparer)
@@ -19,21 +18,6 @@ export const sortKeyedColumns = function (comparer, index) {
   ).sort(
     toKeyComparer(comparer)
   ) |> Columns
-  return { head: Keyed(1), rows: transpose(Keyed(2)) }
+  return this.head = Keyed(1), this.rows = transpose(Keyed(2)), this
 }
 
-/**
- *
- * @param comparer
- * @returns {{head:*[], rows:*[][]}}
- */
-export const sortColumnsByKeys = function (comparer) {
-  let { head, rows } = this, columns = transpose(rows);
-  [head, columns] = zipper(head, columns,
-    (key, row) => [key, row]
-  ).sort(
-    toKeyComparer(comparer)
-  ) |> unwind
-  rows = transpose(columns)
-  return { head, rows }
-}

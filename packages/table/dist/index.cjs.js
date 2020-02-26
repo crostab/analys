@@ -2,22 +2,21 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var tableInit = require('@analys/table-init');
+var tableFilter = require('@analys/table-filter');
+var tablePivot = require('@analys/table-pivot');
+var keyedColumns = require('@analys/keyed-columns');
 var veho = require('veho');
 var borel = require('borel');
-var utilPivot = require('@analys/util-pivot');
-var tablePivot = require('@analys/table-pivot');
 var distinctColumn = require('@aryth/distinct-column');
 var comparer = require('@aryth/comparer');
+var matrix = require('@vect/matrix');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
-var entriesUnwind = require('@vect/entries-unwind');
-var matrix = require('@vect/matrix');
 var matrixMapper = require('@vect/matrix-mapper');
 var columnMapper = require('@vect/column-mapper');
-var columnsSelect = require('@vect/columns-select');
 var columnsMapper = require('@vect/columns-mapper');
 var columnsUpdate = require('@vect/columns-update');
-var objectInit = require('@vect/object-init');
 var numStrict = require('@typen/num-strict');
 
 function _defineProperty(obj, key, value) {
@@ -112,81 +111,35 @@ class Table {
     this.types = types;
   }
   /**
-   *
-   * @param {*[]} [head]
-   * @param {*[][]} [rows]
-   * @param {string} [title]
-   * @param {string[]} [types]
+   * @param {Object} o
    * @return {Table}
    */
 
 
-  static build({
-    head,
-    rows,
-    title,
-    types
-  }) {
-    return new Table(head, rows, title, types);
+  static from(o) {
+    return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
   }
   /**
    *
-   * @param {str|[*,*]} [field]
-   * @returns {[str,number]}
+   * @param {str|[*,*]} [headFields]
+   * @returns {Object[]}
    */
 
 
-  lookUpFieldIndex(field) {
-    if (!Array.isArray(field)) return [field, this.coin(field)];
-    let [currField, newField] = field;
-    return [newField, this.coin(currField)];
+  toSamples(headFields) {
+    return keyedColumns.selectSamplesByHead.call(this, headFields);
   }
   /**
    *
-   * @param {(str|[*,*])[]} fields
-   * @returns {[str,number][]}
-   */
-
-
-  lookUpFieldIndexes(fields) {
-    return vectorMapper.mapper(fields, field => this.lookUpFieldIndex(field));
-  }
-  /**
-   *
-   * @param {str|[*,*]} [fields]
-   * @returns {Object<*, *>[]}
-   */
-
-
-  toSamples(fields) {
-    if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return this.rows.map(row => objectInit.wind(this.head, row));
-    const fieldToIndexEntries = fields.map(this.lookUpFieldIndex.bind(this));
-    return this.rows.map(row => objectInit.initByValues(fieldToIndexEntries, i => row[i]));
-  }
-  /**
-   *
-   * @param {boolean} [mutate=true]
+   * @param {boolean} [mutate=false]
    * @returns {*}
    */
 
 
-  toJson(mutate = true) {
-    var _rows;
+  toJson(mutate = false) {
+    var _this, _this2;
 
-    const {
-      head,
-      rows,
-      title
-    } = this;
-    return mutate ? {
-      head,
-      rows,
-      title
-    } : {
-      head: head.slice(),
-      rows: (_rows = rows, veho.Mx.clone(_rows)),
-      title: title === null || title === void 0 ? void 0 : title.slice()
-    };
+    return mutate ? (_this = this, tableInit.slice(_this)) : (_this2 = this, tableInit.shallow(_this2));
   }
   /**
    *
@@ -211,60 +164,6 @@ class Table {
     });
     return new Table(head, rows, title, types);
   }
-  /**
-   *
-   * @param {*[]|[*,*][]} fields
-   * @param {boolean=true} [mutate]
-   * @returns {Table}
-   */
-
-
-  select(fields, {
-    mutate = true
-  } = {}) {
-    if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return mutate ? this : this.clone();
-    const fieldToIndexes = this.lookUpFieldIndexes(fields);
-    const [head, indexes] = entriesUnwind.unwind(fieldToIndexes);
-    const rows = columnsSelect.select(this.rows, indexes);
-    return this.boot(mutate, {
-      rows,
-      head
-    });
-  }
-  /**
-   *
-   * @param {*[]|[*,*][]} fields
-   * @param {boolean=true} [mutate]
-   * @returns {Table}
-   */
-
-
-  spliceColumns(fields, {
-    mutate = true
-  } = {}) {
-    const ys = fields.map(this.coin.bind(this)).sort(comparer.NUM_ASC),
-          {
-      rows,
-      head
-    } = this;
-    return mutate ? this.reboot(columnsUpdate.splices(rows, ys), vectorUpdate.splices(head, ys)) : this.clone(columnsUpdate.splices(veho.Mx.copy(rows), ys), vectorUpdate.splices(head.slice(), ys));
-  }
-
-  map(fn, {
-    mutate = true
-  } = {}) {
-    return this.boot(mutate, {
-      rows: matrixMapper.mapper(this.rows, fn, this.ht, this.wd)
-    });
-  }
-
-  mapBanner(fn, {
-    mutate = true
-  } = {}) {
-    return this.boot(mutate, {
-      head: vectorMapper.mapper(this.head, fn)
-    });
-  }
 
   get size() {
     return matrix.size(this.rows);
@@ -287,7 +186,7 @@ class Table {
   }
 
   cell(x, field) {
-    return this.rows[x][this.coin(y)];
+    return this.rows[x][this.coin(field)];
   }
 
   coin(field) {
@@ -341,6 +240,57 @@ class Table {
   shiftColumn() {
     return columnsUpdate.shift(this.rows);
   }
+
+  map(fn, {
+    mutate = true
+  } = {}) {
+    return this.boot({
+      rows: matrixMapper.mapper(this.rows, fn, this.ht, this.wd)
+    }, mutate);
+  }
+
+  mapHead(fn, {
+    mutate = true
+  } = {}) {
+    return this.boot({
+      head: vectorMapper.mapper(this.head, fn)
+    }, mutate);
+  }
+  /**
+   *
+   * @param {*[]|[*,*][]} fields
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  select(fields, {
+    mutate = false
+  } = {}) {
+    var _this3;
+
+    let o = mutate ? this : (_this3 = this, tableInit.slice(_this3));
+    keyedColumns.selectKeyedColumns.call(o, fields);
+    return mutate ? this : this.copy(o);
+  }
+  /**
+   *
+   * @param {*[]|[*,*][]} fields
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  spliceColumns(fields, {
+    mutate = false
+  } = {}) {
+    var _this4;
+
+    const ys = fields.map(this.coin.bind(this)).sort(comparer.NUM_ASC);
+    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4));
+    columnsUpdate.splices(o.rows, ys), vectorUpdate.splices(o.head, ys);
+    return mutate ? this : Table.from(o);
+  }
   /**
    *
    * Specify the type of a column. No return
@@ -386,41 +336,23 @@ class Table {
   filter(filterCollection, {
     mutate = true
   } = {}) {
-    let {
-      rows
-    } = this,
-        j;
+    var _this5;
 
-    if (Array.isArray(filterCollection)) {
-      for (let {
-        field,
-        filter
-      } of filterCollection) if ((j = this.coin(field)) >= 0) rows = rows.filter(row => filter(row[j]));
-    } else {
-      let {
-        field,
-        filter
-      } = filter;
-      if ((j = this.coin(field)) >= 0) rows = rows.filter(row => filter(row[j]));
-    }
-
-    return this.boot(mutate, {
-      rows
-    });
+    const o = mutate ? this : (_this5 = this, tableInit.slice(_this5));
+    tableFilter.tableFilter.call(o, filterCollection);
+    return mutate ? this : this.copy(o);
   }
 
   distinct(fields, {
     mutate = true
   } = {}) {
-    let {
-      rows
-    } = this;
+    var _this6;
 
-    for (let field of fields) rows = borel.StatMx.distinct(rows, this.coin(field));
+    const o = mutate ? this : (_this6 = this, tableInit.slice(_this6));
 
-    return this.boot(mutate, {
-      rows
-    });
+    for (let field of fields) o.rows = borel.StatMx.distinct(o.rows, this.coin(field));
+
+    return mutate ? this : this.copy(o);
   }
   /**
    *
@@ -440,15 +372,27 @@ class Table {
       sort
     }) : distinctColumn.Distinct(this.coin(field))(this.rows, this.ht);
   }
+  /**
+   *
+   * @param field
+   * @param comparer
+   * @param mutate
+   * @returns {Table} - 'this' Table rows is mutated by sort function
+   */
+
 
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    let y = this.coin(field),
-        comp = (a, b) => comparer(a[y], b[y]),
-        mx;
+    var _this7;
 
-    return mutate ? (this.rows.sort(comp), this) : (mx = this.rows.slice(), mx.sort(comp), this.clone(mx));
+    const y = this.coin(field);
+
+    const rowComparer = (a, b) => comparer(a[y], b[y]);
+
+    const o = mutate ? this : (_this7 = this, tableInit.slice(_this7));
+    o.rows.sort(rowComparer);
+    return mutate ? this : this.copy(o);
   }
   /**
    *
@@ -461,69 +405,70 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _columns;
+    var _this8;
 
-    let {
-      head,
-      columns
-    } = this;
-    [head, columns] = utilPivot.sortKeyedVectors(head, columns, comparer);
-    return this.boot(mutate, {
-      rows: (_columns = columns, matrix.transpose(_columns)),
-      head
-    });
+    let o = mutate ? this : (_this8 = this, tableInit.slice(_this8));
+    sortColumnsByKeys.call(o, comparer);
+    return mutate ? this : this.copy(o);
   }
   /**
    *
-   * @param {TableSpec} spec
-   * @param {string} spec.side side
-   * @param {string} spec.head head
-   * @param {{field:string, crit:function(*):boolean}[]} spec.filter
-   * @param {{field:string, stat:function([]):number}[]} spec.cell
-   * @param {function({}):number} spec.calc - ({col1,col2,...})=>number
+   * @param {str} side
+   * @param {str} banner
+   * @param {CubeCell[]|CubeCell} [cell]
+   * @param {Filter[]|Filter} [filter]
+   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
+   * @returns {CrosTab}
    * @returns {CrosTab}
    */
 
 
-  crosTab(spec) {
-    return tablePivot.tablePivot(this, spec);
-  }
-
-  boot(mutate, {
-    rows,
-    head,
-    types
+  crosTab({
+    side,
+    banner,
+    cell,
+    filter,
+    formula
   }) {
-    return mutate ? this.reboot(rows, head, types) : this.clone(rows, head, types);
+    return tablePivot.tablePivot(this, {
+      side,
+      banner,
+      cell,
+      filter,
+      formula
+    });
   }
-  /**
-   * Return 'this' by loading a new rows
-   * @param {*[][]} rows
-   * @param {*[]} [head]
-   * @param {string[]} [types]
-   * @return {Table}
-   */
 
-
-  reboot(rows, head, types) {
-    if (rows) this.rows = rows;
-    if (head) this.head = head;
-    if (types) this.types = types;
-    return this;
+  boot({
+    types,
+    head,
+    rows
+  } = {}, mutate) {
+    if (mutate) {
+      if (head) this.head = head;
+      if (rows) this.rows = rows;
+      if (types) this.types = types;
+      return this;
+    } else {
+      return this.copy({
+        types,
+        head,
+        rows
+      });
+    }
   }
-  /**
-   *
-   * @param {*[][]} [rows]
-   * @param {*[]} [head]
-   * @param {*[]} [types]
-   * @return {Table}
-   */
 
+  copy({
+    types,
+    head,
+    rows
+  } = {}) {
+    var _this$types;
 
-  clone(rows, head, types) {
-    var _this$rows2;
-
-    return new Table(head || this.head.slice(), rows || (_this$rows2 = this.rows, veho.Mx.clone(_this$rows2)), this.title, types || this.types.slice());
+    if (!head) head = this.head.slice();
+    if (!rows) rows = this.rows.map(row => row.slice());
+    if (!types) types = (_this$types = this.types) === null || _this$types === void 0 ? void 0 : _this$types.slice();
+    return new Table(head, rows, this.title, types);
   }
 
 }

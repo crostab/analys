@@ -1,19 +1,18 @@
 import { Foba } from '@foba/table'
 import { DecoTable, DecoVector, says } from '@spare/logger'
-import { selectKeyedColumns } from '../src/selectKeyedColumns'
 import { selectSamplesByHead } from '../src/selectSamplesByHead'
-import { deco, delogger } from '@spare/deco'
+import { slice as sliceTable } from '@analys/table-init'
+import { deco } from '@spare/deco'
 
-const boTable = Foba.TopBoxOffice
+const BOX_OFFICE = ['TopBoxOffice']
+const table = Foba[BOX_OFFICE] |> sliceTable
 const pickFields = ['director', 'writer', 'name', 'boxoffice']
 
 const decoT = DecoTable({ top: 5, bottom: 2 })
-const { head, rows } = boTable
 
-boTable |> decoT |> says.original
+table |> decoT |> says.original
 
-selectKeyedColumns.call({ head, rows }, pickFields)
-  |> decoT |> says.selected
-
-selectSamplesByHead.call({ head, rows }, pickFields)
+selectSamplesByHead.call(table, pickFields)
   |> DecoVector({ head: 3, tail: 2, abstract: deco }) |> says.selected
+
+table |> decoT |> says.original

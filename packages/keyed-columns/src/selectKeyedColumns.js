@@ -2,11 +2,15 @@ import { mapper } from '@vect/vector-mapper'
 import { select as selectCols } from '@vect/columns-select'
 import { unwind } from '@vect/entries-unwind'
 
+/**
+ * @param {(str|[*,*])[]} labels
+ * @return {TableObject} - mutated 'this' {head, rows}
+ */
 export const selectKeyedColumns = function (labels) {
-  let { rows } = this, head, indexes
-  [head, indexes] = lookupIndexes.call(this, labels) |> unwind
-  rows = selectCols(rows, indexes)
-  return { head, rows }
+  let { rows } = this, indexes;
+  [this.head, indexes] = lookupIndexes.call(this, labels) |> unwind
+  this.rows = selectCols(rows, indexes)
+  return this
 }
 
 /**

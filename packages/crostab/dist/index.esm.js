@@ -1,12 +1,14 @@
-import { clone, Mx } from 'veho';
+import { selectSamplesBySide, selectKeyedRows, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows';
+import { selectSamplesByHead, selectKeyedColumns, sortKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
+import { slice, shallow } from '@analys/crostab-init';
 import { NUM_ASC, STR_ASC } from '@aryth/comparer';
-import { mapper, iterate, mutate } from '@vect/vector-mapper';
+import { transpose, ROWWISE, COLUMNWISE } from '@vect/matrix';
+import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
 import { zipper } from '@vect/vector-zipper';
-import { transpose as transpose$1, ROWWISE, COLUMNWISE } from '@vect/matrix';
 import { init } from '@vect/matrix-init';
-import { mapper as mapper$1 } from '@vect/matrix-mapper';
+import { mapper } from '@vect/matrix-mapper';
 import { mutate as mutate$1 } from '@vect/column-mapper';
-import { column, Columns } from '@vect/column-getter';
+import { column } from '@vect/column-getter';
 import { push, unshift, pop, shift } from '@vect/columns-update';
 
 function _defineProperty(obj, key, value) {
@@ -24,335 +26,11 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-const unwind = (entries, h) => {
-  h = h || entries && entries.length;
-  let keys = Array(h),
-      values = Array(h);
-
-  for (let r; --h >= 0 && (r = entries[h]);) {
-    keys[h] = r[0];
-    values[h] = r[1];
-  }
-
-  return [keys, values];
-};
-
-const select = (vec, indexes, hi) => {
-  hi = hi || indexes.length;
-  const vc = Array(hi);
-
-  for (--hi; hi >= 0b0; hi--) vc[hi] = vec[indexes[hi]];
-
-  return vc;
-};
-
-const selectKeyedRows = function (labels) {
-  var _lookupIndexes$call;
-
-  let {
-    rows
-  } = this,
-      side,
-      indexes;
-  [side, indexes] = (_lookupIndexes$call = lookupIndexes.call(this, labels), unwind(_lookupIndexes$call));
-  rows = select(rows, indexes);
-  return {
-    side,
-    rows
-  };
-};
-/**
- *
- * @param {(str|[*,*])[]} labels
- * @returns {[str,number][]}
- */
-
-const lookupIndexes = function (labels) {
-  return mapper.call(this, labels, lookupIndex);
-};
-/**
- *
- * @param {str|[*,*]} [label]
- * @returns {[str,number]}
- */
-
-const lookupIndex = function (label) {
-  const {
-    side
-  } = this;
-  if (!Array.isArray(label)) return [label, side.indexOf(label)];
-  let [current, projected] = label;
-  return [projected, side.indexOf(current)];
-};
-
-/**
- * @param {*[][]} mx
- * @param {number[]} ys
- * @returns {*}
- */
-
-const select$1 = (mx, ys) => {
-  const hi = ys.length;
-  if (hi === 0) return mx;
-  if (hi === 1) return column(mx, ys[0]);
-  return mx.map(row => select(row, ys, hi));
-};
-
-const selectKeyedColumns = function (labels) {
-  var _lookupIndexes$call;
-
-  let {
-    rows
-  } = this,
-      head,
-      indexes;
-  [head, indexes] = (_lookupIndexes$call = lookupIndexes$1.call(this, labels), unwind(_lookupIndexes$call));
-  rows = select$1(rows, indexes);
-  return {
-    head,
-    rows
-  };
-};
-/**
- *
- * @param {(str|[*,*])[]} labels
- * @returns {[str,number][]}
- */
-
-const lookupIndexes$1 = function (labels) {
-  return mapper.call(this, labels, lookupIndex$1);
-};
-/**
- *
- * @param {str|[*,*]} [label]
- * @returns {[str,number]}
- */
-
-const lookupIndex$1 = function (label) {
-  const {
-    head
-  } = this;
-  if (!Array.isArray(label)) return [label, head.indexOf(label)];
-  let [current, projected] = label;
-  return [projected, head.indexOf(current)];
-};
-
-const toKeyComparer = comparer => {
-  return (a, b) => comparer(a[0], b[0]);
-};
-
-/**
- * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
- * @param {function(*,*):number} comparer
- * @param {number} [index]
- * @returns {{side:*[], rows:*[][]}}
- */
-
-const sortKeyedRows = function (comparer, index) {
-  var _zipper$sort;
-
-  if (index < 0) return sortRowsByKeys.call(this, comparer);
-  let {
-    side,
-    rows
-  } = this;
-  /** Columns of [row[i]s, side, rows]  */
-
-  const Cols = (_zipper$sort = zipper(side, rows, (key, row) => [row[index], key, row]).sort(toKeyComparer(comparer)), Columns(_zipper$sort));
-  return {
-    side: Cols(1),
-    rows: Cols(2)
-  };
-};
-/**
- *
- * @param comparer
- * @returns {{side:*[], rows:*[][]}}
- */
-
-const sortRowsByKeys = function (comparer) {
-  var _zipper$sort2;
-
-  let {
-    side,
-    rows
-  } = this;
-  [side, rows] = (_zipper$sort2 = zipper(side, rows, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort2));
-  return {
-    side,
-    rows
-  };
-};
-
-/**
- * Transpose a 2d-array.
- * @param {*[][]} mx
- * @param {number} [h]
- * @param {number} [w]
- * @returns {*[][]}
- */
-
-const transpose = (mx, h, w) => {
-  var _mx$;
-
-  h = h || (mx === null || mx === void 0 ? void 0 : mx.length), w = w || h && ((_mx$ = mx[0]) === null || _mx$ === void 0 ? void 0 : _mx$.length);
-  const cols = Array(w);
-
-  for (--w; w >= 0; w--) cols[w] = mapper(mx, r => r[w], h);
-
-  return cols;
-};
-
-/**
- * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
- * @param {function(*,*):number} comparer
- * @param {number} [index]
- * @returns {{head:*[], rows:*[][]}}
- */
-
-const sortKeyedColumns = function (comparer, index) {
-  var _zipper$sort;
-
-  if (index < 0) return sortColumnsByKeys.call(this, comparer);
-  let {
-    head,
-    rows
-  } = this,
-      columns = transpose(rows);
-  /** [column[i]s, head, columns]  */
-
-  const Keyed = (_zipper$sort = zipper(head, columns, (key, column) => [column[index], key, column]).sort(toKeyComparer(comparer)), Columns(_zipper$sort));
-  return {
-    head: Keyed(1),
-    rows: transpose(Keyed(2))
-  };
-};
-/**
- *
- * @param comparer
- * @returns {{head:*[], rows:*[][]}}
- */
-
-const sortColumnsByKeys = function (comparer) {
-  var _zipper$sort2;
-
-  let {
-    head,
-    rows
-  } = this,
-      columns = transpose(rows);
-  [head, columns] = (_zipper$sort2 = zipper(head, columns, (key, row) => [key, row]).sort(toKeyComparer(comparer)), unwind(_zipper$sort2));
-  rows = transpose(columns);
-  return {
-    head,
-    rows
-  };
-};
-
-const selectSamples = function (fieldIndexPairs) {
-  const {
-    rows
-  } = this,
-        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
-  return mapper(rows, row => {
-    let o = {};
-    iterate(fieldIndexPairs, ([field, index]) => o[field] = row[index], depth);
-    return o;
-  });
-};
-/**
- *
- * @param {(str|[*,*])[]} labels
- * @returns {[str,number][]}
- */
-
-
-const lookupIndexes$2 = function (labels) {
-  return mapper.call(this, labels, lookupIndex$2);
-};
-/**
- *
- * @param {str|[*,*]} [label]
- * @returns {[str,number]}
- */
-
-
-const lookupIndex$2 = function (label) {
-  const {
-    head
-  } = this;
-  if (!Array.isArray(label)) return [label, head.indexOf(label)];
-  let [current, projected] = label;
-  return [projected, head.indexOf(current)];
-};
-
-const selectSamplesByHead = function (labels) {
-  const fieldIndexes = lookupIndexes$2.call(this, labels);
-  return selectSamples.call(this, fieldIndexes);
-};
-
-const selectSamples$1 = function (fieldIndexPairs) {
-  const {
-    rows
-  } = this,
-        columns = transpose(rows),
-        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
-  return mapper(columns, column => {
-    let o = {};
-    iterate(fieldIndexPairs, ([field, index]) => o[field] = column[index], depth);
-    return o;
-  });
-};
-/**
- *
- * @param {(str|[*,*])[]} labels
- * @returns {[str,number][]}
- */
-
-
-const lookupIndexes$3 = function (labels) {
-  return mapper.call(this, labels, lookupIndex$3);
-};
-/**
- *
- * @param {str|[*,*]} [label]
- * @returns {[str,number]}
- */
-
-
-const lookupIndex$3 = function (label) {
-  const {
-    side
-  } = this;
-  if (!Array.isArray(label)) return [label, side.indexOf(label)];
-  let [current, projected] = label;
-  return [projected, side.indexOf(current)];
-};
-
-const selectSamplesBySide = function (labels) {
-  const fieldIndexes = lookupIndexes$3.call(this, labels);
-  return selectSamples$1.call(this, fieldIndexes);
-};
-
 const ob = (indexName, indexValue) => {
   const o = {};
   o[indexName] = indexValue;
   return o;
 };
-
-/**
- * A number, or a string containing a number.
- * @typedef {(number|string)} str
- * @typedef {{field:str,mode:number,filter:}} CubeCell
- * @typedef {{field:str,filter:function(*):boolean}} Filter
- * @typedef {{
- *  side:string,
- *  head:string,
- *  filter:Filter[]|Filter,
- *  cell:CubeCell[]|CubeCell,
- *  formula:function():number,
- * }} TableSpec
- */
 
 /**
  *
@@ -389,12 +67,8 @@ class CrosTab {
     this.title = title || '';
   }
 
-  static from(ob) {
-    const side = ob.side,
-          head = ob.head || ob.banner || [],
-          rows = ob.rows || ob.matrix || [[]],
-          title = ob.title || '';
-    return new CrosTab(side, head, rows, title);
+  static from(o) {
+    return new CrosTab(o.side, o.head || o.banner, o.rows || o.matrix, o.title);
   }
   /**
    * Shallow copy
@@ -431,21 +105,16 @@ class CrosTab {
     return indexed ? zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
   }
 
-  get toJson() {
-    var _this$rows;
+  toJson(mutate = false) {
+    var _this, _this2;
 
-    return {
-      side: this.side.slice(),
-      head: this.head.slice(),
-      rows: (_this$rows = this.rows, clone(_this$rows)),
-      title: this.title
-    };
+    return mutate ? (_this = this, slice(_this)) : (_this2 = this, shallow(_this2));
   }
   /** @returns {*[][]} */
 
 
   get columns() {
-    return transpose$1(this.rows);
+    return transpose(this.rows);
   }
 
   get size() {
@@ -495,7 +164,7 @@ class CrosTab {
     return column(this.rows, this.coin(c), this.ht);
   }
 
-  transpose(newTitle, {
+  transpose(title, {
     mutate = true
   } = {}) {
     const {
@@ -503,11 +172,12 @@ class CrosTab {
       side: head,
       columns: rows
     } = this;
-    return this.boot(mutate, {
-      rows,
+    return this.boot({
       side,
-      head
-    });
+      head,
+      rows,
+      title
+    }, mutate);
   }
 
   setRow(r, row) {
@@ -529,25 +199,25 @@ class CrosTab {
   map(fn, {
     mutate = true
   } = {}) {
-    return this.boot(mutate, {
-      rows: mapper$1(this.rows, fn, this.ht, this.wd)
-    });
+    return this.boot({
+      rows: mapper(this.rows, fn, this.ht, this.wd)
+    }, mutate);
   }
 
   mapSide(fn, {
     mutate = true
   } = {}) {
-    return this.boot(mutate, {
-      side: mapper(this.side, fn)
-    });
+    return this.boot({
+      side: mapper$1(this.side, fn)
+    }, mutate);
   }
 
   mapBanner(fn, {
     mutate = true
   } = {}) {
-    return this.boot(mutate, {
-      head: mapper(this.head, fn)
-    });
+    return this.boot({
+      head: mapper$1(this.head, fn)
+    }, mutate);
   }
 
   pushRow(label, row) {
@@ -582,59 +252,6 @@ class CrosTab {
     return shift(this.rows);
   }
 
-  selectRows(sideLabels, mutate = false) {
-    const {
-      side,
-      rows
-    } = selectKeyedRows.call(this, sideLabels);
-    return this.boot(mutate, {
-      side,
-      rows
-    });
-  }
-
-  selectColumns(headLabels, mutate = false) {
-    const {
-      head,
-      rows
-    } = selectKeyedColumns.call(this, headLabels);
-    return this.boot(mutate, {
-      head,
-      rows
-    });
-  }
-
-  select({
-    side: sls,
-    head: bls,
-    mutate = false
-  } = {}) {
-    let {
-      rows,
-      side,
-      head
-    } = this;
-    if (bls === null || bls === void 0 ? void 0 : bls.length) ({
-      head,
-      rows
-    } = selectKeyedColumns.call({
-      head,
-      rows
-    }, bls));
-    if (sls === null || sls === void 0 ? void 0 : sls.length) ({
-      side,
-      rows
-    } = selectKeyedRows.call({
-      side,
-      rows
-    }, sls));
-    return this.boot(mutate, {
-      rows,
-      side,
-      head
-    });
-  }
-
   slice({
     top,
     bottom,
@@ -643,17 +260,46 @@ class CrosTab {
     mutate = true
   } = {}) {
     let {
-      side: s,
-      head: b,
-      rows: mx
+      side,
+      head,
+      rows
     } = this;
-    if (top || bottom) s = s.slice(top, bottom), mx = mx.slice(top, bottom);
-    if (left || right) b = b.slice(left, right), mx = mx.map(row => row.slice(left, right));
-    return this.boot(mutate, {
-      rows: mx,
-      side: s,
-      head: b
-    });
+    if (top || bottom) side = side.slice(top, bottom), rows = rows.slice(top, bottom);
+    if (left || right) head = head.slice(left, right), rows = rows.map(row => row.slice(left, right));
+    return this.boot({
+      side,
+      head,
+      rows
+    }, mutate);
+  }
+
+  selectRows(sideLabels, mutate = false) {
+    var _this3;
+
+    let o = mutate ? this : (_this3 = this, slice(_this3));
+    selectKeyedRows.call(o, sideLabels);
+    return mutate ? this : this.copy(o);
+  }
+
+  selectColumns(headLabels, mutate = false) {
+    var _this4;
+
+    let o = mutate ? this : (_this4 = this, slice(_this4));
+    selectKeyedColumns.call(this, headLabels);
+    return mutate ? this : this.copy(o);
+  }
+
+  select({
+    side,
+    head,
+    mutate = false
+  } = {}) {
+    var _this5;
+
+    let o = mutate ? this : (_this5 = this, slice(_this5));
+    if (head === null || head === void 0 ? void 0 : head.length) selectKeyedColumns.call(o, head);
+    if (side === null || side === void 0 ? void 0 : side.length) selectKeyedRows.call(o, side);
+    return mutate ? this : this.copy(o);
   }
 
   sort({
@@ -662,30 +308,12 @@ class CrosTab {
     comparer = NUM_ASC,
     mutate = false
   } = {}) {
-    let {
-      side,
-      head,
-      rows
-    } = this;
-    if (direct === ROWWISE) ({
-      side,
-      rows
-    } = sortKeyedRows.call({
-      side,
-      rows
-    }, comparer, this.coin(field)));
-    if (direct === COLUMNWISE) ({
-      head,
-      rows
-    } = sortKeyedColumns.call({
-      head,
-      rows
-    }, comparer, this.roin(field)));
-    return this.boot(mutate, {
-      rows,
-      side,
-      head
-    });
+    var _this6;
+
+    let o = mutate ? this : (_this6 = this, slice(_this6));
+    if (direct === ROWWISE) sortKeyedRows.call(o, comparer, this.coin(field));
+    if (direct === COLUMNWISE) sortKeyedColumns.call(o, comparer, this.roin(field));
+    return mutate ? this : this.copy(o);
   }
 
   sortByLabels({
@@ -693,65 +321,47 @@ class CrosTab {
     comparer = STR_ASC,
     mutate = false
   }) {
-    let {
-      side,
-      head,
-      rows
-    } = this;
-    if (direct === ROWWISE) ({
-      side,
-      rows
-    } = sortRowsByKeys.call({
-      side,
-      rows
-    }, comparer));
-    if (direct === COLUMNWISE) ({
-      head,
-      rows
-    } = sortColumnsByKeys.call({
-      head,
-      rows
-    }, comparer));
-    return this.boot(mutate, {
-      rows,
-      side,
-      head
-    });
+    var _this7;
+
+    let o = mutate ? this : (_this7 = this, slice(_this7));
+    if (direct === ROWWISE) sortRowsByKeys.call(o, comparer);
+    if (direct === COLUMNWISE) sortColumnsByKeys.call(o, comparer);
+    return mutate ? this : this.copy(o);
   }
 
-  boot(mutate, {
-    rows,
+  boot({
     side,
-    head
+    head,
+    rows,
+    title
+  } = {}, mutate) {
+    if (mutate) {
+      if (side) this.side = side;
+      if (head) this.head = head;
+      if (rows) this.rows = rows;
+      if (title) this.title = title;
+      return this;
+    } else {
+      return this.copy({
+        side,
+        head,
+        rows,
+        title
+      });
+    }
+  }
+
+  copy({
+    side,
+    head,
+    rows,
+    title
   } = {}) {
-    return mutate ? this.reboot(rows, side, head) : this.clone(rows, side, head);
-  }
-  /**
-   *
-   * @param {*[][]} [rows]
-   * @param {*[]} [side]
-   * @param {*[]} [head]
-   * @returns {CrosTab}
-   */
-
-
-  reboot(rows, side, head) {
-    if (rows) this.rows = rows;
-    if (side) this.side = side;
-    if (head) this.head = head;
-    return this;
-  }
-  /**
-   * Shallow copy
-   * @param {*[][]} [rows]
-   * @param {*[]} [side]
-   * @param {*[]} [head]
-   * @return {CrosTab}
-   */
-
-
-  clone(rows, side, head) {
-    return new CrosTab(side || this.side.slice(), head || this.head.slice(), rows || Mx.clone(this.rows), this.title);
+    if (!side) side = this.side.slice();
+    if (!head) head = this.head.slice();
+    if (!rows) rows = this.rows.map(row => row.slice());
+    if (!title) title = this.title;
+    return new CrosTab(side, head, rows, title);
   }
 
 }
