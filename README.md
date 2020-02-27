@@ -29,7 +29,7 @@ $ npm install @analys/<tool-name>
 | [**table**](packages/table-join)                           | Table                              | core       |
 | [**tablespec**](packages/tablespec)                   | Table-spec                         | core       |
 | [**crostab**](packages/crostab)                       | Cross-table analysis               | core       |
-| [**util-pivot**](utils/pivot)                 | Util                               | util       |
+| [**util-pivot**](statistical/pivot)                 | Util                               | util       |
 |                                                       |                                    |            |
 
 #### Meta

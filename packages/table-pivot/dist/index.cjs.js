@@ -7,17 +7,16 @@ var cubic = require('@analys/cubic');
 var crostab = require('@analys/crostab');
 var tableInit = require('@analys/table-init');
 var tableFilter = require('@analys/table-filter');
-var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
 var enums = require('@typen/enums');
+var enumPivotMode = require('@analys/enum-pivot-mode');
 
 const parseCell = (cell, defaultField) => {
+  if (cell === void 0 || cell === null) return defaultCell(defaultField);
+
   switch (typeof cell) {
     case enums.OBJ:
-      if (Array.isArray(cell)) return cell.length ? cell : {
-        field: defaultField,
-        mode: enumPivotMode.COUNT
-      };
+      if (Array.isArray(cell)) return cell.length ? vectorMapper.mapper(cell, cell => parseCell(cell, defaultField)) : defaultCell(defaultField);
       if (!cell.field) cell.field = defaultField;
       if (!cell.mode) cell.mode = enumPivotMode.COUNT;
       return cell;
@@ -30,12 +29,15 @@ const parseCell = (cell, defaultField) => {
       };
 
     default:
-      return {
-        field: defaultField,
-        mode: enumPivotMode.COUNT
-      };
+      return defaultCell(defaultField);
   }
 };
+
+const defaultCell = defaultField => ({
+  field: defaultField,
+  mode: enumPivotMode.COUNT
+});
+
 /**
  *
  * @param {TableObject} table
@@ -47,7 +49,6 @@ const parseCell = (cell, defaultField) => {
  * @returns {CrosTab}
  */
 
-
 const tablePivot = (table, {
   side,
   banner,
@@ -55,28 +56,29 @@ const tablePivot = (table, {
   filter,
   formula
 }) => {
-  cell = parseCell(cell, side);
-
   if (filter) {
     var _table;
 
     table = tableFilter.tableFilter.call((_table = table, tableInit.slice(_table)), filter);
-  } // table |> decoTable |> logger
-  // table.rows |> decoMatrix |> logger
-  // cell |> deco |> logger
-
+  }
 
   const {
     head,
     rows
   } = table,
-        [x, y] = [head.indexOf(side), head.indexOf(banner)]; // ({ x, y }) |> delogger
+        [x, y] = [head.indexOf(side), head.indexOf(banner)]; // table |> decoTable |> logger
+  // cell |> deco |> logger
+  // ({ x, y }) |> delogger
 
-  let calc, z;
-  const pivot$1 = Array.isArray(cell) ? (vectorMapper.iterate(cell, c => c.index = head.indexOf(c.field)), calc = true, cubic.Cubic.build(x, y, cell)) : (z = head.indexOf(cell.field), calc = false, pivot.Pivot.build(x, y, z, cell.mode));
+  let calc;
+  const pivot$1 = Array.isArray(cell = parseCell(cell, side)) ? (calc = true, cubic.Cubic.build(x, y, (vectorMapper.iterate(cell, appendIndex.bind(head)), cell))) : (calc = false, pivot.Pivot.build(x, y, head.indexOf(cell.field), cell.mode));
   const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
   if (calc && formula) crostab$1.map(ar => formula.apply(null, ar));
   return crostab$1;
+};
+
+const appendIndex = function (cell) {
+  cell.index = this.indexOf(cell.field);
 };
 
 exports.tablePivot = tablePivot;

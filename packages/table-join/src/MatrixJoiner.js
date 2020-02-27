@@ -1,114 +1,106 @@
-import { NUM_ASC } from '@aryth/comparer'
-import { init } from '@vect/vector-init'
-import { select } from '@vect/vector-select'
-import { splices as splicesColumns } from '@vect/columns-update'
-import { width } from '@vect/matrix-size'
-import { Mx } from 'veho'
-import { JoinTypes } from '../resources/JoinType'
-
-const locInd = (mx, ys, vs, hi) =>
-  mx.findIndex(row => {
-    for (let i = 0; i < hi; i++) if (row[ys[i]] !== vs[i]) return false
-    return true
-  })
+import { iso } from '@vect/vector-init'
+import { iterate } from '@vect/vector-mapper'
+import { INTERSECT, LEFT, RIGHT, UNION } from '../resources/JoinType'
+import { lookupKeyedVector, lookupKeyedVectorIndex } from '../utils/lookupKeyedVector'
 
 /**
- *
  * @param joinType
- * @returns {
- * (function({mx: *[][], ys: number[]}, {mx: *[][], ys: number[]}): *[][])
- * |(function({mx: *[][], ys: number[]}, {mx: *[][], ys: number[]}, *=): *[][])
- * }
+ * @returns {function(MultiKeyedVector[], MultiKeyedVector[], number?):*[][]}
  */
 export const Joiner = (joinType) => {
   switch (joinType) {
-    case JoinTypes.union:
-      return MatrixJoiner.joinUnion
-    case JoinTypes.left:
-      return MatrixJoiner.joinLeft
-    case JoinTypes.right:
-      return MatrixJoiner.joinRight
-    case JoinTypes.intersect:
+    case UNION:
+      return joinUnion
+    case LEFT:
+      return joinLeft
+    case RIGHT:
+      return joinRight
+    case INTERSECT:
     default:
-      return MatrixJoiner.joinIntersect
+      return joinIntersect
   }
 }
 
-class MatrixJoiner {
-  static joinUnion = ({ mx: mxL, ys: ysL }, { mx: mxR, ys: ysR }, fillEmpty) => {
-    const
-      hL = mxL.length, hR = mxR.length, hi = ysR.length,
-      mx = Array(hL),
-      mxL2 = splicesColumns(Mx.copy(mxL), ysL.slice().sort(NUM_ASC)), wL = width(mxL2),
-      mxR2 = splicesColumns(Mx.copy(mxR), ysR.slice().sort(NUM_ASC)), wR = width(mxR2),
-      idxRiLs = new Set()
-    for (let i = 0, x, vsL; i < hL; i++) {
-      vsL = select(mxL[i], ysL, hi)
-      x = locInd(mxR, ysR, vsL, hi)
-      if (x < 0) {
-        mx[i] = vsL.concat(mxL2[i], init(wR, fillEmpty))
-      } else {
-        mx[i] = vsL.concat(mxL2[i], mxR2[x])
-        idxRiLs.add(x)
-      }
-    }
-    for (let i = 0, x, vsR; i < hR; i++) {
-      if (idxRiLs.has(i)) {
-        continue
-      }
-      vsR = select(mxR[i], ysR, hi)
-      x = locInd(mxL, ysL, vsR, hi)
-      if (x < 0) vsR.concat(init(wL, fillEmpty), mxR2[i]) |> mx.push
-    }
-    return mx
-  }
+/** @typedef {{key:*[],vector:*[]}} MultiKeyedVector */
 
-  static joinLeft = ({ mx: mxL, ys: ysL }, { mx: mxR, ys: ysR }, fillEmpty) => {
-    const
-      hL = mxL.length, hi = ysL.length,
-      mx = Array(hL),
-      mxL2 = splicesColumns(Mx.copy(mxL), ysL.slice().sort(NUM_ASC)),
-      mxR2 = splicesColumns(Mx.copy(mxR), ysR.slice().sort(NUM_ASC)), wR = width(mxR2)
-    for (let i = 0, x, vsL; i < hL; i++) {
-      vsL = select(mxL[i], ysL, hi)
-      x = locInd(mxR, ysR, vsL, hi)
-      mx[i] = x < 0
-        ? vsL.concat(mxL2[i], init(wR, fillEmpty))
-        : vsL.concat(mxL2[i], mxR2[x])
-    }
-    return mx
-  }
-
-  static joinRight = ({ mx: mxL, ys: ysL }, { mx: mxR, ys: ysR }, fillEmpty) => {
-    const
-      hR = mxR.length, hi = ysR.length,
-      mx = Array(hR),
-      mxL2 = splicesColumns(Mx.copy(mxL), ysL.slice().sort(NUM_ASC)), wL = width(mxL2),
-      mxR2 = splicesColumns(Mx.copy(mxR), ysR.slice().sort(NUM_ASC))
-    for (let i = 0, x, vsR; i < hR; i++) {
-      vsR = select(mxR[i], ysR, hi)
-      x = locInd(mxL, ysL, vsR, hi)
-      mx[i] = x < 0
-        ? vsR.concat(init(wL, fillEmpty), mxR2[i])
-        : vsR.concat(mxL2[x], mxR2[i])
-    }
-    return mx
-  }
-
-  static joinIntersect = ({ mx: mxL, ys: ysL }, { mx: mxR, ys: ysR }) => {
-    const
-      hL = mxL.length, hi = ysL.length,
-      mx = [],
-      mxL2 = splicesColumns(Mx.copy(mxL), ysL.slice().sort(NUM_ASC)),
-      mxR2 = splicesColumns(Mx.copy(mxR), ysR.slice().sort(NUM_ASC))
-    for (let i = 0, x, vsL; i < hL; i++) {
-      vsL = select(mxL[i], ysL, hi)
-      x = locInd(mxR, ysR, vsL, hi)
-      if (x < 0) continue
-      mx.push(vsL.concat(mxL2[i], mxR2[x]))
-    }
-    return mx
-  }
+/**
+ * @param {MultiKeyedVector[]} L
+ * @param {MultiKeyedVector[]} R
+ * @returns {*[][]}
+ */
+const joinIntersect = (L, R) => {
+  const rows = []
+  iterate(L,
+    ({ key, vector }) => {
+      let another = lookupKeyedVector.call(R, key)
+      if (another) rows.push(key.concat(vector, another))
+    })
+  return rows
 }
+
+/**
+ * @param {MultiKeyedVector[]} L
+ * @param {MultiKeyedVector[]} R
+ * @param {*} [n]
+ * @returns {*[][]}
+ */
+const joinUnion = (L, R, n) => {
+  const leftL = L.length, rows = Array(leftL), joinedIndexes = new Set(),
+    wL = L[0].vector.length, wR = R[0].vector.length
+  iterate(L,
+    ({ key, vector }, i) => {
+      let j = lookupKeyedVectorIndex.call(R, key)
+      rows[i] = j >= 0 && joinedIndexes.add(j)
+        ? key.concat(vector, R[j].vector)
+        : key.concat(vector, iso(wR, n))
+    })
+  iterate(R,
+    ({ key, vector }, j) =>
+      !joinedIndexes.has(j)
+        ? rows.push(key.concat(iso(wL, n), vector))
+        : void 0
+  )
+  return rows
+}
+
+/**
+ * @param {MultiKeyedVector[]} L
+ * @param {MultiKeyedVector[]} R
+ * @param {*} [n]
+ * @returns {*[][]}
+ */
+const joinLeft = (L, R, n) => {
+  let rows = Array(L.length), w = R[0].vector.length, another
+  iterate(L,
+    ({ key, vector }, i) =>
+      rows[i] = (another = lookupKeyedVector.call(R, key))
+        ? key.concat(vector, another)
+        : key.concat(vector, iso(w, n))
+  )
+  return rows
+}
+
+/**
+ * @param {MultiKeyedVector[]} L
+ * @param {MultiKeyedVector[]} R
+ * @param {*} [n]
+ * @returns {*[][]}
+ */
+const joinRight = (L, R, n) => {
+  let rows = Array(R.length), w = L[0].vector.length, another
+  iterate(R,
+    ({ key, vector }, i) =>
+      rows[i] = (another = lookupKeyedVector.call(L, key))
+        ? key.concat(another, vector)
+        : key.concat(iso(w, n), vector)
+  )
+  return rows
+}
+
+
+
+
+
+
 
 

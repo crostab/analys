@@ -5,4 +5,4 @@ export {
   RIGHT,
   JoinTypes
 } from './resources/JoinType'
-export { TableJoin } from './src/TableJoin'
+export { tableJoin } from './src/tableJoin'

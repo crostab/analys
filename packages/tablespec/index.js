@@ -1,1 +1,1 @@
-export const index = 'tablespec'
+export { parseCell } from './src/parseCell'

@@ -1,7 +1,9 @@
 {
   "packages": [
     "packages/*",
-    "utils/*"
+    "resources/*",
+    "statistical/*",
+    "structure/*"
   ],
   "version": "0.0.4",
   "npmClient": "yarn",

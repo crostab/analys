@@ -12,7 +12,7 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/test.index.js"
+    "test": "node -r @babel/register test/simple.pivot.test.js"
   },
   "dependencies": {
     "@analys/crostab": "^0.0.4",
@@ -22,7 +22,7 @@
     "@analys/table-filter": "^0.0.4",
     "@analys/table-init": "^0.0.4",
     "@typen/enums": "^0.0.1",
-    "@vect/vector-mapper": "^0.0.27"
+    "@vect/vector-mapper": "^0.1.0"
   },
   "repository": {
     "type": "git",
