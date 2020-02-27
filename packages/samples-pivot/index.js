@@ -1,1 +1,1 @@
-export const index = 'samples-pivot-pivot'
+export { samplesPivot } from './src/samplesPivot'

@@ -1,7 +1,7 @@
 import { slice, shallow } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
 import { tablePivot } from '@analys/table-pivot'
-import { selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
+import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
 import { Samples } from 'veho'
 import { StatMx } from 'borel'
 import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
@@ -41,10 +41,6 @@ export class Table {
     this.types = types
   }
 
-  /**
-   * @param {Object} o
-   * @return {Table}
-   */
   static from (o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
 
   /**
@@ -52,7 +48,11 @@ export class Table {
    * @param {str|[*,*]} [headFields]
    * @returns {Object[]}
    */
-  toSamples (headFields) { return selectSamplesByHead.call(this, headFields) }
+  toSamples (headFields) {
+    return headFields
+      ? selectSamplesByHead.call(this, headFields)
+      : keyedColumnsToSamples.call(this)
+  }
 
   /**
    *
@@ -83,7 +83,7 @@ export class Table {
   columnIndexes (fields) {return fields.map(field => this.coin(field))}
   column (field) { return this.rows.map(row => row[field = this.coin(field)]) }
   setColumn (field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
-  setColumnBy (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
+  mutateColumn (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
 
   pushRow (row) { return this.rows.push(row), this }
   unshiftRow (row) { return this.rows.unshift(row), this }

@@ -1,1 +1,1 @@
-export const index = 'convert-pivot'
+export { tableToSamples } from './src/tableToSamples'

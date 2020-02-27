@@ -5,6 +5,8 @@ import { tablePivot } from '../src/tablePivot'
 import { INCRE } from '@analys/enum-pivot-mode'
 import { isNumeric } from '@typen/num-strict'
 
+const { COUNT } = require('@analys/enum-pivot-mode')
+
 const ROSTER = 'BistroDutyRoster'
 const table = Foba[ROSTER] |> slice
 table |> decoTable |> says[ROSTER + ' original']
@@ -12,8 +14,8 @@ table |> decoTable |> says[ROSTER + ' original']
 const spec = {
   side: 'day',
   banner: 'name',
-  cell: { field: 'sold', mode: INCRE },
-  filter: { field: 'sold', filter: isNumeric },
+  cell: { field: 'sold', mode: COUNT },
+  filter: [{ field: 'sold', filter: isNumeric }],
   formula: undefined,
 }
 spec |> deco |> says[ROSTER + ' tablespec']

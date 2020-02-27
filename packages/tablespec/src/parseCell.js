@@ -9,8 +9,8 @@ export const parseCell = (cell, defaultField) => {
       if (Array.isArray(cell)) return cell.length
         ? mapper(cell, cell => parseCell(cell, defaultField))
         : defaultCell(defaultField)
-      if (!cell.field) cell.field = defaultField
-      if (!cell.mode) cell.mode = COUNT
+      cell.field = cell.field ?? defaultField
+      cell.mode = cell.mode ?? COUNT
       return cell
     case STR:
     case NUM:

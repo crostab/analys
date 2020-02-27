@@ -1,3 +1,4 @@
+export { keyedColumnsToSamples } from './src/keyedColumnsToSamples'
 export { selectKeyedColumns } from './src/selectKeyedColumns'
 export { selectSamplesByHead } from './src/selectSamplesByHead'
 export { sortColumnsByKeys } from './src/sortColumnsByKeys'

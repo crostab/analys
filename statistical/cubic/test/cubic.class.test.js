@@ -37,6 +37,6 @@ const band = [
   { index: 2, mode: INCRE },
   { index: 3, mode: ACCUM }
 ]
-let cubic = new Cubic(0, 1, band, row => true)
+let cubic = new Cubic(0, 1, band)
 cubic.spread(duties.rows).toJson() |> deco |> says.spreadCubic
 cubic.record(dutiesBeta.rows).toJson()  |> deco |> says.spreadCubic

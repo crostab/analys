@@ -3,12 +3,25 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vectorMapper = require('@vect/vector-mapper');
+var objectInit = require('@vect/object-init');
 var columnsSelect = require('@vect/columns-select');
 var entriesUnwind = require('@vect/entries-unwind');
 var matrixTranspose = require('@vect/matrix-transpose');
 var vectorZipper = require('@vect/vector-zipper');
 var utilKeyedVectors = require('@analys/util-keyed-vectors');
 var columnGetter = require('@vect/column-getter');
+
+/**
+ * @returns {Object[]} - 'this' remains unchanged
+ */
+
+const keyedColumnsToSamples = function () {
+  const {
+    head,
+    rows
+  } = this;
+  return vectorMapper.mapper(rows, row => objectInit.wind(head, row));
+};
 
 /**
  * @param {(str|[*,*])[]} labels
@@ -113,6 +126,7 @@ const sortKeyedColumns = function (comparer, index) {
   return this.head = Keyed(1), this.rows = matrixTranspose.transpose(Keyed(2)), this;
 };
 
+exports.keyedColumnsToSamples = keyedColumnsToSamples;
 exports.selectKeyedColumns = selectKeyedColumns;
 exports.selectSamplesByHead = selectSamplesByHead;
 exports.sortColumnsByKeys = sortColumnsByKeys$1;

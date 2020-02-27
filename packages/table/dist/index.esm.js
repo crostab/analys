@@ -1,7 +1,7 @@
 import { slice, shallow } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
 import { tablePivot } from '@analys/table-pivot';
-import { selectSamplesByHead, selectKeyedColumns } from '@analys/keyed-columns';
+import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
 import { Samples } from 'veho';
 import { StatMx } from 'borel';
 import { DistinctCount, Distinct } from '@aryth/distinct-column';
@@ -106,11 +106,6 @@ class Table {
     this.title = title || '';
     this.types = types;
   }
-  /**
-   * @param {Object} o
-   * @return {Table}
-   */
-
 
   static from(o) {
     return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
@@ -123,7 +118,7 @@ class Table {
 
 
   toSamples(headFields) {
-    return selectSamplesByHead.call(this, headFields);
+    return headFields ? selectSamplesByHead.call(this, headFields) : keyedColumnsToSamples.call(this);
   }
   /**
    *
@@ -201,7 +196,7 @@ class Table {
     return mutate(this.rows, this.coin(field), (_, i) => column[i], this.ht), this;
   }
 
-  setColumnBy(field, fn) {
+  mutateColumn(field, fn) {
     return mutate(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this;
   }
 

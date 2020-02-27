@@ -1,10 +1,23 @@
 import { mapper, iterate } from '@vect/vector-mapper';
+import { wind } from '@vect/object-init';
 import { select } from '@vect/columns-select';
 import { unwind } from '@vect/entries-unwind';
 import { transpose } from '@vect/matrix-transpose';
 import { zipper } from '@vect/vector-zipper';
 import { toKeyComparer } from '@analys/util-keyed-vectors';
 import { Columns } from '@vect/column-getter';
+
+/**
+ * @returns {Object[]} - 'this' remains unchanged
+ */
+
+const keyedColumnsToSamples = function () {
+  const {
+    head,
+    rows
+  } = this;
+  return mapper(rows, row => wind(head, row));
+};
 
 /**
  * @param {(str|[*,*])[]} labels
@@ -109,4 +122,4 @@ const sortKeyedColumns = function (comparer, index) {
   return this.head = Keyed(1), this.rows = transpose(Keyed(2)), this;
 };
 
-export { selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys$1 as sortColumnsByKeys, sortKeyedColumns };
+export { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys$1 as sortColumnsByKeys, sortKeyedColumns };

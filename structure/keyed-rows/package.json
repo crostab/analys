@@ -20,7 +20,7 @@
     "@vect/entries-unwind": "^0.1.0",
     "@vect/matrix-transpose": "^0.1.0",
     "@vect/vector-mapper": "^0.1.0",
-    "@vect/vector-select": "^0.1.0",
+    "@vect/vector-select": "^0.1.1",
     "@vect/vector-zipper": "^0.1.0"
   },
   "repository": {

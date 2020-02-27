@@ -110,11 +110,6 @@ class Table {
     this.title = title || '';
     this.types = types;
   }
-  /**
-   * @param {Object} o
-   * @return {Table}
-   */
-
 
   static from(o) {
     return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
@@ -127,7 +122,7 @@ class Table {
 
 
   toSamples(headFields) {
-    return keyedColumns.selectSamplesByHead.call(this, headFields);
+    return headFields ? keyedColumns.selectSamplesByHead.call(this, headFields) : keyedColumns.keyedColumnsToSamples.call(this);
   }
   /**
    *
@@ -205,7 +200,7 @@ class Table {
     return columnMapper.mutate(this.rows, this.coin(field), (_, i) => column[i], this.ht), this;
   }
 
-  setColumnBy(field, fn) {
+  mutateColumn(field, fn) {
     return columnMapper.mutate(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this;
   }
 

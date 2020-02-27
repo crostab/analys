@@ -1,7 +1,7 @@
-import { ACCUM, INCRE, SUM } from '../resources/PivotModes'
+import { ACCUM, INCRE } from '@analys/enum-pivot-mode'
 import { decoCrostab, logger, says } from '@spare/logger'
 import { deco, delogger } from '@spare/deco'
-import { numSkeleton } from '../resources/skeleton'
+import { increSkeleton } from '@analys/util-pivot'
 import { cubicSpread } from '../src/cubicSpread'
 import { cubicRecord } from '../src/cubicRecord'
 
@@ -35,7 +35,7 @@ const dutiesBeta = {
   ]
 }
 
-let notes = numSkeleton()
+let notes = increSkeleton()
 const sampleCubic = cubicSpread.bind(notes)
 notes = sampleCubic(duties.rows, {
   row: 0, col: 1, cell: [
