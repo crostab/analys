@@ -2,6 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = 'samples';
+class Samples {}
 
-exports.index = index;
+exports.Samples = Samples;

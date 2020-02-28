@@ -7,7 +7,7 @@ import { iterate, mapper } from '@vect/vector-mapper'
  * @param {(str|[str,str])[]} [fields]
  * @returns {null|{head:*[],rows:*[][]}}
  */
-export function selectSamples (samples, fields) {
+export function samplesSelect (samples, fields) {
   if (!Array.isArray(fields)) return mapper(samples, sample => mapperObject(sample, x => x))
   const assigners = mapper(fields, toAssigner)
   return mapper(samples, sample => {

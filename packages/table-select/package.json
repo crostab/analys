@@ -1,7 +1,7 @@
 {
-  "name": "@analys/samples",
+  "name": "@analys/table-select",
   "version": "0.0.7",
-  "description": "A cross-samples analytics tool",
+  "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [
@@ -12,18 +12,20 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/test.index.js"
+    "test": "node -r @babel/register test/table.select.test.js"
   },
   "dependencies": {
+    "@analys/table-init": "^0.0.7",
+    "@analys/keyed-columns": "^0.0.7"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "keywords": [
-    "samples",
+    "table",
     "crostab",
-    "cross-samples",
+    "cross-table",
     "pivot",
     "pivotal",
     "analyse",

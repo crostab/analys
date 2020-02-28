@@ -1,3 +1,3 @@
-const index = 'samples';
+class Samples {}
 
-export { index };
+export { Samples };

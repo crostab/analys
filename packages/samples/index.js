@@ -1,1 +1,1 @@
-export const index = 'samples'
+export { Samples } from './src/samples'
