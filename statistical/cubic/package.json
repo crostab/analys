@@ -1,6 +1,6 @@
 {
   "name": "@analys/cubic",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A debugging tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.0.6",
-    "@analys/util-pivot": "^0.0.6",
+    "@analys/enum-pivot-mode": "^0.0.7",
+    "@analys/util-pivot": "^0.0.7",
     "@vect/vector-zipper": "^0.1.0"
   },
   "repository": {
