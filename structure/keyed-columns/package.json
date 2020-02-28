@@ -1,6 +1,6 @@
 {
   "name": "@analys/keyed-columns",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A cross-keyed-columns analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
     "test": "node -r @babel/register test/keyed-columns.test.js"
   },
   "dependencies": {
-    "@analys/util-keyed-vectors": "^0.0.7",
+    "@analys/util-keyed-vectors": "^0.0.8",
     "@vect/column-getter": "^0.1.0",
     "@vect/columns-select": "^0.1.1",
     "@vect/entries-unwind": "^0.1.0",
