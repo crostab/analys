@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@analys/keyed-columns": "^0.0.6",
-    "@analys/table-init": "^0.0.6"
+    "@analys/table-init": "^0.0.6",
+    "@vect/object-mapper": "^0.1.2"
   },
   "repository": {
     "type": "git",

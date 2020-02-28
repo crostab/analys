@@ -4,4 +4,4 @@ export {
   SAMPLES,
   TABLE,
   CROSTAB,
-} from './resources/StructureTypes'
+} from './resources/TabularTypes'

@@ -31,4 +31,98 @@ const defaultCell = defaultField => ({
   mode: COUNT
 });
 
-export { parseCell };
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+class TableSpec {
+  /** @type {TableObject} */
+
+  /** @type {str} */
+
+  /** @type {str} */
+
+  /** @type {CubeCell[]|CubeCell} */
+
+  /** @type {Filter[]|Filter} */
+
+  /** @type {function():number} */
+
+  /**
+   * @param {str} side
+   * @param {str} banner
+   * @param {CubeCell[]|CubeCell} [cell]
+   * @param {Filter[]|Filter} [filter]
+   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
+   */
+  constructor(side, banner, cell, filter, formula) {
+    _defineProperty(this, "table", void 0);
+
+    _defineProperty(this, "side", void 0);
+
+    _defineProperty(this, "banner", void 0);
+
+    _defineProperty(this, "cell", void 0);
+
+    _defineProperty(this, "filter", void 0);
+
+    _defineProperty(this, "formula", void 0);
+
+    Object.assign(this, {
+      side,
+      banner,
+      cell,
+      filter,
+      formula
+    });
+  }
+  /**
+   * @param {str} side
+   * @param {str} banner
+   * @param {CubeCell[]|CubeCell} [cell]
+   * @param {Filter[]|Filter} [filter]
+   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
+   */
+
+
+  static build({
+    side,
+    banner,
+    cell,
+    filter,
+    formula
+  }) {
+    return new TableSpec(side, banner, cell, filter, formula);
+  }
+
+  toJson() {
+    const {
+      side,
+      banner,
+      cell,
+      filter,
+      formula
+    } = this;
+    return {
+      side,
+      banner,
+      cell,
+      filter,
+      formula
+    };
+  }
+
+}
+
+export { TableSpec, parseCell };

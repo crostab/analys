@@ -1,5 +1,5 @@
 {
-  "name": "@analys/enum-structure-types",
+  "name": "@analys/enum-tabular-types",
   "version": "0.0.6",
   "description": "A debugging tool",
   "main": "dist/index.cjs.js",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/enum-structure-types.test.js"
+    "test": "node -r @babel/register test/enum-tabular-types.test.js"
   },
   "dependencies": {
     "@vect/vector-init": "^0.1.0",
