@@ -74,8 +74,11 @@ export class CrosTab {
   get wd () { return this.head?.length }
   roin (r) { return this.side.indexOf(r) }
   coin (c) { return this.head.indexOf(c) }
-  cell (r, c) { return (r = this.row(this.roin(r))) ? r[this.coin(c)] : null }
-  element (x, y) { return this.rows[x][y] }
+  cell (r, c) { return this.element(this.roin(r), this.coin(c)) }
+  element (x, y) {
+    const row = this.rows[x]
+    return row ? row[y] : undefined
+  }
   coordinate (r, c) { return { x: this.roin(r), y: this.coin(c) } }
   row (r) { return this.rows[this.roin(r)] }
   column (c) { return column(this.rows, this.coin(c), this.ht) }

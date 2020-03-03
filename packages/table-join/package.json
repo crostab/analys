@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@aryth/comparer": "^0.0.10",
-    "@vect/vector-init": "^0.1.0",
-    "@vect/vector-mapper": "^0.1.0",
+    "@vect/vector-init": "^0.1.2",
+    "@vect/vector-mapper": "^0.1.2",
     "@vect/vector-select": "^0.1.1",
     "@vect/vector-update": "^0.1.0"
   },

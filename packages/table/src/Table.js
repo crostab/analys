@@ -19,9 +19,6 @@ import {
 import { parserSelector } from '../utils/parserSelector'
 import { inferArrayType } from '../utils/inferArrayType'
 
-/**
- *
- */
 export class Table {
   /** @type {*[]} */ head
   /** @type {*[][]} */ rows
@@ -78,7 +75,10 @@ export class Table {
   get ht () { return this.rows?.length }
   get wd () { return this.head?.length }
   get columns () { return transpose(this.rows) }
-  cell (x, field) { return this.rows[x][this.coin(field)] }
+  cell (x, field) {
+    const row = this.rows[x]
+    return row ? row[this.coin(field)] : undefined
+  }
   coin (field) { return this.head.indexOf(field) }
   columnIndexes (fields) {return fields.map(field => this.coin(field))}
   column (field) { return this.rows.map(row => row[field = this.coin(field)]) }
@@ -226,6 +226,7 @@ export class Table {
     formula
   }) { return tablePivot(this, { side, banner, cell, filter, formula }) }
 
+  /** @returns {Table} */
   boot ({ types, head, rows } = {}, mutate) {
     if (mutate) {
       if (head) this.head = head
@@ -237,6 +238,7 @@ export class Table {
     }
   }
 
+  /** @returns {Table} */
   copy ({ types, head, rows } = {}) {
     if (!head) head = this.head.slice()
     if (!rows) rows = this.rows.map(row => row.slice())

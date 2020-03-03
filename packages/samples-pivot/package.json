@@ -20,7 +20,7 @@
     "@analys/pivot": "^0.0.8",
     "@analys/samples-filter": "^0.0.8",
     "@analys/tablespec": "^0.0.8",
-    "@vect/vector-mapper": "^0.1.0"
+    "@vect/vector-mapper": "^0.1.2"
   },
   "repository": {
     "type": "git",

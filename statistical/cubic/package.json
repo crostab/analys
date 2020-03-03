@@ -17,7 +17,7 @@
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.0.8",
     "@analys/util-pivot": "^0.0.8",
-    "@vect/vector-zipper": "^0.1.0"
+    "@vect/vector-zipper": "^0.1.2"
   },
   "repository": {
     "type": "git",

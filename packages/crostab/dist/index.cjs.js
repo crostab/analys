@@ -146,11 +146,12 @@ class CrosTab {
   }
 
   cell(r, c) {
-    return (r = this.row(this.roin(r))) ? r[this.coin(c)] : null;
+    return this.element(this.roin(r), this.coin(c));
   }
 
   element(x, y) {
-    return this.rows[x][y];
+    const row = this.rows[x];
+    return row ? row[y] : undefined;
   }
 
   coordinate(r, c) {

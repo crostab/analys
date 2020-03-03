@@ -15,9 +15,9 @@
     "test": "node -r @babel/register test/enum-tabular-types.test.js"
   },
   "dependencies": {
-    "@vect/vector-init": "^0.1.0",
-    "@vect/vector-mapper": "^0.1.0",
-    "@vect/vector-zipper": "^0.1.0"
+    "@vect/vector-init": "^0.1.2",
+    "@vect/vector-mapper": "^0.1.2",
+    "@vect/vector-zipper": "^0.1.2"
   },
   "repository": {
     "type": "git",

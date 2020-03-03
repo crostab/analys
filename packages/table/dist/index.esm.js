@@ -73,10 +73,6 @@ function inferArrayType(column) {
   }
 }
 
-/**
- *
- */
-
 class Table {
   /** @type {*[]} */
 
@@ -177,7 +173,8 @@ class Table {
   }
 
   cell(x, field) {
-    return this.rows[x][this.coin(field)];
+    const row = this.rows[x];
+    return row ? row[this.coin(field)] : undefined;
   }
 
   coin(field) {
@@ -429,6 +426,8 @@ class Table {
       formula
     });
   }
+  /** @returns {Table} */
+
 
   boot({
     types,
@@ -448,6 +447,8 @@ class Table {
       });
     }
   }
+  /** @returns {Table} */
+
 
   copy({
     types,
