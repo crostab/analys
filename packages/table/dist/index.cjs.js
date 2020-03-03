@@ -34,6 +34,8 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
+const column = (mx, c, h) => vectorMapper.mapper(mx, r => r[c], h);
+
 const parserSelector = typeName => {
   switch (typeName) {
     case 'string':
@@ -190,7 +192,7 @@ class Table {
   }
 
   column(field) {
-    return this.rows.map(row => row[field = this.coin(field)]);
+    return column(this.rows, this.coin(field), this.ht);
   }
 
   setColumn(field, column) {

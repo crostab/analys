@@ -11,6 +11,7 @@ import { mapper } from '@vect/vector-mapper'
 import { splices } from '@vect/vector-update'
 import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
+import { column } from '@vect/column-getter'
 import { mapper as mapperColumns } from '@vect/columns-mapper'
 import {
   push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn,
@@ -81,7 +82,7 @@ export class Table {
   }
   coin (field) { return this.head.indexOf(field) }
   columnIndexes (fields) {return fields.map(field => this.coin(field))}
-  column (field) { return this.rows.map(row => row[field = this.coin(field)]) }
+  column (field) { return column(this.rows, this.coin(field), this.ht) }
   setColumn (field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
   mutateColumn (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
 
@@ -144,8 +145,8 @@ export class Table {
   mutInferTypes () {
     this.types = mapperColumns(this.rows, inferArrayType)
     for (let [i, typeName] of this.types.entries()) {
-      if (typeName === 'numstr') { this.changeType(i, 'number') } else
-        if (typeName === 'misc') { this.changeType(i, 'string') }
+      if (typeName === 'numstr') { this.changeType(i, 'number') }
+      else if (typeName === 'misc') { this.changeType(i, 'string') }
     }
     return this.types
   }
@@ -233,7 +234,8 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    } else {
+    }
+    else {
       return this.copy({ types, head, rows })
     }
   }

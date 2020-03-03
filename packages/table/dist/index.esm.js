@@ -7,9 +7,9 @@ import { StatMx } from 'borel';
 import { DistinctCount, Distinct } from '@aryth/distinct-column';
 import { NUM_ASC } from '@aryth/comparer';
 import { size, transpose } from '@vect/matrix';
-import { mapper as mapper$1 } from '@vect/vector-mapper';
+import { mapper } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
-import { mapper } from '@vect/matrix-mapper';
+import { mapper as mapper$1 } from '@vect/matrix-mapper';
 import { mutate } from '@vect/column-mapper';
 import { mapper as mapper$2 } from '@vect/columns-mapper';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
@@ -29,6 +29,8 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
+
+const column = (mx, c, h) => mapper(mx, r => r[c], h);
 
 const parserSelector = typeName => {
   switch (typeName) {
@@ -186,7 +188,7 @@ class Table {
   }
 
   column(field) {
-    return this.rows.map(row => row[field = this.coin(field)]);
+    return column(this.rows, this.coin(field), this.ht);
   }
 
   setColumn(field, column) {
@@ -233,7 +235,7 @@ class Table {
     mutate = true
   } = {}) {
     return this.boot({
-      rows: mapper(this.rows, fn, this.ht, this.wd)
+      rows: mapper$1(this.rows, fn, this.ht, this.wd)
     }, mutate);
   }
 
@@ -241,7 +243,7 @@ class Table {
     mutate = true
   } = {}) {
     return this.boot({
-      head: mapper$1(this.head, fn)
+      head: mapper(this.head, fn)
     }, mutate);
   }
   /**
