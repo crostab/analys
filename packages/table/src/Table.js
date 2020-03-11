@@ -68,7 +68,7 @@ export class Table {
     return row ? row[this.coin(field)] : undefined
   }
   coin (field) { return this.head.indexOf(field) }
-  columnIndexes (fields) {return fields.map(field => this.coin(field))}
+  columnIndexes (fields) { return fields.map(this.coin, this) }
   column (field) { return column(this.rows, this.coin(field), this.ht) }
   setColumn (field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
   mutateColumn (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
@@ -106,9 +106,8 @@ export class Table {
    * @returns {Table}
    */
   spliceColumns (fields, { mutate = false } = {}) {
-    const ys = fields.map(this.coin.bind(this)).sort(NUM_ASC)
-    const o = mutate ? this : this |> shallow
-    splicesColumns(o.rows, ys), splices(o.head, ys)
+    const o = mutate ? this : this |> shallow, indexes = this.columnIndexes(fields).sort(NUM_ASC)
+    splicesColumns(o.rows, indexes), splices(o.head, indexes)
     return mutate ? this : Table.from(o)
   }
 
