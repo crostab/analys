@@ -119,7 +119,7 @@ class Table {
   }
 
   columnIndexes(fields) {
-    return fields.map(field => this.coin(field));
+    return fields.map(this.coin, this);
   }
 
   column(field) {
@@ -211,9 +211,9 @@ class Table {
   } = {}) {
     var _this4;
 
-    const ys = fields.map(this.coin.bind(this)).sort(comparer.NUM_ASC);
-    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4));
-    columnsUpdate.splices(o.rows, ys), vectorUpdate.splices(o.head, ys);
+    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4)),
+          indexes = this.columnIndexes(fields).sort(comparer.NUM_ASC);
+    columnsUpdate.splices(o.rows, indexes), vectorUpdate.splices(o.head, indexes);
     return mutate ? this : Table.from(o);
   }
   /**

@@ -2,11 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var enumDataTypes = require('@typen/enum-data-types');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
+var enumDataTypes = require('@typen/enum-data-types');
 var mergeAcquire = require('@vect/merge-acquire');
 var matrix = require('@vect/matrix');
+
+// from x => typeof x
+const NUM = 'number';
+const STR = 'string';
+const OBJ = 'object';
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -14,14 +19,14 @@ const parseCell = (cell, defaultField) => {
   if (cell === void 0 || cell === null) return defaultCell(defaultField);
 
   switch (typeof cell) {
-    case enumDataTypes.OBJ:
+    case OBJ:
       if (Array.isArray(cell)) return cell.length ? vectorMapper.mapper(cell, cell => parseCell(cell, defaultField)) : defaultCell(defaultField);
       cell.field = (_cell$field = cell.field) !== null && _cell$field !== void 0 ? _cell$field : defaultField;
       cell.mode = (_cell$mode = cell.mode) !== null && _cell$mode !== void 0 ? _cell$mode : enumPivotMode.COUNT;
       return cell;
 
-    case enumDataTypes.STR:
-    case enumDataTypes.NUM:
+    case STR:
+    case NUM:
       return {
         field: cell,
         mode: enumPivotMode.INCRE

@@ -1,1 +1,1 @@
-export { tableFind, tableFindOnce } from './src/tableFind'
+export { tableDivide } from './src/tableDivide'

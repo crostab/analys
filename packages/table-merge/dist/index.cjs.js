@@ -2,26 +2,29 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-/**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-const tableFind = function (filterObject) {
-  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
+var mergeAcquire = require('@vect/merge-acquire');
+var vectorZipper = require('@vect/vector-zipper');
 
-  return this;
+const tableAcquire = (ta, tb) => {
+  mergeAcquire.acquire(ta.head, tb.head);
+  vectorZipper.mutazip(ta.rows, tb.rows, (va, vb) => mergeAcquire.acquire(va, vb));
+  return ta;
 };
 /**
- * @param {str} field
- * @param {function(*):boolean} filter
- * @return {Table|TableObject} - mutated 'this' {head, rows}
+ *
+ * @param {Table} ta
+ * @param {Table} tb
+ * @returns {Table}
  */
 
-const tableFindOnce = function (field, filter) {
-  let j = this.head.indexOf(field);
-  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
-  return this;
+const tableMerge = (ta, tb) => {
+  const head = mergeAcquire.merge(ta.head, tb.head);
+  const rows = vectorZipper.zipper(ta.rows, tb.rows, (va, vb) => mergeAcquire.merge(va, vb));
+  return ta.copy({
+    head,
+    rows
+  });
 };
 
-exports.tableFind = tableFind;
-exports.tableFindOnce = tableFindOnce;
+exports.tableAcquire = tableAcquire;
+exports.tableMerge = tableMerge;

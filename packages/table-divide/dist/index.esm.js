@@ -1,22 +1,37 @@
+import { IMMUTABLE, MUTABLE } from '@analys/enum-mutabilities';
+
 /**
  * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-const tableFind = function (filterObject) {
-  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
-
-  return this;
-};
-/**
- * @param {str} field
- * @param {function(*):boolean} filter
- * @return {Table|TableObject} - mutated 'this' {head, rows}
+ * @return {{includes:Table,excludes:Table}} - mutated 'this' {head, rows}
  */
 
-const tableFindOnce = function (field, filter) {
-  let j = this.head.indexOf(field);
-  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
-  return this;
+const tableDivide = function ({
+  includes,
+  excludes
+}) {
+  /** @type {Table} */
+  let body = this;
+
+  if (includes && includes.length) {
+    const [regenerated, body] = [body.spliceColumns(includes, IMMUTABLE), body.select(includes, MUTABLE)];
+    return {
+      includes: body,
+      excludes: regenerated
+    };
+  }
+
+  if (excludes && includes.length) {
+    const [regenerated, body] = [body.select(excludes, IMMUTABLE), body.spliceColumns(excludes, MUTABLE)];
+    return {
+      includes: regenerated,
+      excludes: body
+    };
+  }
+
+  return {
+    includes: body,
+    excludes: body
+  };
 };
 
-export { tableFind, tableFindOnce };
+export { tableDivide };

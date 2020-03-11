@@ -1,22 +1,25 @@
-/**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-const tableFind = function (filterObject) {
-  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
+import { acquire, merge } from '@vect/merge-acquire';
+import { mutazip, zipper } from '@vect/vector-zipper';
 
-  return this;
+const tableAcquire = (ta, tb) => {
+  acquire(ta.head, tb.head);
+  mutazip(ta.rows, tb.rows, (va, vb) => acquire(va, vb));
+  return ta;
 };
 /**
- * @param {str} field
- * @param {function(*):boolean} filter
- * @return {Table|TableObject} - mutated 'this' {head, rows}
+ *
+ * @param {Table} ta
+ * @param {Table} tb
+ * @returns {Table}
  */
 
-const tableFindOnce = function (field, filter) {
-  let j = this.head.indexOf(field);
-  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
-  return this;
+const tableMerge = (ta, tb) => {
+  const head = merge(ta.head, tb.head);
+  const rows = zipper(ta.rows, tb.rows, (va, vb) => merge(va, vb));
+  return ta.copy({
+    head,
+    rows
+  });
 };
 
-export { tableFind, tableFindOnce };
+export { tableAcquire, tableMerge };
