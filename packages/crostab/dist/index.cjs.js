@@ -14,6 +14,7 @@ var matrixMapper = require('@vect/matrix-mapper');
 var columnMapper = require('@vect/column-mapper');
 var columnGetter = require('@vect/column-getter');
 var columnsUpdate = require('@vect/columns-update');
+var objectInit = require('@vect/object-init');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -29,12 +30,6 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
-
-const ob = (indexName, indexValue) => {
-  const o = {};
-  o[indexName] = indexValue;
-  return o;
-};
 
 /**
  *
@@ -101,12 +96,12 @@ class CrosTab {
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
     const samples = keyedColumns.selectSamplesByHead.call(this, headFields);
-    return indexed ? vectorZipper.zipper(this.side, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
+    return indexed ? vectorZipper.zipper(this.side, samples, (l, s) => Object.assign(objectInit.pair(indexName, l), s)) : samples;
   }
 
   columnwiseSamples(sideFields, indexed = false, indexName = '_') {
     const samples = keyedRows.selectSamplesBySide.call(this, sideFields);
-    return indexed ? vectorZipper.zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
+    return indexed ? vectorZipper.zipper(this.head, samples, (l, s) => Object.assign(objectInit.pair(indexName, l), s)) : samples;
   }
 
   toJson(mutate = false) {

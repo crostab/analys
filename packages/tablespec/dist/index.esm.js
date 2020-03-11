@@ -1,8 +1,8 @@
-import { NUM, STR, OBJ } from '@typen/enums';
+import { NUM, STR, OBJ } from '@typen/enum-data-types';
 import { COUNT, INCRE } from '@analys/enum-pivot-mode';
 import { mapper, iterate } from '@vect/vector-mapper';
-import { NUM as NUM$1, STR as STR$1, OBJ as OBJ$1 } from '@typen/enum-data-types';
 import { acquire } from '@vect/merge-acquire';
+import { isMatrix } from '@vect/matrix';
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -33,8 +33,6 @@ const defaultCell = defaultField => ({
   mode: COUNT
 });
 
-const isMatrix = mx => Array.isArray(mx) && Array.isArray(mx[0]);
-
 /**
  *
  * @param {*} fieldSet
@@ -46,7 +44,7 @@ const parseFieldSet = (fieldSet, def) => {
   if (fieldSet === void 0 || fieldSet === null) return [def, COUNT];
 
   switch (typeof fieldSet) {
-    case OBJ$1:
+    case OBJ:
       let ents;
 
       if (Array.isArray(fieldSet) && (ents = [])) {
@@ -59,8 +57,8 @@ const parseFieldSet = (fieldSet, def) => {
       if (ents.length === 1) return ents[0];
       return ents;
 
-    case STR$1:
-    case NUM$1:
+    case STR:
+    case NUM:
       return [fieldSet, INCRE];
 
     default:

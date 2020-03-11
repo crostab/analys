@@ -1,10 +1,8 @@
 import { slice, shallow } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
-import { pivotDev, pivotEdge, tablePivot, tablePivotAlpha } from '@analys/table-pivot'
-import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
-import { Samples } from 'veho'
+import { tableFind } from '@analys/table-find'
+import { pivotDev, pivotEdge } from '@analys/table-pivot'
 import { StatMx } from 'borel'
-import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
 import { NUM_ASC } from '@aryth/comparer'
 import { size, transpose } from '@vect/matrix'
 import { mapper } from '@vect/vector-mapper'
@@ -12,14 +10,15 @@ import { splices } from '@vect/vector-update'
 import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import { column } from '@vect/column-getter'
-import { mapper as mapperColumns } from '@vect/columns-mapper'
 import {
-  push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn,
-  splices as splicesColumns
+  keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead
+} from '@analys/keyed-columns'
+import {
+  Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn
+} from '@aryth/distinct-column'
+import {
+  push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn, splices as splicesColumns
 } from '@vect/columns-update'
-import { parserSelector } from '../utils/parserSelector'
-import { inferArrayType } from '../utils/inferArrayType'
-import { tableFind } from '@analys/table-find'
 
 export class Table {
   /** @type {*[]} */ head
@@ -59,19 +58,6 @@ export class Table {
    * @returns {*}
    */
   toJson (mutate = false) { return mutate ? this |> slice : this |> shallow }
-
-  /**
-   *
-   * @param {{}[]} samples
-   * @param {*[]|[*,*][]} [fields]
-   * @param {string} [title]
-   * @param {*[]} [types]
-   * @return {Table}
-   */
-  static fromSamples (samples, { fields, title, types } = {}) {
-    const { head, rows } = Samples.toTable(samples, { fields })
-    return new Table(head, rows, title, types)
-  }
 
   get size () { return size(this.rows) }
   get ht () { return this.rows?.length }
@@ -124,31 +110,6 @@ export class Table {
     const o = mutate ? this : this |> shallow
     splicesColumns(o.rows, ys), splices(o.head, ys)
     return mutate ? this : Table.from(o)
-  }
-
-  /**
-   *
-   * Specify the type of a column. No return
-   * @param {str} field accept both column name in string or column index in integer
-   * @param {string} typeName string | (number, float) | integer | boolean
-   */
-  changeType (field, typeName) {
-    const y = this.coin(field), parser = parserSelector(typeName)
-    if (parser) mutateColumn(this.rows, y, parser, this.ht), this.types[y] = typeName
-    return this
-  }
-
-  /**
-   * Re-generate this._types based on DPTyp.inferArr method.
-   * Cautious: This method will change all elements of this._types.
-   * @return {string[]}
-   */
-  mutInferTypes () {
-    this.types = mapperColumns(this.rows, inferArrayType)
-    for (let [i, typeName] of this.types.entries()) {
-      if (typeName === 'numstr') { this.changeType(i, 'number') } else if (typeName === 'misc') { this.changeType(i, 'string') }
-    }
-    return this.types
   }
 
   /**

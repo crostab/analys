@@ -10,6 +10,7 @@ import { mapper } from '@vect/matrix-mapper';
 import { mutate as mutate$1 } from '@vect/column-mapper';
 import { column } from '@vect/column-getter';
 import { push, unshift, pop, shift } from '@vect/columns-update';
+import { pair } from '@vect/object-init';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -25,12 +26,6 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
-
-const ob = (indexName, indexValue) => {
-  const o = {};
-  o[indexName] = indexValue;
-  return o;
-};
 
 /**
  *
@@ -97,12 +92,12 @@ class CrosTab {
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
     const samples = selectSamplesByHead.call(this, headFields);
-    return indexed ? zipper(this.side, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
+    return indexed ? zipper(this.side, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples;
   }
 
   columnwiseSamples(sideFields, indexed = false, indexName = '_') {
     const samples = selectSamplesBySide.call(this, sideFields);
-    return indexed ? zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples;
+    return indexed ? zipper(this.head, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples;
   }
 
   toJson(mutate = false) {

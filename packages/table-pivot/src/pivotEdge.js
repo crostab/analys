@@ -6,8 +6,6 @@ import { tableFind } from '@analys/table-find'
 import { mapper } from '@vect/vector-mapper'
 import { parseFieldSet } from '@analys/tablespec'
 import { isMatrix } from '@vect/matrix'
-import { deco, delogger } from '@spare/deco'
-import { says } from '@spare/logger'
 
 /**
  *

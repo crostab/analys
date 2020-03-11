@@ -1,19 +1,18 @@
 import { slice, shallow } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
+import { tableFind } from '@analys/table-find';
 import { pivotEdge, pivotDev } from '@analys/table-pivot';
-import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
-import { Samples } from 'veho';
 import { StatMx } from 'borel';
-import { DistinctCount, Distinct } from '@aryth/distinct-column';
 import { NUM_ASC } from '@aryth/comparer';
 import { size, transpose } from '@vect/matrix';
-import { mapper } from '@vect/vector-mapper';
+import { mapper as mapper$1 } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
-import { mapper as mapper$1 } from '@vect/matrix-mapper';
+import { mapper } from '@vect/matrix-mapper';
 import { mutate } from '@vect/column-mapper';
-import { mapper as mapper$2 } from '@vect/columns-mapper';
+import { column } from '@vect/column-getter';
+import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
+import { DistinctCount, Distinct } from '@aryth/distinct-column';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
-import { inferType } from '@typen/num-strict';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -29,73 +28,6 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
-
-const column = (mx, c, h) => mapper(mx, r => r[c], h);
-
-const parserSelector = typeName => {
-  switch (typeName) {
-    case 'string':
-      return String;
-
-    case 'number':
-    case 'float':
-      return Number.parseFloat;
-
-    case 'integer':
-      return Number.parseInt;
-
-    case 'boolean':
-      return Boolean;
-
-    default:
-      return void 0;
-  }
-};
-
-/**
- *
- * @param {*[]} column
- * @return {string|unknown}
- */
-
-function inferArrayType(column) {
-  if (!column.length) return 'null';
-  const types = column.map(inferType);
-  const distinct = new Set(types);
-
-  switch (new Set(types).size) {
-    case 1:
-      return types[0];
-
-    case 2:
-      return distinct.has('number') && distinct.has('numstr') ? 'numstr' : 'misc';
-
-    default:
-      return 'misc';
-  }
-}
-
-/**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-const tableFind = function (filterObject) {
-  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
-
-  return this;
-};
-/**
- * @param {str} field
- * @param {function(*):boolean} filter
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-
-
-const tableFindOnce = function (field, filter) {
-  let j = this.head.indexOf(field);
-  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
-  return this;
-};
 
 class Table {
   /** @type {*[]} */
@@ -151,29 +83,6 @@ class Table {
     var _this, _this2;
 
     return mutate ? (_this = this, slice(_this)) : (_this2 = this, shallow(_this2));
-  }
-  /**
-   *
-   * @param {{}[]} samples
-   * @param {*[]|[*,*][]} [fields]
-   * @param {string} [title]
-   * @param {*[]} [types]
-   * @return {Table}
-   */
-
-
-  static fromSamples(samples, {
-    fields,
-    title,
-    types
-  } = {}) {
-    const {
-      head,
-      rows
-    } = Samples.toTable(samples, {
-      fields
-    });
-    return new Table(head, rows, title, types);
   }
 
   get size() {
@@ -257,7 +166,7 @@ class Table {
     mutate = true
   } = {}) {
     return this.boot({
-      rows: mapper$1(this.rows, fn, this.ht, this.wd)
+      rows: mapper(this.rows, fn, this.ht, this.wd)
     }, mutate);
   }
 
@@ -265,7 +174,7 @@ class Table {
     mutate = true
   } = {}) {
     return this.boot({
-      head: mapper(this.head, fn)
+      head: mapper$1(this.head, fn)
     }, mutate);
   }
   /**
@@ -302,40 +211,6 @@ class Table {
     const o = mutate ? this : (_this4 = this, shallow(_this4));
     splices(o.rows, ys), splices$1(o.head, ys);
     return mutate ? this : Table.from(o);
-  }
-  /**
-   *
-   * Specify the type of a column. No return
-   * @param {str} field accept both column name in string or column index in integer
-   * @param {string} typeName string | (number, float) | integer | boolean
-   */
-
-
-  changeType(field, typeName) {
-    const y = this.coin(field),
-          parser = parserSelector(typeName);
-    if (parser) mutate(this.rows, y, parser, this.ht), this.types[y] = typeName;
-    return this;
-  }
-  /**
-   * Re-generate this._types based on DPTyp.inferArr method.
-   * Cautious: This method will change all elements of this._types.
-   * @return {string[]}
-   */
-
-
-  mutInferTypes() {
-    this.types = mapper$2(this.rows, inferArrayType);
-
-    for (let [i, typeName] of this.types.entries()) {
-      if (typeName === 'numstr') {
-        this.changeType(i, 'number');
-      } else if (typeName === 'misc') {
-        this.changeType(i, 'string');
-      }
-    }
-
-    return this.types;
   }
   /**
    *

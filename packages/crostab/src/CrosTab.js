@@ -15,7 +15,7 @@ import {
   shift as shiftColumn,
   unshift as unshiftColumn
 } from '@vect/columns-update'
-import { ob } from '../utils/addIndex'
+import { pair } from '@vect/object-init'
 
 /**
  *
@@ -59,11 +59,11 @@ export class CrosTab {
 
   rowwiseSamples (headFields, indexed = false, indexName = '_') {
     const samples = selectSamplesByHead.call(this, headFields)
-    return indexed ? zipper(this.side, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples
+    return indexed ? zipper(this.side, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples
   }
   columnwiseSamples (sideFields, indexed = false, indexName = '_') {
     const samples = selectSamplesBySide.call(this, sideFields)
-    return indexed ? zipper(this.head, samples, (l, s) => Object.assign(ob(indexName, l), s)) : samples
+    return indexed ? zipper(this.head, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples
   }
   toJson (mutate = false) { return mutate ? this |> slice : this |> shallow }
 

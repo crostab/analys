@@ -4,20 +4,19 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var tableInit = require('@analys/table-init');
 var tableFilter = require('@analys/table-filter');
+var tableFind = require('@analys/table-find');
 var tablePivot = require('@analys/table-pivot');
-var keyedColumns = require('@analys/keyed-columns');
-var veho = require('veho');
 var borel = require('borel');
-var distinctColumn = require('@aryth/distinct-column');
 var comparer = require('@aryth/comparer');
 var matrix = require('@vect/matrix');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
 var matrixMapper = require('@vect/matrix-mapper');
 var columnMapper = require('@vect/column-mapper');
-var columnsMapper = require('@vect/columns-mapper');
+var columnGetter = require('@vect/column-getter');
+var keyedColumns = require('@analys/keyed-columns');
+var distinctColumn = require('@aryth/distinct-column');
 var columnsUpdate = require('@vect/columns-update');
-var numStrict = require('@typen/num-strict');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -33,73 +32,6 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
-
-const column = (mx, c, h) => vectorMapper.mapper(mx, r => r[c], h);
-
-const parserSelector = typeName => {
-  switch (typeName) {
-    case 'string':
-      return String;
-
-    case 'number':
-    case 'float':
-      return Number.parseFloat;
-
-    case 'integer':
-      return Number.parseInt;
-
-    case 'boolean':
-      return Boolean;
-
-    default:
-      return void 0;
-  }
-};
-
-/**
- *
- * @param {*[]} column
- * @return {string|unknown}
- */
-
-function inferArrayType(column) {
-  if (!column.length) return 'null';
-  const types = column.map(numStrict.inferType);
-  const distinct = new Set(types);
-
-  switch (new Set(types).size) {
-    case 1:
-      return types[0];
-
-    case 2:
-      return distinct.has('number') && distinct.has('numstr') ? 'numstr' : 'misc';
-
-    default:
-      return 'misc';
-  }
-}
-
-/**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-const tableFind = function (filterObject) {
-  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
-
-  return this;
-};
-/**
- * @param {str} field
- * @param {function(*):boolean} filter
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-
-
-const tableFindOnce = function (field, filter) {
-  let j = this.head.indexOf(field);
-  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
-  return this;
-};
 
 class Table {
   /** @type {*[]} */
@@ -156,29 +88,6 @@ class Table {
 
     return mutate ? (_this = this, tableInit.slice(_this)) : (_this2 = this, tableInit.shallow(_this2));
   }
-  /**
-   *
-   * @param {{}[]} samples
-   * @param {*[]|[*,*][]} [fields]
-   * @param {string} [title]
-   * @param {*[]} [types]
-   * @return {Table}
-   */
-
-
-  static fromSamples(samples, {
-    fields,
-    title,
-    types
-  } = {}) {
-    const {
-      head,
-      rows
-    } = veho.Samples.toTable(samples, {
-      fields
-    });
-    return new Table(head, rows, title, types);
-  }
 
   get size() {
     return matrix.size(this.rows);
@@ -214,7 +123,7 @@ class Table {
   }
 
   column(field) {
-    return column(this.rows, this.coin(field), this.ht);
+    return columnGetter.column(this.rows, this.coin(field), this.ht);
   }
 
   setColumn(field, column) {
@@ -309,40 +218,6 @@ class Table {
   }
   /**
    *
-   * Specify the type of a column. No return
-   * @param {str} field accept both column name in string or column index in integer
-   * @param {string} typeName string | (number, float) | integer | boolean
-   */
-
-
-  changeType(field, typeName) {
-    const y = this.coin(field),
-          parser = parserSelector(typeName);
-    if (parser) columnMapper.mutate(this.rows, y, parser, this.ht), this.types[y] = typeName;
-    return this;
-  }
-  /**
-   * Re-generate this._types based on DPTyp.inferArr method.
-   * Cautious: This method will change all elements of this._types.
-   * @return {string[]}
-   */
-
-
-  mutInferTypes() {
-    this.types = columnsMapper.mapper(this.rows, inferArrayType);
-
-    for (let [i, typeName] of this.types.entries()) {
-      if (typeName === 'numstr') {
-        this.changeType(i, 'number');
-      } else if (typeName === 'misc') {
-        this.changeType(i, 'string');
-      }
-    }
-
-    return this.types;
-  }
-  /**
-   *
    * @param {Object|Filter[]|Filter} filterCollection
    * @param {boolean} [mutate=true]
    * @return {Table}
@@ -372,7 +247,7 @@ class Table {
     var _this6;
 
     const o = mutate ? this : (_this6 = this, tableInit.slice(_this6));
-    tableFind.call(o, filter);
+    tableFind.tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
   }
 
