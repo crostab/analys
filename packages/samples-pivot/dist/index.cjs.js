@@ -16,6 +16,7 @@ var vectorMapper = require('@vect/vector-mapper');
  * @param {str} banner
  * @param {CubeCell[]|CubeCell} [cell]
  * @param {Filter[]|Filter} [filter]
+ * @param {Filter[]|Filter} [filter]
  * @param {function():number} formula - formula is valid only when cell is CubeCell array.
  * @returns {CrosTab}
  */

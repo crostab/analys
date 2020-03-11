@@ -1,6 +1,6 @@
 import { slice, shallow } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
-import { tablePivot } from '@analys/table-pivot'
+import { pivotDev, pivotEdge, tablePivot, tablePivotAlpha } from '@analys/table-pivot'
 import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
 import { Samples } from 'veho'
 import { StatMx } from 'borel'
@@ -19,6 +19,7 @@ import {
 } from '@vect/columns-update'
 import { parserSelector } from '../utils/parserSelector'
 import { inferArrayType } from '../utils/inferArrayType'
+import { tableFind } from '@analys/table-find'
 
 export class Table {
   /** @type {*[]} */ head
@@ -145,21 +146,32 @@ export class Table {
   mutInferTypes () {
     this.types = mapperColumns(this.rows, inferArrayType)
     for (let [i, typeName] of this.types.entries()) {
-      if (typeName === 'numstr') { this.changeType(i, 'number') }
-      else if (typeName === 'misc') { this.changeType(i, 'string') }
+      if (typeName === 'numstr') { this.changeType(i, 'number') } else if (typeName === 'misc') { this.changeType(i, 'string') }
     }
     return this.types
   }
 
   /**
    *
-   * @param {Filter[]|Filter} filterCollection
+   * @param {Object|Filter[]|Filter} filterCollection
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
   filter (filterCollection, { mutate = true } = {}) {
     const o = mutate ? this : this |> slice
     tableFilter.call(o, filterCollection)
+    return mutate ? this : this.copy(o)
+  }
+
+  /**
+   *
+   * @param {Object<str,function(*?):boolean>} filter
+   * @param {boolean} [mutate=true]
+   * @return {Table}
+   */
+  find (filter, { mutate = true } = {}) {
+    const o = mutate ? this : this |> slice
+    tableFind.call(o, filter)
     return mutate ? this : this.copy(o)
   }
 
@@ -213,19 +225,35 @@ export class Table {
    *
    * @param {str} side
    * @param {str} banner
-   * @param {CubeCell[]|CubeCell} [cell]
-   * @param {Filter[]|Filter} [filter]
-   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
-   * @returns {CrosTab}
+   * @param {*} [field]
+   * @param {Object<str,function(*?):boolean>} [filter]
+   * @param {function(...*):number} [formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
   crosTab ({
     side,
     banner,
+    field,
+    filter,
+    formula
+  }) { return pivotEdge(this, { side, banner, field, filter, formula }) }
+
+  /**
+   *
+   * @param {str} side
+   * @param {str} banner
+   * @param {CubeCell[]|CubeCell} [cell]
+   * @param {Filter[]|Filter} [filter]
+   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
+   * @returns {CrosTab}
+   */
+  crosTabDev ({
+    side,
+    banner,
     cell,
     filter,
     formula
-  }) { return tablePivot(this, { side, banner, cell, filter, formula }) }
+  }) { return pivotDev(this, { side, banner, cell, filter, formula }) }
 
   /** @returns {Table} */
   boot ({ types, head, rows } = {}, mutate) {
@@ -234,8 +262,7 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    }
-    else {
+    } else {
       return this.copy({ types, head, rows })
     }
   }

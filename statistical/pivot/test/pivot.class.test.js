@@ -1,5 +1,5 @@
 import { Pivot } from '../src/Pivot'
-import { INCRE } from '@analys/enum-pivot-mode'
+import { COUNT, INCRE } from '@analys/enum-pivot-mode'
 import { decoCrostab, says } from '@spare/logger'
 
 const duties = {
@@ -32,6 +32,6 @@ const dutiesBeta = {
   ]
 }
 
-let pivot = new Pivot(0, 1, 2, INCRE, x => !isNaN(x))
+let pivot = new Pivot(0, 1, 2, COUNT, x => !isNaN(x))
 pivot.spread(duties.rows).toJson() |> decoCrostab |> says.spreadPivot
 pivot.record(dutiesBeta.rows).toJson() |> decoCrostab |> says.recordPivot

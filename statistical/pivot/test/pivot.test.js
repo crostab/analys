@@ -1,9 +1,9 @@
-import { Pivot } from '../function/Pivot'
-import { SUM } from '../resources/PivotModes'
+import { Pivot } from '../src/Pivot'
+import { SUM } from '@analys/enum-pivot-mode'
 import { decoCrostab, logger, says } from '@spare/logger'
 import { deco, delogger } from '@spare/deco'
 import { pivotSpread } from '../src/pivotSpread'
-import { pivotSkeleton } from '../resources/skeleton'
+import { increSkeleton } from '@analys/util-pivot'
 import { pivotRecord } from '../src/pivotRecord'
 
 const duties = {
@@ -36,7 +36,7 @@ const dutiesBeta = {
   ]
 }
 
-let notes = pivotSkeleton()
+let notes = increSkeleton()
 const sampleSpreader = pivotSpread.bind(notes)
 notes = sampleSpreader(duties.rows, { x: 0, y: 1, z: 2, filter: x => !isNaN(x) })
 notes |> deco |> says.spread
@@ -56,7 +56,7 @@ accu |> delogger
 accu|> decoCrostab |> logger
 
 const isomp = new Pivot(duties.rows)
-  .pivot({
+  .spread({
     row: 0,
     col: 1,
     cell: { 2: 'sum', 3: 'sum', 4: 'count', },

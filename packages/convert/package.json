@@ -17,8 +17,8 @@
   "dependencies": {
     "@analys/keyed-columns": "^0.0.10",
     "@analys/table-init": "^0.0.10",
-    "@vect/entries-unwind": "^0.1.2",
-    "@vect/vector-mapper": "^0.1.2"
+    "@vect/entries-unwind": "^0.1.10",
+    "@vect/vector-mapper": "^0.1.10"
   },
   "repository": {
     "type": "git",

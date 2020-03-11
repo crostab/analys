@@ -15,11 +15,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@aryth/comparer": "^0.0.10",
-    "@vect/vector-init": "^0.1.2",
-    "@vect/vector-mapper": "^0.1.2",
-    "@vect/vector-select": "^0.1.1",
-    "@vect/vector-update": "^0.1.0"
+    "@aryth/comparer": "^0.0.11",
+    "@vect/vector-init": "^0.1.10",
+    "@vect/vector-mapper": "^0.1.10",
+    "@vect/vector-select": "^0.1.10",
+    "@vect/vector-update": "^0.1.10"
   },
   "repository": {
     "type": "git",

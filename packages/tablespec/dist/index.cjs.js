@@ -5,6 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var enums = require('@typen/enums');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
+var enumDataTypes = require('@typen/enum-data-types');
+var mergeAcquire = require('@vect/merge-acquire');
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -34,6 +36,41 @@ const defaultCell = defaultField => ({
   field: defaultField,
   mode: enumPivotMode.COUNT
 });
+
+const isMatrix = mx => Array.isArray(mx) && Array.isArray(mx[0]);
+
+/**
+ *
+ * @param {*} fieldSet
+ * @param {str} def - default field
+ * @returns {[str,number]|[str,number][]}
+ */
+
+const parseFieldSet = (fieldSet, def) => {
+  if (fieldSet === void 0 || fieldSet === null) return [def, enumPivotMode.COUNT];
+
+  switch (typeof fieldSet) {
+    case enumDataTypes.OBJ:
+      let ents;
+
+      if (Array.isArray(fieldSet) && (ents = [])) {
+        vectorMapper.iterate(fieldSet, f => (f = parseFieldSet(f, def), isMatrix(f) ? mergeAcquire.acquire(ents, f) : ents.push(f)));
+      } else {
+        ents = Object.entries(fieldSet);
+      }
+
+      if (ents.length === 0) return [def, enumPivotMode.COUNT];
+      if (ents.length === 1) return ents[0];
+      return ents;
+
+    case enumDataTypes.STR:
+    case enumDataTypes.NUM:
+      return [fieldSet, enumPivotMode.INCRE];
+
+    default:
+      return [def, enumPivotMode.COUNT];
+  }
+};
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -131,3 +168,4 @@ class TableSpec {
 
 exports.TableSpec = TableSpec;
 exports.parseCell = parseCell;
+exports.parseFieldSet = parseFieldSet;

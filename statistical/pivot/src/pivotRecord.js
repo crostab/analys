@@ -1,20 +1,20 @@
 import { ACCUM, COUNT, INCRE, SUM } from '@analys/enum-pivot-mode'
 
 export function pivotRecord (samples, { x, y, z, filter, mode = SUM }) {
-  let notate = createNotate(x, y, z, mode, filter).bind(this)
+  let notate = Notate(x, y, z, mode, filter).bind(this)
   for (let sample of samples)
     notate(sample)
   return this
 }
 
-const createNotate = (x, y, z, mode, filter) => {
-  const recorder = selectRecord(mode)
+const Notate = (x, y, z, mode, filter) => {
+  const recorder = Recorder(mode)
   return !filter
     ? function (r) { recorder.call(this, r[x], r[y], r[z]) }
     : function (r) { if (filter(r[z])) recorder.call(this, r[x], r[y], r[z]) }
 }
 
-export const selectRecord = mode => {
+export const Recorder = mode => {
   if (mode === INCRE) return function (x, y, v) {
     const { m, s, b } = this, row = m[s.indexOf(x)]
     if (row) row[b.indexOf(y)] += v

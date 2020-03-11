@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.0.10",
-    "@typen/enums": "^0.0.1",
-    "@vect/vector-mapper": "^0.1.2"
+    "@typen/enum-data-types": "^0.0.2",
+    "@typen/enums": "^0.0.2",
+    "@vect/merge-acquire": "^0.1.11",
+    "@vect/vector-mapper": "^0.1.10"
   },
   "repository": {
     "type": "git",

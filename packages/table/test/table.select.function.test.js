@@ -1,17 +1,15 @@
 import { Foba } from '@foba/table'
-import { deco, DecoTable, logger, says } from '@spare/logger'
+import { deco, decoTable, DecoTable, logger, says } from '@spare/logger'
 import { Table } from '../src/Table'
-
-const decoT = DecoTable({ top: 3, bottom: 2 })
 
 const US_TECH = 'USTechFirms'
 const table = Table.from(Foba[US_TECH])
 
-table |> decoT |> says.original
+table |> decoTable |> says.original
 
-tableSelect(['symbol', 'ceo', 'price'], { mutate: true }) |> decoT |> says.selected
+tableSelect(['symbol', 'ceo', 'price'], { mutate: true }) |> decoTable |> says.selected
 
-table |> decoT |> says.original
+table |> decoTable |> says.original
 
 table.toSamples() |> deco |> says.samples
 

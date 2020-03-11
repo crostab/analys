@@ -19,7 +19,7 @@ function cubicSpread(samples, {
   filter
 }) {
   const depth = band.length;
-  const notate = createNotate(x, y, band, filter, depth).bind(this);
+  const notate = Notate(x, y, band, filter, depth).bind(this);
 
   for (let sample of samples) {
     notate(sample);
@@ -28,9 +28,9 @@ function cubicSpread(samples, {
   return this;
 }
 
-const createNotate = (x, y, band, filter, depth) => {
+const Notate = (x, y, band, filter, depth) => {
   band.forEach(o => {
-    o.update = selectUpdater(o.mode);
+    o.update = Updater(o.mode);
   });
   return !filter ? function (sample) {
     spread.call(this, sample[x], sample[y], sample, band, depth);
@@ -46,10 +46,10 @@ const spread = function (x, y, sample, band, depth) {
   }) => update(target, sample[index]), depth);
 };
 
-const selectUpdater = mode => {
+const Updater = mode => {
   if (mode === INCRE) return (target, value) => target + value;
   if (mode === ACCUM) return (target, value) => (target.push(value), target);
-  if (mode === COUNT) return target => target++;
+  if (mode === COUNT) return target => ++target;
   return expand;
 };
 
@@ -70,7 +70,7 @@ function cubicRecord(samples, {
   filter
 }) {
   const depth = band.length;
-  const notate = createNotate$1(x, y, band, filter, depth).bind(this);
+  const notate = Notate$1(x, y, band, filter, depth).bind(this);
 
   for (let sample of samples) {
     notate(sample);
@@ -79,8 +79,8 @@ function cubicRecord(samples, {
   return this;
 }
 
-const createNotate$1 = (x, y, band, filter, depth) => {
-  band.forEach(o => o.update = selectUpdater$1(o.mode));
+const Notate$1 = (x, y, band, filter, depth) => {
+  band.forEach(o => o.update = Updater$1(o.mode));
   return !filter ? function (sample) {
     record.call(this, sample[x], sample[y], sample, band, depth);
   } : function (sample) {
@@ -103,7 +103,7 @@ const record = function (x, y, sample, band, depth) {
   }) => update(target, sample[index]), depth);
 };
 
-const selectUpdater$1 = mode => {
+const Updater$1 = mode => {
   if (mode === INCRE) return (target, value) => target + value;
   if (mode === ACCUM) return (target, value) => (target.push(value), target);
   if (mode === COUNT) return target => target++;

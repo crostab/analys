@@ -12,15 +12,15 @@ import { mutazip } from '@vect/vector-zipper'
  */
 export function cubicRecord (samples, { x, y, band, filter }) {
   const depth = band.length
-  const notate = createNotate(x, y, band, filter, depth).bind(this)
+  const notate = Notate(x, y, band, filter, depth).bind(this)
   for (let sample of samples) {
     notate(sample)
   }
   return this
 }
 
-const createNotate = (x, y, band, filter, depth) => {
-  band.forEach(o => o.update = selectUpdater(o.mode))
+const Notate = (x, y, band, filter, depth) => {
+  band.forEach(o => o.update = Updater(o.mode))
   return !filter
     ? function (sample) { record.call(this, sample[x], sample[y], sample, band, depth) }
     : function (sample) { if (filter(sample)) record.call(this, sample[x], sample[y], sample, band, depth)}
@@ -38,7 +38,7 @@ const record = function (x, y, sample, band, depth) {
   )
 }
 
-const selectUpdater = (mode) => {
+const Updater = (mode) => {
   if (mode === INCRE) return (target, value) => target + value
   if (mode === ACCUM) return (target, value) => (target.push(value), target)
   if (mode === COUNT) return (target) => target++

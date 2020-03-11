@@ -11,12 +11,12 @@ import { parseCell } from '@analys/tablespec'
  * @param {TableObject} table
  * @param {str} side
  * @param {str} banner
- * @param {CubeCell[]|CubeCell} [cell]
- * @param {Filter[]|Filter} [filter]
+ * @param {CubeCell|CubeCell[]} [cell]
+ * @param {Filter|Filter[]} [filter]
  * @param {function():number} formula - formula is valid only when cell is CubeCell array.
  * @returns {CrosTab}
  */
-export const tablePivot = (
+export const pivotDev = (
   table, {
     side,
     banner,
@@ -26,15 +26,12 @@ export const tablePivot = (
   }) => {
   if (filter) { table = tableFilter.call(table |> slice, filter) }
   const { head, rows } = table, [x, y] = [head.indexOf(side), head.indexOf(banner)]
-  // table |> decoTable |> logger
-  // cell |> deco |> logger
-  // ({ x, y }) |> delogger
-  let calc
+  let pivotter
   const pivot = Array.isArray(cell = parseCell(cell, side))
-    ? (calc = true, Cubic.build(x, y, (iterate(cell, appendIndex.bind(head)), cell)))
-    : (calc = false, Pivot.build(x, y, head.indexOf(cell.field), cell.mode))
+    ? (pivotter = true, Cubic.build(x, y, (iterate(cell, appendIndex.bind(head)), cell)))
+    : (pivotter = false, Pivot.build(x, y, head.indexOf(cell.field), cell.mode))
   const crostab = CrosTab.from(pivot.spread(rows).toJson())
-  if (calc && formula) crostab.map(ar => formula.apply(null, ar))
+  if (pivotter && formula) crostab.map(ar => formula.apply(null, ar))
   return crostab
 }
 

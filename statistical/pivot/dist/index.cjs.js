@@ -12,23 +12,23 @@ function pivotSpread(samples, {
   filter,
   mode = enumPivotMode.SUM
 }) {
-  let notate = createNotate(x, y, z, mode, filter).bind(this);
+  let notate = Notate(x, y, z, mode, filter).bind(this);
 
   for (let sample of samples) notate(sample);
 
   return this;
 }
 
-const createNotate = (x, y, z, mode, filter) => {
-  const record = selectSpread(mode);
+const Notate = (x, y, z, mode, filter) => {
+  const spreader = Spreader(mode);
   return !filter ? function (r) {
-    record.call(this, r[x], r[y], r[z]);
+    spreader.call(this, r[x], r[y], r[z]);
   } : function (r) {
-    (filter(r[z]) ? record : utilPivot.expand).call(this, r[x], r[y], r[z]);
+    (filter(r[z]) ? spreader : utilPivot.expand).call(this, r[x], r[y], r[z]);
   };
 };
 
-const selectSpread = mode => {
+const Spreader = mode => {
   if (mode === enumPivotMode.INCRE) return function (x, y, z) {
     this.m[utilPivot.arid.call(this, x)][utilPivot.acid.call(this, y)] += z;
   };
@@ -48,15 +48,15 @@ function pivotRecord(samples, {
   filter,
   mode = enumPivotMode.SUM
 }) {
-  let notate = createNotate$1(x, y, z, mode, filter).bind(this);
+  let notate = Notate$1(x, y, z, mode, filter).bind(this);
 
   for (let sample of samples) notate(sample);
 
   return this;
 }
 
-const createNotate$1 = (x, y, z, mode, filter) => {
-  const recorder = selectRecord(mode);
+const Notate$1 = (x, y, z, mode, filter) => {
+  const recorder = Recorder(mode);
   return !filter ? function (r) {
     recorder.call(this, r[x], r[y], r[z]);
   } : function (r) {
@@ -64,7 +64,7 @@ const createNotate$1 = (x, y, z, mode, filter) => {
   };
 };
 
-const selectRecord = mode => {
+const Recorder = mode => {
   if (mode === enumPivotMode.INCRE) return function (x, y, v) {
     const {
       m,

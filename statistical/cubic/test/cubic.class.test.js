@@ -1,5 +1,5 @@
 import { deco, delogger } from '@spare/deco'
-import { ACCUM, INCRE } from '@analys/enum-pivot-mode'
+import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
 import { Cubic } from '../src/Cubic'
 import { decoCrostab, says } from '@spare/logger'
 
@@ -35,7 +35,8 @@ const dutiesBeta = {
 
 const band = [
   { index: 2, mode: INCRE },
-  { index: 3, mode: ACCUM }
+  { index: 3, mode: ACCUM },
+  { index: 4, mode: COUNT }
 ]
 let cubic = new Cubic(0, 1, band)
 cubic.spread(duties.rows).toJson() |> deco |> says.spreadCubic

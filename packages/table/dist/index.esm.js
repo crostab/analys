@@ -1,6 +1,6 @@
 import { slice, shallow } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
-import { tablePivot } from '@analys/table-pivot';
+import { pivotEdge, pivotDev } from '@analys/table-pivot';
 import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
 import { Samples } from 'veho';
 import { StatMx } from 'borel';
@@ -74,6 +74,28 @@ function inferArrayType(column) {
       return 'misc';
   }
 }
+
+/**
+ * @param {Object<str,function(*):boolean>} filterObject
+ * @return {Table|TableObject} - mutated 'this' {head, rows}
+ */
+const tableFind = function (filterObject) {
+  for (let field in filterObject) if (filterObject.hasOwnProperty(field)) tableFindOnce.call(this, field, filterObject[field]);
+
+  return this;
+};
+/**
+ * @param {str} field
+ * @param {function(*):boolean} filter
+ * @return {Table|TableObject} - mutated 'this' {head, rows}
+ */
+
+
+const tableFindOnce = function (field, filter) {
+  let j = this.head.indexOf(field);
+  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
+  return this;
+};
 
 class Table {
   /** @type {*[]} */
@@ -317,7 +339,7 @@ class Table {
   }
   /**
    *
-   * @param {Filter[]|Filter} filterCollection
+   * @param {Object|Filter[]|Filter} filterCollection
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
@@ -332,13 +354,30 @@ class Table {
     tableFilter.call(o, filterCollection);
     return mutate ? this : this.copy(o);
   }
+  /**
+   *
+   * @param {Object<str,function(*?):boolean>} filter
+   * @param {boolean} [mutate=true]
+   * @return {Table}
+   */
 
-  distinct(fields, {
+
+  find(filter, {
     mutate = true
   } = {}) {
     var _this6;
 
     const o = mutate ? this : (_this6 = this, slice(_this6));
+    tableFind.call(o, filter);
+    return mutate ? this : this.copy(o);
+  }
+
+  distinct(fields, {
+    mutate = true
+  } = {}) {
+    var _this7;
+
+    const o = mutate ? this : (_this7 = this, slice(_this7));
 
     for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field));
 
@@ -374,13 +413,13 @@ class Table {
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    var _this7;
+    var _this8;
 
     const y = this.coin(field);
 
     const rowComparer = (a, b) => comparer(a[y], b[y]);
 
-    const o = mutate ? this : (_this7 = this, slice(_this7));
+    const o = mutate ? this : (_this8 = this, slice(_this8));
     o.rows.sort(rowComparer);
     return mutate ? this : this.copy(o);
   }
@@ -395,11 +434,37 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _this8;
+    var _this9;
 
-    let o = mutate ? this : (_this8 = this, slice(_this8));
+    let o = mutate ? this : (_this9 = this, slice(_this9));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
+  }
+  /**
+   *
+   * @param {str} side
+   * @param {str} banner
+   * @param {*} [field]
+   * @param {Object<str,function(*?):boolean>} [filter]
+   * @param {function(...*):number} [formula] - formula is valid only when cell is CubeCell array.
+   * @returns {CrosTab}
+   */
+
+
+  crosTab({
+    side,
+    banner,
+    field,
+    filter,
+    formula
+  }) {
+    return pivotEdge(this, {
+      side,
+      banner,
+      field,
+      filter,
+      formula
+    });
   }
   /**
    *
@@ -409,18 +474,17 @@ class Table {
    * @param {Filter[]|Filter} [filter]
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
-   * @returns {CrosTab}
    */
 
 
-  crosTab({
+  crosTabDev({
     side,
     banner,
     cell,
     filter,
     formula
   }) {
-    return tablePivot(this, {
+    return pivotDev(this, {
       side,
       banner,
       cell,

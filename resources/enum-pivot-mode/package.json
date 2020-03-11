@@ -15,9 +15,9 @@
     "test": "node -r @babel/register test/enum-pivot-mode.test.js"
   },
   "dependencies": {
-    "@vect/vector-init": "^0.1.2",
-    "@vect/vector-mapper": "^0.1.2",
-    "@vect/vector-zipper": "^0.1.2"
+    "@vect/vector-init": "^0.1.10",
+    "@vect/vector-mapper": "^0.1.10",
+    "@vect/vector-zipper": "^0.1.10"
   },
   "repository": {
     "type": "git",
