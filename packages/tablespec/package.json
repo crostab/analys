@@ -1,6 +1,6 @@
 {
   "name": "@analys/tablespec",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
     "test": "node -r @babel/register test/parseCell.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.0.12",
+    "@analys/enum-pivot-mode": "^0.0.13",
     "@typen/enum-data-types": "^0.0.2",
     "@vect/matrix": "^0.1.12",
     "@vect/merge-acquire": "^0.1.12",
