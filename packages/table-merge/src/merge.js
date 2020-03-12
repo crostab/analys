@@ -17,5 +17,5 @@ export const tableAcquire = (ta, tb) => {
 export const tableMerge = (ta, tb) => {
   const head = merge(ta.head, tb.head)
   const rows = zipper(ta.rows, tb.rows, (va, vb) => merge(va, vb))
-  return ta.copy({ head, rows })
+  return ta.copy ? ta.copy({ head, rows }) : { head, rows }
 }

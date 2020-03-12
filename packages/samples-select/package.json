@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@vect/object-mapper": "^0.1.10",
-    "@vect/vector-mapper": "^0.1.10"
+    "@vect/object-mapper": "^0.1.12",
+    "@vect/vector-mapper": "^0.1.12"
   },
   "repository": {
     "type": "git",

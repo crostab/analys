@@ -15,7 +15,11 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-mutabilities": "^0.0.12"
+    "@analys/table-init": "^0.0.12",
+    "@analys/enum-mutabilities": "^0.0.12",
+    "@vect/columns-select": "^0.1.12",
+    "@vect/vector-select": "^0.1.12",
+    "@vect/vector-mapper": "^0.1.12"
   },
   "repository": {
     "type": "git",

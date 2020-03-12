@@ -2,39 +2,41 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var enumMutabilities = require('@analys/enum-mutabilities');
+var columnsSelect = require('@vect/columns-select');
+var vectorSelect = require('@vect/vector-select');
+var vectorMapper = require('@vect/vector-mapper');
+var tableInit = require('@analys/table-init');
 
 /**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {{includes:Table,excludes:Table}} - mutated 'this' {head, rows}
+ * Divide a table by fields
+ * @param {*[]} fields
+ * @return {{ pick:TableObject, rest:TableObject }} - mutated 'this' {head, rows}
  */
 
-const tableDivide = function ({
-  includes,
-  excludes
-}) {
-  /** @type {Table} */
-  let body = this;
+const tableDivide = function (fields) {
+  var _this, _this2;
 
-  if (includes && includes.length) {
-    const [regenerated, body] = [body.spliceColumns(includes, enumMutabilities.IMMUTABLE), body.select(includes, enumMutabilities.MUTABLE)];
-    return {
-      includes: body,
-      excludes: regenerated
-    };
-  }
+  /** @type {Table|TableObject} */
+  const rs = (_this = this, tableInit.slice(_this));
+  /** @type {Table|TableObject} */
 
-  if (excludes && includes.length) {
-    const [regenerated, body] = [body.select(excludes, enumMutabilities.IMMUTABLE), body.spliceColumns(excludes, enumMutabilities.MUTABLE)];
-    return {
-      includes: regenerated,
-      excludes: body
-    };
-  }
-
+  const pk = (_this2 = this, tableInit.slice(_this2));
+  const {
+    head,
+    rows
+  } = this;
+  const indexes = vectorMapper.mapper(fields, label => head.indexOf(label));
+  ({
+    pick: pk.head,
+    rest: rs.head
+  } = vectorSelect.divide(head, indexes));
+  ({
+    pick: pk.rows,
+    rest: rs.rows
+  } = columnsSelect.divide(rows, indexes));
   return {
-    includes: body,
-    excludes: body
+    pick: pk,
+    rest: rs
   };
 };
 

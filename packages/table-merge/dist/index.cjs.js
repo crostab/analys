@@ -20,10 +20,13 @@ const tableAcquire = (ta, tb) => {
 const tableMerge = (ta, tb) => {
   const head = mergeAcquire.merge(ta.head, tb.head);
   const rows = vectorZipper.zipper(ta.rows, tb.rows, (va, vb) => mergeAcquire.merge(va, vb));
-  return ta.copy({
+  return ta.copy ? ta.copy({
     head,
     rows
-  });
+  }) : {
+    head,
+    rows
+  };
 };
 
 exports.tableAcquire = tableAcquire;

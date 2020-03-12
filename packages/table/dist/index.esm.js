@@ -1,6 +1,7 @@
 import { slice, shallow } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
 import { tableFind } from '@analys/table-find';
+import { tableDivide } from '@analys/table-divide';
 import { pivotEdge, pivotDev } from '@analys/table-pivot';
 import { StatMx } from 'borel';
 import { NUM_ASC } from '@aryth/comparer';
@@ -212,6 +213,22 @@ class Table {
     splices(o.rows, indexes), splices$1(o.head, indexes);
     return mutate ? this : Table.from(o);
   }
+
+  divide(fields, {
+    mutate = false
+  } = {}) {
+    var _this5;
+
+    const o = mutate ? this : (_this5 = this, shallow(_this5));
+    const {
+      pick,
+      rest
+    } = tableDivide.call(o, fields);
+    return {
+      pick: Table.from(pick),
+      rest: mutate ? this : Table.from(rest)
+    };
+  }
   /**
    *
    * @param {Object|Filter[]|Filter} filterCollection
@@ -223,9 +240,9 @@ class Table {
   filter(filterCollection, {
     mutate = true
   } = {}) {
-    var _this5;
+    var _this6;
 
-    const o = mutate ? this : (_this5 = this, slice(_this5));
+    const o = mutate ? this : (_this6 = this, slice(_this6));
     tableFilter.call(o, filterCollection);
     return mutate ? this : this.copy(o);
   }
@@ -240,9 +257,9 @@ class Table {
   find(filter, {
     mutate = true
   } = {}) {
-    var _this6;
+    var _this7;
 
-    const o = mutate ? this : (_this6 = this, slice(_this6));
+    const o = mutate ? this : (_this7 = this, slice(_this7));
     tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
   }
@@ -250,9 +267,9 @@ class Table {
   distinct(fields, {
     mutate = true
   } = {}) {
-    var _this7;
+    var _this8;
 
-    const o = mutate ? this : (_this7 = this, slice(_this7));
+    const o = mutate ? this : (_this8 = this, slice(_this8));
 
     for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field));
 
@@ -288,13 +305,13 @@ class Table {
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    var _this8;
+    var _this9;
 
     const y = this.coin(field);
 
     const rowComparer = (a, b) => comparer(a[y], b[y]);
 
-    const o = mutate ? this : (_this8 = this, slice(_this8));
+    const o = mutate ? this : (_this9 = this, slice(_this9));
     o.rows.sort(rowComparer);
     return mutate ? this : this.copy(o);
   }
@@ -309,9 +326,9 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _this9;
+    var _this10;
 
-    let o = mutate ? this : (_this9 = this, slice(_this9));
+    let o = mutate ? this : (_this10 = this, slice(_this10));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }

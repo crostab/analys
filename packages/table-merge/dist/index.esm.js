@@ -16,10 +16,13 @@ const tableAcquire = (ta, tb) => {
 const tableMerge = (ta, tb) => {
   const head = merge(ta.head, tb.head);
   const rows = zipper(ta.rows, tb.rows, (va, vb) => merge(va, vb));
-  return ta.copy({
+  return ta.copy ? ta.copy({
     head,
     rows
-  });
+  }) : {
+    head,
+    rows
+  };
 };
 
 export { tableAcquire, tableMerge };

@@ -1,36 +1,38 @@
-import { IMMUTABLE, MUTABLE } from '@analys/enum-mutabilities';
+import { divide as divide$1 } from '@vect/columns-select';
+import { divide } from '@vect/vector-select';
+import { mapper } from '@vect/vector-mapper';
+import { slice } from '@analys/table-init';
 
 /**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {{includes:Table,excludes:Table}} - mutated 'this' {head, rows}
+ * Divide a table by fields
+ * @param {*[]} fields
+ * @return {{ pick:TableObject, rest:TableObject }} - mutated 'this' {head, rows}
  */
 
-const tableDivide = function ({
-  includes,
-  excludes
-}) {
-  /** @type {Table} */
-  let body = this;
+const tableDivide = function (fields) {
+  var _this, _this2;
 
-  if (includes && includes.length) {
-    const [regenerated, body] = [body.spliceColumns(includes, IMMUTABLE), body.select(includes, MUTABLE)];
-    return {
-      includes: body,
-      excludes: regenerated
-    };
-  }
+  /** @type {Table|TableObject} */
+  const rs = (_this = this, slice(_this));
+  /** @type {Table|TableObject} */
 
-  if (excludes && includes.length) {
-    const [regenerated, body] = [body.select(excludes, IMMUTABLE), body.spliceColumns(excludes, MUTABLE)];
-    return {
-      includes: regenerated,
-      excludes: body
-    };
-  }
-
+  const pk = (_this2 = this, slice(_this2));
+  const {
+    head,
+    rows
+  } = this;
+  const indexes = mapper(fields, label => head.indexOf(label));
+  ({
+    pick: pk.head,
+    rest: rs.head
+  } = divide(head, indexes));
+  ({
+    pick: pk.rows,
+    rest: rs.rows
+  } = divide$1(rows, indexes));
   return {
-    includes: body,
-    excludes: body
+    pick: pk,
+    rest: rs
   };
 };
 

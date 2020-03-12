@@ -1,6 +1,7 @@
 import { slice, shallow } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
 import { tableFind } from '@analys/table-find'
+import { tableDivide } from '@analys/table-divide'
 import { pivotDev, pivotEdge } from '@analys/table-pivot'
 import { StatMx } from 'borel'
 import { NUM_ASC } from '@aryth/comparer'
@@ -19,6 +20,7 @@ import {
 import {
   push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn, splices as splicesColumns
 } from '@vect/columns-update'
+
 
 export class Table {
   /** @type {*[]} */ head
@@ -109,6 +111,12 @@ export class Table {
     const o = mutate ? this : this |> shallow, indexes = this.columnIndexes(fields).sort(NUM_ASC)
     splicesColumns(o.rows, indexes), splices(o.head, indexes)
     return mutate ? this : Table.from(o)
+  }
+
+  divide (fields, { mutate = false } = {}) {
+    const o = mutate ? this : this |> shallow
+    const { pick, rest } = tableDivide.call(o, fields)
+    return { pick: Table.from(pick), rest: mutate ? this : Table.from(rest) }
   }
 
   /**
