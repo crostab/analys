@@ -35,12 +35,12 @@ $ npm install @analys/<tool-name>
 #### Tools
 |                                                        |                                           |                 |                            |
 | ------------------------------------------------------ | ----------------------------------------- | --------------- |--------------------------- |
-| [**table**](packages/table)                            | Table (contains head and rows)            | core            |![v][table-dm]              |
-| [**crostab**](packages/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
-| [**samples**](packages/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
+| [**table**](packages/table/table)                            | Table (contains head and rows)            | core            |![v][table-dm]              |
+| [**crostab**](packages/crostab/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
+| [**samples**](packages/samples/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
 | [**convert**](packages/convert)                        | Convert between samples and table         | convert         |![v][convert-dm]            |
-| [**tablespec**](packages/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
-| [**table-join**](packages/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
+| [**tablespec**](packages/table/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
+| [**table-join**](packages/table/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
 | [**cubic**](statistical/cubic)                         | Crostab engine for combined query         | util            |![v][cubic-dm]              |
 | [**pivot**](statistical/pivot)                         | Crostab engine for single query           | util            |![v][pivot-dm]              |
 | [**enum-pivot-mode**](resources/enum-pivot-mode)       | Pivot modes: INCRE/COUNT/ACCUM            | enum            |![v][enum-pivot-mode-dm]    |

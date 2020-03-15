@@ -1,3 +1,0 @@
-class Samples {}
-
-export { Samples };
