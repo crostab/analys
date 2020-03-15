@@ -70,8 +70,6 @@ const pivotEdge = (table, {
   filter,
   formula
 }) => {
-  var _ref, _fieldSet, _pivot$configs;
-
   if (filter) {
     var _table;
 
@@ -84,10 +82,10 @@ const pivotEdge = (table, {
   } = table,
         [x, y] = [head.indexOf(side), head.indexOf(banner)];
   let cube, mode;
-  const fieldSet = tablespec.parseFieldSet(field, side);
-  _ref = (_fieldSet = fieldSet, deco(_fieldSet)), says['fieldSet'](_ref);
-  const pivot$1 = matrix.isMatrix(fieldSet) ? (cube = true, cubic.Cubic.build(x, y, makeBand.call(head, fieldSet))) : (cube = false, [field, mode] = fieldSet, pivot.Pivot.build(x, y, head.indexOf(field), mode));
-  _pivot$configs = pivot$1.configs, delogger(_pivot$configs);
+  const fieldSet = tablespec.parseFieldSet(field, side); // fieldSet |> deco |> says['fieldSet']
+
+  const pivot$1 = matrix.isMatrix(fieldSet) ? (cube = true, cubic.Cubic.build(x, y, makeBand.call(head, fieldSet))) : (cube = false, [field, mode] = fieldSet, pivot.Pivot.build(x, y, head.indexOf(field), mode)); // pivot.configs |> delogger
+
   const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
   if (cube && formula) crostab$1.map(ar => formula.apply(null, ar));
   return crostab$1;

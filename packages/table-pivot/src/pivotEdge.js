@@ -29,11 +29,11 @@ export const pivotEdge = (
   const { head, rows } = table, [x, y] = [head.indexOf(side), head.indexOf(banner)]
   let cube, mode
   const fieldSet = parseFieldSet(field, side)
-  fieldSet |> deco |> says['fieldSet']
+  // fieldSet |> deco |> says['fieldSet']
   const pivot = isMatrix(fieldSet)
     ? (cube = true, Cubic.build(x, y, makeBand.call(head, fieldSet)))
     : (cube = false, ([field, mode] = fieldSet), Pivot.build(x, y, head.indexOf(field), mode))
-  pivot.configs |> delogger
+  // pivot.configs |> delogger
   const crostab = CrosTab.from(pivot.spread(rows).toJson())
   if (cube && formula) crostab.map(ar => formula.apply(null, ar))
   return crostab

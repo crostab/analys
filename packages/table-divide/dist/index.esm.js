@@ -3,6 +3,8 @@ import { divide } from '@vect/vector-select';
 import { mapper } from '@vect/vector-mapper';
 import { slice } from '@analys/table-init';
 
+const NUM_ASC = (a, b) => a - b;
+
 /**
  * Divide a table by fields
  * @param {*[]} fields
@@ -21,7 +23,7 @@ const tableDivide = function (fields) {
     head,
     rows
   } = this;
-  const indexes = mapper(fields, label => head.indexOf(label));
+  const indexes = mapper(fields, label => head.indexOf(label)).sort(NUM_ASC);
   ({
     pick: pk.head,
     rest: rs.head
