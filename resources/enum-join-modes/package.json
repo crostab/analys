@@ -1,6 +1,6 @@
 {
-  "name": "@analys/cubic",
-  "version": "0.1.0",
+  "name": "@analys/enum-pivot-mode",
+  "version": "0.0.14",
   "description": "A debugging tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -12,12 +12,12 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/util-cubic.test.js"
+    "test": "node -r @babel/register test/enum-pivot-mode.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.0.14",
-    "@analys/util-pivot": "^0.1.0",
-    "@vect/vector-zipper": "^0.1.15"
+    "@vect/vector-init": "^0.1.12",
+    "@vect/vector-mapper": "^0.1.12",
+    "@vect/vector-zipper": "^0.1.12"
   },
   "repository": {
     "type": "git",
