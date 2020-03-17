@@ -1,7 +1,7 @@
 {
-  "name": "@analys/enum-pivot-mode",
+  "name": "@analys/enum-lookups",
   "version": "0.0.14",
-  "description": "A debugging tool",
+  "description": "Enums for analys toolkit",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [
@@ -12,12 +12,9 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/enum-pivot-mode.test.js"
+    "test": "node -r @babel/register test/enum-lookups.test.js"
   },
   "dependencies": {
-    "@vect/vector-init": "^0.1.12",
-    "@vect/vector-mapper": "^0.1.12",
-    "@vect/vector-zipper": "^0.1.12"
   },
   "repository": {
     "type": "git",

@@ -43,8 +43,8 @@ $ npm install @analys/<tool-name>
 | [**table-join**](packages/table/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
 | [**cubic**](statistical/cubic)                         | Crostab engine for combined query         | util            |![v][cubic-dm]              |
 | [**pivot**](statistical/pivot)                         | Crostab engine for single query           | util            |![v][pivot-dm]              |
-| [**enum-pivot-mode**](resources/enum-pivot-mode)       | Pivot modes: INCRE/COUNT/ACCUM            | enum            |![v][enum-pivot-mode-dm]    |
-| [**enum-tabular-types**](resources/enum-tabular-types) | Tabular types: SAMPLES/TABLE/CROSTAB      | enum            |![v][enum-tabular-types-dm] |
+| [**enum-pivot-mode**](packages/constant/enum-pivot-mode)       | Pivot modes: INCRE/COUNT/ACCUM            | enum            |![v][enum-pivot-mode-dm]    |
+| [**enum-tabular-types**](packages/constant/enum-tabular-types) | Tabular types: SAMPLES/TABLE/CROSTAB      | enum            |![v][enum-tabular-types-dm] |
 |                                                        |                                           |                 |                            |
 
 [//]: <> (Local routes)

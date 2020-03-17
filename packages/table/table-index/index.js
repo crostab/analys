@@ -1,1 +1,4 @@
-export { tableLookup, tableFindOnce } from './src/tableLookup'
+export {
+  coin,
+  coins
+} from './src/indexes'

@@ -1,6 +1,6 @@
 import { Foba } from '@foba/table'
 import { decoTable, says } from '@spare/logger'
-import { tableLookup } from '../src/tableLookup'
+import { tableLookup } from '../src/lookup'
 import { slice } from '@analys/table-init'
 
 const ROSTER = 'BistroDutyRoster'

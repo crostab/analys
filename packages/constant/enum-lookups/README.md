@@ -1,4 +1,4 @@
-# @analys/enum-pivot-mode
+# @analys/enum-lookups
 
 [![npm version][badge-npm-version]][url-npm]
 [![npm download monthly][badge-npm-download-monthly]][url-npm]
@@ -10,18 +10,18 @@
 [![github commit total][badge-github-commit-count]][url-github]
 
 [//]: <> (Shields)
-[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/enum-pivot-mode
-[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/enum-pivot-mode
-[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/enum-pivot-mode
-[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/enum-pivot-mode
-[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/enum-pivot-mode
-[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/enum-pivot-mode
+[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/enum-lookups
+[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/enum-lookups
+[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/enum-lookups
+[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/enum-lookups
+[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/enum-lookups
+[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/enum-lookups
 [badge-github-last-commit]: https://flat.badgen.net/github/last-commit/hoyeungw/vect
 [badge-github-commit-count]: https://flat.badgen.net/github/commits/hoyeungw/vect
 
 [//]: <> (Link)
-[url-npm]: https://npmjs.org/package/@analys/enum-pivot-mode
-[url-pp]: https://packagephobia.now.sh/result?p=@analys/enum-pivot-mode
+[url-npm]: https://npmjs.org/package/@analys/enum-lookups
+[url-pp]: https://packagephobia.now.sh/result?p=@analys/enum-lookups
 [url-github]: https://github.com/hoyeungw/vect
 
 ##### Util for array
@@ -32,7 +32,7 @@
 
 #### Install
 ```console
-$ npm install @analys/enum-pivot-mode
+$ npm install @analys/enum-lookups
 ```
 
 #### Usage

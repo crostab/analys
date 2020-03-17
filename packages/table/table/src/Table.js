@@ -1,10 +1,13 @@
-import { slice, shallow } from '@analys/table-init'
+import { shallow, slice } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
 import { tableFind } from '@analys/table-find'
 import { tableDivide } from '@analys/table-divide'
 import { pivotDev, pivotEdge } from '@analys/table-pivot'
+import { lookup, lookupCached, lookupMany, lookupTable } from '@analys/table-lookup'
+import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
 import { StatMx } from 'borel'
 import { NUM_ASC } from '@aryth/comparer'
+import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
 import { size, transpose } from '@vect/matrix'
 import { mapper } from '@vect/vector-mapper'
 import { splices } from '@vect/vector-update'
@@ -12,15 +15,12 @@ import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import { column } from '@vect/column-getter'
 import {
-  keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead
-} from '@analys/keyed-columns'
-import {
-  Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn
-} from '@aryth/distinct-column'
-import {
-  push as pushColumn, pop as popColumn, shift as shiftColumn, unshift as unshiftColumn, splices as splicesColumns
+  pop as popColumn,
+  push as pushColumn,
+  shift as shiftColumn,
+  splices as splicesColumns,
+  unshift as unshiftColumn
 } from '@vect/columns-update'
-
 
 export class Table {
   /** @type {*[]} */ head
@@ -88,6 +88,12 @@ export class Table {
     return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate)
   }
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+
+  lookupOne (valueToFind, keyField, valueField, cached = true) {
+    return (cached ? lookupCached : lookup).call(this, valueToFind, keyField, valueField)
+  }
+  lookupMany (valuesToFind, keyField, valueField) { return lookupMany.call(this, valuesToFind, keyField, valueField) }
+  lookupTable (keyField, valueField, objectify) { return lookupTable.call(this, keyField, valueField, objectify) }
 
   /**
    *

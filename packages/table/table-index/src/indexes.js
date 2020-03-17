@@ -1,10 +1,7 @@
-/**
- * @param {Object<str,function(*):boolean>} filterObject
- * @return {Table|TableObject} - mutated 'this' {head, rows}
- */
-export const tableLookup = function (filterObject) {
-  for (let field in filterObject)
-    if (filterObject.hasOwnProperty(field))
-      tableFindOnce.call(this, field, filterObject[field])
-  return this
+export const coin = function (field) {
+  return this.head.indexOf(field)
+}
+
+export const coins = function (fields) {
+  return fields.map(coin.bind(this))
 }

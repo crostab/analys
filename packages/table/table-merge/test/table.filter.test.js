@@ -1,6 +1,6 @@
 import { Foba } from '@foba/table'
 import { decoTable, says } from '@spare/logger'
-import { tableFind } from '../src/tableLookup'
+import { tableFind } from '../src/merge'
 import { slice } from '@analys/table-init'
 
 const ROSTER = 'BistroDutyRoster'

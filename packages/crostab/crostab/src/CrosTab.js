@@ -1,8 +1,19 @@
-import { sortKeyedRows, sortRowsByKeys, selectKeyedRows, selectSamplesBySide } from '@analys/keyed-rows'
-import { sortColumnsByKeys, sortKeyedColumns, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
+import { selectKeyedRows, selectSamplesBySide, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows'
+import { selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys, sortKeyedColumns } from '@analys/keyed-columns'
+import {
+  hlookup,
+  hlookupCached,
+  hlookupMany,
+  hlookupTable,
+  vlookup,
+  vlookupCached,
+  vlookupMany,
+  vlookupTable
+} from '@analys/crostab-lookup'
 import { shallow, slice } from '@analys/crostab-init'
 import { NUM_ASC, STR_ASC } from '@aryth/comparer'
-import { transpose, ROWWISE, COLUMNWISE } from '@vect/matrix'
+import { COLUMNWISE, ROWWISE } from '@vect/enum-matrix-directions'
+import { transpose } from '@vect/matrix-transpose'
 import { mapper, mutate } from '@vect/vector-mapper'
 import { zipper } from '@vect/vector-zipper'
 import { init as initMatrix } from '@vect/matrix-init'
@@ -10,8 +21,8 @@ import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import { column } from '@vect/column-getter'
 import {
-  push as pushColumn,
   pop as popColumn,
+  push as pushColumn,
   shift as shiftColumn,
   unshift as unshiftColumn
 } from '@vect/columns-update'
@@ -113,16 +124,30 @@ export class CrosTab {
     return this.boot({ side, head, rows }, mutate)
   }
 
+  vlookupOne (valueToFind, keyField, valueField, cached) {
+    return (cached ? vlookupCached : vlookup).call(this, valueToFind, keyField, valueField)
+  }
+  vlookupMany (valuesToFind, keyField, valueField) { return vlookupMany.call(this, valuesToFind, keyField, valueField) }
+  vlookupTable (keyField, valueField) { return vlookupTable.call(this, keyField, valueField) }
+
+  hlookupOne (valueToFind, keyField, valueField, cached) {
+    return (cached ? hlookupCached : hlookup).call(this, valueToFind, keyField, valueField)
+  }
+  hlookupMany (valuesToFind, keyField, valueField) { return hlookupMany.call(this, valuesToFind, keyField, valueField) }
+  hlookupTable (keyField, valueField) { return hlookupTable.call(this, keyField, valueField) }
+
   selectRows (sideLabels, mutate = false) {
     let o = mutate ? this : this |> slice
     selectKeyedRows.call(o, sideLabels)
     return mutate ? this : this.copy(o)
   }
+
   selectColumns (headLabels, mutate = false) {
     let o = mutate ? this : this |> slice
     selectKeyedColumns.call(this, headLabels)
     return mutate ? this : this.copy(o)
   }
+
   select ({ side, head, mutate = false } = {}) {
     let o = mutate ? this : this |> slice
     if (head?.length) selectKeyedColumns.call(o, head)

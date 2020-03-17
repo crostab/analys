@@ -1,1 +1,3 @@
-export { tableLookup, tableFindOnce } from './src/tableLookup'
+export { lookup, lookupMany } from './src/lookup'
+export { lookupCached } from './src/lookupCached'
+export { lookupTable } from './src/lookupTable'

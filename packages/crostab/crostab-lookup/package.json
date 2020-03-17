@@ -1,0 +1,43 @@
+{
+  "name": "@analys/crostab-lookup",
+  "version": "0.1.0",
+  "description": "A cross-crostab-lookup analytics tool",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/table.filter.test.js"
+  },
+  "dependencies": {
+    "@analys/enum-lookups": "^0.0.14",
+    "@analys/table-lookup": "^0.1.0",
+    "@vect/entries-init": "^0.1.16",
+    "@vect/object-init": "^0.1.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "crostab-lookup",
+    "crostab",
+    "cross-crostab-lookup",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme"
+}
