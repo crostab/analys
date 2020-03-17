@@ -35,9 +35,9 @@ $ npm install @analys/<tool-name>
 #### Tools
 |                                                        |                                           |                 |                            |
 | ------------------------------------------------------ | ----------------------------------------- | --------------- |--------------------------- |
-| [**table**](packages/table/table)                            | Table (contains head and rows)            | core            |![v][table-dm]              |
-| [**crostab**](packages/crostab/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
-| [**samples**](packages/samples/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
+| [**table**](packages/core/table)                            | Table (contains head and rows)            | core            |![v][table-dm]              |
+| [**crostab**](packages/core/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
+| [**samples**](packages/core/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
 | [**convert**](packages/convert)                        | Convert between samples and table         | convert         |![v][convert-dm]            |
 | [**tablespec**](packages/table/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
 | [**table-join**](packages/table/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
