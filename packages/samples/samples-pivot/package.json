@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-pivot",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A cross-samples-pivot analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,11 +15,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.1.2",
-    "@analys/cubic": "^0.1.2",
-    "@analys/pivot": "^0.1.2",
+    "@analys/crostab": "^0.1.3",
+    "@analys/cubic": "^0.1.3",
+    "@analys/pivot": "^0.1.3",
     "@analys/samples-filter": "^0.1.2",
-    "@analys/tablespec": "^0.1.2",
+    "@analys/tablespec": "^0.1.3",
     "@vect/vector-mapper": "^0.1.16"
   },
   "repository": {
