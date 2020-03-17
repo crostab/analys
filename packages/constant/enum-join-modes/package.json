@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-join-modes",
-  "version": "0.0.14",
+  "version": "0.1.1",
   "description": "Enums for analys toolkit",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -13,8 +13,6 @@
   "scripts": {
     "pub": "npm publish",
     "test": "node -r @babel/register test/enum-join-modes.test.js"
-  },
-  "dependencies": {
   },
   "repository": {
     "type": "git",
