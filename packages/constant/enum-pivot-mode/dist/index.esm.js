@@ -1,11 +1,14 @@
+const MERGE = -1;
 const ACCUM = 0;
-const SUM = 1;
 const INCRE = 1;
 const COUNT = 2;
+const SUM = 1;
 const PivotModes = {
-  array: 0,
-  sum: 1,
-  count: 2
+  merge: MERGE,
+  accum: ACCUM,
+  incre: INCRE,
+  count: COUNT,
+  sum: SUM
 };
 
-export { ACCUM, COUNT, INCRE, PivotModes, SUM };
+export { ACCUM, COUNT, INCRE, MERGE, PivotModes, SUM };

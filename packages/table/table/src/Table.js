@@ -21,6 +21,7 @@ import {
   splices as splicesColumns,
   unshift as unshiftColumn
 } from '@vect/columns-update'
+import { tableChips } from '@analys/table-chips'
 
 export class Table {
   /** @type {*[]} */ head
@@ -196,21 +197,25 @@ export class Table {
   }
 
   /**
-   *
-   * @param {str} side
-   * @param {str} banner
-   * @param {*} [field]
-   * @param {Object<str,function(*?):boolean>} [filter]
-   * @param {function(...*):number} [formula] - formula is valid only when cell is CubeCell array.
+   * @param {Object} options
+   * @param {str} options.key
+   * @param {str} [options.field]
+   * @param {number} [options.mode=ACCUM] - MERGE, ACCUM, INCRE, COUNT
+   * @param {boolean} [options.objectify=true]
+   * @return {[*,*][]|{}}
+   */
+  chips (options = {}) { return tableChips.call(this, options)}
+
+  /**
+   * @param {Object} options
+   * @param {str} options.side
+   * @param {str} options.banner
+   * @param {*} [options.field]
+   * @param {Object<str,function(*?):boolean>} [options.filter]
+   * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
-  crosTab ({
-    side,
-    banner,
-    field,
-    filter,
-    formula
-  }) { return pivotEdge(this, { side, banner, field, filter, formula }) }
+  crosTab (options = {}) { return pivotEdge(this, options) }
 
   /**
    *
@@ -219,6 +224,7 @@ export class Table {
    * @param {CubeCell[]|CubeCell} [cell]
    * @param {Filter[]|Filter} [filter]
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
+   * @deprecated Please use Table.crosTab instead.
    * @returns {CrosTab}
    */
   crosTabDev ({

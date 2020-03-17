@@ -1,7 +1,7 @@
 {
-  "name": "@analys/table-select",
+  "name": "@analys/table-chips",
   "version": "0.1.2",
-  "description": "A cross-table analytics tool",
+  "description": "A cross-table-chips analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [
@@ -12,22 +12,19 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/table.select.test.js"
+    "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/keyed-columns": "^0.1.2",
-    "@analys/table-init": "^0.1.2",
-    "@aryth/rand": "^0.0.13",
-    "@vect/vector-select": "^0.1.17"
+    "@analys/enum-pivot-mode": "^0.1.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "keywords": [
-    "table",
+    "table-chips",
     "crostab",
-    "cross-table",
+    "cross-table-chips",
     "pivot",
     "pivotal",
     "analyse",

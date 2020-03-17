@@ -1,10 +1,14 @@
+export const MERGE = -1
 export const ACCUM = 0
-export const SUM = 1
 export const INCRE = 1
 export const COUNT = 2
 
+export const SUM = 1
+
 export const PivotModes = {
-  array: 0,
-  sum: 1,
-  count: 2
+  merge: MERGE,
+  accum: ACCUM,
+  incre: INCRE,
+  count: COUNT,
+  sum: SUM
 }
