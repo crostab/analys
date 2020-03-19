@@ -59,7 +59,7 @@ const lookupIndex = function (label) {
     head
   } = this;
   if (!Array.isArray(label)) return [label, head.indexOf(label)];
-  let [current, projected] = label;
+  const [current, projected] = label;
   return [projected, head.indexOf(current)];
 };
 
