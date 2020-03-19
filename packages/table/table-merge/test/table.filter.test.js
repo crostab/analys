@@ -1,22 +1,18 @@
 import { Foba } from '@foba/table'
 import { decoTable, says } from '@spare/logger'
-import { tableFind } from '../src/merge'
-import { slice } from '@analys/table-init'
+import { tableAcquire } from '../src/merge'
+import { Table } from '@analys/table'
+import { IMMUTABLE } from '@analys/enum-mutabilities'
 
 const ROSTER = 'BistroDutyRoster'
 
-let alpha = Foba[ROSTER] |> slice
+const alpha = Foba[ROSTER] |> Table.from
 
-alpha |> decoTable |> says[ROSTER + ' original']
+const beta = alpha.select(['adt'], IMMUTABLE)
 
-tableFind.call(alpha, { day: n => n === 3 }) |> decoTable |> says[ROSTER + ' filtered']
+alpha |> decoTable |> says[ROSTER].p('alpha')
+beta |> decoTable |> says[ROSTER].p('beta')
 
-alpha |> decoTable |> says[ROSTER + ' original']
+const gamma = tableAcquire(alpha, beta)
 
-const beta = Foba[ROSTER] |> slice
-
-beta |> decoTable |> says[ROSTER + ' original']
-
-tableFind.call(beta |> slice, { day: n => n === 3 }) |> decoTable |> says[ROSTER + ' filtered']
-
-beta |> decoTable |> says[ROSTER + ' original']
+gamma |> decoTable |> says[ROSTER].p('acquired')

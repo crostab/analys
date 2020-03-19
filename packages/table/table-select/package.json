@@ -17,7 +17,7 @@
   "dependencies": {
     "@analys/keyed-columns": "^0.1.3",
     "@analys/table-init": "^0.1.2",
-    "@aryth/rand": "^0.0.13",
+    "@aryth/rand": "^0.1.0",
     "@vect/vector-select": "^0.1.17"
   },
   "repository": {

@@ -18,7 +18,7 @@
     "@analys/crostab-init": "^0.1.2",
     "@analys/keyed-columns": "^0.1.3",
     "@analys/keyed-rows": "^0.1.3",
-    "@aryth/rand": "^0.0.13",
+    "@aryth/rand": "^0.1.0",
     "@vect/vector-select": "^0.1.17"
   },
   "repository": {

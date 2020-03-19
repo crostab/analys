@@ -1,12 +1,12 @@
 import { TableCollection } from '@foba/table'
 import { decoEntries, decoTable, logger, says } from '@spare/logger'
 import { tableChips } from '../src/tableChips'
-import { ACCUM, MERGE } from '@analys/enum-pivot-mode'
+import { ACCUM, COUNT, INCRE, MERGE } from '@analys/enum-pivot-mode'
 import { deco } from '@spare/deco'
+import { Table } from '@analys/table'
+import { isNumeric } from '@typen/num-strict'
 
-const { COUNT } = require('@analys/enum-pivot-mode')
-
-const table = TableCollection.AeroEngineSpecs
+const table = TableCollection.AeroEngineSpecs |> Table.from
 
 table
   |> decoTable
@@ -20,7 +20,7 @@ tableChips.call(table, {
   objectify: true
 })
   |> deco
-  |> says['plant -> sku']
+  |> says['multiple category: plant -> sku']
 '' |> logger
 
 tableChips.call(table, {
@@ -30,7 +30,7 @@ tableChips.call(table, {
   objectify: false
 })
   |> decoEntries
-  |> says['plant -> sku2']
+  |> says['distinct count: plant -> sku2']
 '' |> logger
 
 tableChips.call(table, {
@@ -40,6 +40,19 @@ tableChips.call(table, {
   objectify: true
 })
   |> deco
-  |> says['plant -> sku2']
+  |> says['multiple category by merge: country -> app']
 '' |> logger
+
+table.mutateColumn('maxt', x => isNumeric(x) ? +x : 0)
+
+tableChips.call(table, {
+  key: 'plant',
+  field: 'maxt',
+  mode: INCRE,
+  objectify: false
+})
+  |> decoEntries
+  |> says['sum by keys: plant -> maxt']
+'' |> logger
+
 

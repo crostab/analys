@@ -39,7 +39,7 @@ $ npm install @analys/<tool-name>
 | [**crostab**](packages/core/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
 | [**samples**](packages/core/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
 | [**convert**](packages/convert)                        | Convert between samples and table         | convert         |![v][convert-dm]            |
-| [**tablespec**](packages/table/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
+| [**tablespec**](packages/structs/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
 | [**table-join**](packages/table/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
 | [**cubic**](packages/pivotal/cubic)                         | Crostab engine for combined query         | util            |![v][cubic-dm]              |
 | [**pivot**](packages/pivotal/pivot)                         | Crostab engine for single query           | util            |![v][pivot-dm]              |

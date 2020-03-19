@@ -8,7 +8,7 @@ import { unwind } from '@vect/entries-unwind'
  */
 export const selectKeyedColumns = function (labels) {
   let { rows } = this, indexes;
-  [this.head, indexes] = lookupIndexes.call(this, labels) |> unwind
+  [this.head, indexes] = lookupIndexes.call(this, labels) |> unwind;
   this.rows = selectCols(rows, indexes)
   return this
 }
@@ -30,6 +30,6 @@ export const lookupIndexes = function (labels) {
 export const lookupIndex = function (label) {
   const { head } = this
   if (!Array.isArray(label)) return [label, head.indexOf(label)]
-  let [current, projected] = label
+  const [current, projected] = label
   return [projected, head.indexOf(current)]
 }

@@ -14,5 +14,7 @@ table |> decoT |> says.original
 selectKeyedColumns.call(table, pickFields) |> decoT |> says.selected
 // selectKeyedColumns.call(table |> sliceTable, pickFields) |> decoT |> says.selected
 
+selectKeyedColumns.call(table, ['boxoffice']) |> decoT |> says.selected
+
 table |> decoT |> says.original
 
