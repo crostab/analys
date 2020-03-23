@@ -185,16 +185,16 @@ class Table {
     }, mutate);
   }
 
-  lookupOne(valueToFind, keyField, valueField, cached = true) {
-    return (cached ? tableLookup.lookupCached : tableLookup.lookup).call(this, valueToFind, keyField, valueField);
+  lookupOne(valueToFind, key, field, cached = true) {
+    return (cached ? tableLookup.lookupCached : tableLookup.lookup).call(this, valueToFind, key, field);
   }
 
-  lookupMany(valuesToFind, keyField, valueField) {
-    return tableLookup.lookupMany.call(this, valuesToFind, keyField, valueField);
+  lookupMany(valuesToFind, key, field) {
+    return tableLookup.lookupMany.call(this, valuesToFind, key, field);
   }
 
-  lookupTable(keyField, valueField, objectify) {
-    return tableLookup.lookupTable.call(this, keyField, valueField, objectify);
+  lookupTable(key, field, objectify) {
+    return tableLookup.lookupTable.call(this, key, field, objectify);
   }
   /**
    *

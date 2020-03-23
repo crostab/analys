@@ -90,11 +90,11 @@ export class Table {
   }
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
 
-  lookupOne (valueToFind, keyField, valueField, cached = true) {
-    return (cached ? lookupCached : lookup).call(this, valueToFind, keyField, valueField)
+  lookupOne (valueToFind, key, field, cached = true) {
+    return (cached ? lookupCached : lookup).call(this, valueToFind, key, field)
   }
-  lookupMany (valuesToFind, keyField, valueField) { return lookupMany.call(this, valuesToFind, keyField, valueField) }
-  lookupTable (keyField, valueField, objectify) { return lookupTable.call(this, keyField, valueField, objectify) }
+  lookupMany (valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
+  lookupTable (key, field, objectify) { return lookupTable.call(this, key, field, objectify) }
 
   /**
    *
