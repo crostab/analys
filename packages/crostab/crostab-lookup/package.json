@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab-lookup",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "A cross-crostab-lookup analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-lookups": "^0.1.2",
-    "@analys/table-lookup": "^0.1.2",
+    "@analys/enum-lookups": "^0.1.5",
+    "@analys/table-lookup": "^0.1.5",
     "@vect/entries-init": "^0.2.0",
     "@vect/object-init": "^0.2.0"
   },
