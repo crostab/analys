@@ -9,13 +9,14 @@ import { StatMx } from 'borel';
 import { NUM_ASC } from '@aryth/comparer';
 import { DistinctCount, Distinct } from '@aryth/distinct-column';
 import { size, transpose } from '@vect/matrix';
-import { mapper as mapper$1 } from '@vect/vector-mapper';
+import { mapper as mapper$1, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
 import { mapper } from '@vect/matrix-mapper';
 import { mutate } from '@vect/column-mapper';
 import { column } from '@vect/column-getter';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { tableChips } from '@analys/table-chips';
+import { inferTypes } from '@analys/table-types';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -67,7 +68,7 @@ class Table {
   }
   /**
    *
-   * @param {str|[*,*]} [headFields]
+   * @param {*|[*,*]} [headFields]
    * @returns {Object[]}
    */
 
@@ -141,12 +142,12 @@ class Table {
     return this.rows.unshift(row), this;
   }
 
-  pushColumn(label, col) {
-    return this.head.push(label), push(this.rows, col), this;
+  pushColumn(label, column) {
+    return this.head.push(label), push(this.rows, column), this;
   }
 
-  unshiftColumn(label, col) {
-    return this.head.unshift(label), unshift(this.rows, col), this;
+  unshiftColumn(label, column) {
+    return this.head.unshift(label), unshift(this.rows, column), this;
   }
 
   popRow() {
@@ -211,6 +212,48 @@ class Table {
   }
   /**
    *
+   * @param {*} label
+   * @param {*[]} column
+   * @param {*} field - next to the field, will the new column (label, column) be inserted
+   * @param afterField
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  insertColumn(label, column, {
+    field,
+    mutate = false
+  } = {}) {
+    var _this4;
+
+    const o = mutate ? this : (_this4 = this, shallow(_this4)),
+          index = this.coin(field) + 1;
+    o.head.splice(index, 0, label);
+    iterate(o.rows, (row, i) => row.splice(index, 0, column[i]));
+    return mutate ? this : Table.from(o);
+  }
+  /**
+   *
+   * @param {*} field
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  deleteColumn(field, {
+    mutate = false
+  } = {}) {
+    var _this5;
+
+    const o = mutate ? this : (_this5 = this, shallow(_this5)),
+          index = this.coin(field);
+    o.head.splice(index, 1);
+    o.rows.forEach(row => row.splice(index, 1));
+    return mutate ? this : Table.from(o);
+  }
+  /**
+   *
    * @param {*[]|[*,*][]} fields
    * @param {boolean=true} [mutate]
    * @returns {Table}
@@ -220,9 +263,9 @@ class Table {
   spliceColumns(fields, {
     mutate = false
   } = {}) {
-    var _this4;
+    var _this6;
 
-    const o = mutate ? this : (_this4 = this, shallow(_this4)),
+    const o = mutate ? this : (_this6 = this, shallow(_this6)),
           indexes = this.columnIndexes(fields).sort(NUM_ASC);
     splices(o.rows, indexes), splices$1(o.head, indexes);
     return mutate ? this : Table.from(o);
@@ -231,9 +274,9 @@ class Table {
   divide(fields, {
     mutate = false
   } = {}) {
-    var _this5;
+    var _this7;
 
-    const o = mutate ? this : (_this5 = this, shallow(_this5));
+    const o = mutate ? this : (_this7 = this, shallow(_this7));
     const {
       pick,
       rest
@@ -254,15 +297,15 @@ class Table {
   filter(filterCollection, {
     mutate = true
   } = {}) {
-    var _this6;
+    var _this8;
 
-    const o = mutate ? this : (_this6 = this, slice(_this6));
+    const o = mutate ? this : (_this8 = this, slice(_this8));
     tableFilter.call(o, filterCollection);
     return mutate ? this : this.copy(o);
   }
   /**
    *
-   * @param {Object<str,function(*?):boolean>} filter
+   * @param {Object<*,function(*?):boolean>} filter
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
@@ -271,9 +314,9 @@ class Table {
   find(filter, {
     mutate = true
   } = {}) {
-    var _this7;
+    var _this9;
 
-    const o = mutate ? this : (_this7 = this, slice(_this7));
+    const o = mutate ? this : (_this9 = this, slice(_this9));
     tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
   }
@@ -281,9 +324,9 @@ class Table {
   distinct(fields, {
     mutate = true
   } = {}) {
-    var _this8;
+    var _this10;
 
-    const o = mutate ? this : (_this8 = this, slice(_this8));
+    const o = mutate ? this : (_this10 = this, slice(_this10));
 
     for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field));
 
@@ -291,7 +334,7 @@ class Table {
   }
   /**
    *
-   * @param {str} field
+   * @param {*} field
    * @param {boolean} [count=false]
    * @param {string|boolean} [sort=false] - When sort is function, sort must be a comparer between two point element.
    * @returns {[any, any][]|[]|any[]|*}
@@ -319,13 +362,13 @@ class Table {
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    var _this9;
+    var _this11;
 
     const y = this.coin(field);
 
     const rowComparer = (a, b) => comparer(a[y], b[y]);
 
-    const o = mutate ? this : (_this9 = this, slice(_this9));
+    const o = mutate ? this : (_this11 = this, slice(_this11));
     o.rows.sort(rowComparer);
     return mutate ? this : this.copy(o);
   }
@@ -340,16 +383,16 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _this10;
+    var _this12;
 
-    let o = mutate ? this : (_this10 = this, slice(_this10));
+    let o = mutate ? this : (_this12 = this, slice(_this12));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
   /**
    * @param {Object} options
-   * @param {str} options.key
-   * @param {str} [options.field]
+   * @param {*} options.key
+   * @param {*} [options.field]
    * @param {number} [options.mode=ACCUM] - MERGE, ACCUM, INCRE, COUNT
    * @param {boolean} [options.objectify=true]
    * @return {[*,*][]|{}}
@@ -361,10 +404,10 @@ class Table {
   }
   /**
    * @param {Object} options
-   * @param {str} options.side
-   * @param {str} options.banner
+   * @param {*} options.side
+   * @param {*} options.banner
    * @param {*} [options.field]
-   * @param {Object<str,function(*?):boolean>} [options.filter]
+   * @param {Object<*,function(*?):boolean>} [options.filter]
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
@@ -375,8 +418,8 @@ class Table {
   }
   /**
    *
-   * @param {str} side
-   * @param {str} banner
+   * @param {*} side
+   * @param {*} banner
    * @param {CubeCell[]|CubeCell} [cell]
    * @param {Filter[]|Filter} [filter]
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
@@ -398,6 +441,14 @@ class Table {
       cell,
       filter,
       formula
+    });
+  }
+
+  inferTypes({
+    inferType
+  }) {
+    return inferTypes.call(this, {
+      inferType
     });
   }
   /** @returns {Table} */

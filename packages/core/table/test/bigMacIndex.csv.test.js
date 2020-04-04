@@ -1,5 +1,5 @@
 import ora from 'ora'
-import { promises as fsPromise } from 'fs'
+import { promises } from 'fs'
 import { NaiveCsv } from 'naivecsv'
 import { DecoCrostab, DecoTable, DecoVector, logger, logNeL } from '@spare/logger'
 import { INCRE } from '@analys/enum-pivot-mode'
@@ -8,17 +8,17 @@ import { matchSlice } from '@analys/table-init'
 import { Table } from '../src/Table'
 import { ROWWISE } from '@vect/matrix'
 import { STR_DESC } from '@aryth/comparer'
-import { deca } from '@spare/deco'
+import { deca, delogger } from '@spare/deco'
 
 const spn = ora()
-const WORKSPACE = './packages/table/'
+const WORKSPACE = './packages/core/table/'
 const SOURCE = WORKSPACE + 'test/assets/big-mac-source-data.csv'
 const TARGET_TABLE = WORKSPACE + 'test/assets/out/BigMacIndex.Table.json'
 const TARGET_SAMPLES = WORKSPACE + 'test/assets/out/BigMacIndex.Samples.json'
 const TARGET_CROSTAB = WORKSPACE + 'test/assets/out/BigMacIndex.CrosTab.json'
 
 spn.start(`start reading: ${SOURCE}`)
-fsPromise
+promises
   .readFile(SOURCE, 'utf-8')
   .then(it => {
     spn.succeed(`done reading: ${SOURCE}`)
@@ -36,11 +36,12 @@ fsPromise
       .mutateColumn('price', x => isNumeric(x) ? +x : NaN)
       .mutateColumn('gdppc', x => isNumeric(x) ? +x : NaN)
       .sort('date', STR_DESC, { mutate: true })
+    table.inferTypes() |> delogger
     table |> DecoTable({ top: 8, bottom: 4 })|> logNeL
-    await fsPromise.writeFile(TARGET_TABLE, JSON.stringify(table))
+    await promises.writeFile(TARGET_TABLE, JSON.stringify(table))
     const samples = table.toSamples()
     samples |> DecoVector({ head: 1, tail: 1, abstract: deca({ al: 128 }) }) |> logNeL
-    await fsPromise.writeFile(TARGET_SAMPLES, JSON.stringify(samples))
+    await promises.writeFile(TARGET_SAMPLES, JSON.stringify(samples))
     return table
   })
   .then(table => {
@@ -63,6 +64,6 @@ fsPromise
   })
   .then(async crosTab => {
     crosTab |> DecoCrostab({ top: 5, bottom: 3, left: 5, right: 5 }) |> logger
-    await fsPromise.writeFile(TARGET_CROSTAB, JSON.stringify(crosTab))
+    await promises.writeFile(TARGET_CROSTAB, JSON.stringify(crosTab))
   })
 

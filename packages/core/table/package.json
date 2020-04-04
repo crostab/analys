@@ -23,6 +23,7 @@
     "@analys/table-init": "^0.1.5",
     "@analys/table-lookup": "^0.1.5",
     "@analys/table-pivot": "^0.1.5",
+    "@analys/table-types": "^0.1.5",
     "@aryth/comparer": "^0.1.0",
     "@aryth/distinct-column": "^0.1.0",
     "@vect/column-getter": "^0.2.0",

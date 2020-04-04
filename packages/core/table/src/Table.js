@@ -9,7 +9,7 @@ import { StatMx } from 'borel'
 import { NUM_ASC } from '@aryth/comparer'
 import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
 import { size, transpose } from '@vect/matrix'
-import { mapper } from '@vect/vector-mapper'
+import { iterate, mapper } from '@vect/vector-mapper'
 import { splices } from '@vect/vector-update'
 import { mapper as mapperMatrix } from '@vect/matrix-mapper'
 import { mutate as mutateColumn } from '@vect/column-mapper'
@@ -22,6 +22,7 @@ import {
   unshift as unshiftColumn
 } from '@vect/columns-update'
 import { tableChips } from '@analys/table-chips'
+import { inferTypes } from '@analys/table-types'
 
 export class Table {
   /** @type {*[]} */ head
@@ -46,7 +47,7 @@ export class Table {
 
   /**
    *
-   * @param {str|[*,*]} [headFields]
+   * @param {*|[*,*]} [headFields]
    * @returns {Object[]}
    */
   toSamples (headFields) {
@@ -78,8 +79,8 @@ export class Table {
 
   pushRow (row) { return this.rows.push(row), this }
   unshiftRow (row) { return this.rows.unshift(row), this }
-  pushColumn (label, col) { return this.head.push(label), pushColumn(this.rows, col), this }
-  unshiftColumn (label, col) { return this.head.unshift(label), unshiftColumn(this.rows, col), this }
+  pushColumn (label, column) { return this.head.push(label), pushColumn(this.rows, column), this }
+  unshiftColumn (label, column) { return this.head.unshift(label), unshiftColumn(this.rows, column), this }
   popRow () { return this.rows.pop() }
   shiftRow () { return this.rows.shift() }
   popColumn () { return popColumn(this.rows) }
@@ -106,6 +107,35 @@ export class Table {
     let o = mutate ? this : this |> slice
     selectKeyedColumns.call(o, fields)
     return mutate ? this : this.copy(o)
+  }
+
+  /**
+   *
+   * @param {*} label
+   * @param {*[]} column
+   * @param {*} field - next to the field, will the new column (label, column) be inserted
+   * @param afterField
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+  insertColumn (label, column, { field, mutate = false } = {}) {
+    const o = mutate ? this : this |> shallow, index = this.coin(field) + 1
+    o.head.splice(index, 0, label)
+    iterate(o.rows, (row, i) => row.splice(index, 0, column[i]))
+    return mutate ? this : Table.from(o)
+  }
+
+  /**
+   *
+   * @param {*} field
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+  deleteColumn (field, { mutate = false } = {}) {
+    const o = mutate ? this : this |> shallow, index = this.coin(field)
+    o.head.splice(index, 1)
+    o.rows.forEach(row => row.splice(index, 1))
+    return mutate ? this : Table.from(o)
   }
 
   /**
@@ -140,7 +170,7 @@ export class Table {
 
   /**
    *
-   * @param {Object<str,function(*?):boolean>} filter
+   * @param {Object<*,function(*?):boolean>} filter
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
@@ -158,7 +188,7 @@ export class Table {
 
   /**
    *
-   * @param {str} field
+   * @param {*} field
    * @param {boolean} [count=false]
    * @param {string|boolean} [sort=false] - When sort is function, sort must be a comparer between two point element.
    * @returns {[any, any][]|[]|any[]|*}
@@ -198,8 +228,8 @@ export class Table {
 
   /**
    * @param {Object} options
-   * @param {str} options.key
-   * @param {str} [options.field]
+   * @param {*} options.key
+   * @param {*} [options.field]
    * @param {number} [options.mode=ACCUM] - MERGE, ACCUM, INCRE, COUNT
    * @param {boolean} [options.objectify=true]
    * @return {[*,*][]|{}}
@@ -208,10 +238,10 @@ export class Table {
 
   /**
    * @param {Object} options
-   * @param {str} options.side
-   * @param {str} options.banner
+   * @param {*} options.side
+   * @param {*} options.banner
    * @param {*} [options.field]
-   * @param {Object<str,function(*?):boolean>} [options.filter]
+   * @param {Object<*,function(*?):boolean>} [options.filter]
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
@@ -219,8 +249,8 @@ export class Table {
 
   /**
    *
-   * @param {str} side
-   * @param {str} banner
+   * @param {*} side
+   * @param {*} banner
    * @param {CubeCell[]|CubeCell} [cell]
    * @param {Filter[]|Filter} [filter]
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
@@ -235,6 +265,12 @@ export class Table {
     formula
   }) { return pivotDev(this, { side, banner, cell, filter, formula }) }
 
+  inferTypes ({ inferType, mutate = false } = {}) {
+    const types = inferTypes.call(this, { inferType })
+    if (mutate) this.types = types
+    return types
+  }
+
   /** @returns {Table} */
   boot ({ types, head, rows } = {}, mutate) {
     if (mutate) {
@@ -242,7 +278,8 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    } else {
+    }
+    else {
       return this.copy({ types, head, rows })
     }
   }
@@ -255,3 +292,5 @@ export class Table {
     return new Table(head, rows, this.title, types)
   }
 }
+
+
