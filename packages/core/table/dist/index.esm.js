@@ -445,11 +445,14 @@ class Table {
   }
 
   inferTypes({
-    inferType
-  }) {
-    return inferTypes.call(this, {
+    inferType,
+    mutate = false
+  } = {}) {
+    const types = inferTypes.call(this, {
       inferType
     });
+    if (mutate) this.types = types;
+    return types;
   }
   /** @returns {Table} */
 
