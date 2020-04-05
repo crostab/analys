@@ -1,6 +1,6 @@
 import { TableCollection } from '@foba/table'
 import { deco } from '@spare/deco'
-import { DecoEntries, DecoTable, logger, says } from '@spare/logger'
+import { DecoEntries, decoTable, DecoTable, logger, says } from '@spare/logger'
 import { camelToSnake } from '@spare/phrasing'
 import { Table } from '../src/Table'
 import { xr } from '@spare/xr'
@@ -9,7 +9,10 @@ import { LF } from '@spare/enum-chars'
 const TITLE = 'AeroEngineSpecs' |> camelToSnake
 const table = TableCollection.AeroEngineSpecs |> Table.from
 
-table |> DecoTable({ top: 3, bottom: 2 }) |> says['table ' + TITLE]
+table
+  // |> DecoTable({ top: 3, bottom: 2 })
+  |> decoTable
+  |> says['table ' + TITLE]
 
 '' |> logger
 
@@ -24,7 +27,7 @@ const valueToFind = 'EJ200'
 xr('lookup once').p(LF)
   ['value to find'](valueToFind).p(LF)
   ['key field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)
-  ['result'](table.lookupOne('EJ200', KEY_FIELD, VALUE_FIELD, false))
+  ['result'](table.lookupOne('EJ200', KEY_FIELD, VALUE_FIELD, true))
   |> says['table ' + TITLE]
 
 '' |> logger

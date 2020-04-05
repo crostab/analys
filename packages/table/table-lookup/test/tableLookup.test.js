@@ -9,7 +9,7 @@ const table = TableCollection.AeroEngineSpecs
 
 table |> decoTable |> logger
 
-const dict = lookupTable.call(table, 'sku', 'maxtwa')
+const dict = lookupTable.call(table, 'sku', 'maxtwa', true)
 
 const { lapse, result } = strategies({
   repeat: 2E+6,
@@ -20,8 +20,8 @@ const { lapse, result } = strategies({
   methods: {
     bench: (x, k, v) => ([x, k, v]),
     classic: (x, k, v) => lookup.call(table, x, k, v),
-    fut: (x, k, v) => lookupCached.call(table, x, k, v),
-    byDict: (x, k, v) => dict[x],
+    cached: (x, k, v) => lookupCached.call(table, x, k, v),
+    edge: (x, k, v) => dict[x],
   },
   showParams: false
 })
