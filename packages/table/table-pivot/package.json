@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-pivot",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A cross-table-pivot analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,13 +15,13 @@
     "test": "node -r @babel/register test/alpha/simple.pivot.test.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.1.6",
-    "@analys/cubic": "^0.1.6",
-    "@analys/pivot": "^0.1.6",
-    "@analys/table-filter": "^0.1.6",
-    "@analys/table-find": "^0.1.6",
-    "@analys/table-init": "^0.1.6",
-    "@analys/tablespec": "^0.1.6",
+    "@analys/crostab": "^0.1.7",
+    "@analys/cubic": "^0.1.7",
+    "@analys/pivot": "^0.1.7",
+    "@analys/table-filter": "^0.1.7",
+    "@analys/table-find": "^0.1.7",
+    "@analys/table-init": "^0.1.7",
+    "@analys/tablespec": "^0.1.7",
     "@vect/matrix": "^0.2.0",
     "@vect/vector-mapper": "^0.2.0"
   },
