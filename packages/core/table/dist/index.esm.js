@@ -493,6 +493,10 @@ class Table {
     return new Table(head, rows, this.title, types);
   }
 
+  from(AeroEngineSpecs) {
+    return undefined;
+  }
+
 }
 
 export { Table };

@@ -291,6 +291,9 @@ export class Table {
     if (!types) types = this.types?.slice()
     return new Table(head, rows, this.title, types)
   }
+  from (AeroEngineSpecs) {
+    return undefined
+  }
 }
 
 

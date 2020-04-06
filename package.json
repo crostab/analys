@@ -41,7 +41,7 @@
     "@spare/logger": "^0.4.8",
     "@spare/phrasing": "^0.4.8",
     "@spare/xr": "^0.4.8",
-    "@typen/num-strict": "^0.0.6",
+    "@typen/num-strict": "^0.0.7",
     "@valjoux/convert": "^0.0.5",
     "@valjoux/strategies": "^0.0.5",
     "@vect/matrix-mapper": "^0.2.0",
