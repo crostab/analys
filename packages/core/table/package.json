@@ -1,6 +1,6 @@
 {
   "name": "@analys/table",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -22,8 +22,8 @@
     "@analys/table-find": "^0.1.8",
     "@analys/table-init": "^0.1.8",
     "@analys/table-lookup": "^0.1.8",
-    "@analys/table-pivot": "^0.1.8",
-    "@analys/table-types": "^0.1.8",
+    "@analys/table-pivot": "^0.1.9",
+    "@analys/table-types": "^0.1.9",
     "@aryth/comparer": "^0.1.0",
     "@aryth/distinct-column": "^0.1.0",
     "@vect/column-getter": "^0.2.0",
