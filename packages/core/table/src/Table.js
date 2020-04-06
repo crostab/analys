@@ -265,8 +265,8 @@ export class Table {
     formula
   }) { return pivotDev(this, { side, banner, cell, filter, formula }) }
 
-  inferTypes ({ inferType, mutate = false } = {}) {
-    const types = inferTypes.call(this, { inferType })
+  inferTypes ({ inferType, omitNull = true, mutate = false } = {}) {
+    const types = inferTypes.call(this, { inferType, omitNull })
     if (mutate) this.types = types
     return types
   }

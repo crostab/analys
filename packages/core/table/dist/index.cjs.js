@@ -450,10 +450,12 @@ class Table {
 
   inferTypes({
     inferType,
+    omitNull = true,
     mutate = false
   } = {}) {
     const types = tableTypes.inferTypes.call(this, {
-      inferType
+      inferType,
+      omitNull
     });
     if (mutate) this.types = types;
     return types;

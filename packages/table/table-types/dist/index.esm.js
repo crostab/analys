@@ -1,11 +1,15 @@
 import { mapper } from '@vect/columns-mapper';
-import { vectorType } from '@typen/vector-type';
+import { VectorType } from '@typen/vector-type';
 
 const inferTypes = function ({
-  inferType
+  inferType,
+  omitNull = true
 } = {}) {
   const table = this;
-  return mapper(table.rows, vectorType.bind(inferType));
+  return mapper(table.rows, VectorType({
+    inferType,
+    omitNull
+  }));
 };
 
 export { inferTypes };

@@ -7,7 +7,7 @@ import { isNumeric } from '@typen/num-strict'
 import { NUMSTR } from '@typen/enum-tabular-types'
 
 let table = TableCollection.AeroEngineSpecs
-
+table.rows.push(table.rows[0].map(() => undefined))
 table |> decoTable |> says['original']
 
 inferTypes.call(table, { inferType: InferType({ isNumeric: isNumeric, numstr: NUMSTR }) }) |> delogger
