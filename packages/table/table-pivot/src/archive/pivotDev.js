@@ -3,7 +3,7 @@ import { Cubic } from '@analys/cubic'
 import { CrosTab } from '@analys/crostab'
 import { slice } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'
-import { iterate } from '@vect/vector-mapper'
+import { mapper } from '@vect/vector-mapper'
 import { parseCell } from '@analys/tablespec'
 
 /**
@@ -28,11 +28,9 @@ export const pivotDev = (
   const { head, rows } = table, [x, y] = [head.indexOf(side), head.indexOf(banner)]
   let pivotter
   const pivot = Array.isArray(cell = parseCell(cell, side))
-    ? (pivotter = true, Cubic.build(x, y, (iterate(cell, appendIndex.bind(head)), cell)))
+    ? (pivotter = true, Cubic.build(x, y, mapper(cell, ({ field, mode }) => [head.indexOf(field), mode])))
     : (pivotter = false, Pivot.build(x, y, head.indexOf(cell.field), cell.mode))
   const crostab = CrosTab.from(pivot.spread(rows).toJson())
   if (pivotter && formula) crostab.map(ar => formula.apply(null, ar))
   return crostab
 }
-
-const appendIndex = function (cell) { cell.index = this.indexOf(cell.field) }

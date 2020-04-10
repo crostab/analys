@@ -1,3 +1,2 @@
-export { arid, acid, expand } from './src/indexer'
-export { skeleton, increSkeleton, accumSkeleton, cubicSkeleton } from './src/skeleton'
-export { sortKeyedVectors } from './src/sortKeyedVectors'
+export { ampliCell, arid, acid }                                   from './src/ampliCell'
+export { Accrual, tallyMerge, tallyAccum, tallyIncre, tallyCount } from './src/Accrual'

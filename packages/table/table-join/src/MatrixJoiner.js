@@ -21,7 +21,7 @@ export const Joiner = (joinType) => {
   }
 }
 
-/** @typedef {{key:*[],vector:*[]}} MultiKeyedVector */
+/** @typedef {{keyIndex:*[],vector:*[]}} MultiKeyedVector */
 
 /**
  * @param {MultiKeyedVector[]} L

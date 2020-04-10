@@ -1,6 +1,6 @@
-import { NUM, OBJ, STR } from '@typen/enums'
-import { COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { mapper } from '@vect/vector-mapper'
+import { NUM, OBJ, STR } from '@typen/enum-data-types'
+import { COUNT, INCRE }  from '@analys/enum-pivot-mode'
+import { mapper }        from '@vect/vector-mapper'
 
 export const parseCell = (cell, defaultField) => {
   if (cell === void 0 || cell === null) return defaultCell(defaultField)

@@ -1,7 +1,7 @@
 import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
 import { deco, logger, xr } from '@spare/logger'
-import { pair } from '@vect/object-init'
-import { parseFieldSet } from '../src/parseFieldSet'
+import { pair }       from '@vect/object-init'
+import { parseField } from '../src/parseField'
 
 const FOO = 'foo', BAR = 'bar', KHA = 'kha', MIA = 'mia'
 const candidates = {
@@ -16,6 +16,6 @@ const candidates = {
 }
 
 for (const [key, value] of Object.entries(candidates)) {
-  xr(key).parsed(parseFieldSet(value, BAR) |> deco) |> logger
+  xr(key).parsed(parseField(value, BAR) |> deco) |> logger
 }
 

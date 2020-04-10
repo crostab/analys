@@ -1,9 +1,9 @@
-import { Foba } from '@foba/table'
-import { decoCrostab, decoTable, deco, says } from '@spare/logger'
-import { slice } from '@analys/table-init'
-import { pivotEdge } from '../src/pivotEdge'
-import { INCRE, COUNT } from '@analys/enum-pivot-mode'
-import { isNumeric } from '@typen/num-strict'
+import { Foba }                               from '@foba/table'
+import { deco, decoCrostab, decoTable, says } from '@spare/logger'
+import { slice }                              from '@analys/table-init'
+import { pivotEdge }                          from '../src/pivotEdge'
+import { COUNT }                              from '@analys/enum-pivot-mode'
+import { isNumeric }                          from '@typen/num-strict'
 
 const ROSTER = 'BistroDutyRoster'
 const table = Foba[ROSTER] |> slice

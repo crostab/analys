@@ -1,68 +1,33 @@
 import { init } from '@vect/vector-init';
-import { mapper } from '@vect/vector-mapper';
-import { ACCUM } from '@analys/enum-pivot-mode';
-import { zipper } from '@vect/vector-zipper';
+import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
 
+const ampliCell = function (side, banner) {
+  return this.m[arid.call(this, side)][acid.call(this, banner)];
+};
 const arid = function (x) {
-  let i = this.s.indexOf(x);
-  if (i >= 0) return i;
-  return i + (this.m.push(init(this.b.length, this.n)), this.s.push(x));
+  const ri = this.s.indexOf(x);
+  if (ri >= 0) return ri;
+  return this.m.push(init(this.b.length, this.n)), ri + this.s.push(x);
 };
 const acid = function (y) {
-  let j = this.b.indexOf(y);
-  if (j >= 0) return j;
-  return j + (mapper(this.m, row => row.push(this.n()), this.s.length), this.b.push(y));
-};
-const expand = function (x, y) {
-  arid.call(this, x), acid.call(this, y);
+  const ci = this.b.indexOf(y);
+  if (ci >= 0) return ci;
+  return this.m.forEach(r => r.push(this.n())), ci + this.b.push(y);
 };
 
-const skeleton = ({
-  s = [],
-  b = [],
-  m = [],
-  n
-} = {}) => ({
-  s,
-  b,
-  m,
-  n
-});
-const increSkeleton = () => skeleton({
-  n: () => 0
-});
-const accumSkeleton = () => skeleton({
-  n: () => []
-});
-const cubicSkeleton = band => {
-  const nvs = vacancyCreators(band);
+// export default Function.prototype.apply.bind(Array.prototype.push)
+const acquire = (va, vb) => (Array.prototype.push.apply(va, vb), va); // export default Function.prototype.call.bind(Array.prototype.concat)
 
-  const n = () => mapper(nvs, nv => nv());
-
-  return skeleton({
-    n
-  });
+const tallyMerge = (target, value) => acquire(target, value);
+const tallyAccum = (target, value) => (target.push(value), target);
+const tallyIncre = (target, value) => target + value;
+const tallyCount = target => target++;
+const Accrual = mode => {
+  if (mode === MERGE) return tallyMerge;
+  if (mode === ACCUM) return tallyAccum;
+  if (mode === INCRE) return tallyIncre;
+  if (mode === COUNT) return tallyCount;
+  return () => {};
 };
 
-const vacancyCreators = band => band.map(({
-  mode
-}) => mode === ACCUM ? () => [] : () => 0);
-
-/**
- * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
- * @param {*[]} keys
- * @param {*[][]} vectors
- * @param {function(*,*):number} comparer
- * @param {number} [index]
- * @returns {[*[], *[][]]}
- */
-
-const sortKeyedVectors = (keys, vectors, comparer, index) => {
-  const keyComparer = (a, b) => comparer(a[0], b[0]);
-
-  const newKeys = Array(keys.length);
-  const newVectors = index >= 0 ? zipper(keys, vectors, (key, vector) => [vector[index], key, vector]).sort(keyComparer).map(([, k, r], i) => (newKeys[i] = k, r)) : zipper(keys, vectors, (key, vector) => [key, vector]).sort(keyComparer).map(([k, r], i) => (newKeys[i] = k, r));
-  return [newKeys, newVectors];
-};
-
-export { accumSkeleton, acid, arid, cubicSkeleton, expand, increSkeleton, skeleton, sortKeyedVectors };
+export { Accrual, acid, ampliCell, arid, tallyAccum, tallyCount, tallyIncre, tallyMerge };

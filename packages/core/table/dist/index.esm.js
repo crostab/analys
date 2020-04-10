@@ -1,3 +1,4 @@
+import { StatMx } from 'borel';
 import { slice, shallow } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
 import { tableFind } from '@analys/table-find';
@@ -5,18 +6,18 @@ import { tableDivide } from '@analys/table-divide';
 import { pivotEdge, pivotDev } from '@analys/table-pivot';
 import { lookupCached, lookup, lookupMany, lookupTable } from '@analys/table-lookup';
 import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
-import { StatMx } from 'borel';
-import { NUM_ASC } from '@aryth/comparer';
-import { DistinctCount, Distinct } from '@aryth/distinct-column';
-import { size, transpose } from '@vect/matrix';
 import { mapper as mapper$1, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
 import { mapper } from '@vect/matrix-mapper';
 import { mutate } from '@vect/column-mapper';
 import { column } from '@vect/column-getter';
-import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { tableChips } from '@analys/table-chips';
+import { tableGroup } from '@analys/table-group';
 import { inferTypes } from '@analys/table-types';
+import { NUM_ASC } from '@aryth/comparer';
+import { DistinctCount, Distinct } from '@aryth/distinct-column';
+import { size, transpose } from '@vect/matrix';
+import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -401,6 +402,18 @@ class Table {
 
   chips(options = {}) {
     return tableChips.call(this, options);
+  }
+  /**
+   * @param {Object} options
+   * @param {*} options.key
+   * @param {*} [options.field]
+   * @param {Function} [options.filter]
+   * @return {Table}
+   */
+
+
+  group(options = {}) {
+    return tableGroup.call(this, options);
   }
   /**
    * @param {Object} options

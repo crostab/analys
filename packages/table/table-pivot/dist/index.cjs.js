@@ -42,23 +42,22 @@ const pivotDev = (table, {
   } = table,
         [x, y] = [head.indexOf(side), head.indexOf(banner)];
   let pivotter;
-  const pivot$1 = Array.isArray(cell = tablespec.parseCell(cell, side)) ? (pivotter = true, cubic.Cubic.build(x, y, (vectorMapper.iterate(cell, appendIndex.bind(head)), cell))) : (pivotter = false, pivot.Pivot.build(x, y, head.indexOf(cell.field), cell.mode));
+  const pivot$1 = Array.isArray(cell = tablespec.parseCell(cell, side)) ? (pivotter = true, cubic.Cubic.build(x, y, vectorMapper.mapper(cell, ({
+    field,
+    mode
+  }) => [head.indexOf(field), mode]))) : (pivotter = false, pivot.Pivot.build(x, y, head.indexOf(cell.field), cell.mode));
   const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
   if (pivotter && formula) crostab$1.map(ar => formula.apply(null, ar));
   return crostab$1;
 };
 
-const appendIndex = function (cell) {
-  cell.index = this.indexOf(cell.field);
-};
-
 /**
  *
- * @param {TableObject} table
+ * @param {*} table
  * @param {string|number} side
  * @param {string|number} banner
  * @param {Object|*[]|string|number} [field]
- * @param {Object|Object<str,function(*?):boolean>} [filter]
+ * @param {Object<string|number,function(*?):boolean>} [filter]
  * @param {function():number} [formula] - formula is valid only when cell is CubeCell array.
  * @returns {CrosTab}
  */
@@ -71,32 +70,19 @@ const pivotEdge = (table, {
   formula
 }) => {
   if (filter) {
-    var _table;
-
-    table = tableFind.tableFind.call((_table = table, tableInit.slice(_table)), filter);
+    table = tableFind.tableFind.call(tableInit.slice(table), filter);
   }
 
   const {
     head,
     rows
-  } = table,
-        [x, y] = [head.indexOf(side), head.indexOf(banner)];
-  let cube, mode;
-  const fieldSet = tablespec.parseFieldSet(field, side); // fieldSet |> deco |> says['fieldSet']
-
-  const pivot$1 = matrix.isMatrix(fieldSet) ? (cube = true, cubic.Cubic.build(x, y, makeBand.call(head, fieldSet))) : (cube = false, [field, mode] = fieldSet, pivot.Pivot.build(x, y, head.indexOf(field), mode)); // pivot.configs |> delogger
-
-  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
-  if (cube && formula) crostab$1.map(ar => formula.apply(null, ar));
+  } = table;
+  let cubic$1;
+  const crostabEngine = matrix.isMatrix(field = tablespec.parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
+  ? (cubic$1 = true, new cubic.Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic$1 = false, new pivot.Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]));
+  const crostab$1 = crostab.CrosTab.from(crostabEngine.record(rows).toJson());
+  if (cubic$1 && formula) crostab$1.map(vec => formula.apply(null, vec));
   return crostab$1;
-};
-
-const makeBand = function (fieldSet) {
-  const head = this;
-  return vectorMapper.mapper(fieldSet, ([field, mode]) => ({
-    index: head.indexOf(field),
-    mode
-  }));
 };
 
 exports.pivotDev = pivotDev;

@@ -26,7 +26,7 @@ Object.entries(dict) |> DecoEntries({ head: 3, tail: 2 }) |> says[TITLE + ' look
 const valueToFind = 'EJ200'
 xr('lookup once').p(LF)
   ['value to find'](valueToFind).p(LF)
-  ['key field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)
+  ['keyIndex field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)
   ['result'](table.lookupOne('EJ200', KEY_FIELD, VALUE_FIELD, true))
   |> says['table ' + TITLE]
 
@@ -35,6 +35,6 @@ xr('lookup once').p(LF)
 const valuesToFind = ['EJ200', 'F100-PW-229', 'F110', 'WS-13']
 xr('lookup once').p(LF)
   ['values to find'](valueToFind).p(LF)
-  ['key field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)
+  ['keyIndex field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)
   ['result'](table.lookupMany(valuesToFind, KEY_FIELD, VALUE_FIELD, false) |> deco)
   |> says['table ' + TITLE]

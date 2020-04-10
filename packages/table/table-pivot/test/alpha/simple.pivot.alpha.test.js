@@ -1,8 +1,8 @@
 import { Foba } from '@foba/table'
 import { decoCrostab, decoTable, deco, says } from '@spare/logger'
-import { slice } from '@analys/table-init'
-import { pivotDev } from '../../src/pivotDev'
-import { INCRE } from '@analys/enum-pivot-mode'
+import { slice }    from '@analys/table-init'
+import { pivotDev } from '../../src/archive/pivotDev'
+import { INCRE }    from '@analys/enum-pivot-mode'
 import { isNumeric } from '@typen/num-strict'
 
 const { COUNT } = require('@analys/enum-pivot-mode')

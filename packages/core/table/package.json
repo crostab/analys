@@ -17,6 +17,7 @@
   "dependencies": {
     "@analys/keyed-columns": "^0.1.8",
     "@analys/table-chips": "^0.1.8",
+    "@analys/table-group": "^0.1.8",
     "@analys/table-divide": "^0.1.8",
     "@analys/table-filter": "^0.1.8",
     "@analys/table-find": "^0.1.8",

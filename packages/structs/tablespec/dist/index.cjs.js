@@ -39,35 +39,30 @@ const defaultCell = defaultField => ({
 
 /**
  *
- * @param {*} fieldSet
- * @param {str} def - default field
+ * @param {*} field
+ * @param {str} neglect - default field
  * @returns {[str,number]|[str,number][]}
  */
 
-const parseFieldSet = (fieldSet, def) => {
-  if (fieldSet === void 0 || fieldSet === null) return [def, enumPivotMode.COUNT];
+const parseField = (field, neglect) => {
+  if (field === void 0 || field === null) return [neglect, enumPivotMode.COUNT];
+  let t = typeof field,
+      ents;
 
-  switch (typeof fieldSet) {
-    case enumDataTypes.OBJ:
-      let ents;
+  if (t === enumDataTypes.OBJ) {
+    if (Array.isArray(field) && (ents = [])) {
+      field.map(subField => parseField(subField, neglect)).forEach(subField => matrix.isMatrix(subField) ? mergeAcquire.acquire(ents, subField) : ents.push(subField));
+    } else {
+      ents = Object.entries(field);
+    }
 
-      if (Array.isArray(fieldSet) && (ents = [])) {
-        vectorMapper.iterate(fieldSet, f => (f = parseFieldSet(f, def), matrix.isMatrix(f) ? mergeAcquire.acquire(ents, f) : ents.push(f)));
-      } else {
-        ents = Object.entries(fieldSet);
-      }
-
-      if (ents.length === 0) return [def, enumPivotMode.COUNT];
-      if (ents.length === 1) return ents[0];
-      return ents;
-
-    case enumDataTypes.STR:
-    case enumDataTypes.NUM:
-      return [fieldSet, enumPivotMode.INCRE];
-
-    default:
-      return [def, enumPivotMode.COUNT];
+    if (ents.length === 0) return [neglect, enumPivotMode.COUNT];
+    if (ents.length === 1) return ents[0];
+    return ents;
   }
+
+  if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [field, enumPivotMode.INCRE];
+  return [neglect, enumPivotMode.COUNT];
 };
 
 function _defineProperty(obj, key, value) {
@@ -166,4 +161,4 @@ class TableSpec {
 
 exports.TableSpec = TableSpec;
 exports.parseCell = parseCell;
-exports.parseFieldSet = parseFieldSet;
+exports.parseField = parseField;

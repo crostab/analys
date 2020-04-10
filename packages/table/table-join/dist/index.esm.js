@@ -49,7 +49,7 @@ const Joiner = joinType => {
       return joinIntersect;
   }
 };
-/** @typedef {{key:*[],vector:*[]}} MultiKeyedVector */
+/** @typedef {{keyIndex:*[],vector:*[]}} MultiKeyedVector */
 
 /**
  * @param {MultiKeyedVector[]} L

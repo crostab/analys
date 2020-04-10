@@ -1,6 +1,6 @@
 import { NUM, STR, OBJ } from '@typen/enum-data-types';
 import { COUNT, INCRE } from '@analys/enum-pivot-mode';
-import { mapper, iterate } from '@vect/vector-mapper';
+import { mapper } from '@vect/vector-mapper';
 import { acquire } from '@vect/merge-acquire';
 import { isMatrix } from '@vect/matrix';
 
@@ -35,35 +35,30 @@ const defaultCell = defaultField => ({
 
 /**
  *
- * @param {*} fieldSet
- * @param {str} def - default field
+ * @param {*} field
+ * @param {str} neglect - default field
  * @returns {[str,number]|[str,number][]}
  */
 
-const parseFieldSet = (fieldSet, def) => {
-  if (fieldSet === void 0 || fieldSet === null) return [def, COUNT];
+const parseField = (field, neglect) => {
+  if (field === void 0 || field === null) return [neglect, COUNT];
+  let t = typeof field,
+      ents;
 
-  switch (typeof fieldSet) {
-    case OBJ:
-      let ents;
+  if (t === OBJ) {
+    if (Array.isArray(field) && (ents = [])) {
+      field.map(subField => parseField(subField, neglect)).forEach(subField => isMatrix(subField) ? acquire(ents, subField) : ents.push(subField));
+    } else {
+      ents = Object.entries(field);
+    }
 
-      if (Array.isArray(fieldSet) && (ents = [])) {
-        iterate(fieldSet, f => (f = parseFieldSet(f, def), isMatrix(f) ? acquire(ents, f) : ents.push(f)));
-      } else {
-        ents = Object.entries(fieldSet);
-      }
-
-      if (ents.length === 0) return [def, COUNT];
-      if (ents.length === 1) return ents[0];
-      return ents;
-
-    case STR:
-    case NUM:
-      return [fieldSet, INCRE];
-
-    default:
-      return [def, COUNT];
+    if (ents.length === 0) return [neglect, COUNT];
+    if (ents.length === 1) return ents[0];
+    return ents;
   }
+
+  if (t === STR || t === NUM) return [field, INCRE];
+  return [neglect, COUNT];
 };
 
 function _defineProperty(obj, key, value) {
@@ -160,4 +155,4 @@ class TableSpec {
 
 }
 
-export { TableSpec, parseCell, parseFieldSet };
+export { TableSpec, parseCell, parseField };

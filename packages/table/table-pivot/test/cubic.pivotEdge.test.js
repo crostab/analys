@@ -1,9 +1,9 @@
-import { Foba } from '@foba/table'
-import { decoCrostab, decoTable, deco, says } from '@spare/logger'
-import { slice } from '@analys/table-init'
-import { pivotEdge } from '../src/pivotEdge'
-import { COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { isNumeric } from '@typen/num-strict'
+import { Foba }                               from '@foba/table'
+import { deco, decoCrostab, decoTable, says } from '@spare/logger'
+import { slice }                              from '@analys/table-init'
+import { pivotEdge }                          from '../src/pivotEdge'
+import { ACCUM, COUNT, INCRE }                from '@analys/enum-pivot-mode'
+import { isNumeric }                          from '@typen/num-strict'
 
 const ROSTER = 'BistroDutyRoster'
 const table = Foba[ROSTER] |> slice
@@ -14,7 +14,7 @@ const tableSpec = {
   banner: 'name',
   field: {
     sold: INCRE,
-    served: INCRE,
+    served: ACCUM,
     adt: COUNT,
   },
   filter: { sold: isNumeric },

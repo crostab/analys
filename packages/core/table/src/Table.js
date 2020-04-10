@@ -1,28 +1,29 @@
-import { shallow, slice } from '@analys/table-init'
-import { tableFilter } from '@analys/table-filter'
-import { tableFind } from '@analys/table-find'
-import { tableDivide } from '@analys/table-divide'
-import { pivotDev, pivotEdge } from '@analys/table-pivot'
-import { lookup, lookupCached, lookupMany, lookupTable } from '@analys/table-lookup'
-import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead } from '@analys/keyed-columns'
-import { StatMx } from 'borel'
-import { NUM_ASC } from '@aryth/comparer'
+import { StatMx }                                                               from 'borel'
+import { shallow, slice }                                                       from '@analys/table-init'
+import { tableFilter }                                                          from '@analys/table-filter'
+import { tableFind }                                                            from '@analys/table-find'
+import { tableDivide }                                                          from '@analys/table-divide'
+import { pivotDev, pivotEdge }                                                  from '@analys/table-pivot'
+import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
+import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead }       from '@analys/keyed-columns'
+import { iterate, mapper }                                                      from '@vect/vector-mapper'
+import { splices }                                                              from '@vect/vector-update'
+import { mapper as mapperMatrix }                                               from '@vect/matrix-mapper'
+import { mutate as mutateColumn }                                               from '@vect/column-mapper'
+import { column }                                                               from '@vect/column-getter'
+import { tableChips }                                                           from '@analys/table-chips'
+import { tableGroup }                                                           from '@analys/table-group'
+import { inferTypes }                                                           from '@analys/table-types'
+import { NUM_ASC }                                                              from '@aryth/comparer'
 import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
-import { size, transpose } from '@vect/matrix'
-import { iterate, mapper } from '@vect/vector-mapper'
-import { splices } from '@vect/vector-update'
-import { mapper as mapperMatrix } from '@vect/matrix-mapper'
-import { mutate as mutateColumn } from '@vect/column-mapper'
-import { column } from '@vect/column-getter'
+import { size, transpose }                                                      from '@vect/matrix'
 import {
   pop as popColumn,
   push as pushColumn,
   shift as shiftColumn,
   splices as splicesColumns,
   unshift as unshiftColumn
-} from '@vect/columns-update'
-import { tableChips } from '@analys/table-chips'
-import { inferTypes } from '@analys/table-types'
+}                                                                               from '@vect/columns-update'
 
 export class Table {
   /** @type {*[]} */ head
@@ -238,6 +239,15 @@ export class Table {
 
   /**
    * @param {Object} options
+   * @param {*} options.key
+   * @param {*} [options.field]
+   * @param {Function} [options.filter]
+   * @return {Table}
+   */
+  group (options = {}) { return tableGroup.call(this, options) }
+
+  /**
+   * @param {Object} options
    * @param {*} options.side
    * @param {*} options.banner
    * @param {*} [options.field]
@@ -278,8 +288,7 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    }
-    else {
+    } else {
       return this.copy({ types, head, rows })
     }
   }

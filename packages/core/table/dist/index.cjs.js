@@ -2,6 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var borel = require('borel');
 var tableInit = require('@analys/table-init');
 var tableFilter = require('@analys/table-filter');
 var tableFind = require('@analys/table-find');
@@ -9,18 +10,18 @@ var tableDivide = require('@analys/table-divide');
 var tablePivot = require('@analys/table-pivot');
 var tableLookup = require('@analys/table-lookup');
 var keyedColumns = require('@analys/keyed-columns');
-var borel = require('borel');
-var comparer = require('@aryth/comparer');
-var distinctColumn = require('@aryth/distinct-column');
-var matrix = require('@vect/matrix');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
 var matrixMapper = require('@vect/matrix-mapper');
 var columnMapper = require('@vect/column-mapper');
 var columnGetter = require('@vect/column-getter');
-var columnsUpdate = require('@vect/columns-update');
 var tableChips = require('@analys/table-chips');
+var tableGroup = require('@analys/table-group');
 var tableTypes = require('@analys/table-types');
+var comparer = require('@aryth/comparer');
+var distinctColumn = require('@aryth/distinct-column');
+var matrix = require('@vect/matrix');
+var columnsUpdate = require('@vect/columns-update');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -405,6 +406,18 @@ class Table {
 
   chips(options = {}) {
     return tableChips.tableChips.call(this, options);
+  }
+  /**
+   * @param {Object} options
+   * @param {*} options.key
+   * @param {*} [options.field]
+   * @param {Function} [options.filter]
+   * @return {Table}
+   */
+
+
+  group(options = {}) {
+    return tableGroup.tableGroup.call(this, options);
   }
   /**
    * @param {Object} options
