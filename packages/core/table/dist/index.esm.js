@@ -413,7 +413,7 @@ class Table {
 
 
   group(options = {}) {
-    return tableGroup.call(this, options);
+    return Table.from(tableGroup.call(this, options));
   }
   /**
    * @param {Object} options

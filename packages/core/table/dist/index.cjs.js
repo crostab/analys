@@ -417,7 +417,7 @@ class Table {
 
 
   group(options = {}) {
-    return tableGroup.tableGroup.call(this, options);
+    return Table.from(tableGroup.tableGroup.call(this, options));
   }
   /**
    * @param {Object} options

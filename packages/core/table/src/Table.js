@@ -244,7 +244,7 @@ export class Table {
    * @param {Function} [options.filter]
    * @return {Table}
    */
-  group (options = {}) { return tableGroup.call(this, options) }
+  group (options = {}) { return Table.from(tableGroup.call(this, options)) }
 
   /**
    * @param {Object} options
