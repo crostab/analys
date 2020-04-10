@@ -4,7 +4,7 @@ import { acquire }                    from '@vect/merge-acquire'
 export const tallyMerge = (target, value) => acquire(target, value)
 export const tallyAccum = (target, value) => (target.push(value), target)
 export const tallyIncre = (target, value) => target + value
-export const tallyCount = (target) => target++
+export const tallyCount = (target) => target + 1
 
 export const Accrual = (mode) => {
   if (mode === MERGE) return tallyMerge

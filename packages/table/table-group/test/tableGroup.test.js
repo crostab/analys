@@ -16,7 +16,7 @@ tableGroup.call(table, {
     sku: ACCUM,
     app: MERGE,
     maxt: INCRE,
-    country: COUNT,
+    bypass: COUNT,
   },
 })
   |> decoTable

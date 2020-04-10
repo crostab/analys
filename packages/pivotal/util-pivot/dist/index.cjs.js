@@ -25,7 +25,7 @@ const acquire = (va, vb) => (Array.prototype.push.apply(va, vb), va); // export 
 const tallyMerge = (target, value) => acquire(target, value);
 const tallyAccum = (target, value) => (target.push(value), target);
 const tallyIncre = (target, value) => target + value;
-const tallyCount = target => target++;
+const tallyCount = target => target + 1;
 const Accrual = mode => {
   if (mode === enumPivotMode.MERGE) return tallyMerge;
   if (mode === enumPivotMode.ACCUM) return tallyAccum;
