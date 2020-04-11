@@ -1,11 +1,11 @@
 import { Chrono } from 'elprimero'
-import { decoCrostab, says } from '@spare/logger'
-import { PivotVeho } from '../archive/pivot-veho/Pivot'
-import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { Pivot } from '@analys/pivot'
+import { decoCrostab, says }      from '@spare/logger'
+import { PivotVeho }              from '../archive/pivot-veho/Pivot'
+import { ACCUM, COUNT, INCRE }    from '@analys/enum-pivot-mode'
+import { Pivot }                  from '@analys/pivot'
 import { mapper as matrixMapper } from '@vect/matrix-mapper'
-import { Cubic } from '../../src/Cubic'
-import { deco } from '@spare/deco'
+import { Cubic }                  from '../../src/Cubic'
+import { deco }                   from '@spare/deco'
 
 const duties = {
   head: ['day', 'name', 'served', 'sold', 'adt'],

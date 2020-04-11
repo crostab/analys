@@ -1,7 +1,7 @@
 import { COUNT, INCRE }       from '@analys/enum-pivot-mode'
 import { Accrual, ampliCell } from '@analys/util-pivot'
-import { mutazip }            from '@vect/vector-zipper'
 import { iterate }            from '@vect/vector-mapper'
+import { mutazip }            from '@vect/vector-zipper'
 
 export class Cubic {
   /** @type {Function} */ cell

@@ -1,5 +1,5 @@
 import { keyedColumnsToSamples, selectSamplesByHead } from '@analys/keyed-columns'
-import { matchSlice } from '@analys/table-init'
+import { matchSlice }                                 from '@analys/table-init'
 
 /**
  *
@@ -9,5 +9,5 @@ import { matchSlice } from '@analys/table-init'
  */
 export const tableToSamples = (table, fields) =>
   fields?.length
-    ? selectSamplesByHead.call(table |> matchSlice, fields)
-    : keyedColumnsToSamples.call(table |> matchSlice)
+    ? selectSamplesByHead.call(matchSlice(table), fields)
+    : keyedColumnsToSamples.call(matchSlice(table))

@@ -1,5 +1,5 @@
+import { unwind }          from '@vect/entries-unwind'
 import { iterate, mapper } from '@vect/vector-mapper'
-import { unwind } from '@vect/entries-unwind'
 
 /**
  *

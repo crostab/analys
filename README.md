@@ -38,11 +38,11 @@ $ npm install @analys/<tool-name>
 | [**table**](packages/core/table)                            | Table (contains head and rows)            | core            |![v][table-dm]              |
 | [**crostab**](packages/core/crostab)                        | Crostab (contains side, head and rows)    | core            |![v][crostab-dm]            |
 | [**samples**](packages/core/samples)                        | Samples (array of identical-keyed object) | core            |![v][samples-dm]            |
-| [**convert**](packages/convert)                        | Convert between samples and table         | convert         |![v][convert-dm]            |
+| [**convert**](packages/core/convert)                        | Convert between samples and table         | convert         |![v][convert-dm]            |
 | [**tablespec**](packages/structs/tablespec)                    | Defines how to query for crostab          | query interface |![v][tablespec-dm]          |
 | [**table-join**](packages/table/table-join)                  | Join tables by union/intersect/left/right | table           |![v][table-join-dm]         |
-| [**cubic**](packages/pivotal/cubic)                         | Crostab engine for combined query         | util            |![v][cubic-dm]              |
-| [**pivot**](packages/pivotal/pivot)                         | Crostab engine for single query           | util            |![v][pivot-dm]              |
+| [**cubic**](packages/structs/cubic)                         | Crostab engine for combined query         | util            |![v][cubic-dm]              |
+| [**pivot**](packages/structs/pivot)                         | Crostab engine for single query           | util            |![v][pivot-dm]              |
 | [**enum-pivot-mode**](packages/constant/enum-pivot-mode)       | Pivot modes: INCRE/COUNT/ACCUM            | enum            |![v][enum-pivot-mode-dm]    |
 | [**enum-tabular-types**](packages/constant/enum-tabular-types) | Tabular types: SAMPLES/TABLE/CROSTAB      | enum            |![v][enum-tabular-types-dm] |
 |                                                        |                                           |                 |                            |

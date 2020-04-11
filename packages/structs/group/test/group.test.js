@@ -1,5 +1,5 @@
-import { INCRE }                                   from '@analys/enum-pivot-mode'
-import { Table }                                   from '@analys/table'
+import { INCRE }                                                from '@analys/enum-pivot-mode'
+import { Table }                                                from '@analys/table'
 import { TableCollection }                                      from '@foba/table'
 import { decoObject, decoSamples, decoTable, decoVector, says } from '@spare/logger'
 import { Group }                                                from '../src/Group'

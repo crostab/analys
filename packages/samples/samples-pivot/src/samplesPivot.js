@@ -1,6 +1,6 @@
-import { Cubic }                  from '@analys/cubic'
-import { Pivot }                  from '@analys/pivot'
-import { samplesFind }            from '@analys/samples-find'
+import { Cubic }       from '@analys/cubic'
+import { Pivot }       from '@analys/pivot'
+import { samplesFind } from '@analys/samples-find'
 import { parseField }             from '@analys/tablespec'
 import { mutate as mutateMatrix } from '@vect/matrix-mapper'
 

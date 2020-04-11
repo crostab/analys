@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/keyed-columns": "^0.1.11",
-    "@analys/table-init": "^0.1.11",
+    "@analys/keyed-columns": "^0.1.12",
+    "@analys/table-init": "^0.1.12",
     "@vect/entries-unwind": "^0.2.0",
     "@vect/vector-mapper": "^0.2.0"
   },

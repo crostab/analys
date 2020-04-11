@@ -1,5 +1,5 @@
-import { Pivot } from '@analys/pivot'
-import { Cubic } from '@analys/cubic'
+import { Pivot }   from '@analys/pivot'
+import { Cubic }   from '@analys/cubic'
 import { CrosTab } from '@analys/crostab'
 import { slice } from '@analys/table-init'
 import { tableFilter } from '@analys/table-filter'

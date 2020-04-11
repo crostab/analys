@@ -1,7 +1,7 @@
-import { Ar, Mx } from 'veho'
+import { Ar, Mx }     from 'veho'
 import { PivotModes } from './PivotModes'
 import { PivotUtils } from './PivotUtils'
-import { ACCUM } from '@analys/enum-pivot-mode'
+import { ACCUM }      from '@analys/enum-pivot-mode'
 
 const { select, map: mapAr } = Ar
 let s, b, mx

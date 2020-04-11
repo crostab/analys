@@ -1,7 +1,7 @@
-import { TableCollection } from '@foba/table'
-import { INCRE } from '@analys/enum-pivot-mode'
+import { TableCollection }   from '@foba/table'
+import { INCRE }             from '@analys/enum-pivot-mode'
 import { decoCrostab, says } from '@spare/logger'
-import { Pivot } from '../src/Pivot'
+import { Pivot }             from '../src/Pivot'
 
 const duties = TableCollection.BistroDutyRoster
 
