@@ -1,7 +1,7 @@
 {
-  "name": "@analys/table-chips",
+  "name": "@analys/samples-formula",
   "version": "0.2.0",
-  "description": "A cross-table-chips analytics tool",
+  "description": "A cross-samples-formula analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [
@@ -15,17 +15,18 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.2.0",
-    "@analys/util-pivot": "^0.2.0"
+    "@analys/formula": "^0.2.0",
+    "@analys/samples-find": "^0.2.0",
+    "@vect/vector-zipper": "^0.2.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "keywords": [
-    "table-chips",
+    "samples-formula",
     "crostab",
-    "cross-table-chips",
+    "cross-samples-formula",
     "pivot",
     "pivotal",
     "analyse",

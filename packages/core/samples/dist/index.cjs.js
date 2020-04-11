@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var samplesFind = require('@analys/samples-find');
+var samplesFormula = require('@analys/samples-formula');
 var samplesGroup = require('@analys/samples-group');
 var samplesPivot = require('@analys/samples-pivot');
 var samplesSelect = require('@analys/samples-select');
@@ -44,6 +45,10 @@ class Samples {
     }) : this.copy({
       data
     });
+  }
+
+  formula(configs) {
+    return samplesFormula.samplesFormula.call();
   }
 
   group(configs) {

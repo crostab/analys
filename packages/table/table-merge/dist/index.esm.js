@@ -1,6 +1,13 @@
 import { acquire, merge } from '@vect/merge-acquire';
 import { mutazip, zipper } from '@vect/vector-zipper';
 
+/**
+ *
+ * @param {Object|Table} ta
+ * @param {Object|Table} tb
+ * @returns {Object|Table}
+ */
+
 const tableAcquire = (ta, tb) => {
   acquire(ta.head, tb.head);
   mutazip(ta.rows, tb.rows, (va, vb) => acquire(va, vb));
@@ -8,9 +15,9 @@ const tableAcquire = (ta, tb) => {
 };
 /**
  *
- * @param {Table} ta
- * @param {Table} tb
- * @returns {Table}
+ * @param {Object|Table} ta
+ * @param {Object|Table} tb
+ * @returns {Object|Table}
  */
 
 const tableMerge = (ta, tb) => {

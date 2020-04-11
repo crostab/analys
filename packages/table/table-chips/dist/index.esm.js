@@ -1,11 +1,5 @@
 import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
-
-const acquire = (va, vb) => (Array.prototype.push.apply(va, vb), va); // export default Function.prototype.call.bind(Array.prototype.concat)
-
-
-const tallyMerge = (target, value) => acquire(target, value);
-
-const tallyAccum = (target, value) => (target.push(value), target);
+import { tallyMerge, tallyAccum } from '@analys/util-pivot';
 
 const findEntry = function (key) {
   return this.find(([k]) => key === k);

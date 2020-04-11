@@ -7,6 +7,7 @@ var tableChips = require('@analys/table-chips');
 var tableDivide = require('@analys/table-divide');
 var tableFilter = require('@analys/table-filter');
 var tableFind = require('@analys/table-find');
+var tableFormula = require('@analys/table-formula');
 var tableGroup = require('@analys/table-group');
 var tableInit = require('@analys/table-init');
 var tableLookup = require('@analys/table-lookup');
@@ -403,6 +404,19 @@ class Table {
 
   group(options = {}) {
     return Table.from(tableGroup.tableGroup.call(this, options));
+  }
+  /**
+   * @param {Object} options
+   * @param {[*[]]} [options.fields]
+   * @param {[Object<string,Function>]} [options.formulas]
+   * @param {Function} [options.filter]
+   * @param {boolean} [options.append=true]
+   * @return {Table}
+   */
+
+
+  formula(options = {}) {
+    return Table.from(tableFormula.tableFormula.call(this, options));
   }
   /**
    * @param {Object} options

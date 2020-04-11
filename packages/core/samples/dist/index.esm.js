@@ -1,4 +1,5 @@
 import { samplesFind } from '@analys/samples-find';
+import { samplesFormula } from '@analys/samples-formula';
 import { samplesGroup } from '@analys/samples-group';
 import { samplesPivot } from '@analys/samples-pivot';
 import { samplesSelect } from '@analys/samples-select';
@@ -40,6 +41,10 @@ class Samples {
     }) : this.copy({
       data
     });
+  }
+
+  formula(configs) {
+    return samplesFormula.call();
   }
 
   group(configs) {

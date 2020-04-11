@@ -20,6 +20,7 @@
     "@analys/table-divide": "^0.2.0",
     "@analys/table-filter": "^0.2.0",
     "@analys/table-find": "^0.2.0",
+    "@analys/table-formula": "^0.2.0",
     "@analys/table-group": "^0.2.0",
     "@analys/table-init": "^0.2.0",
     "@analys/table-lookup": "^0.2.0",

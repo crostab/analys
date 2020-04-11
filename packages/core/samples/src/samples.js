@@ -1,7 +1,8 @@
-import { samplesFind }   from '@analys/samples-find'
-import { samplesGroup }  from '@analys/samples-group'
-import { samplesPivot }  from '@analys/samples-pivot'
-import { samplesSelect } from '@analys/samples-select'
+import { samplesFind }    from '@analys/samples-find'
+import { samplesFormula } from '@analys/samples-formula'
+import { samplesGroup }   from '@analys/samples-group'
+import { samplesPivot }   from '@analys/samples-pivot'
+import { samplesSelect }  from '@analys/samples-select'
 
 export class Samples {
   constructor (samples, title, types) {
@@ -21,7 +22,7 @@ export class Samples {
     const data = samplesFind.call(this.data, filter)
     return mutate ? this.boot({ data }) : this.copy({ data })
   }
-
+  formula (configs) { return samplesFormula.call()}
   group (configs) { return Samples.from(samplesGroup.call(this.data, configs)) }
   crosTab (tablespec) { return samplesPivot.call(this.data, tablespec) }
 

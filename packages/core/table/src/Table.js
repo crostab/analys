@@ -3,6 +3,7 @@ import { tableChips }                                                           
 import { tableDivide }                                                          from '@analys/table-divide'
 import { tableFilter }                                                          from '@analys/table-filter'
 import { tableFind }                                                            from '@analys/table-find'
+import { tableFormula }                                                         from '@analys/table-formula'
 import { tableGroup }                                                           from '@analys/table-group'
 import { shallow, slice }                                                       from '@analys/table-init'
 import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
@@ -222,6 +223,16 @@ export class Table {
    * @return {Table}
    */
   group (options = {}) { return Table.from(tableGroup.call(this, options)) }
+
+  /**
+   * @param {Object} options
+   * @param {[*[]]} [options.fields]
+   * @param {[Object<string,Function>]} [options.formulas]
+   * @param {Function} [options.filter]
+   * @param {boolean} [options.append=true]
+   * @return {Table}
+   */
+  formula (options = {}) { return Table.from(tableFormula.call(this, options)) }
 
   /**
    * @param {Object} options
