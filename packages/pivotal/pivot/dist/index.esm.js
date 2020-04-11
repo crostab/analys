@@ -34,7 +34,7 @@ class Pivot {
     this.updater(sample[this.x], sample[this.y], sample[this.z]);
   }
 
-  toJson() {
+  toObject() {
     return {
       side: this.data.s,
       head: this.data.b,

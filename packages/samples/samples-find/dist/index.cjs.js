@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 /**
- * @param {Object<str,function(*):boolean>} filterObject
+ * @param {Object<string,function(*):boolean>} filterObject
  * @return {Object[]} - new array
  */
 const samplesFind = function (filterObject) {
@@ -14,7 +14,7 @@ const samplesFind = function (filterObject) {
   return samples;
 };
 /**
- * @param {str} field
+ * @param {string} field
  * @param {function(*):boolean} filter
  * @return {Object[]} - new array
  */

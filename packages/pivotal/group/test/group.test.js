@@ -1,8 +1,8 @@
-import { TableCollection }             from '@foba/table'
-import { INCRE }                       from '@analys/enum-pivot-mode'
-import { Table }                       from '@analys/table'
-import { Group }                       from '../src/Group'
-import { decoObject, decoTable, says } from '@spare/logger'
+import { INCRE }                                   from '@analys/enum-pivot-mode'
+import { Table }                                   from '@analys/table'
+import { TableCollection }                                      from '@foba/table'
+import { decoObject, decoSamples, decoTable, decoVector, says } from '@spare/logger'
+import { Group }                                                from '../src/Group'
 
 let table = TableCollection.BistroDutyRoster |> Table.from
 
@@ -11,4 +11,6 @@ table |> decoTable |> says['table']
 
 const group = Group.build(1, [[2, INCRE], [3, INCRE]], () => {})
 
-group.record(table.rows).toJson() |> decoObject |> says['group']
+group.record(table.rows).toRows() |> decoVector |> says['group rows']
+group.record(table.rows).toObject() |> decoObject |> says['group object']
+group.record(table.rows).toSamples() |> decoSamples |> says['group samples']

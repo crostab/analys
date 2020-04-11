@@ -25,7 +25,7 @@ export class Cubic {
     )
   }
 
-  toJson () {
+  toObject () {
     const { s, b, m } = this.data
     return { side: s, head: b, rows: m }
   }

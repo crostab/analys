@@ -28,7 +28,7 @@ export class TableSpec {
     return new TableSpec(side, banner, cell, filter, formula)
   }
 
-  toJson () {
+  toObject () {
     const { side, banner, cell, filter, formula } = this
     return { side, banner, cell, filter, formula }
   }

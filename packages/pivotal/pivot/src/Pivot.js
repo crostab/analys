@@ -18,7 +18,7 @@ export class Pivot {
 
   note (sample) { this.updater(sample[this.x], sample[this.y], sample[this.z]) }
 
-  toJson () { return { side: this.data.s, head: this.data.b, rows: this.data.m } }
+  toObject () { return { side: this.data.s, head: this.data.b, rows: this.data.m } }
 }
 
 export const Updater = function (data, mode) {

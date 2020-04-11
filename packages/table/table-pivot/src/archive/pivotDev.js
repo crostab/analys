@@ -30,7 +30,7 @@ export const pivotDev = (
   const pivot = Array.isArray(cell = parseCell(cell, side))
     ? (pivotter = true, Cubic.build(x, y, mapper(cell, ({ field, mode }) => [head.indexOf(field), mode])))
     : (pivotter = false, Pivot.build(x, y, head.indexOf(cell.field), cell.mode))
-  const crostab = CrosTab.from(pivot.spread(rows).toJson())
+  const crostab = CrosTab.from(pivot.spread(rows).toObject())
   if (pivotter && formula) crostab.map(ar => formula.apply(null, ar))
   return crostab
 }

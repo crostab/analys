@@ -1,5 +1,6 @@
 import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
 import { tallyMerge, tallyAccum } from '@analys/util-pivot';
+import { wind } from '@vect/object-init';
 import { iterate } from '@vect/vector-mapper';
 
 class Chips {
@@ -23,12 +24,17 @@ class Chips {
     this.updater(sample[this.key], sample[this.field]);
   }
 
-  toJson() {
+  toObject() {
     return this.data;
   }
 
   toRows() {
     return Object.entries(this.data);
+  }
+
+  toSamples() {
+    const head = [this.key, this.field];
+    return Object.entries(this.data).map(ent => wind(head, ent));
   }
 
 }

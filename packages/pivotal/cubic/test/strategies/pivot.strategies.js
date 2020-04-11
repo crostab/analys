@@ -38,7 +38,7 @@ class PivotStrategies {
       funcList: {
         bench: (rows, config) => matrixMapper(rows, x => x),
         fut: (rows, config) => new PivotVeho(config.mode).spreadPivot(rows, config),
-        arch: (rows, { x, y, z, mode, filter }) => new Pivot(x, y, z, mode, filter).spreadPivot(rows).toJson(),
+        arch: (rows, { x, y, z, mode, filter }) => new Pivot(x, y, z, mode, filter).spreadPivot(rows).toObject(),
       }
     })
     lapse |> decoCrostab |> says.lapse
@@ -61,7 +61,7 @@ class PivotStrategies {
       funcList: {
         bench: (rows, config) => matrixMapper(rows, x => x),
         fut: (rows, config) => new PivotVeho(config.mode).spreadCubic(rows, config),
-        arch: (rows, { x, y, band, filter }) => new Cubic(x, y, band, filter).spread(rows).toJson(),
+        arch: (rows, { x, y, band, filter }) => new Cubic(x, y, band, filter).spread(rows).toObject(),
       }
     })
     lapse |> decoCrostab |> says.lapse

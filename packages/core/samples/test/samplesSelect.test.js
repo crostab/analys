@@ -1,8 +1,8 @@
-import { Foba } from '@foba/table'
+import { Foba }           from '@foba/table'
 import { tableToSamples } from '@analys/convert'
-import { deco } from '@spare/deco'
-import { says } from '@spare/logger'
-import { samplesSelect } from '../src/samplesSelect'
+import { deco }           from '@spare/deco'
+import { says }           from '@spare/logger'
+import { samplesSelect }  from '../src/samplesSelect'
 
 const USFirms = 'USTechFirms'
 const samples = tableToSamples(Foba[USFirms])

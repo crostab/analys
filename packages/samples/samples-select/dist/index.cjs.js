@@ -13,33 +13,26 @@ var vectorMapper = require('@vect/vector-mapper');
  */
 
 function samplesSelect(samples, fields) {
-  if (!Array.isArray(fields)) return vectorMapper.mapper(samples, sample => objectMapper.mapper(sample, x => x));
-  const assigners = vectorMapper.mapper(fields, toAssigner);
-  return vectorMapper.mapper(samples, sample => {
-    let target = {};
-    return vectorMapper.iterate(assigners, assigner => {
-      assigner(target, sample);
-    }), target;
-  });
+  if (fields === null || fields === void 0 ? void 0 : fields.length) {
+    const assigners = vectorMapper.mapper(fields, field => Array.isArray(field) ? assigner.bind({
+      k: field[0],
+      p: field[1]
+    }) : assigner.bind({
+      k: field
+    }));
+    return vectorMapper.mapper(samples, sample => {
+      let target = {};
+      vectorMapper.iterate(assigners, fn => fn(target, sample));
+      return target;
+    });
+  }
+
+  return vectorMapper.mapper(samples, sample => objectMapper.mapper(sample, x => x));
 }
-const toAssigner = field => Array.isArray(field) ? assignProjectedField.bind({
-  curr: field[0],
-  proj: field[1]
-}) : assignField.bind({
-  field
-});
-const assignField = function (target, sample) {
-  let {
-    field
-  } = this;
-  target[field] = sample[field];
-};
-const assignProjectedField = function (target, sample) {
-  let {
-    proj,
-    curr
-  } = this;
-  target[proj] = sample[curr];
+const assigner = function (target, source) {
+  var _this$p;
+
+  target[(_this$p = this.p) !== null && _this$p !== void 0 ? _this$p : this.k] = source[this.k];
 };
 
 exports.samplesSelect = samplesSelect;

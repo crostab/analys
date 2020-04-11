@@ -18,6 +18,7 @@
     "@analys/enum-pivot-mode": "^0.1.11",
     "@analys/util-pivot": "^0.1.11",
     "@vect/merge-acquire": "^0.2.0",
+    "@vect/object-init": "^0.2.0",
     "@vect/vector-mapper": "^0.2.0",
     "@vect/vector-zipper": "^0.2.0"
   },

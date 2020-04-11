@@ -3,10 +3,11 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var enumPivotMode = require('@analys/enum-pivot-mode');
+var utilPivot = require('@analys/util-pivot');
+var mergeAcquire = require('@vect/merge-acquire');
+var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorZipper = require('@vect/vector-zipper');
-var mergeAcquire = require('@vect/merge-acquire');
-var utilPivot = require('@analys/util-pivot');
 
 class Group {
   constructor(key, fields, filter) {
@@ -25,6 +26,10 @@ class Group {
     return new Group(key, fields, filter);
   }
 
+  get indexes() {
+    return this.fields.map(([index]) => index);
+  }
+
   record(samples) {
     return vectorMapper.iterate(samples, this.note.bind(this)), this;
   }
@@ -34,12 +39,19 @@ class Group {
     vectorZipper.mutazip(key in this.data ? this.data[key] : this.data[key] = this.init(), this.fields, (target, [index, accrue]) => accrue(target, sample[index]));
   }
 
-  toJson() {
+  toObject() {
     return this.data;
   }
 
   toRows() {
-    return Object.entries(this.data).map(([key, value]) => mergeAcquire.acquire([key], value));
+    return Object.entries(this.data).map(([key, vec]) => mergeAcquire.acquire([key], vec));
+  }
+
+  toSamples() {
+    const {
+      indexes
+    } = this;
+    return Object.entries(this.data).map(([key, sample]) => Object.assign(objectInit.pair(this.key, key), objectInit.wind(indexes, sample)));
   }
 
 }

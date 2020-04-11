@@ -1,5 +1,5 @@
 import { mapper as mapperObject } from '@vect/object-mapper'
-import { iterate, mapper } from '@vect/vector-mapper'
+import { iterate, mapper }        from '@vect/vector-mapper'
 
 /**
  *
@@ -8,25 +8,18 @@ import { iterate, mapper } from '@vect/vector-mapper'
  * @returns {null|{head:*[],rows:*[][]}}
  */
 export function samplesSelect (samples, fields) {
-  if (!Array.isArray(fields)) return mapper(samples, sample => mapperObject(sample, x => x))
-  const assigners = mapper(fields, toAssigner)
-  return mapper(samples, sample => {
-    let target = {}
-    return iterate(assigners, assigner => {assigner(target, sample)}), target
-  })
+  if (fields?.length) {
+    const assigners = mapper(fields, field => Array.isArray(field)
+      ? assigner.bind({ k: field[0], p: field[1] })
+      : assigner.bind({ k: field })
+    )
+    return mapper(samples, sample => {
+      let target = {}
+      iterate(assigners, fn => fn(target, sample))
+      return target
+    })
+  }
+  return mapper(samples, sample => mapperObject(sample, x => x))
 }
 
-export const toAssigner = field =>
-  Array.isArray(field)
-    ? assignProjectedField.bind({ curr: field[0], proj: field[1] })
-    : assignField.bind({ field })
-
-export const assignField = function (target, sample) {
-  let { field } = this
-  target[field] = sample[field]
-}
-
-export const assignProjectedField = function (target, sample) {
-  let { proj, curr } = this
-  target[proj] = sample[curr]
-}
+export const assigner = function (target, source) { target[this.p ?? this.k] = source[this.k] }

@@ -1,7 +1,11 @@
 import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
 
-// export default Function.prototype.apply.bind(Array.prototype.push)
 const acquire = (va, vb) => (Array.prototype.push.apply(va, vb), va); // export default Function.prototype.call.bind(Array.prototype.concat)
+
+
+const tallyMerge = (target, value) => acquire(target, value);
+
+const tallyAccum = (target, value) => (target.push(value), target);
 
 const findEntry = function (key) {
   return this.find(([k]) => key === k);
@@ -11,7 +15,7 @@ const EntriesRecorder = mode => {
     const en = findEntry.call(this, x);
 
     if (en) {
-      acquire(en[1], v);
+      tallyMerge(en[1], v);
     } else {
       this.push([x, v.slice()]);
     }
@@ -20,7 +24,7 @@ const EntriesRecorder = mode => {
     const en = findEntry.call(this, x);
 
     if (en) {
-      en[1].push(v);
+      tallyAccum(en[1], v);
     } else {
       this.push([x, [v]]);
     }
@@ -49,14 +53,14 @@ const EntriesRecorder = mode => {
 const ObjectRecorder = mode => {
   if (mode === MERGE) return function (x, v) {
     if (x in this) {
-      acquire(this[x], v);
+      tallyMerge(this[x], v);
     } else {
       this[x] = v.slice();
     }
   };
   if (mode === ACCUM) return function (x, v) {
     if (x in this) {
-      this[x].push(v);
+      tallyAccum(this[x], v);
     } else {
       this[x] = [v];
     }

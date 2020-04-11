@@ -2,21 +2,21 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var keyedRows = require('@analys/keyed-rows');
-var keyedColumns = require('@analys/keyed-columns');
-var crostabLookup = require('@analys/crostab-lookup');
 var crostabInit = require('@analys/crostab-init');
+var crostabLookup = require('@analys/crostab-lookup');
+var keyedColumns = require('@analys/keyed-columns');
+var keyedRows = require('@analys/keyed-rows');
 var comparer = require('@aryth/comparer');
+var columnGetter = require('@vect/column-getter');
+var columnMapper = require('@vect/column-mapper');
+var columnsUpdate = require('@vect/columns-update');
 var enumMatrixDirections = require('@vect/enum-matrix-directions');
-var matrixTranspose = require('@vect/matrix-transpose');
-var vectorMapper = require('@vect/vector-mapper');
-var vectorZipper = require('@vect/vector-zipper');
 var matrixInit = require('@vect/matrix-init');
 var matrixMapper = require('@vect/matrix-mapper');
-var columnMapper = require('@vect/column-mapper');
-var columnGetter = require('@vect/column-getter');
-var columnsUpdate = require('@vect/columns-update');
+var matrixTranspose = require('@vect/matrix-transpose');
 var objectInit = require('@vect/object-init');
+var vectorMapper = require('@vect/vector-mapper');
+var vectorZipper = require('@vect/vector-zipper');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -87,11 +87,10 @@ class CrosTab {
     func,
     title
   }) {
-    const rows = matrixInit.init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y));
     return CrosTab.from({
       side,
       head,
-      rows,
+      rows: matrixInit.init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y)),
       title
     });
   }
@@ -106,7 +105,7 @@ class CrosTab {
     return indexed ? vectorZipper.zipper(this.head, samples, (l, s) => Object.assign(objectInit.pair(indexName, l), s)) : samples;
   }
 
-  toJson(mutate = false) {
+  toObject(mutate = false) {
     var _this, _this2;
 
     return mutate ? (_this = this, crostabInit.slice(_this)) : (_this2 = this, crostabInit.shallow(_this2));
@@ -147,8 +146,7 @@ class CrosTab {
   }
 
   element(x, y) {
-    const row = this.rows[x];
-    return row ? row[y] : undefined;
+    return x in this.rows ? this.rows[x][y] : undefined;
   }
 
   coordinate(r, c) {
@@ -169,15 +167,10 @@ class CrosTab {
   transpose(title, {
     mutate = true
   } = {}) {
-    const {
-      head: side,
-      side: head,
-      columns: rows
-    } = this;
     return this.boot({
-      side,
-      head,
-      rows,
+      side: this.head,
+      head: this.side,
+      rows: this.columns,
       title
     }, mutate);
   }

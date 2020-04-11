@@ -1,5 +1,5 @@
 /**
- * @param {Object<str,function(*):boolean>} filterObject
+ * @param {Object<string,function(*):boolean>} filterObject
  * @return {Object[]} - new array
  */
 export const samplesFind = function (filterObject) {
@@ -11,7 +11,7 @@ export const samplesFind = function (filterObject) {
 }
 
 /**
- * @param {str} field
+ * @param {string} field
  * @param {function(*):boolean} filter
  * @return {Object[]} - new array
  */

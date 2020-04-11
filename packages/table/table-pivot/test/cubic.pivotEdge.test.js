@@ -1,8 +1,8 @@
 import { Foba }                               from '@foba/table'
 import { deco, decoCrostab, decoTable, says } from '@spare/logger'
-import { slice }                              from '@analys/table-init'
-import { pivotEdge }                          from '../src/pivotEdge'
-import { ACCUM, COUNT, INCRE }                from '@analys/enum-pivot-mode'
+import { slice }               from '@analys/table-init'
+import { tablePivot }          from '../src/tablePivot'
+import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
 import { isNumeric }                          from '@typen/num-strict'
 
 const ROSTER = 'BistroDutyRoster'
@@ -22,7 +22,7 @@ const tableSpec = {
 }
 tableSpec |> deco |> says[ROSTER + ' tablespec']
 
-pivotEdge(table, tableSpec) |> decoCrostab |> says[ROSTER + ' crostab: conversion rate']
+tablePivot(table, tableSpec) |> decoCrostab |> says[ROSTER + ' crostab: conversion rate']
 
 //((sold / served) * 100).toFixed(0) + '%',
 

@@ -12,4 +12,4 @@ table |> decoTable |> says['table']
 
 const chip = Chips.build(1, 2, INCRE)
 
-chip.record(table.rows).toJson() |> decoObject |> says['chips']
+chip.record(table.rows).toObject() |> decoObject |> says['chips']

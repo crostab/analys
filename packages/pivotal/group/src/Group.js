@@ -1,8 +1,9 @@
 import { COUNT, INCRE } from '@analys/enum-pivot-mode'
+import { Accrual }      from '@analys/util-pivot'
+import { acquire }      from '@vect/merge-acquire'
+import { pair, wind }   from '@vect/object-init'
 import { iterate }      from '@vect/vector-mapper'
 import { mutazip }      from '@vect/vector-zipper'
-import { acquire }      from '@vect/merge-acquire'
-import { Accrual }      from '@analys/util-pivot'
 
 export class Group {
   constructor (key, fields, filter) {
@@ -16,6 +17,7 @@ export class Group {
   }
 
   static build (key, fields, filter) { return new Group(key, fields, filter) }
+  get indexes () {return this.fields.map(([index]) => index)}
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
@@ -28,8 +30,12 @@ export class Group {
     )
   }
 
-  toJson () { return this.data }
-  toRows () { return Object.entries(this.data).map(([key, value]) => acquire([key], value)) }
+  toObject () { return this.data }
+  toRows () { return Object.entries(this.data).map(([key, vec]) => acquire([key], vec)) }
+  toSamples () {
+    const { indexes } = this
+    return Object.entries(this.data).map(([key, sample]) => Object.assign(pair(this.key, key), wind(indexes, sample)))
+  }
 }
 
 

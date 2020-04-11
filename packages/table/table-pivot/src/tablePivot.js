@@ -16,15 +16,15 @@ import { isMatrix }   from '@vect/matrix'
  * @param {function():number} [formula] - formula is valid only when cell is CubeCell array.
  * @returns {CrosTab}
  */
-export const pivotEdge = (
-  table, {
-    side,
-    banner,
-    field,
-    filter,
-    formula
-  }) => {
-  if (filter) { table = tableFind.call(slice(table), filter) }
+export const tablePivot = function ({
+  side,
+  banner,
+  field,
+  filter,
+  formula
+}) {
+  const table = slice(this)
+  if (filter) { tableFind.call(table, filter) }
   const { head, rows } = table
   let cubic
   const crostabEngine = isMatrix(field = parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
@@ -32,7 +32,7 @@ export const pivotEdge = (
       new Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode])))
     : (cubic = false,
       new Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]))
-  const crostab = CrosTab.from(crostabEngine.record(rows).toJson())
+  const crostab = CrosTab.from(crostabEngine.record(rows).toObject())
   if (cubic && formula) crostab.map(vec => formula.apply(null, vec))
   return crostab
 }

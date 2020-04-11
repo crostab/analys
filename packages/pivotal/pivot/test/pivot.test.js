@@ -15,5 +15,5 @@ const dutiesBeta = {
 }
 
 let pivot = new Pivot(0, 1, 2, INCRE, x => !isNaN(x))
-pivot.record(duties.rows).toJson() |> decoCrostab |> says['spreadPivot']
-pivot.record(dutiesBeta.rows).toJson() |> decoCrostab |> says['recordPivot']
+pivot.record(duties.rows).toObject() |> decoCrostab |> says['spreadPivot']
+pivot.record(dutiesBeta.rows).toObject() |> decoCrostab |> says['recordPivot']

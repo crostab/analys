@@ -1,18 +1,18 @@
-import { selectSamplesBySide, selectKeyedRows, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows';
-import { selectSamplesByHead, selectKeyedColumns, sortKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
-import { vlookupCached, vlookup, vlookupMany, vlookupTable, hlookupCached, hlookup, hlookupMany, hlookupTable } from '@analys/crostab-lookup';
 import { slice, shallow } from '@analys/crostab-init';
+import { vlookupCached, vlookup, vlookupMany, vlookupTable, hlookupCached, hlookup, hlookupMany, hlookupTable } from '@analys/crostab-lookup';
+import { selectSamplesByHead, selectKeyedColumns, sortKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
+import { selectSamplesBySide, selectKeyedRows, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows';
 import { NUM_ASC, STR_ASC } from '@aryth/comparer';
+import { column } from '@vect/column-getter';
+import { mutate as mutate$1 } from '@vect/column-mapper';
+import { push, unshift, pop, shift } from '@vect/columns-update';
 import { ROWWISE, COLUMNWISE } from '@vect/enum-matrix-directions';
-import { transpose } from '@vect/matrix-transpose';
-import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
-import { zipper } from '@vect/vector-zipper';
 import { init } from '@vect/matrix-init';
 import { mapper } from '@vect/matrix-mapper';
-import { mutate as mutate$1 } from '@vect/column-mapper';
-import { column } from '@vect/column-getter';
-import { push, unshift, pop, shift } from '@vect/columns-update';
+import { transpose } from '@vect/matrix-transpose';
 import { pair } from '@vect/object-init';
+import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
+import { zipper } from '@vect/vector-zipper';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -83,11 +83,10 @@ class CrosTab {
     func,
     title
   }) {
-    const rows = init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y));
     return CrosTab.from({
       side,
       head,
-      rows,
+      rows: init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y)),
       title
     });
   }
@@ -102,7 +101,7 @@ class CrosTab {
     return indexed ? zipper(this.head, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples;
   }
 
-  toJson(mutate = false) {
+  toObject(mutate = false) {
     var _this, _this2;
 
     return mutate ? (_this = this, slice(_this)) : (_this2 = this, shallow(_this2));
@@ -143,8 +142,7 @@ class CrosTab {
   }
 
   element(x, y) {
-    const row = this.rows[x];
-    return row ? row[y] : undefined;
+    return x in this.rows ? this.rows[x][y] : undefined;
   }
 
   coordinate(r, c) {
@@ -165,15 +163,10 @@ class CrosTab {
   transpose(title, {
     mutate = true
   } = {}) {
-    const {
-      head: side,
-      side: head,
-      columns: rows
-    } = this;
     return this.boot({
-      side,
-      head,
-      rows,
+      side: this.head,
+      head: this.side,
+      rows: this.columns,
       title
     }, mutate);
   }

@@ -22,5 +22,5 @@ const band = [
 
 let cubic = new Cubic(0, 1, band)
 
-cubic.record(duties.rows).toJson() |> decoCrostab |> says['spreadCubic']
-cubic.record(dutiesBeta.rows).toJson()  |> decoCrostab |> says['spreadCubic']
+cubic.record(duties.rows).toObject() |> decoCrostab |> says['spreadCubic']
+cubic.record(dutiesBeta.rows).toObject()  |> decoCrostab |> says['spreadCubic']

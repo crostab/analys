@@ -2,26 +2,26 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var borel = require('borel');
-var tableInit = require('@analys/table-init');
+var keyedColumns = require('@analys/keyed-columns');
+var tableChips = require('@analys/table-chips');
+var tableDivide = require('@analys/table-divide');
 var tableFilter = require('@analys/table-filter');
 var tableFind = require('@analys/table-find');
-var tableDivide = require('@analys/table-divide');
-var tablePivot = require('@analys/table-pivot');
-var tableLookup = require('@analys/table-lookup');
-var keyedColumns = require('@analys/keyed-columns');
-var vectorMapper = require('@vect/vector-mapper');
-var vectorUpdate = require('@vect/vector-update');
-var matrixMapper = require('@vect/matrix-mapper');
-var columnMapper = require('@vect/column-mapper');
-var columnGetter = require('@vect/column-getter');
-var tableChips = require('@analys/table-chips');
 var tableGroup = require('@analys/table-group');
+var tableInit = require('@analys/table-init');
+var tableLookup = require('@analys/table-lookup');
+var tablePivot = require('@analys/table-pivot');
 var tableTypes = require('@analys/table-types');
 var comparer = require('@aryth/comparer');
 var distinctColumn = require('@aryth/distinct-column');
-var matrix = require('@vect/matrix');
+var columnGetter = require('@vect/column-getter');
+var columnMapper = require('@vect/column-mapper');
 var columnsUpdate = require('@vect/columns-update');
+var matrix = require('@vect/matrix');
+var matrixMapper = require('@vect/matrix-mapper');
+var vectorMapper = require('@vect/vector-mapper');
+var vectorUpdate = require('@vect/vector-update');
+var borel = require('borel');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -71,24 +71,12 @@ class Table {
   static from(o) {
     return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
   }
-  /**
-   *
-   * @param {*|[*,*]} [headFields]
-   * @returns {Object[]}
-   */
 
-
-  toSamples(headFields) {
-    return headFields ? keyedColumns.selectSamplesByHead.call(this, headFields) : keyedColumns.keyedColumnsToSamples.call(this);
+  toSamples(fields) {
+    return fields ? keyedColumns.selectSamplesByHead.call(this, fields) : keyedColumns.keyedColumnsToSamples.call(this);
   }
-  /**
-   *
-   * @param {boolean} [mutate=false]
-   * @returns {*}
-   */
 
-
-  toJson(mutate = false) {
+  toObject(mutate = false) {
     var _this, _this2;
 
     return mutate ? (_this = this, tableInit.slice(_this)) : (_this2 = this, tableInit.shallow(_this2));
@@ -115,8 +103,7 @@ class Table {
   }
 
   cell(x, field) {
-    const row = this.rows[x];
-    return row ? row[this.coin(field)] : undefined;
+    return x in this.rows ? this.rows[x][this.coin(field)] : undefined;
   }
 
   coin(field) {
@@ -209,9 +196,7 @@ class Table {
   select(fields, {
     mutate = false
   } = {}) {
-    var _this3;
-
-    let o = mutate ? this : (_this3 = this, tableInit.slice(_this3));
+    let o = mutate ? this : tableInit.slice(this);
     keyedColumns.selectKeyedColumns.call(o, fields);
     return mutate ? this : this.copy(o);
   }
@@ -230,9 +215,9 @@ class Table {
     field,
     mutate = false
   } = {}) {
-    var _this4;
+    var _this3;
 
-    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4)),
+    const o = mutate ? this : (_this3 = this, tableInit.shallow(_this3)),
           index = this.coin(field) + 1;
     o.head.splice(index, 0, label);
     vectorMapper.iterate(o.rows, (row, i) => row.splice(index, 0, column[i]));
@@ -249,9 +234,9 @@ class Table {
   deleteColumn(field, {
     mutate = false
   } = {}) {
-    var _this5;
+    var _this4;
 
-    const o = mutate ? this : (_this5 = this, tableInit.shallow(_this5)),
+    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4)),
           index = this.coin(field);
     o.head.splice(index, 1);
     o.rows.forEach(row => row.splice(index, 1));
@@ -268,9 +253,9 @@ class Table {
   spliceColumns(fields, {
     mutate = false
   } = {}) {
-    var _this6;
+    var _this5;
 
-    const o = mutate ? this : (_this6 = this, tableInit.shallow(_this6)),
+    const o = mutate ? this : (_this5 = this, tableInit.shallow(_this5)),
           indexes = this.columnIndexes(fields).sort(comparer.NUM_ASC);
     columnsUpdate.splices(o.rows, indexes), vectorUpdate.splices(o.head, indexes);
     return mutate ? this : Table.from(o);
@@ -279,9 +264,9 @@ class Table {
   divide(fields, {
     mutate = false
   } = {}) {
-    var _this7;
+    var _this6;
 
-    const o = mutate ? this : (_this7 = this, tableInit.shallow(_this7));
+    const o = mutate ? this : (_this6 = this, tableInit.shallow(_this6));
     const {
       pick,
       rest
@@ -302,9 +287,9 @@ class Table {
   filter(filterCollection, {
     mutate = true
   } = {}) {
-    var _this8;
+    var _this7;
 
-    const o = mutate ? this : (_this8 = this, tableInit.slice(_this8));
+    const o = mutate ? this : (_this7 = this, tableInit.slice(_this7));
     tableFilter.tableFilter.call(o, filterCollection);
     return mutate ? this : this.copy(o);
   }
@@ -319,9 +304,9 @@ class Table {
   find(filter, {
     mutate = true
   } = {}) {
-    var _this9;
+    var _this8;
 
-    const o = mutate ? this : (_this9 = this, tableInit.slice(_this9));
+    const o = mutate ? this : (_this8 = this, tableInit.slice(_this8));
     tableFind.tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
   }
@@ -329,9 +314,9 @@ class Table {
   distinct(fields, {
     mutate = true
   } = {}) {
-    var _this10;
+    var _this9;
 
-    const o = mutate ? this : (_this10 = this, tableInit.slice(_this10));
+    const o = mutate ? this : (_this9 = this, tableInit.slice(_this9));
 
     for (let field of fields) o.rows = borel.StatMx.distinct(o.rows, this.coin(field));
 
@@ -367,13 +352,13 @@ class Table {
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    var _this11;
+    var _this10;
 
     const y = this.coin(field);
 
     const rowComparer = (a, b) => comparer(a[y], b[y]);
 
-    const o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
+    const o = mutate ? this : (_this10 = this, tableInit.slice(_this10));
     o.rows.sort(rowComparer);
     return mutate ? this : this.copy(o);
   }
@@ -388,9 +373,9 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _this12;
+    var _this11;
 
-    let o = mutate ? this : (_this12 = this, tableInit.slice(_this12));
+    let o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
@@ -431,34 +416,7 @@ class Table {
 
 
   crosTab(options = {}) {
-    return tablePivot.pivotEdge(this, options);
-  }
-  /**
-   *
-   * @param {*} side
-   * @param {*} banner
-   * @param {CubeCell[]|CubeCell} [cell]
-   * @param {Filter[]|Filter} [filter]
-   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
-   * @deprecated Please use Table.crosTab instead.
-   * @returns {CrosTab}
-   */
-
-
-  crosTabDev({
-    side,
-    banner,
-    cell,
-    filter,
-    formula
-  }) {
-    return tablePivot.pivotDev(this, {
-      side,
-      banner,
-      cell,
-      filter,
-      formula
-    });
+    return tablePivot.tablePivot.call(this, options);
   }
 
   inferTypes({
@@ -470,16 +428,15 @@ class Table {
       inferType,
       omitNull
     });
-    if (mutate) this.types = types;
-    return types;
+    return mutate ? this.types = types : types;
   }
   /** @returns {Table} */
 
 
   boot({
-    types,
     head,
-    rows
+    rows,
+    types
   } = {}, mutate) {
     if (mutate) {
       if (head) this.head = head;
@@ -498,9 +455,9 @@ class Table {
 
 
   copy({
-    types,
     head,
-    rows
+    rows,
+    types
   } = {}) {
     var _this$types;
 
@@ -508,10 +465,6 @@ class Table {
     if (!rows) rows = this.rows.map(row => row.slice());
     if (!types) types = (_this$types = this.types) === null || _this$types === void 0 ? void 0 : _this$types.slice();
     return new Table(head, rows, this.title, types);
-  }
-
-  from(AeroEngineSpecs) {
-    return undefined;
   }
 
 }

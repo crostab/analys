@@ -1,22 +1,17 @@
-import { StatMx }                                                               from 'borel'
-import { shallow, slice }                                                       from '@analys/table-init'
+import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead }       from '@analys/keyed-columns'
+import { tableChips }                                                           from '@analys/table-chips'
+import { tableDivide }                                                          from '@analys/table-divide'
 import { tableFilter }                                                          from '@analys/table-filter'
 import { tableFind }                                                            from '@analys/table-find'
-import { tableDivide }                                                          from '@analys/table-divide'
-import { pivotDev, pivotEdge }                                                  from '@analys/table-pivot'
-import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
-import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead }       from '@analys/keyed-columns'
-import { iterate, mapper }                                                      from '@vect/vector-mapper'
-import { splices }                                                              from '@vect/vector-update'
-import { mapper as mapperMatrix }                                               from '@vect/matrix-mapper'
-import { mutate as mutateColumn }                                               from '@vect/column-mapper'
-import { column }                                                               from '@vect/column-getter'
-import { tableChips }                                                           from '@analys/table-chips'
 import { tableGroup }                                                           from '@analys/table-group'
+import { shallow, slice }                                                       from '@analys/table-init'
+import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
+import { tablePivot }                                                           from '@analys/table-pivot'
 import { inferTypes }                                                           from '@analys/table-types'
 import { NUM_ASC }                                                              from '@aryth/comparer'
 import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
-import { size, transpose }                                                      from '@vect/matrix'
+import { column }                                                               from '@vect/column-getter'
+import { mutate as mutateColumn }                                               from '@vect/column-mapper'
 import {
   pop as popColumn,
   push as pushColumn,
@@ -24,6 +19,11 @@ import {
   splices as splicesColumns,
   unshift as unshiftColumn
 }                                                                               from '@vect/columns-update'
+import { size, transpose }                                                      from '@vect/matrix'
+import { mapper as mapperMatrix }                                               from '@vect/matrix-mapper'
+import { iterate, mapper }                                                      from '@vect/vector-mapper'
+import { splices }                                                              from '@vect/vector-update'
+import { StatMx }                                                               from 'borel'
 
 export class Table {
   /** @type {*[]} */ head
@@ -45,33 +45,14 @@ export class Table {
   }
 
   static from (o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
-
-  /**
-   *
-   * @param {*|[*,*]} [headFields]
-   * @returns {Object[]}
-   */
-  toSamples (headFields) {
-    return headFields
-      ? selectSamplesByHead.call(this, headFields)
-      : keyedColumnsToSamples.call(this)
-  }
-
-  /**
-   *
-   * @param {boolean} [mutate=false]
-   * @returns {*}
-   */
-  toJson (mutate = false) { return mutate ? this |> slice : this |> shallow }
+  toSamples (fields) { return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this) }
+  toObject (mutate = false) { return mutate ? this |> slice : this |> shallow }
 
   get size () { return size(this.rows) }
   get ht () { return this.rows?.length }
   get wd () { return this.head?.length }
   get columns () { return transpose(this.rows) }
-  cell (x, field) {
-    const row = this.rows[x]
-    return row ? row[this.coin(field)] : undefined
-  }
+  cell (x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
   coin (field) { return this.head.indexOf(field) }
   columnIndexes (fields) { return fields.map(this.coin, this) }
   column (field) { return column(this.rows, this.coin(field), this.ht) }
@@ -87,14 +68,10 @@ export class Table {
   popColumn () { return popColumn(this.rows) }
   shiftColumn () { return shiftColumn(this.rows) }
 
-  map (fn, { mutate = true } = {}) {
-    return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate)
-  }
+  map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
 
-  lookupOne (valueToFind, key, field, cached = true) {
-    return (cached ? lookupCached : lookup).call(this, valueToFind, key, field)
-  }
+  lookupOne (valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
   lookupMany (valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
   lookupTable (key, field, objectify) { return lookupTable.call(this, key, field, objectify) }
 
@@ -105,7 +82,7 @@ export class Table {
    * @returns {Table}
    */
   select (fields, { mutate = false } = {}) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     selectKeyedColumns.call(o, fields)
     return mutate ? this : this.copy(o)
   }
@@ -255,34 +232,15 @@ export class Table {
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
-  crosTab (options = {}) { return pivotEdge(this, options) }
-
-  /**
-   *
-   * @param {*} side
-   * @param {*} banner
-   * @param {CubeCell[]|CubeCell} [cell]
-   * @param {Filter[]|Filter} [filter]
-   * @param {function():number} formula - formula is valid only when cell is CubeCell array.
-   * @deprecated Please use Table.crosTab instead.
-   * @returns {CrosTab}
-   */
-  crosTabDev ({
-    side,
-    banner,
-    cell,
-    filter,
-    formula
-  }) { return pivotDev(this, { side, banner, cell, filter, formula }) }
+  crosTab (options = {}) { return tablePivot.call(this, options) }
 
   inferTypes ({ inferType, omitNull = true, mutate = false } = {}) {
     const types = inferTypes.call(this, { inferType, omitNull })
-    if (mutate) this.types = types
-    return types
+    return mutate ? (this.types = types) : types
   }
 
   /** @returns {Table} */
-  boot ({ types, head, rows } = {}, mutate) {
+  boot ({ head, rows, types } = {}, mutate) {
     if (mutate) {
       if (head) this.head = head
       if (rows) this.rows = rows
@@ -294,14 +252,11 @@ export class Table {
   }
 
   /** @returns {Table} */
-  copy ({ types, head, rows } = {}) {
+  copy ({ head, rows, types } = {}) {
     if (!head) head = this.head.slice()
     if (!rows) rows = this.rows.map(row => row.slice())
     if (!types) types = this.types?.slice()
     return new Table(head, rows, this.title, types)
-  }
-  from (AeroEngineSpecs) {
-    return undefined
   }
 }
 

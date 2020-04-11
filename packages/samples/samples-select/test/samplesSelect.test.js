@@ -1,14 +1,13 @@
-import { Foba } from '@foba/table'
-import { tableToSamples } from '@analys/convert'
-import { deco } from '@spare/deco'
-import { says } from '@spare/logger'
-import { samplesSelect } from '../src/samplesSelect'
+import { tableToSamples }    from '@analys/convert'
+import { Foba }              from '@foba/table'
+import { decoSamples, says } from '@spare/logger'
+import { samplesSelect }     from '../src/samplesSelect'
 
 const USFirms = 'USTechFirms'
 const samples = tableToSamples(Foba[USFirms])
 
-samples |> deco |> says['original']
+samples |> decoSamples |> says['original']
 
-samplesSelect(samples, [['symbol', 'code'], 'price', ['industry', 'minor'], ['sector', 'major']]) |> deco |> says['selected']
+samplesSelect(samples, [['symbol', 'code'], 'price', ['industry', 'minor'], ['sector', 'major']]) |> decoSamples |> says['selected']
 
-samples |> deco |> says['original']
+samples |> decoSamples |> says['original']

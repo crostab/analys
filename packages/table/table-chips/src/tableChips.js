@@ -18,3 +18,5 @@ export const tableChips = function ({
     note(row[ki], row[vi])
   return chips
 }
+
+

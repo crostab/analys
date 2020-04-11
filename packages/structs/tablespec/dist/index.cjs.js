@@ -140,7 +140,7 @@ class TableSpec {
     return new TableSpec(side, banner, cell, filter, formula);
   }
 
-  toJson() {
+  toObject() {
     const {
       side,
       banner,

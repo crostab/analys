@@ -1,5 +1,4 @@
-import { selectKeyedRows, selectSamplesBySide, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows'
-import { selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys, sortKeyedColumns } from '@analys/keyed-columns'
+import { shallow, slice }         from '@analys/crostab-init'
 import {
   hlookup,
   hlookupCached,
@@ -9,24 +8,44 @@ import {
   vlookupCached,
   vlookupMany,
   vlookupTable
-} from '@analys/crostab-lookup'
-import { shallow, slice } from '@analys/crostab-init'
-import { NUM_ASC, STR_ASC } from '@aryth/comparer'
-import { COLUMNWISE, ROWWISE } from '@vect/enum-matrix-directions'
-import { transpose } from '@vect/matrix-transpose'
-import { mapper, mutate } from '@vect/vector-mapper'
-import { zipper } from '@vect/vector-zipper'
-import { init as initMatrix } from '@vect/matrix-init'
-import { mapper as mapperMatrix } from '@vect/matrix-mapper'
+}                                 from '@analys/crostab-lookup'
+import {
+  selectKeyedColumns,
+  selectSamplesByHead,
+  sortColumnsByKeys,
+  sortKeyedColumns
+}                                 from '@analys/keyed-columns'
+import {
+  selectKeyedRows,
+  selectSamplesBySide,
+  sortKeyedRows,
+  sortRowsByKeys
+}                                 from '@analys/keyed-rows'
+import {
+  NUM_ASC,
+  STR_ASC
+}                                 from '@aryth/comparer'
+import { column }                 from '@vect/column-getter'
 import { mutate as mutateColumn } from '@vect/column-mapper'
-import { column } from '@vect/column-getter'
 import {
   pop as popColumn,
   push as pushColumn,
   shift as shiftColumn,
   unshift as unshiftColumn
-} from '@vect/columns-update'
-import { pair } from '@vect/object-init'
+}                                 from '@vect/columns-update'
+import {
+  COLUMNWISE,
+  ROWWISE
+}                                 from '@vect/enum-matrix-directions'
+import { init as initMatrix }     from '@vect/matrix-init'
+import { mapper as mapperMatrix } from '@vect/matrix-mapper'
+import { transpose }              from '@vect/matrix-transpose'
+import { pair }                   from '@vect/object-init'
+import {
+  mapper,
+  mutate
+}                                 from '@vect/vector-mapper'
+import { zipper }                 from '@vect/vector-zipper'
 
 /**
  *
@@ -51,9 +70,7 @@ export class CrosTab {
     this.title = title || ''
   }
 
-  static from (o) {
-    return new CrosTab(o.side, o.head || o.banner, o.rows || o.matrix, o.title)
-  }
+  static from (o) { return new CrosTab(o.side, o.head || o.banner, o.rows || o.matrix, o.title) }
 
   /**
    * Shallow copy
@@ -64,8 +81,7 @@ export class CrosTab {
    * @return {CrosTab}
    */
   static init ({ side, head, func, title }) {
-    const rows = initMatrix(side?.length, head?.length, (x, y) => func(x, y))
-    return CrosTab.from({ side, head, rows, title })
+    return CrosTab.from({ side, head, rows: initMatrix(side?.length, head?.length, (x, y) => func(x, y)), title })
   }
 
   rowwiseSamples (headFields, indexed = false, indexName = '_') {
@@ -76,7 +92,7 @@ export class CrosTab {
     const samples = selectSamplesBySide.call(this, sideFields)
     return indexed ? zipper(this.head, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples
   }
-  toJson (mutate = false) { return mutate ? this |> slice : this |> shallow }
+  toObject (mutate = false) { return mutate ? this |> slice : this |> shallow }
 
   /** @returns {*[][]} */
   get columns () { return transpose(this.rows) }
@@ -86,16 +102,12 @@ export class CrosTab {
   roin (r) { return this.side.indexOf(r) }
   coin (c) { return this.head.indexOf(c) }
   cell (r, c) { return this.element(this.roin(r), this.coin(c)) }
-  element (x, y) {
-    const row = this.rows[x]
-    return row ? row[y] : undefined
-  }
+  element (x, y) { return x in this.rows ? this.rows[x][y] : undefined }
   coordinate (r, c) { return { x: this.roin(r), y: this.coin(c) } }
   row (r) { return this.rows[this.roin(r)] }
   column (c) { return column(this.rows, this.coin(c), this.ht) }
   transpose (title, { mutate = true } = {}) {
-    const { head: side, side: head, columns: rows } = this
-    return this.boot({ side, head, rows, title }, mutate)
+    return this.boot({ side: this.head, head: this.side, rows: this.columns, title }, mutate)
   }
   setRow (r, row) { return this.rows[this.roin(r)] = row, this }
   setRowBy (r, fn) { return mutate(this.row(r), fn, this.wd), this }
@@ -124,15 +136,11 @@ export class CrosTab {
     return this.boot({ side, head, rows }, mutate)
   }
 
-  vlookupOne (valueToFind, keyField, valueField, cached) {
-    return (cached ? vlookupCached : vlookup).call(this, valueToFind, keyField, valueField)
-  }
+  vlookupOne (valueToFind, keyField, valueField, cached) { return (cached ? vlookupCached : vlookup).call(this, valueToFind, keyField, valueField) }
   vlookupMany (valuesToFind, keyField, valueField) { return vlookupMany.call(this, valuesToFind, keyField, valueField) }
   vlookupTable (keyField, valueField) { return vlookupTable.call(this, keyField, valueField) }
 
-  hlookupOne (valueToFind, keyField, valueField, cached) {
-    return (cached ? hlookupCached : hlookup).call(this, valueToFind, keyField, valueField)
-  }
+  hlookupOne (valueToFind, keyField, valueField, cached) { return (cached ? hlookupCached : hlookup).call(this, valueToFind, keyField, valueField)}
   hlookupMany (valuesToFind, keyField, valueField) { return hlookupMany.call(this, valuesToFind, keyField, valueField) }
   hlookupTable (keyField, valueField) { return hlookupTable.call(this, keyField, valueField) }
 

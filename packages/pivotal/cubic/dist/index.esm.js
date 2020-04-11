@@ -52,7 +52,7 @@ class Cubic {
     mutazip(this.cell(sample[this.x], sample[this.y]), this.fields, (target, [index, accrue]) => accrue(target, sample[index]));
   }
 
-  toJson() {
+  toObject() {
     const {
       s,
       b,

@@ -46,7 +46,7 @@ const pivotDev = (table, {
     field,
     mode
   }) => [head.indexOf(field), mode]))) : (pivotter = false, pivot.Pivot.build(x, y, head.indexOf(cell.field), cell.mode));
-  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toJson());
+  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toObject());
   if (pivotter && formula) crostab$1.map(ar => formula.apply(null, ar));
   return crostab$1;
 };
@@ -62,15 +62,17 @@ const pivotDev = (table, {
  * @returns {CrosTab}
  */
 
-const pivotEdge = (table, {
+const tablePivot = function ({
   side,
   banner,
   field,
   filter,
   formula
-}) => {
+}) {
+  const table = tableInit.slice(this);
+
   if (filter) {
-    table = tableFind.tableFind.call(tableInit.slice(table), filter);
+    tableFind.tableFind.call(table, filter);
   }
 
   const {
@@ -80,11 +82,10 @@ const pivotEdge = (table, {
   let cubic$1;
   const crostabEngine = matrix.isMatrix(field = tablespec.parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
   ? (cubic$1 = true, new cubic.Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic$1 = false, new pivot.Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]));
-  const crostab$1 = crostab.CrosTab.from(crostabEngine.record(rows).toJson());
+  const crostab$1 = crostab.CrosTab.from(crostabEngine.record(rows).toObject());
   if (cubic$1 && formula) crostab$1.map(vec => formula.apply(null, vec));
   return crostab$1;
 };
 
 exports.pivotDev = pivotDev;
-exports.pivotEdge = pivotEdge;
-exports.tablePivot = pivotEdge;
+exports.tablePivot = tablePivot;

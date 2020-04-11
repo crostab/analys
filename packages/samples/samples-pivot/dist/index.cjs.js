@@ -2,45 +2,41 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var pivot = require('@analys/pivot');
 var cubic = require('@analys/cubic');
-var crostab = require('@analys/crostab');
+var pivot = require('@analys/pivot');
+var samplesFind = require('@analys/samples-find');
 var tablespec = require('@analys/tablespec');
-var samplesFilter = require('@analys/samples-filter');
-var vectorMapper = require('@vect/vector-mapper');
+var matrixMapper = require('@vect/matrix-mapper');
 
 /**
  *
  * @param {Object[]} samples
  * @param {str} side
  * @param {str} banner
- * @param {CubeCell[]|CubeCell} [cell]
- * @param {Filter[]|Filter} [filter]
- * @param {Filter[]|Filter} [filter]
- * @param {function():number} formula - formula is valid only when cell is CubeCell array.
- * @returns {CrosTab}
+ * @param {*} [field]
+ * @param {Object<string,function(?*):boolean>} [filter]
+ * @param {Function} formula - formula is valid only when cell is CubeCell array.
+ * @returns {Object}
  */
 
-const samplesPivot = (samples, {
+const samplesPivot = function ({
   side,
   banner,
-  cell,
+  field,
   filter,
   formula
-}) => {
+}) {
+  let samples = this;
+
   if (filter) {
-    samples = samplesFilter.samplesFilter.call(samples, filter);
+    samples = samplesFind.samplesFind.call(samples, filter);
   }
 
-  let calc;
-  const pivot$1 = Array.isArray(cell = tablespec.parseCell(cell, side)) ? (calc = true, cubic.Cubic.build(side, banner, (vectorMapper.mapper(cell, appendIndex), cell))) : (calc = false, pivot.Pivot.build(side, banner, cell.field, cell.mode));
-  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(samples).toJson());
-  if (calc && formula) crostab$1.map(ar => formula.apply(null, ar));
-  return crostab$1;
-};
-
-const appendIndex = function (cell) {
-  cell.index = cell.field;
+  let cubic$1;
+  const crostabEngine = Array.isArray(field = tablespec.parseField(field, side)) ? (cubic$1 = true, new cubic.Cubic(side, banner, field)) : (cubic$1 = false, new pivot.Pivot(side, banner, field[0], field[1]));
+  const crostab = crostabEngine.record(samples).toObject();
+  if (cubic$1 && formula) matrixMapper.mutate(crostab.rows, vec => formula.apply(null, vec));
+  return crostab;
 };
 
 exports.samplesPivot = samplesPivot;

@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var utilPivot = require('@analys/util-pivot');
+var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
 
 class Chips {
@@ -27,12 +28,17 @@ class Chips {
     this.updater(sample[this.key], sample[this.field]);
   }
 
-  toJson() {
+  toObject() {
     return this.data;
   }
 
   toRows() {
     return Object.entries(this.data);
+  }
+
+  toSamples() {
+    const head = [this.key, this.field];
+    return Object.entries(this.data).map(ent => objectInit.wind(head, ent));
   }
 
 }
