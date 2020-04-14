@@ -4,16 +4,17 @@ import { wind } from '@vect/object-init';
 import { iterate } from '@vect/vector-mapper';
 
 class Chips {
-  constructor(key, field, mode, filter) {
+  constructor(key, field, mode, pick, filter) {
     this.key = key;
     this.data = {};
     this.field = field;
     this.updater = Updater(this.data, mode);
+    this.pick = pick;
     this.filter = filter;
   }
 
-  static build(kei, field, mode) {
-    return new Chips(kei, field, mode);
+  static build(key, field, mode, pick, filter) {
+    return new Chips(key, field, mode, pick, filter);
   }
 
   record(samples) {
@@ -21,7 +22,9 @@ class Chips {
   }
 
   note(sample) {
-    this.updater(sample[this.key], sample[this.field]);
+    let key = sample[this.key];
+    if (this.pick) key = this.pick(key);
+    this.updater(key, sample[this.field]);
   }
 
   toObject() {

@@ -10,20 +10,21 @@ var vectorMapper = require('@vect/vector-mapper');
 var vectorZipper = require('@vect/vector-zipper');
 
 class Group {
-  constructor(key, fields, filter) {
+  constructor(key, fields, pick, filter) {
     this.key = key;
     this.data = {};
     this.fields = fields.map(([index, mode]) => [index, utilPivot.Accrual(mode)]);
-    const inits = fields.map(([, mode]) => mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT ? () => 0 : () => []);
+    const inits = fields.map(([, mode]) => mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT ? () => 0 : () => []),
+          depth = inits.length;
 
-    this.init = () => inits.map(fn => fn());
+    this.init = () => vectorMapper.mapper(inits, fn => fn(), depth);
 
+    this.pick = pick;
     this.filter = filter;
-    this.depth = fields.length;
   }
 
-  static build(key, fields, filter) {
-    return new Group(key, fields, filter);
+  static build(key, fields, pick, filter) {
+    return new Group(key, fields, pick, filter);
   }
 
   get indexes() {
@@ -35,7 +36,8 @@ class Group {
   }
 
   note(sample) {
-    const key = sample[this.key];
+    let key = sample[this.key];
+    if (this.pick) key = this.pick(key);
     vectorZipper.mutazip(key in this.data ? this.data[key] : this.data[key] = this.init(), this.fields, (target, [index, accrue]) => accrue(target, sample[index]));
   }
 

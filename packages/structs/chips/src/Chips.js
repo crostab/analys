@@ -3,20 +3,26 @@ import { tallyAccum, tallyMerge }     from '@analys/util-pivot'
 import { wind }                       from '@vect/object-init'
 import { iterate }                    from '@vect/vector-mapper'
 
+
 export class Chips {
   constructor (key, field, mode, filter) {
     this.key = key
+    this.pick = pick
     this.data = {}
     this.field = field
     this.updater = Updater(this.data, mode)
     this.filter = filter
   }
 
-  static build (kei, field, mode) { return new Chips(kei, field, mode) }
+  static build (key, field, mode, pick, filter) { return new Chips(key, field, mode, pick, filter) }
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
-  note (sample) { this.updater(sample[this.key], sample[this.field]) }
+  note (sample) {
+    let key = sample[this.key]
+    if (this.pick) key = this.pick(key)
+    this.updater(key, sample[this.field])
+  }
 
   toObject () { return this.data }
   toRows () { return Object.entries(this.data) }

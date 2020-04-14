@@ -3,10 +3,95 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var samplesFind = require('@analys/samples-find');
-var samplesFormula = require('@analys/samples-formula');
 var samplesGroup = require('@analys/samples-group');
 var samplesPivot = require('@analys/samples-pivot');
 var samplesSelect = require('@analys/samples-select');
+
+const wind = (keys, values) => {
+  const o = {},
+        {
+    length
+  } = keys;
+
+  for (let i = 0; i < length; i++) o[keys[i]] = values[i];
+
+  return o;
+};
+
+const mapper = function (vec, fn, l) {
+  l = l || vec && vec.length;
+  const ar = Array(l);
+
+  for (--l; l >= 0; l--) ar[l] = fn.call(this, vec[l], l);
+
+  return ar;
+};
+
+class Formula {
+  constructor(fields, formulas) {
+    this.data = [];
+    this.fields = fields;
+    this.formulas = formulas;
+    this.depth = formulas.length;
+  }
+
+  static build(fields, formulas) {
+    return new Formula(fields, formulas);
+  }
+
+  get formulaArray() {
+    return Object.values(this.formulas);
+  }
+
+  get indexes() {
+    return Object.keys(this.formulas);
+  }
+
+  calculate(samples) {
+    const {
+      formulaArray
+    } = this;
+    this.data = mapper(samples, sample => mapper(formulaArray, fn => fn.apply(sample, mapper(this.fields, i => sample[i])), this.depth));
+    return this;
+  }
+
+  toRows() {
+    return this.data;
+  }
+
+  toSamples() {
+    const {
+      indexes
+    } = this;
+    return this.data.map(vec => wind(indexes, vec));
+  }
+
+}
+
+const mutazip = (va, vb, fn, l) => {
+  l = l || va && va.length;
+
+  for (--l; l >= 0; l--) va[l] = fn(va[l], vb[l], l);
+
+  return va;
+};
+
+const samplesFormula = function ({
+  fields,
+  formulas,
+  filter,
+  append = true
+} = {}) {
+  let samples = this;
+
+  if (filter) {
+    samples = samplesFind.samplesFind.call(samples, filter);
+  }
+
+  const formulaEngine = new Formula(fields, formulas);
+  const results = formulaEngine.calculate(samples).toSamples();
+  return append ? mutazip(samples, results, (sample, result) => Object.assign(sample, result)) : results;
+};
 
 class Samples {
   constructor(samples, title, types) {
@@ -48,7 +133,7 @@ class Samples {
   }
 
   formula(configs) {
-    return samplesFormula.samplesFormula.call();
+    return samplesFormula.call();
   }
 
   group(configs) {

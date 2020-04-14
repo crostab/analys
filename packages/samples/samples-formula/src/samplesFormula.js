@@ -9,7 +9,7 @@ export const samplesFormula = function ({
   append = true
 } = {}) {
   let samples = this
-  if (filter) {samples = samplesFind.call(samples, filter) }
+  if (filter) { samples = samplesFind.call(samples, filter) }
   const formulaEngine = new Formula(fields, formulas)
   const results = formulaEngine.calculate(samples).toSamples()
   return append

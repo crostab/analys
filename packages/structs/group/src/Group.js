@@ -1,28 +1,31 @@
-import { COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { Accrual }      from '@analys/util-pivot'
-import { acquire }      from '@vect/merge-acquire'
-import { pair, wind }   from '@vect/object-init'
-import { iterate }      from '@vect/vector-mapper'
-import { mutazip }      from '@vect/vector-zipper'
+import { COUNT, INCRE }    from '@analys/enum-pivot-mode'
+import { Accrual }         from '@analys/util-pivot'
+import { acquire }         from '@vect/merge-acquire'
+import { pair, wind }      from '@vect/object-init'
+import { iterate, mapper } from '@vect/vector-mapper'
+import { mutazip }         from '@vect/vector-zipper'
 
 export class Group {
-  constructor (key, fields, filter) {
+  constructor (key, fields, pick, filter) {
     this.key = key
     this.data = {}
     this.fields = fields.map(([index, mode]) => [index, Accrual(mode)])
-    const inits = fields.map(([, mode]) => mode === INCRE || mode === COUNT ? () => 0 : () => [])
-    this.init = () => inits.map(fn => fn())
+    const
+      inits = fields.map(([, mode]) => mode === INCRE || mode === COUNT ? () => 0 : () => []),
+      depth = inits.length
+    this.init = () => mapper(inits, fn => fn(), depth)
+    this.pick = pick
     this.filter = filter
-    this.depth = fields.length
   }
 
-  static build (key, fields, filter) { return new Group(key, fields, filter) }
+  static build (key, fields, pick, filter) { return new Group(key, fields, pick, filter) }
   get indexes () {return this.fields.map(([index]) => index)}
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
   note (sample) {
-    const key = sample[this.key]
+    let key = sample[this.key]
+    if (this.pick) key = this.pick(key)
     mutazip(
       (key in this.data) ? this.data[key] : (this.data[key] = this.init()),
       this.fields,
