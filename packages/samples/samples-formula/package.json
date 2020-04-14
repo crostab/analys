@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-formula",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A cross-samples-formula analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/formula": "^0.2.1",
-    "@analys/samples-find": "^0.2.1",
+    "@analys/formula": "^0.2.2",
+    "@analys/samples-find": "^0.2.2",
     "@vect/vector-zipper": "^0.2.0"
   },
   "repository": {
