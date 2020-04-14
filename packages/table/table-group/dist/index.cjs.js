@@ -13,7 +13,6 @@ var mergeAcquire = require('@vect/merge-acquire');
 const tableGroup = function ({
   key,
   field,
-  pick,
   filter
 } = {}) {
   const table = tableInit.slice(this);
@@ -26,7 +25,8 @@ const tableGroup = function ({
     head,
     rows
   } = table;
-  let groupHead, label, mode;
+  let groupHead, pick, label, mode;
+  [key, pick] = tablespec.parseKeyOnce(key);
   field = tablespec.parseField(field, key);
   const groupingEngine = matrix.isMatrix(field) // field |> deco |> says['parsed field']
   ? (groupHead = mergeAcquire.acquire([key], field.map(([label]) => label)), new group.Group(head.indexOf(key), field.map(([label, mode]) => [head.indexOf(label), mode]), pick)) : ([label, mode] = field, groupHead = [key, label], new chips.Chips(head.indexOf(key), head.indexOf(label), mode, pick));

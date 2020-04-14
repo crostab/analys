@@ -21,13 +21,12 @@ const { lapse, result } = strategies({
     bench: (x, key, field) => '',
     tableChipsObj: (x, key, field) => tableChips.call(table, { key, field, mode: ACCUM, objectify: true }),
     tableChipsEnt: (x, key, field) => tableChips.call(table, { key, field, mode: ACCUM, objectify: false }),
-    tableGroup: (x, key, field) => {
-      // table.mutateColumn('plant', x => x.toLowerCase())
-      return tableGroup.call(table, {
-        key,
-        field: pair(field, ACCUM),
-        // pick: x => x.toLowerCase()
-      })
+    tableGroupMutate: (x, key, field) => {
+      table.mutateColumn(key, x => x.toLowerCase())
+      return tableGroup.call(table, { key, field: pair(field, ACCUM) })
+    },
+    tableGroupEasy: (x, key, field) => {
+      return tableGroup.call(table, { key: pair(key, x => x.toLowerCase()), field: pair(field, ACCUM), })
     },
   },
   showParams: false
@@ -35,4 +34,5 @@ const { lapse, result } = strategies({
 lapse |> decoCrostab |> says['lapse']
 result |> decoCrostab |> says['result']
 
-CrosTab.from(result).cell('simple', 'tableGroup') |> decoTable |> logger
+CrosTab.from(result).cell('simple', 'tableGroupMutate') |> decoTable |> logger
+CrosTab.from(result).cell('simple', 'tableGroupEasy') |> decoTable |> logger

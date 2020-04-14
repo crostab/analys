@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.2.1",
+    "@analys/tablespec": "^0.2.1",
     "@analys/util-pivot": "^0.2.1",
     "@vect/merge-acquire": "^0.2.0",
     "@vect/object-init": "^0.2.0",

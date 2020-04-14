@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var enumDataTypes = require('@typen/enum-data-types');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
+var nullish = require('@typen/nullish');
 var mergeAcquire = require('@vect/merge-acquire');
-var matrix = require('@vect/matrix');
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -37,6 +37,35 @@ const defaultCell = defaultField => ({
   mode: enumPivotMode.COUNT
 });
 
+const parseKey = key => {
+  if (nullish.nullish(key)) return [key];
+  let t = typeof key;
+  if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [key];
+  if (t === enumDataTypes.OBJ) return Array.isArray(key) ? key : Object.entries(key);
+  return key;
+};
+/**
+ * @param key
+ * @return {[*,*]}
+ */
+
+const parseKeyOnce = key => {
+  if (nullish.nullish(key)) return [key];
+  let t = typeof key;
+  if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [key];
+  if (t === enumDataTypes.OBJ) return Array.isArray(key) ? key : getEntryOnce(key);
+  return [key];
+};
+/**
+ *
+ * @param {Object} o
+ * @return {*}
+ */
+
+const getEntryOnce = o => {
+  for (let k in o) return [k, o[k]];
+};
+
 /**
  *
  * @param {*} field
@@ -45,17 +74,12 @@ const defaultCell = defaultField => ({
  */
 
 const parseField = (field, neglect) => {
-  if (field === void 0 || field === null) return [neglect, enumPivotMode.COUNT];
   let t = typeof field,
       ents;
+  if (nullish.nullish(field)) return [neglect, enumPivotMode.COUNT];
 
   if (t === enumDataTypes.OBJ) {
-    if (Array.isArray(field) && (ents = [])) {
-      field.map(subField => parseField(subField, neglect)).forEach(subField => matrix.isMatrix(subField) ? mergeAcquire.acquire(ents, subField) : ents.push(subField));
-    } else {
-      ents = Object.entries(field);
-    }
-
+    ents = Array.isArray(field) ? parseFields(field, neglect) : Object.entries(field);
     if (ents.length === 0) return [neglect, enumPivotMode.COUNT];
     if (ents.length === 1) return ents[0];
     return ents;
@@ -63,6 +87,24 @@ const parseField = (field, neglect) => {
 
   if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [field, enumPivotMode.INCRE];
   return [neglect, enumPivotMode.COUNT];
+};
+const parseFields = (fields, neglect) => {
+  let ents = [],
+      t;
+
+  for (let field of fields) if (nullish.nullish(field)) {
+    ents.push([neglect, enumPivotMode.COUNT]);
+  } else if (Array.isArray(field)) {
+    ents.push(field);
+  } else if ((t = typeof field) && (t === enumDataTypes.STR || t === enumDataTypes.NUM)) {
+    ents.push([field, enumPivotMode.INCRE]);
+  } else if (t === enumDataTypes.OBJ) {
+    mergeAcquire.acquire(ents, Object.entries(field));
+  } else {
+    ents.push([neglect, enumPivotMode.COUNT]);
+  }
+
+  return ents;
 };
 
 function _defineProperty(obj, key, value) {
@@ -162,3 +204,5 @@ class TableSpec {
 exports.TableSpec = TableSpec;
 exports.parseCell = parseCell;
 exports.parseField = parseField;
+exports.parseKey = parseKey;
+exports.parseKeyOnce = parseKeyOnce;

@@ -1,8 +1,8 @@
 import { NUM, STR, OBJ } from '@typen/enum-data-types';
 import { COUNT, INCRE } from '@analys/enum-pivot-mode';
 import { mapper } from '@vect/vector-mapper';
+import { nullish } from '@typen/nullish';
 import { acquire } from '@vect/merge-acquire';
-import { isMatrix } from '@vect/matrix';
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -33,6 +33,35 @@ const defaultCell = defaultField => ({
   mode: COUNT
 });
 
+const parseKey = key => {
+  if (nullish(key)) return [key];
+  let t = typeof key;
+  if (t === STR || t === NUM) return [key];
+  if (t === OBJ) return Array.isArray(key) ? key : Object.entries(key);
+  return key;
+};
+/**
+ * @param key
+ * @return {[*,*]}
+ */
+
+const parseKeyOnce = key => {
+  if (nullish(key)) return [key];
+  let t = typeof key;
+  if (t === STR || t === NUM) return [key];
+  if (t === OBJ) return Array.isArray(key) ? key : getEntryOnce(key);
+  return [key];
+};
+/**
+ *
+ * @param {Object} o
+ * @return {*}
+ */
+
+const getEntryOnce = o => {
+  for (let k in o) return [k, o[k]];
+};
+
 /**
  *
  * @param {*} field
@@ -41,17 +70,12 @@ const defaultCell = defaultField => ({
  */
 
 const parseField = (field, neglect) => {
-  if (field === void 0 || field === null) return [neglect, COUNT];
   let t = typeof field,
       ents;
+  if (nullish(field)) return [neglect, COUNT];
 
   if (t === OBJ) {
-    if (Array.isArray(field) && (ents = [])) {
-      field.map(subField => parseField(subField, neglect)).forEach(subField => isMatrix(subField) ? acquire(ents, subField) : ents.push(subField));
-    } else {
-      ents = Object.entries(field);
-    }
-
+    ents = Array.isArray(field) ? parseFields(field, neglect) : Object.entries(field);
     if (ents.length === 0) return [neglect, COUNT];
     if (ents.length === 1) return ents[0];
     return ents;
@@ -59,6 +83,24 @@ const parseField = (field, neglect) => {
 
   if (t === STR || t === NUM) return [field, INCRE];
   return [neglect, COUNT];
+};
+const parseFields = (fields, neglect) => {
+  let ents = [],
+      t;
+
+  for (let field of fields) if (nullish(field)) {
+    ents.push([neglect, COUNT]);
+  } else if (Array.isArray(field)) {
+    ents.push(field);
+  } else if ((t = typeof field) && (t === STR || t === NUM)) {
+    ents.push([field, INCRE]);
+  } else if (t === OBJ) {
+    acquire(ents, Object.entries(field));
+  } else {
+    ents.push([neglect, COUNT]);
+  }
+
+  return ents;
 };
 
 function _defineProperty(obj, key, value) {
@@ -155,4 +197,4 @@ class TableSpec {
 
 }
 
-export { TableSpec, parseCell, parseField };
+export { TableSpec, parseCell, parseField, parseKey, parseKeyOnce };

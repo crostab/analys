@@ -6,9 +6,14 @@ import { iterate, mapper } from '@vect/vector-mapper'
 import { mutazip }         from '@vect/vector-zipper'
 
 export class Group {
+  /** @type {*} */ key
+  /** @type {Object} */ data = {}
+  /** @type {Array} */ fields
+  /** @type {Function} */ init
+  /** @type {Function} */ pick
+  /** @type {Function} */ filter
   constructor (key, fields, pick, filter) {
     this.key = key
-    this.data = {}
     this.fields = fields.map(([index, mode]) => [index, Accrual(mode)])
     const
       inits = fields.map(([, mode]) => mode === INCRE || mode === COUNT ? () => 0 : () => []),

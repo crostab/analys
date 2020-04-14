@@ -7,10 +7,47 @@ var utilPivot = require('@analys/util-pivot');
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 class Chips {
+  /** @type {*} */
+
+  /** @type {*} */
+
+  /** @type {Object} */
+
+  /** @type {Function} */
+
+  /** @type {Function} */
+
+  /** @type {Function} */
   constructor(key, field, mode, pick, filter) {
+    _defineProperty(this, "key", void 0);
+
+    _defineProperty(this, "field", void 0);
+
+    _defineProperty(this, "data", {});
+
+    _defineProperty(this, "pick", void 0);
+
+    _defineProperty(this, "updater", void 0);
+
+    _defineProperty(this, "filter", void 0);
+
     this.key = key;
-    this.data = {};
     this.field = field;
     this.updater = Updater(this.data, mode);
     this.pick = pick;

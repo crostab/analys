@@ -1,21 +1,21 @@
-import { Chips }      from '@analys/chips'
-import { Group }      from '@analys/group'
-import { tableFind }  from '@analys/table-find'
-import { slice }      from '@analys/table-init'
-import { parseField } from '@analys/tablespec'
-import { isMatrix }   from '@vect/matrix'
-import { acquire }    from '@vect/merge-acquire'
+import { Chips }                    from '@analys/chips'
+import { Group }                    from '@analys/group'
+import { tableFind }                from '@analys/table-find'
+import { slice }                    from '@analys/table-init'
+import { parseField, parseKeyOnce } from '@analys/tablespec'
+import { isMatrix }                 from '@vect/matrix'
+import { acquire }                  from '@vect/merge-acquire'
 
 export const tableGroup = function ({
   key,
   field,
-  pick,
   filter
 } = {}) {
   const table = slice(this)
   if (filter) { tableFind.call(table, filter) }
   const { head, rows } = table
-  let groupHead, label, mode
+  let groupHead, pick, label, mode;
+  ([key, pick] = parseKeyOnce(key))
   field = parseField(field, key)
   const groupingEngine = isMatrix(field) // field |> deco |> says['parsed field']
     ? (groupHead = acquire([key], field.map(([label]) => label)),

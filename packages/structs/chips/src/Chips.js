@@ -3,14 +3,18 @@ import { tallyAccum, tallyMerge }     from '@analys/util-pivot'
 import { wind }                       from '@vect/object-init'
 import { iterate }                    from '@vect/vector-mapper'
 
-
 export class Chips {
-  constructor (key, field, mode, filter) {
+  /** @type {*} */ key
+  /** @type {*} */ field
+  /** @type {Object} */ data = {}
+  /** @type {Function} */ pick
+  /** @type {Function} */ updater
+  /** @type {Function} */ filter
+  constructor (key, field, mode, pick, filter) {
     this.key = key
-    this.pick = pick
-    this.data = {}
     this.field = field
     this.updater = Updater(this.data, mode)
+    this.pick = pick
     this.filter = filter
   }
 
@@ -33,9 +37,21 @@ export class Chips {
 }
 
 export const Updater = (data, mode) => {
-  if (mode === MERGE) return function (k, v) { if (k in this) { tallyMerge(this[k], v) } else { this[k] = v.slice() } }.bind(data)
-  if (mode === ACCUM) return function (k, x) { if (k in this) { tallyAccum(this[k], x) } else { this[k] = [x] } }.bind(data)
-  if (mode === INCRE) return function (k, n) { if (k in this) { this[k] += n } else { this[k] = n } }.bind(data)
-  if (mode === COUNT) return function (k) { if (k in this) { this[k]++ } else { this[k] = 1 } }.bind(data)
+  if (mode === MERGE) return function (k, v) {
+    if (k in this) { tallyMerge(this[k], v) }
+    else { this[k] = v.slice() }
+  }.bind(data)
+  if (mode === ACCUM) return function (k, x) {
+    if (k in this) { tallyAccum(this[k], x) }
+    else { this[k] = [x] }
+  }.bind(data)
+  if (mode === INCRE) return function (k, n) {
+    if (k in this) { this[k] += n }
+    else { this[k] = n }
+  }.bind(data)
+  if (mode === COUNT) return function (k) {
+    if (k in this) { this[k]++ }
+    else { this[k] = 1 }
+  }.bind(data)
   return () => {}
 }
