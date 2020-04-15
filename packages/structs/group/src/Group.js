@@ -1,9 +1,8 @@
-import { COUNT, INCRE }    from '@analys/enum-pivot-mode'
-import { Accrual }         from '@analys/util-pivot'
-import { acquire }         from '@vect/merge-acquire'
-import { pair, wind }      from '@vect/object-init'
-import { iterate, mapper } from '@vect/vector-mapper'
-import { mutazip }         from '@vect/vector-zipper'
+import { modeToInit, modeToTally } from '@analys/util-pivot'
+import { acquire }                 from '@vect/merge-acquire'
+import { pair, wind }              from '@vect/object-init'
+import { iterate, mapper }         from '@vect/vector-mapper'
+import { mutazip }                 from '@vect/vector-zipper'
 
 export class Group {
   /** @type {*} */ key
@@ -12,29 +11,39 @@ export class Group {
   /** @type {Function} */ init
   /** @type {Function} */ pick
   /** @type {Function} */ filter
-  constructor (key, fields, pick, filter) {
+  /** @type {Array} */ aliases
+
+  /**
+   *
+   * @param key
+   * @param [pick]
+   * @param fields
+   * @param [filter]
+   * @param [aliases]
+   */
+  constructor ([key, pick], fields, filter, aliases) {
     this.key = key
-    this.fields = fields.map(([index, mode]) => [index, Accrual(mode)])
+    this.pick = pick
+    this.fields = fields.map(([index, mode]) => [index, modeToTally(mode)])
     const
-      inits = fields.map(([, mode]) => mode === INCRE || mode === COUNT ? () => 0 : () => []),
+      inits = fields.map(([, mode]) => modeToInit(mode)),
       depth = inits.length
     this.init = () => mapper(inits, fn => fn(), depth)
-    this.pick = pick
     this.filter = filter
+    this.aliases = aliases
   }
 
-  static build (key, fields, pick, filter) { return new Group(key, fields, pick, filter) }
+  static build (p) { return new Group(p.key, p.fields, p.filter, p.aliases) }
   get indexes () {return this.fields.map(([index]) => index)}
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
   note (sample) {
-    let key = sample[this.key]
-    if (this.pick) key = this.pick(key)
+    const key = this.pick ? this.pick(sample[this.key]) : sample[this.key]
     mutazip(
       (key in this.data) ? this.data[key] : (this.data[key] = this.init()),
       this.fields,
-      (target, [index, accrue]) => accrue(target, sample[index])
+      (target, [index, tally]) => tally(target, sample[index])
     )
   }
 

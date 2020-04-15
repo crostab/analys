@@ -226,13 +226,12 @@ export class Table {
 
   /**
    * @param {Object} options
-   * @param {[*[]]} [options.fields]
-   * @param {[Object<string,Function>]} [options.formulas]
+   * @param {[Object<string,Function>]} [formulae]
    * @param {Function} [options.filter]
    * @param {boolean} [options.append=true]
    * @return {Table}
    */
-  formula (options = {}) { return Table.from(tableFormula.call(this, options)) }
+  formula (formulae, options = {}) { return Table.from(tableFormula.call(this, formulae, options)) }
 
   /**
    * @param {Object} options
@@ -257,7 +256,8 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    } else {
+    }
+    else {
       return this.copy({ types, head, rows })
     }
   }

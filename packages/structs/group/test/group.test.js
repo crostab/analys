@@ -1,4 +1,4 @@
-import { INCRE }                                                from '@analys/enum-pivot-mode'
+import { INCRE, MAX }                                           from '@analys/enum-pivot-mode'
 import { Table }                                                from '@analys/table'
 import { TableCollection }                                      from '@foba/table'
 import { decoObject, decoSamples, decoTable, decoVector, says } from '@spare/logger'
@@ -9,7 +9,14 @@ let table = TableCollection.BistroDutyRoster |> Table.from
 table.map(x => Number.isNaN(x) ? 0 : x, { mutate: true })
 table |> decoTable |> says['table']
 
-const group = Group.build(1, [[2, INCRE], [3, INCRE]], n => n.toLowerCase())
+const group = Group.build({
+  key: [1, n => n.toLowerCase()],
+  fields: [
+    [2, INCRE],
+    [3, INCRE],
+    [3, MAX]
+  ]
+})
 
 group.record(table.rows).toRows() |> decoVector |> says['group rows']
 group.record(table.rows).toObject() |> decoObject |> says['group object']

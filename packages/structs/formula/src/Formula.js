@@ -1,32 +1,32 @@
 import { wind }   from '@vect/object-init'
 import { mapper } from '@vect/vector-mapper'
+import { select } from '@vect/vector-select'
 
 export class Formula {
-  constructor (fields, formulas) {
-    this.data = []
-    this.fields = fields
-    this.formulas = formulas
-    this.depth = formulas.length
+  constructor (formulae) {
+    this.data = [] // result rows
+    this.formulae = Object.values(formulae)
+    this.indicators = Object.keys(formulae)
+    this.depth = formulae.length
   }
 
-  static build (fields, formulas) { return new Formula(fields, formulas) }
-  get formulaArray () { return Object.values(this.formulas) }
-  get indexes () { return Object.keys(this.formulas) }
+  static build (formulae) { return new Formula(formulae) }
 
   calculate (samples) {
-    const { formulaArray } = this
-    this.data = mapper(samples, sample => mapper(
-      formulaArray,
-      fn => fn.apply(sample, mapper(this.fields, i => sample[i])),
-      this.depth
-    ))
+    this.data = samples.map(sample =>
+      mapper(
+        this.formulae,
+        ([indexes, func]) => func.apply(sample, select(sample, indexes)),
+        this.depth
+      )
+    )
     return this
   }
 
   toRows () { return this.data }
   toSamples () {
-    const { indexes } = this
-    return this.data.map(vec => wind(indexes, vec))
+    const { indicators } = this
+    return this.data.map(vec => wind(indicators, vec))
   }
 }
 

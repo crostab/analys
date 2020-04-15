@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var utilPivot = require('@analys/util-pivot');
-var enumPivotMode = require('@analys/enum-pivot-mode');
 
 const iterate = function (vec, fn, l) {
   l = l || vec && vec.length;
@@ -12,22 +11,36 @@ const iterate = function (vec, fn, l) {
 };
 
 class Pivot {
-  constructor(x, y, z, mode, filter) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  /**
+   *
+   * @param x
+   * @param [xmap]
+   * @param y
+   * @param [ymap]
+   * @param z
+   * @param mode
+   * @param [filter]
+   */
+  constructor([x, xmap], [y, ymap], [z, mode], filter) {
     this.data = {
       s: [],
       b: [],
       m: [],
-      n: mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT ? () => 0 : () => []
+      n: utilPivot.modeToInit(mode)
     };
-    this.updater = Updater(this.data, mode);
+    this.arid = utilPivot.arid.bind(this.data);
+    this.acid = utilPivot.acid.bind(this.data);
+    this.x = x;
+    this.xm = xmap;
+    this.y = y;
+    this.ym = ymap;
+    this.z = z;
+    this.tally = utilPivot.modeToTally(mode);
     this.filter = filter;
   }
 
-  static build(x, y, z, mode, filter) {
-    return new Pivot(x, y, z, mode, filter);
+  static build([x, xmap], [y, ymap], [z, mode], filter) {
+    return new Pivot([x, xmap], [y, ymap], [z, mode], filter);
   }
 
   record(samples) {
@@ -35,7 +48,11 @@ class Pivot {
   }
 
   note(sample) {
-    this.updater(sample[this.x], sample[this.y], sample[this.z]);
+    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x];
+    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y];
+    const row = this.data.m[this.arid(sk)],
+          ci = this.acid(bk);
+    row[ci] = this.tally(row[ci], sample[this.z]);
   }
 
   toObject() {
@@ -47,22 +64,5 @@ class Pivot {
   }
 
 }
-const Updater = function (data, mode) {
-  const ri = utilPivot.arid.bind(data),
-        ci = utilPivot.acid.bind(data);
-  if (mode === enumPivotMode.MERGE) return function (x, y, value) {
-    return utilPivot.tallyMerge(data.m[ri(x)][ci(y)], value);
-  };
-  if (mode === enumPivotMode.ACCUM) return function (x, y, value) {
-    return utilPivot.tallyIncre(data.m[ri(x)][ci(y)], value);
-  };
-  if (mode === enumPivotMode.INCRE) return function (x, y, value) {
-    return data.m[ri(x)][ci(y)] += value;
-  };
-  if (mode === enumPivotMode.COUNT) return function (x, y) {
-    return data.m[ri(x)][ci(y)]++;
-  };
-  return utilPivot.ampliCell.bind(data);
-};
 
 exports.Pivot = Pivot;

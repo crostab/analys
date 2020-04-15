@@ -27,31 +27,30 @@ const mapper = function (vec, fn, l) {
   return ar;
 };
 
+const select = (vec, indexes, hi) => {
+  hi = hi || indexes.length;
+  const vc = Array(hi);
+
+  for (--hi; hi >= 0; hi--) vc[hi] = vec[indexes[hi]];
+
+  return vc;
+};
+
 class Formula {
-  constructor(fields, formulas) {
-    this.data = [];
-    this.fields = fields;
-    this.formulas = formulas;
-    this.depth = formulas.length;
+  constructor(formulae) {
+    this.data = []; // result rows
+
+    this.formulae = Object.values(formulae);
+    this.indicators = Object.keys(formulae);
+    this.depth = formulae.length;
   }
 
-  static build(fields, formulas) {
-    return new Formula(fields, formulas);
-  }
-
-  get formulaArray() {
-    return Object.values(this.formulas);
-  }
-
-  get indexes() {
-    return Object.keys(this.formulas);
+  static build(formulae) {
+    return new Formula(formulae);
   }
 
   calculate(samples) {
-    const {
-      formulaArray
-    } = this;
-    this.data = mapper(samples, sample => mapper(formulaArray, fn => fn.apply(sample, mapper(this.fields, i => sample[i])), this.depth));
+    this.data = samples.map(sample => mapper(this.formulae, ([indexes, func]) => func.apply(sample, select(sample, indexes)), this.depth));
     return this;
   }
 
@@ -61,9 +60,9 @@ class Formula {
 
   toSamples() {
     const {
-      indexes
+      indicators
     } = this;
-    return this.data.map(vec => wind(indexes, vec));
+    return this.data.map(vec => wind(indicators, vec));
   }
 
 }

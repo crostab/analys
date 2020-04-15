@@ -5,31 +5,30 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
 
+const select = (vec, indexes, hi) => {
+  hi = hi || indexes.length;
+  const vc = Array(hi);
+
+  for (--hi; hi >= 0; hi--) vc[hi] = vec[indexes[hi]];
+
+  return vc;
+};
+
 class Formula {
-  constructor(fields, formulas) {
-    this.data = [];
-    this.fields = fields;
-    this.formulas = formulas;
-    this.depth = formulas.length;
+  constructor(formulae) {
+    this.data = []; // result rows
+
+    this.formulae = Object.values(formulae);
+    this.indicators = Object.keys(formulae);
+    this.depth = formulae.length;
   }
 
-  static build(fields, formulas) {
-    return new Formula(fields, formulas);
-  }
-
-  get formulaArray() {
-    return Object.values(this.formulas);
-  }
-
-  get indexes() {
-    return Object.keys(this.formulas);
+  static build(formulae) {
+    return new Formula(formulae);
   }
 
   calculate(samples) {
-    const {
-      formulaArray
-    } = this;
-    this.data = vectorMapper.mapper(samples, sample => vectorMapper.mapper(formulaArray, fn => fn.apply(sample, vectorMapper.mapper(this.fields, i => sample[i])), this.depth));
+    this.data = samples.map(sample => vectorMapper.mapper(this.formulae, ([indexes, func]) => func.apply(sample, select(sample, indexes)), this.depth));
     return this;
   }
 
@@ -39,9 +38,9 @@ class Formula {
 
   toSamples() {
     const {
-      indexes
+      indicators
     } = this;
-    return this.data.map(vec => objectInit.wind(indexes, vec));
+    return this.data.map(vec => objectInit.wind(indicators, vec));
   }
 
 }

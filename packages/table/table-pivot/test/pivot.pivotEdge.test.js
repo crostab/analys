@@ -18,7 +18,7 @@ const spec = {
 }
 spec |> deco |> says[ROSTER + ' tablespec']
 
-tablePivot(table, spec) |> decoCrostab |> says[ROSTER + ' crostab']
+tablePivot.call(table, spec) |> decoCrostab |> says[ROSTER + ' crostab']
 
 
 

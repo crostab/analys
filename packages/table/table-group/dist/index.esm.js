@@ -21,11 +21,10 @@ const tableGroup = function ({
     head,
     rows
   } = table;
-  let groupHead, pick, label, mode;
+  let groupHead, label, pick, mode;
   [key, pick] = parseKeyOnce(key);
-  field = parseField(field, key);
-  const groupingEngine = isMatrix(field) // field |> deco |> says['parsed field']
-  ? (groupHead = acquire([key], field.map(([label]) => label)), new Group(head.indexOf(key), field.map(([label, mode]) => [head.indexOf(label), mode]), pick)) : ([label, mode] = field, groupHead = [key, label], new Chips(head.indexOf(key), head.indexOf(label), mode, pick));
+  const groupingEngine = isMatrix(field = parseField(field, key)) // field |> deco |> says['parsed field']
+  ? (groupHead = acquire([key], field.map(([label]) => label)), new Group([head.indexOf(key), pick], field.map(([label, mode]) => [head.indexOf(label), mode]))) : ([label, mode] = field, groupHead = [key, label], new Chips([head.indexOf(key), pick], [head.indexOf(label), mode]));
   return {
     head: groupHead,
     rows: groupingEngine.record(rows).toRows()

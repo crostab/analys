@@ -11,6 +11,6 @@ table.group({ key: 'plant', field: 'sku' })
   |> decoTable
   |> says['plant to sku']
 
-table.group({ key: 'plant', field: { app: MERGE, sku: ACCUM, maxt: INCRE } })
+table.group({ key: { plant: x => x.toLowerCase() }, field: { app: MERGE, sku: ACCUM, maxt: INCRE } })
   |> decoTable
   |> says['plant to app']

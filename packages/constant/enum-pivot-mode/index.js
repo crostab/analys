@@ -1,2 +1,11 @@
-export { MERGE, ACCUM, INCRE, COUNT, SUM, PivotModes } from './resources/PivotModes'
+export {
+  MERGE,
+  ACCUM,
+  INCRE,
+  COUNT,
+  AVERAGE,
+  MAX,
+  MIN,
+  PivotModes
+} from './resources/PivotModes'
 

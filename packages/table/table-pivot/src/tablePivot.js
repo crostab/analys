@@ -1,10 +1,10 @@
-import { Pivot }   from '@analys/pivot'
-import { Cubic }   from '@analys/cubic'
-import { CrosTab } from '@analys/crostab'
-import { slice }      from '@analys/table-init'
-import { tableFind }  from '@analys/table-find'
-import { parseField } from '@analys/tablespec'
-import { isMatrix }   from '@vect/matrix'
+import { CrosTab }                  from '@analys/crostab'
+import { Cubic }                    from '@analys/cubic'
+import { Pivot }                    from '@analys/pivot'
+import { tableFind }                from '@analys/table-find'
+import { slice }                    from '@analys/table-init'
+import { parseField, parseKeyOnce } from '@analys/tablespec'
+import { isMatrix }                 from '@vect/matrix'
 
 /**
  *
@@ -26,12 +26,23 @@ export const tablePivot = function ({
   const table = slice(this)
   if (filter) { tableFind.call(table, filter) }
   const { head, rows } = table
-  let cubic
+  let cubic, sideMap, bannerMap;
+  ([side, sideMap] = parseKeyOnce(side));
+  ([banner, bannerMap] = parseKeyOnce(banner))
   const crostabEngine = isMatrix(field = parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
     ? (cubic = true,
-      new Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode])))
+        new Cubic(
+          [head.indexOf(side), sideMap],
+          [head.indexOf(banner), bannerMap],
+          field.map(([key, mode]) => [head.indexOf(key), mode]))
+    )
     : (cubic = false,
-      new Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]))
+        new Pivot(
+          [head.indexOf(side), sideMap],
+          [head.indexOf(banner), bannerMap],
+          [head.indexOf(field[0]), field[1]]
+        )
+    )
   const crostab = CrosTab.from(crostabEngine.record(rows).toObject())
   if (cubic && formula) crostab.map(vec => formula.apply(null, vec))
   return crostab

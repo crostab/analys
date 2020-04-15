@@ -1,7 +1,7 @@
 import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { Cubic }               from '../src/Cubic'
-import { decoCrostab, says }   from '@spare/logger'
 import { TableCollection }     from '@foba/table'
+import { decoCrostab, says }   from '@spare/logger'
+import { Cubic }               from '../src/Cubic'
 
 const duties = TableCollection.BistroDutyRoster
 
@@ -14,13 +14,15 @@ const dutiesBeta = {
   ]
 }
 
-const band = [
-  [2, INCRE],
-  [3, ACCUM],
-  [4, COUNT]
-]
-
-let cubic = new Cubic(0, 1, band)
+let cubic = new Cubic(
+  [0,],
+  [1,],
+  [
+    [2, INCRE],
+    [3, ACCUM],
+    [4, COUNT]
+  ]
+)
 
 cubic.record(duties.rows).toObject() |> decoCrostab |> says['spreadCubic']
 cubic.record(dutiesBeta.rows).toObject()  |> decoCrostab |> says['spreadCubic']

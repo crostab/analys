@@ -1,7 +1,6 @@
-import { ACCUM, COUNT, INCRE, MERGE } from '@analys/enum-pivot-mode'
-import { tallyAccum, tallyMerge }     from '@analys/util-pivot'
-import { wind }                       from '@vect/object-init'
-import { iterate }                    from '@vect/vector-mapper'
+import { modeToInit, modeToTally } from '@analys/util-pivot'
+import { wind }                    from '@vect/object-init'
+import { iterate }                 from '@vect/vector-mapper'
 
 export class Chips {
   /** @type {*} */ key
@@ -10,22 +9,32 @@ export class Chips {
   /** @type {Function} */ pick
   /** @type {Function} */ updater
   /** @type {Function} */ filter
-  constructor (key, field, mode, pick, filter) {
+
+  /**
+   *
+   * @param key
+   * @param [pick]
+   * @param field
+   * @param mode
+   * @param [filter]
+   */
+  constructor ([key, pick], [field, mode], filter) {
     this.key = key
-    this.field = field
-    this.updater = Updater(this.data, mode)
     this.pick = pick
+    this.field = field
+    this.init = modeToInit(mode)
+    this.tally = modeToTally(mode)
     this.filter = filter
   }
 
-  static build (key, field, mode, pick, filter) { return new Chips(key, field, mode, pick, filter) }
+  static build ([key, pick], [field, mode], filter) { return new Chips([key, pick], [field, mode], filter) }
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
   note (sample) {
-    let key = sample[this.key]
-    if (this.pick) key = this.pick(key)
-    this.updater(key, sample[this.field])
+    const key = this.pick ? this.pick(sample[this.key]) : sample[this.key]
+    const target = (key in this.data) ? this.data[key] : (this.data[key] = this.init())
+    this.data[key] = this.tally(target, sample[this.field])
   }
 
   toObject () { return this.data }
@@ -34,24 +43,4 @@ export class Chips {
     const head = [this.key, this.field]
     return Object.entries(this.data).map(ent => wind(head, ent))
   }
-}
-
-export const Updater = (data, mode) => {
-  if (mode === MERGE) return function (k, v) {
-    if (k in this) { tallyMerge(this[k], v) }
-    else { this[k] = v.slice() }
-  }.bind(data)
-  if (mode === ACCUM) return function (k, x) {
-    if (k in this) { tallyAccum(this[k], x) }
-    else { this[k] = [x] }
-  }.bind(data)
-  if (mode === INCRE) return function (k, n) {
-    if (k in this) { this[k] += n }
-    else { this[k] = n }
-  }.bind(data)
-  if (mode === COUNT) return function (k) {
-    if (k in this) { this[k]++ }
-    else { this[k] = 1 }
-  }.bind(data)
-  return () => {}
 }

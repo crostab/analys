@@ -1,9 +1,9 @@
-import BigMacTable from './assets/out/BigMacIndex.Table'
-import { Table } from '../src/Table'
-import { COUNT, INCRE } from '@analys/enum-pivot-mode'
-import { CrosTab } from '@analys/crostab'
+import { CrosTab }                        from '@analys/crostab'
+import { COUNT, INCRE }                   from '@analys/enum-pivot-mode'
+import { delogger }                       from '@spare/deco'
 import { decoCrostab, DecoTable, logger } from '@spare/logger'
-import { delogger } from '@spare/deco'
+import { Table }                          from '../src/Table'
+import BigMacTable                        from './assets/out/BigMacIndex.Table'
 
 const table = Table.from(BigMacTable)
 
@@ -31,7 +31,7 @@ table.pushColumn(ERA,
 table |> DecoTable({ top: 5, bottom: 2 }) |> delogger
 
 const crosTab = table.crosTab({
-  side: ERA,
+  side: [ERA, x => x],
   banner: REGION,
   field: {
     price: INCRE,

@@ -1,5 +1,7 @@
 import { init } from '@vect/vector-init';
-import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
+import { MERGE, ACCUM, INCRE, COUNT, MAX, MIN, AVERAGE } from '@analys/enum-pivot-mode';
+import { max, min } from '@aryth/comparer';
+import { acquire } from '@vect/merge-acquire';
 
 const ampliCell = function (side, banner) {
   return this.m[arid.call(this, side)][acid.call(this, banner)];
@@ -15,19 +17,38 @@ const acid = function (y) {
   return this.m.forEach(r => r.push(this.n())), ci + this.b.push(y);
 };
 
-// export default Function.prototype.apply.bind(Array.prototype.push)
-const acquire = (va, vb) => (Array.prototype.push.apply(va, vb), va); // export default Function.prototype.call.bind(Array.prototype.concat)
+const queryCell = function (x, y) {
+  return (x = qrid.call(this, x)) >= 0 && (y = qcid.call(this, y)) >= 0 ? this.m[x][y] : void 0;
+};
+const qrid = function (x) {
+  return this.s.indexOf(x);
+};
+const qcid = function (y) {
+  return this.b.indexOf(y);
+};
 
 const tallyMerge = (target, value) => acquire(target, value);
 const tallyAccum = (target, value) => (target.push(value), target);
 const tallyIncre = (target, value) => target + value;
 const tallyCount = target => target + 1;
-const Accrual = mode => {
+const tallyMax = (target, value) => max(target, value);
+const tallyMin = (target, value) => min(target, value);
+const modeToTally = mode => {
   if (mode === MERGE) return tallyMerge;
   if (mode === ACCUM) return tallyAccum;
   if (mode === INCRE) return tallyIncre;
   if (mode === COUNT) return tallyCount;
+  if (mode === MAX) return tallyMax;
+  if (mode === MIN) return tallyMin;
   return () => {};
 };
 
-export { Accrual, acid, ampliCell, arid, tallyAccum, tallyCount, tallyIncre, tallyMerge };
+const modeToInit = mode => {
+  if (mode === MERGE || mode === ACCUM) return () => [];
+  if (mode === INCRE || mode === COUNT || mode === AVERAGE) return () => 0;
+  if (mode === MAX) return () => Number.NEGATIVE_INFINITY;
+  if (mode === MIN) return () => Number.POSITIVE_INFINITY;
+  return () => [];
+};
+
+export { acid, ampliCell, arid, modeToInit, modeToTally, qcid, qrid, queryCell, tallyAccum, tallyCount, tallyIncre, tallyMax, tallyMerge, tallyMin };

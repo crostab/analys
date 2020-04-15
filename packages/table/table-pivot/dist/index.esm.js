@@ -4,7 +4,7 @@ import { CrosTab } from '@analys/crostab';
 import { slice } from '@analys/table-init';
 import { tableFilter } from '@analys/table-filter';
 import { mapper } from '@vect/vector-mapper';
-import { parseCell, parseField } from '@analys/tablespec';
+import { parseCell, parseKeyOnce, parseField } from '@analys/tablespec';
 import { tableFind } from '@analys/table-find';
 import { isMatrix } from '@vect/matrix';
 
@@ -75,9 +75,11 @@ const tablePivot = function ({
     head,
     rows
   } = table;
-  let cubic;
+  let cubic, sideMap, bannerMap;
+  [side, sideMap] = parseKeyOnce(side);
+  [banner, bannerMap] = parseKeyOnce(banner);
   const crostabEngine = isMatrix(field = parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
-  ? (cubic = true, new Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic = false, new Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]));
+  ? (cubic = true, new Cubic([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic = false, new Pivot([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], [head.indexOf(field[0]), field[1]]));
   const crostab = CrosTab.from(crostabEngine.record(rows).toObject());
   if (cubic && formula) crostab.map(vec => formula.apply(null, vec));
   return crostab;

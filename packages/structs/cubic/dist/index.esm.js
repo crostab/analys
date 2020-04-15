@@ -1,5 +1,4 @@
-import { INCRE, COUNT } from '@analys/enum-pivot-mode';
-import { Accrual, ampliCell } from '@analys/util-pivot';
+import { modeToTally, modeToInit, ampliCell } from '@analys/util-pivot';
 import { mutazip } from '@vect/vector-zipper';
 
 function _defineProperty(obj, key, value) {
@@ -25,13 +24,15 @@ const iterate = function (vec, fn, l) {
 
 class Cubic {
   /** @type {Function} */
-  constructor(x, y, fields, filter) {
+  constructor([x, xmap], [y, ymap], fields, filter) {
     _defineProperty(this, "cell", void 0);
 
     this.x = x;
+    this.xm = xmap;
     this.y = y;
-    this.fields = fields.map(([index, mode]) => [index, Accrual(mode, filter)]);
-    const inits = fields.map(([, mode]) => mode === INCRE || mode === COUNT ? () => 0 : () => []);
+    this.ym = ymap;
+    this.fields = fields.map(([index, mode]) => [index, modeToTally(mode, filter)]);
+    const inits = fields.map(([, mode]) => modeToInit(mode));
     this.data = {
       s: [],
       b: [],
@@ -49,7 +50,9 @@ class Cubic {
   }
 
   note(sample) {
-    mutazip(this.cell(sample[this.x], sample[this.y]), this.fields, (target, [index, accrue]) => accrue(target, sample[index]));
+    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x];
+    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y];
+    mutazip(this.cell(sk, bk), this.fields, (target, [index, tally]) => tally(target, sample[index]));
   }
 
   toObject() {

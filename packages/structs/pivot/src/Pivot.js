@@ -1,31 +1,40 @@
-import { acid, ampliCell, arid, tallyIncre, tallyMerge } from '@analys/util-pivot'
-import { ACCUM, COUNT, INCRE, MERGE }                    from '@analys/enum-pivot-mode'
-import { iterate }                                       from '@vect/vector-mapper'
+import { acid, arid, modeToInit, modeToTally } from '@analys/util-pivot'
+import { iterate }                             from '@vect/vector-mapper'
 
 export class Pivot {
-  constructor (x, y, z, mode, filter) {
+  /**
+   *
+   * @param x
+   * @param [xmap]
+   * @param y
+   * @param [ymap]
+   * @param z
+   * @param mode
+   * @param [filter]
+   */
+  constructor ([x, xmap], [y, ymap], [z, mode], filter) {
+    this.data = { s: [], b: [], m: [], n: modeToInit(mode) }
+    this.arid = arid.bind(this.data)
+    this.acid = acid.bind(this.data)
     this.x = x
+    this.xm = xmap
     this.y = y
+    this.ym = ymap
     this.z = z
-    this.data = { s: [], b: [], m: [], n: mode === INCRE || mode === COUNT ? () => 0 : () => [] }
-    this.updater = Updater(this.data, mode)
+    this.tally = modeToTally(mode)
     this.filter = filter
   }
 
-  static build (x, y, z, mode, filter) { return new Pivot(x, y, z, mode, filter) }
+  static build ([x, xmap], [y, ymap], [z, mode], filter) { return new Pivot([x, xmap], [y, ymap], [z, mode], filter) }
 
   record (samples) { return iterate(samples, this.note.bind(this)), this }
 
-  note (sample) { this.updater(sample[this.x], sample[this.y], sample[this.z]) }
+  note (sample) {
+    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x]
+    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y]
+    const row = this.data.m[this.arid(sk)], ci = this.acid(bk)
+    row[ci] = this.tally(row[ci], sample[this.z])
+  }
 
   toObject () { return { side: this.data.s, head: this.data.b, rows: this.data.m } }
-}
-
-export const Updater = function (data, mode) {
-  const ri = arid.bind(data), ci = acid.bind(data)
-  if (mode === MERGE) return function (x, y, value) { return tallyMerge(data.m[ri(x)][ci(y)], value) }
-  if (mode === ACCUM) return function (x, y, value) { return tallyIncre(data.m[ri(x)][ci(y)], value) }
-  if (mode === INCRE) return function (x, y, value) { return data.m[ri(x)][ci(y)] += value }
-  if (mode === COUNT) return function (x, y) { return data.m[ri(x)][ci(y)]++ }
-  return ampliCell.bind(data)
 }

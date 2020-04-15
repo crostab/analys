@@ -2,13 +2,17 @@ const MERGE = -1;
 const ACCUM = 0;
 const INCRE = 1;
 const COUNT = 2;
-const SUM = 1;
+const AVERAGE = 3;
+const MAX = 4;
+const MIN = 5;
 const PivotModes = {
   merge: MERGE,
   accum: ACCUM,
   incre: INCRE,
   count: COUNT,
-  sum: SUM
+  average: AVERAGE,
+  max: MAX,
+  min: MIN
 };
 
-export { ACCUM, COUNT, INCRE, MERGE, PivotModes, SUM };
+export { ACCUM, AVERAGE, COUNT, INCRE, MAX, MERGE, MIN, PivotModes };

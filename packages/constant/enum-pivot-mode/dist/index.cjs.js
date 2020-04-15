@@ -6,18 +6,24 @@ const MERGE = -1;
 const ACCUM = 0;
 const INCRE = 1;
 const COUNT = 2;
-const SUM = 1;
+const AVERAGE = 3;
+const MAX = 4;
+const MIN = 5;
 const PivotModes = {
   merge: MERGE,
   accum: ACCUM,
   incre: INCRE,
   count: COUNT,
-  sum: SUM
+  average: AVERAGE,
+  max: MAX,
+  min: MIN
 };
 
 exports.ACCUM = ACCUM;
+exports.AVERAGE = AVERAGE;
 exports.COUNT = COUNT;
 exports.INCRE = INCRE;
+exports.MAX = MAX;
 exports.MERGE = MERGE;
+exports.MIN = MIN;
 exports.PivotModes = PivotModes;
-exports.SUM = SUM;

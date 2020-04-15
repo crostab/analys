@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var enumPivotMode = require('@analys/enum-pivot-mode');
 var utilPivot = require('@analys/util-pivot');
 var vectorZipper = require('@vect/vector-zipper');
 
@@ -29,13 +28,15 @@ const iterate = function (vec, fn, l) {
 
 class Cubic {
   /** @type {Function} */
-  constructor(x, y, fields, filter) {
+  constructor([x, xmap], [y, ymap], fields, filter) {
     _defineProperty(this, "cell", void 0);
 
     this.x = x;
+    this.xm = xmap;
     this.y = y;
-    this.fields = fields.map(([index, mode]) => [index, utilPivot.Accrual(mode, filter)]);
-    const inits = fields.map(([, mode]) => mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT ? () => 0 : () => []);
+    this.ym = ymap;
+    this.fields = fields.map(([index, mode]) => [index, utilPivot.modeToTally(mode, filter)]);
+    const inits = fields.map(([, mode]) => utilPivot.modeToInit(mode));
     this.data = {
       s: [],
       b: [],
@@ -53,7 +54,9 @@ class Cubic {
   }
 
   note(sample) {
-    vectorZipper.mutazip(this.cell(sample[this.x], sample[this.y]), this.fields, (target, [index, accrue]) => accrue(target, sample[index]));
+    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x];
+    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y];
+    vectorZipper.mutazip(this.cell(sk, bk), this.fields, (target, [index, tally]) => tally(target, sample[index]));
   }
 
   toObject() {

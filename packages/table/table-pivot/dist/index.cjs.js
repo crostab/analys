@@ -79,9 +79,11 @@ const tablePivot = function ({
     head,
     rows
   } = table;
-  let cubic$1;
+  let cubic$1, sideMap, bannerMap;
+  [side, sideMap] = tablespec.parseKeyOnce(side);
+  [banner, bannerMap] = tablespec.parseKeyOnce(banner);
   const crostabEngine = matrix.isMatrix(field = tablespec.parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
-  ? (cubic$1 = true, new cubic.Cubic(head.indexOf(side), head.indexOf(banner), field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic$1 = false, new pivot.Pivot(head.indexOf(side), head.indexOf(banner), head.indexOf(field[0]), field[1]));
+  ? (cubic$1 = true, new cubic.Cubic([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic$1 = false, new pivot.Pivot([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], [head.indexOf(field[0]), field[1]]));
   const crostab$1 = crostab.CrosTab.from(crostabEngine.record(rows).toObject());
   if (cubic$1 && formula) crostab$1.map(vec => formula.apply(null, vec));
   return crostab$1;
