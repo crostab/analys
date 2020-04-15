@@ -34,24 +34,35 @@ const qcid = function (y) {
 const tallyMerge = (target, value) => mergeAcquire.acquire(target, value);
 const tallyAccum = (target, value) => (target.push(value), target);
 const tallyIncre = (target, value) => target + value;
-const tallyCount = target => target + 1;
+const tallyCount = (target, value) => target + 1;
+const tallyAverage = (target, value) => (target.s += value, target.n += 1, target);
 const tallyMax = (target, value) => comparer.max(target, value);
 const tallyMin = (target, value) => comparer.min(target, value);
+const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
+const tallyLast = (target, value) => value;
 const modeToTally = mode => {
   if (mode === enumPivotMode.MERGE) return tallyMerge;
   if (mode === enumPivotMode.ACCUM) return tallyAccum;
   if (mode === enumPivotMode.INCRE) return tallyIncre;
   if (mode === enumPivotMode.COUNT) return tallyCount;
+  if (mode === enumPivotMode.AVERAGE) return tallyAverage;
   if (mode === enumPivotMode.MAX) return tallyMax;
   if (mode === enumPivotMode.MIN) return tallyMin;
+  if (mode === enumPivotMode.FIRST) return tallyFirst;
+  if (mode === enumPivotMode.LAST) return tallyLast;
   return () => {};
 };
 
 const modeToInit = mode => {
   if (mode === enumPivotMode.MERGE || mode === enumPivotMode.ACCUM) return () => [];
-  if (mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT || mode === enumPivotMode.AVERAGE) return () => 0;
+  if (mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT) return () => 0;
+  if (mode === enumPivotMode.AVERAGE) return () => ({
+    s: 0,
+    n: 0
+  });
   if (mode === enumPivotMode.MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === enumPivotMode.MIN) return () => Number.POSITIVE_INFINITY;
+  if (mode === enumPivotMode.FIRST || mode === enumPivotMode.LAST) return () => void 0;
   return () => [];
 };
 

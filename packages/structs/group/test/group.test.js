@@ -1,4 +1,4 @@
-import { INCRE, MAX }                                           from '@analys/enum-pivot-mode'
+import { AVERAGE, INCRE, MAX, MIN }                             from '@analys/enum-pivot-mode'
 import { Table }                                                from '@analys/table'
 import { TableCollection }                                      from '@foba/table'
 import { decoObject, decoSamples, decoTable, decoVector, says } from '@spare/logger'
@@ -13,8 +13,9 @@ const group = Group.build({
   key: [1, n => n.toLowerCase()],
   fields: [
     [2, INCRE],
-    [3, INCRE],
-    [3, MAX]
+    [3, AVERAGE],
+    [3, MAX],
+    [3, MIN]
   ]
 })
 

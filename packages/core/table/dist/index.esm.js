@@ -394,6 +394,7 @@ class Table {
    * @param {*} options.key
    * @param {*} [options.field]
    * @param {Function} [options.filter]
+   * @param {Object} [options.alias]
    * @return {Table}
    */
 

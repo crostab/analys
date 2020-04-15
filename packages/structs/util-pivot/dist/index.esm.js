@@ -1,5 +1,5 @@
 import { init } from '@vect/vector-init';
-import { MERGE, ACCUM, INCRE, COUNT, MAX, MIN, AVERAGE } from '@analys/enum-pivot-mode';
+import { MERGE, ACCUM, INCRE, COUNT, AVERAGE, MAX, MIN, FIRST, LAST } from '@analys/enum-pivot-mode';
 import { max, min } from '@aryth/comparer';
 import { acquire } from '@vect/merge-acquire';
 
@@ -30,24 +30,35 @@ const qcid = function (y) {
 const tallyMerge = (target, value) => acquire(target, value);
 const tallyAccum = (target, value) => (target.push(value), target);
 const tallyIncre = (target, value) => target + value;
-const tallyCount = target => target + 1;
+const tallyCount = (target, value) => target + 1;
+const tallyAverage = (target, value) => (target.s += value, target.n += 1, target);
 const tallyMax = (target, value) => max(target, value);
 const tallyMin = (target, value) => min(target, value);
+const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
+const tallyLast = (target, value) => value;
 const modeToTally = mode => {
   if (mode === MERGE) return tallyMerge;
   if (mode === ACCUM) return tallyAccum;
   if (mode === INCRE) return tallyIncre;
   if (mode === COUNT) return tallyCount;
+  if (mode === AVERAGE) return tallyAverage;
   if (mode === MAX) return tallyMax;
   if (mode === MIN) return tallyMin;
+  if (mode === FIRST) return tallyFirst;
+  if (mode === LAST) return tallyLast;
   return () => {};
 };
 
 const modeToInit = mode => {
   if (mode === MERGE || mode === ACCUM) return () => [];
-  if (mode === INCRE || mode === COUNT || mode === AVERAGE) return () => 0;
+  if (mode === INCRE || mode === COUNT) return () => 0;
+  if (mode === AVERAGE) return () => ({
+    s: 0,
+    n: 0
+  });
   if (mode === MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === MIN) return () => Number.POSITIVE_INFINITY;
+  if (mode === FIRST || mode === LAST) return () => void 0;
   return () => [];
 };
 

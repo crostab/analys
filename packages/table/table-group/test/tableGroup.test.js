@@ -1,21 +1,36 @@
-import { ACCUM, COUNT, INCRE, MERGE } from '@analys/enum-pivot-mode'
-import { Table }                      from '@analys/table'
-import { TableCollection }            from '@foba/table'
-import { decoTable, logger, says }    from '@spare/logger'
-import { tableGroup }                 from '../src/tableGroup'
+import { MUTABLE }                                        from '@analys/enum-mutabilities'
+import { ACCUM, AVERAGE, COUNT, FIRST, LAST, MERGE, MIN } from '@analys/enum-pivot-mode'
+import { Table }                                          from '@analys/table'
+import { TableCollection }                                from '@foba/table'
+import { decoTable, logger, says }                        from '@spare/logger'
+import { isNumeric }                                      from '@typen/num-strict'
+import { tableGroup }                                     from '../src/tableGroup'
+
+const { MAX } = require('@analys/enum-pivot-mode')
 
 const table = TableCollection.AeroEngineSpecs |> Table.from
+table.map(x => isNumeric(x) ? +x : x, MUTABLE)
 
 table|> decoTable|> logger
 
 tableGroup.call(table, {
   key: { plant: x => x?.toLowerCase() },
-  field: {
-    sku: ACCUM,
-    app: MERGE,
-    maxt: INCRE,
-    bypass: COUNT,
-  },
+  field: [
+    ['maxt', MAX],
+    ['maxt', MIN],
+    ['maxt', FIRST],
+    ['maxt', LAST],
+    ['bypass', COUNT],
+    ['dryw', AVERAGE],
+    ['sku', ACCUM],
+    ['app', MERGE],
+  ],
+  alias: [
+    ['maxt', 'max'],
+    ['maxt', 'min'],
+    ['maxt', 'first'],
+    ['maxt', 'last'],
+  ]
 })
   |> decoTable
   |> says['multiple category: plant -> sku']

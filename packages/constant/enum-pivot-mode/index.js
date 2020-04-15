@@ -6,6 +6,8 @@ export {
   AVERAGE,
   MAX,
   MIN,
+  FIRST,
+  LAST,
   PivotModes
 } from './resources/PivotModes'
 

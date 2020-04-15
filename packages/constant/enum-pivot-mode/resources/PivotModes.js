@@ -5,6 +5,8 @@ export const COUNT = 2
 export const AVERAGE = 3
 export const MAX = 4
 export const MIN = 5
+export const FIRST = 6
+export const LAST = 7
 
 export const SUM = 1
 
@@ -16,4 +18,6 @@ export const PivotModes = {
   average: AVERAGE,
   max: MAX,
   min: MIN,
+  first: FIRST,
+  last: LAST,
 }

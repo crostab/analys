@@ -9,7 +9,8 @@ import { acquire } from '@vect/merge-acquire';
 const tableGroup = function ({
   key,
   field,
-  filter
+  filter,
+  alias
 } = {}) {
   const table = slice(this);
 
@@ -25,6 +26,10 @@ const tableGroup = function ({
   [key, pick] = parseKeyOnce(key);
   const groupingEngine = isMatrix(field = parseField(field, key)) // field |> deco |> says['parsed field']
   ? (groupHead = acquire([key], field.map(([label]) => label)), new Group([head.indexOf(key), pick], field.map(([label, mode]) => [head.indexOf(label), mode]))) : ([label, mode] = field, groupHead = [key, label], new Chips([head.indexOf(key), pick], [head.indexOf(label), mode]));
+  if (alias) for (let [field, proj] of Object.entries(alias)) {
+    const i = groupHead.indexOf(field);
+    if (i > 0) groupHead[i] = proj;
+  }
   return {
     head: groupHead,
     rows: groupingEngine.record(rows).toRows()

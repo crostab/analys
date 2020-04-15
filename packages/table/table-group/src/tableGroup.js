@@ -9,7 +9,8 @@ import { acquire }                  from '@vect/merge-acquire'
 export const tableGroup = function ({
   key,
   field,
-  filter
+  filter,
+  alias,
 } = {}) {
   const table = slice(this)
   if (filter) { tableFind.call(table, filter) }
@@ -27,5 +28,12 @@ export const tableGroup = function ({
           [head.indexOf(key), pick],
           [head.indexOf(label), mode])
     )
+  if (alias) {
+    if (!Array.isArray(alias)) alias = Object.entries(alias)
+    for (let [field, proj] of alias) {
+      const i = groupHead.indexOf(field)
+      if (i > 0) groupHead[i] = proj
+    }
+  }
   return { head: groupHead, rows: groupingEngine.record(rows).toRows() }
 }
