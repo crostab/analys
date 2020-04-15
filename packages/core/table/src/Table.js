@@ -220,14 +220,14 @@ export class Table {
    * @param {*} options.key
    * @param {*} [options.field]
    * @param {Function} [options.filter]
-   * @param {Object} [options.alias]
+   * @param {Object|Array} [options.alias]
    * @return {Table}
    */
   group (options = {}) { return Table.from(tableGroup.call(this, options)) }
 
   /**
    * @param {Object} options
-   * @param {[Object<string,Function>]} [formulae]
+   * @param {Object|Array} [formulae]
    * @param {Function} [options.filter]
    * @param {boolean} [options.append=true]
    * @return {Table}

@@ -30,10 +30,16 @@ const tableGroup = function ({
   [key, pick] = tablespec.parseKeyOnce(key);
   const groupingEngine = matrix.isMatrix(field = tablespec.parseField(field, key)) // field |> deco |> says['parsed field']
   ? (groupHead = mergeAcquire.acquire([key], field.map(([label]) => label)), new group.Group([head.indexOf(key), pick], field.map(([label, mode]) => [head.indexOf(label), mode]))) : ([label, mode] = field, groupHead = [key, label], new chips.Chips([head.indexOf(key), pick], [head.indexOf(label), mode]));
-  if (alias) for (let [field, proj] of Object.entries(alias)) {
-    const i = groupHead.indexOf(field);
-    if (i > 0) groupHead[i] = proj;
+
+  if (alias) {
+    if (!Array.isArray(alias)) alias = Object.entries(alias);
+
+    for (let [field, proj] of alias) {
+      const i = groupHead.indexOf(field);
+      if (i > 0) groupHead[i] = proj;
+    }
   }
+
   return {
     head: groupHead,
     rows: groupingEngine.record(rows).toRows()

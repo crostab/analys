@@ -2,9 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+/** @type {{mutate: boolean}} */
 const MUTABLE = {
   mutate: true
 };
+/** @type {{mutate: boolean}} */
+
 const IMMUTABLE = {
   mutate: false
 };
