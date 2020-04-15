@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-formula",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Table formula",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,10 +15,10 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/formula": "^0.2.3",
-    "@analys/table-find": "^0.2.3",
-    "@analys/table-init": "^0.2.3",
-    "@analys/table-merge": "^0.2.3"
+    "@analys/formula": "^0.2.4",
+    "@analys/table-find": "^0.2.4",
+    "@analys/table-init": "^0.2.4",
+    "@analys/table-merge": "^0.2.4"
   },
   "repository": {
     "type": "git",
