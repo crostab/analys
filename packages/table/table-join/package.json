@@ -15,7 +15,7 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@aryth/comparer": "^0.1.0",
+    "@aryth/comparer": "^0.1.2",
     "@vect/vector-init": "^0.2.0",
     "@vect/vector-mapper": "^0.2.0",
     "@vect/vector-select": "^0.2.0",

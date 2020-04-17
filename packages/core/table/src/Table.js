@@ -6,7 +6,9 @@ import { tableFind }                                                            
 import { tableFormula }                                                         from '@analys/table-formula'
 import { tableGroup }                                                           from '@analys/table-group'
 import { shallow, slice }                                                       from '@analys/table-init'
+import { tableJoin }                                                            from '@analys/table-join'
 import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
+import { tableAcquire, tableMerge }                                             from '@analys/table-merge'
 import { tablePivot }                                                           from '@analys/table-pivot'
 import { inferTypes }                                                           from '@analys/table-types'
 import { NUM_ASC }                                                              from '@aryth/comparer'
@@ -22,6 +24,7 @@ import {
 }                                                                               from '@vect/columns-update'
 import { size, transpose }                                                      from '@vect/matrix'
 import { mapper as mapperMatrix }                                               from '@vect/matrix-mapper'
+import { intersect }                                                            from '@vect/vector-algebra'
 import { iterate, mapper }                                                      from '@vect/vector-mapper'
 import { splices }                                                              from '@vect/vector-update'
 import { StatMx }                                                               from 'borel'
@@ -126,7 +129,7 @@ export class Table {
   spliceColumns (fields, { mutate = false } = {}) {
     const o = mutate ? this : this |> shallow, indexes = this.columnIndexes(fields).sort(NUM_ASC)
     splicesColumns(o.rows, indexes), splices(o.head, indexes)
-    return mutate ? this : Table.from(o)
+    return mutate ? this : this.copy(o)
   }
 
   divide (fields, { mutate = false } = {}) {
@@ -203,6 +206,26 @@ export class Table {
     let o = mutate ? this : this |> slice
     sortColumnsByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)
+  }
+
+  join (another, fields, joinType, fillEmpty) { return tableJoin(this, another, fields, joinType, fillEmpty) }
+
+  /**
+   *
+   * @param {Table} another
+   * @param {boolean} [mutate=true]
+   * @return {Table}
+   */
+  union (another, { mutate = true } = {}) {
+    const self = mutate ? this : this.copy()
+    const shared = intersect(self.head, another.head)
+    if (shared.length) {
+      for (let label of shared) self.setColumn(label, another.column(label))
+      another = another.spliceColumns(shared, { mutate })
+    }
+    return mutate
+      ? tableAcquire(self, another)
+      : this.copy(tableMerge(self, another))
   }
 
   /**
