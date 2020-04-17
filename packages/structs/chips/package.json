@@ -1,6 +1,6 @@
 {
   "name": "@analys/chips",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A debugging tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.2.4",
-    "@analys/util-pivot": "^0.2.4",
+    "@analys/enum-pivot-mode": "^0.2.5",
+    "@analys/util-pivot": "^0.2.5",
     "@vect/object-init": "^0.2.0",
     "@vect/vector-mapper": "^0.2.0"
   },
