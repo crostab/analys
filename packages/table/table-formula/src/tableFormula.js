@@ -2,7 +2,7 @@ import { Formula }      from '@analys/formula'
 import { tableFind }    from '@analys/table-find'
 import { slice }        from '@analys/table-init'
 import { tableAcquire } from '@analys/table-merge'
-import { argnames }     from '../utils/argnames'
+import { argnames }     from '@spare/deco-func'
 
 export const tableFormula = function (formulae, {
   filter,

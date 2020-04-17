@@ -1,14 +1,6 @@
 import { wind } from '@vect/object-init';
 import { mapper } from '@vect/vector-mapper';
-
-const select = (vec, indexes, hi) => {
-  hi = hi || indexes.length;
-  const vc = Array(hi);
-
-  for (--hi; hi >= 0; hi--) vc[hi] = vec[indexes[hi]];
-
-  return vc;
-};
+import { select } from '@vect/vector-select';
 
 class Formula {
   constructor(formulae) {

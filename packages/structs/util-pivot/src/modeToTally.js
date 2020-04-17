@@ -10,7 +10,7 @@ export const tallyAverage = (target, value) => (target.s += value, target.n += 1
 export const tallyMax = (target, value) => max(target, value)
 export const tallyMin = (target, value) => min(target, value)
 export const tallyFirst = (target, value) => target ?? value
-export const tallyLast = (target, value) => value
+export const tallyLast = (target, value) => value ?? target
 
 export const modeToTally = (mode) => {
   if (mode === MERGE) return tallyMerge

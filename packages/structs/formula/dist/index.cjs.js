@@ -4,15 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
-
-const select = (vec, indexes, hi) => {
-  hi = hi || indexes.length;
-  const vc = Array(hi);
-
-  for (--hi; hi >= 0; hi--) vc[hi] = vec[indexes[hi]];
-
-  return vc;
-};
+var vectorSelect = require('@vect/vector-select');
 
 class Formula {
   constructor(formulae) {
@@ -28,7 +20,7 @@ class Formula {
   }
 
   calculate(samples) {
-    this.data = samples.map(sample => vectorMapper.mapper(this.formulae, ([indexes, func]) => func.apply(sample, select(sample, indexes)), this.depth));
+    this.data = samples.map(sample => vectorMapper.mapper(this.formulae, ([indexes, func]) => func.apply(sample, vectorSelect.select(sample, indexes)), this.depth));
     return this;
   }
 

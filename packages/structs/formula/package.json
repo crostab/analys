@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@vect/object-init": "^0.2.0",
-    "@vect/vector-mapper": "^0.2.0"
+    "@vect/vector-mapper": "^0.2.0",
+    "@vect/vector-select": "^0.2.0"
   },
   "repository": {
     "type": "git",

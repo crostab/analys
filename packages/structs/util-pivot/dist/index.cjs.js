@@ -39,7 +39,7 @@ const tallyAverage = (target, value) => (target.s += value, target.n += 1, targe
 const tallyMax = (target, value) => comparer.max(target, value);
 const tallyMin = (target, value) => comparer.min(target, value);
 const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
-const tallyLast = (target, value) => value;
+const tallyLast = (target, value) => value !== null && value !== void 0 ? value : target;
 const modeToTally = mode => {
   if (mode === enumPivotMode.MERGE) return tallyMerge;
   if (mode === enumPivotMode.ACCUM) return tallyAccum;
@@ -58,7 +58,12 @@ const modeToInit = mode => {
   if (mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT) return () => 0;
   if (mode === enumPivotMode.AVERAGE) return () => ({
     s: 0,
-    n: 0
+    n: 0,
+
+    get value() {
+      return this.s / this.n;
+    }
+
   });
   if (mode === enumPivotMode.MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === enumPivotMode.MIN) return () => Number.POSITIVE_INFINITY;

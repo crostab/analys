@@ -3,100 +3,16 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var samplesFind = require('@analys/samples-find');
+var samplesFormula = require('@analys/samples-formula');
 var samplesGroup = require('@analys/samples-group');
 var samplesPivot = require('@analys/samples-pivot');
 var samplesSelect = require('@analys/samples-select');
 
-const wind = (keys, values) => {
-  const o = {},
-        {
-    length
-  } = keys;
-
-  for (let i = 0; i < length; i++) o[keys[i]] = values[i];
-
-  return o;
-};
-
-const mapper = function (vec, fn, l) {
-  l = l || vec && vec.length;
-  const ar = Array(l);
-
-  for (--l; l >= 0; l--) ar[l] = fn.call(this, vec[l], l);
-
-  return ar;
-};
-
-const select = (vec, indexes, hi) => {
-  hi = hi || indexes.length;
-  const vc = Array(hi);
-
-  for (--hi; hi >= 0; hi--) vc[hi] = vec[indexes[hi]];
-
-  return vc;
-};
-
-class Formula {
-  constructor(formulae) {
-    this.data = []; // result rows
-
-    this.formulae = Object.values(formulae);
-    this.indicators = Object.keys(formulae);
-    this.depth = formulae.length;
-  }
-
-  static build(formulae) {
-    return new Formula(formulae);
-  }
-
-  calculate(samples) {
-    this.data = samples.map(sample => mapper(this.formulae, ([indexes, func]) => func.apply(sample, select(sample, indexes)), this.depth));
-    return this;
-  }
-
-  toRows() {
-    return this.data;
-  }
-
-  toSamples() {
-    const {
-      indicators
-    } = this;
-    return this.data.map(vec => wind(indicators, vec));
-  }
-
-}
-
-const mutazip = (va, vb, fn, l) => {
-  l = l || va && va.length;
-
-  for (--l; l >= 0; l--) va[l] = fn(va[l], vb[l], l);
-
-  return va;
-};
-
-const samplesFormula = function ({
-  fields,
-  formulas,
-  filter,
-  append = true
-} = {}) {
-  let samples = this;
-
-  if (filter) {
-    samples = samplesFind.samplesFind.call(samples, filter);
-  }
-
-  const formulaEngine = new Formula(fields, formulas);
-  const results = formulaEngine.calculate(samples).toSamples();
-  return append ? mutazip(samples, results, (sample, result) => Object.assign(sample, result)) : results;
-};
-
 class Samples {
   constructor(samples, title, types) {
-    this.data = samples;
     this.title = title;
-    this.types = types;
+    this.data = samples;
+    if (types) this.types = types;
   }
 
   get length() {
@@ -109,8 +25,8 @@ class Samples {
 
   select(fields, {
     mutate = true
-  }) {
-    const data = samplesSelect.samplesSelect.call(this.data, fields);
+  } = {}) {
+    const data = samplesSelect.samplesSelect(this.data, fields);
     return mutate ? this.boot({
       data,
       types: []
@@ -122,7 +38,7 @@ class Samples {
 
   find(filter, {
     mutate = true
-  }) {
+  } = {}) {
     const data = samplesFind.samplesFind.call(this.data, filter);
     return mutate ? this.boot({
       data
@@ -131,8 +47,8 @@ class Samples {
     });
   }
 
-  formula(configs) {
-    return samplesFormula.call();
+  formula(formulae, configs = {}) {
+    return Samples.from(samplesFormula.samplesFormula.call(this.data, formulae, configs));
   }
 
   group(configs) {
@@ -155,9 +71,8 @@ class Samples {
       return this;
     } else {
       return this.copy({
-        types,
-        head,
-        data
+        data,
+        types
       });
     }
   }

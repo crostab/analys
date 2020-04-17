@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@analys/samples-find": "^0.2.5",
+    "@analys/samples-formula": "^0.2.5",
     "@analys/samples-group": "^0.2.5",
     "@analys/samples-pivot": "^0.2.5",
     "@analys/samples-select": "^0.2.5"

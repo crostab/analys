@@ -2,28 +2,7 @@ import { Formula } from '@analys/formula';
 import { tableFind } from '@analys/table-find';
 import { slice } from '@analys/table-init';
 import { tableAcquire } from '@analys/table-merge';
-
-const FUNC_REG = /\((.*?)\)\s+\{/s;
-const LAMB_REG = /\(?(.*?)\)?\s+=>/s;
-const WORD_REG = /\w+/g;
-
-const words = phrase => {
-  let ms,
-      wd,
-      ve = [];
-
-  while ((ms = WORD_REG.exec(phrase)) && ([wd] = ms)) ve.push(wd);
-
-  return ve;
-};
-
-const argnames = fn => {
-  const text = fn.toString();
-  let ms, ph;
-  if ((ms = FUNC_REG.exec(text)) && ([, ph] = ms)) return words(ph);
-  if ((ms = LAMB_REG.exec(text)) && ([, ph] = ms)) return words(ph);
-  return [];
-};
+import { argnames } from '@spare/deco-func';
 
 const tableFormula = function (formulae, {
   filter,

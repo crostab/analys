@@ -8,11 +8,8 @@ const samples = TableCollection.AeroEngineSpecs |> tableToSamples
 samples|> decoTable|> logger
 
 samplesFormula.call(samples, {
-  fields: ['d', 'l'],
-  formulas: {
-    volume: (d, l) => (l / 100 * Math.PI * (d / 100 / 2) ** 2).toFixed(2),
-    radius: d => d / 2
-  }
+  volume: (d, l) => (l / 100 * Math.PI * (d / 100 / 2) ** 2).toFixed(2),
+  radius: d => d / 2
 })
   |> decoSamples
   |> says['formula']

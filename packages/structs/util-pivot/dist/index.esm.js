@@ -35,7 +35,7 @@ const tallyAverage = (target, value) => (target.s += value, target.n += 1, targe
 const tallyMax = (target, value) => max(target, value);
 const tallyMin = (target, value) => min(target, value);
 const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
-const tallyLast = (target, value) => value;
+const tallyLast = (target, value) => value !== null && value !== void 0 ? value : target;
 const modeToTally = mode => {
   if (mode === MERGE) return tallyMerge;
   if (mode === ACCUM) return tallyAccum;
@@ -54,7 +54,12 @@ const modeToInit = mode => {
   if (mode === INCRE || mode === COUNT) return () => 0;
   if (mode === AVERAGE) return () => ({
     s: 0,
-    n: 0
+    n: 0,
+
+    get value() {
+      return this.s / this.n;
+    }
+
   });
   if (mode === MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === MIN) return () => Number.POSITIVE_INFINITY;

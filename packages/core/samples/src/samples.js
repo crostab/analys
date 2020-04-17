@@ -6,23 +6,24 @@ import { samplesSelect }  from '@analys/samples-select'
 
 export class Samples {
   constructor (samples, title, types) {
-    this.data = samples
     this.title = title
-    this.types = types
+    this.data = samples
+    if (types) this.types = types
   }
   get length () { return this.data.length }
   static from (samples) { return new Samples(samples) }
 
-  select (fields, { mutate = true }) {
-    const data = samplesSelect.call(this.data, fields)
+  select (fields, { mutate = true } = {}) {
+    const data = samplesSelect(this.data, fields)
     return mutate ? this.boot({ data, types: [] }) : this.copy({ data, types: [] })
   }
 
-  find (filter, { mutate = true }) {
+  find (filter, { mutate = true } = {}) {
     const data = samplesFind.call(this.data, filter)
     return mutate ? this.boot({ data }) : this.copy({ data })
   }
-  formula (configs) { return samplesFormula.call()}
+
+  formula (formulae, configs = {}) { return Samples.from(samplesFormula.call(this.data, formulae, configs))}
   group (configs) { return Samples.from(samplesGroup.call(this.data, configs)) }
   crosTab (tablespec) { return samplesPivot.call(this.data, tablespec) }
 
@@ -32,8 +33,9 @@ export class Samples {
       if (data) this.data = data
       if (types) this.types = types
       return this
-    } else {
-      return this.copy({ types, head, data })
+    }
+    else {
+      return this.copy({ data, types })
     }
   }
 
