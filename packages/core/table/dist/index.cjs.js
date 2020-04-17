@@ -10,7 +10,9 @@ var tableFind = require('@analys/table-find');
 var tableFormula = require('@analys/table-formula');
 var tableGroup = require('@analys/table-group');
 var tableInit = require('@analys/table-init');
+var tableJoin = require('@analys/table-join');
 var tableLookup = require('@analys/table-lookup');
+var tableMerge = require('@analys/table-merge');
 var tablePivot = require('@analys/table-pivot');
 var tableTypes = require('@analys/table-types');
 var comparer = require('@aryth/comparer');
@@ -20,6 +22,7 @@ var columnMapper = require('@vect/column-mapper');
 var columnsUpdate = require('@vect/columns-update');
 var matrix = require('@vect/matrix');
 var matrixMapper = require('@vect/matrix-mapper');
+var vectorAlgebra = require('@vect/vector-algebra');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
 var borel = require('borel');
@@ -259,7 +262,7 @@ class Table {
     const o = mutate ? this : (_this5 = this, tableInit.shallow(_this5)),
           indexes = this.columnIndexes(fields).sort(comparer.NUM_ASC);
     columnsUpdate.splices(o.rows, indexes), vectorUpdate.splices(o.head, indexes);
-    return mutate ? this : Table.from(o);
+    return mutate ? this : this.copy(o);
   }
 
   divide(fields, {
@@ -379,6 +382,34 @@ class Table {
     let o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
+  }
+
+  join(another, fields, joinType, fillEmpty) {
+    return tableJoin.tableJoin(this, another, fields, joinType, fillEmpty);
+  }
+  /**
+   *
+   * @param {Table} another
+   * @param {boolean} [mutate=true]
+   * @return {Table}
+   */
+
+
+  union(another, {
+    mutate = true
+  } = {}) {
+    const self = mutate ? this : this.copy();
+    const shared = vectorAlgebra.intersect(self.head, another.head);
+
+    if (shared.length) {
+      for (let label of shared) self.setColumn(label, another.column(label));
+
+      another = another.spliceColumns(shared, {
+        mutate
+      });
+    }
+
+    return mutate ? tableMerge.tableAcquire(self, another) : this.copy(tableMerge.tableMerge(self, another));
   }
   /**
    * @param {Object} options

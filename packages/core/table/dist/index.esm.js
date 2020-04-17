@@ -6,7 +6,9 @@ import { tableFind } from '@analys/table-find';
 import { tableFormula } from '@analys/table-formula';
 import { tableGroup } from '@analys/table-group';
 import { slice, shallow } from '@analys/table-init';
+import { tableJoin } from '@analys/table-join';
 import { lookupCached, lookup, lookupMany, lookupTable } from '@analys/table-lookup';
+import { tableAcquire, tableMerge } from '@analys/table-merge';
 import { tablePivot } from '@analys/table-pivot';
 import { inferTypes } from '@analys/table-types';
 import { NUM_ASC } from '@aryth/comparer';
@@ -16,6 +18,7 @@ import { mutate } from '@vect/column-mapper';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { size, transpose } from '@vect/matrix';
 import { mapper } from '@vect/matrix-mapper';
+import { intersect } from '@vect/vector-algebra';
 import { mapper as mapper$1, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
 import { StatMx } from 'borel';
@@ -255,7 +258,7 @@ class Table {
     const o = mutate ? this : (_this5 = this, shallow(_this5)),
           indexes = this.columnIndexes(fields).sort(NUM_ASC);
     splices(o.rows, indexes), splices$1(o.head, indexes);
-    return mutate ? this : Table.from(o);
+    return mutate ? this : this.copy(o);
   }
 
   divide(fields, {
@@ -375,6 +378,34 @@ class Table {
     let o = mutate ? this : (_this11 = this, slice(_this11));
     sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
+  }
+
+  join(another, fields, joinType, fillEmpty) {
+    return tableJoin(this, another, fields, joinType, fillEmpty);
+  }
+  /**
+   *
+   * @param {Table} another
+   * @param {boolean} [mutate=true]
+   * @return {Table}
+   */
+
+
+  union(another, {
+    mutate = true
+  } = {}) {
+    const self = mutate ? this : this.copy();
+    const shared = intersect(self.head, another.head);
+
+    if (shared.length) {
+      for (let label of shared) self.setColumn(label, another.column(label));
+
+      another = another.spliceColumns(shared, {
+        mutate
+      });
+    }
+
+    return mutate ? tableAcquire(self, another) : this.copy(tableMerge(self, another));
   }
   /**
    * @param {Object} options
