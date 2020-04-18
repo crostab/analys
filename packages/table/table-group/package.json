@@ -20,8 +20,8 @@
     "@analys/table-find": "^0.2.6",
     "@analys/table-init": "^0.2.6",
     "@analys/tablespec": "^0.2.6",
-    "@vect/matrix": "^0.2.0",
-    "@vect/merge-acquire": "^0.2.0"
+    "@vect/matrix": "^0.2.2",
+    "@vect/merge-acquire": "^0.2.2"
   },
   "repository": {
     "type": "git",

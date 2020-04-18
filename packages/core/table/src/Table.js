@@ -23,8 +23,8 @@ import {
   unshift as unshiftColumn
 }                                                                               from '@vect/columns-update'
 import { size, transpose }                                                      from '@vect/matrix'
-import { mapper as mapperMatrix }                                               from '@vect/matrix-mapper'
-import { intersect }                                                            from '@vect/vector-algebra'
+import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }         from '@vect/matrix-mapper'
+import { difference, intersect }                                                from '@vect/vector-algebra'
 import { iterate, mapper }                                                      from '@vect/vector-mapper'
 import { splices }                                                              from '@vect/vector-update'
 import { StatMx }                                                               from 'borel'
@@ -72,8 +72,14 @@ export class Table {
   popColumn () { return popColumn(this.rows) }
   shiftColumn () { return shiftColumn(this.rows) }
 
-  map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+  map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
+  mutate (fn, { fields, exclusive } = {}) {
+    if (!fields && !exclusive) return mutateMatrix(this.rows, fn, this.ht, this.wd), this
+    fields = fields ?? this.head
+    fields = exclusive ? difference(fields, exclusive) : fields
+    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this
+  }
 
   lookupOne (valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
   lookupMany (valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
@@ -274,7 +280,7 @@ export class Table {
   }
 
   /** @returns {Table} */
-  boot ({ head, rows, types } = {}, mutate) {
+  boot ({ head, rows, types } = {}, mutate = true) {
     if (mutate) {
       if (head) this.head = head
       if (rows) this.rows = rows
