@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-index",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A cross-table-index analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
