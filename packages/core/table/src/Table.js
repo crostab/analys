@@ -76,11 +76,12 @@ export class Table {
   shiftRow () { return this.rows.shift() }
   popColumn () { return popColumn(this.rows) }
   shiftColumn () { return shiftColumn(this.rows) }
-
   renameColumn (field, newName) {
     const ci = this.coin(field)
     if (ci >= 0) this.head[ci] = newName
+    return this
   }
+
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
   map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
   mutate (fn, { fields, exclusive } = {}) {
