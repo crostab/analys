@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-filter",
-  "version": "0.2.7",
+  "version": "0.2.11",
   "description": "A cross-table-filter analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
