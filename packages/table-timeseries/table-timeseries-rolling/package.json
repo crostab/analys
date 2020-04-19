@@ -1,5 +1,5 @@
 {
-  "name": "@repsi/table-timeseries-rolling",
+  "name": "@analys/table-timeseries-rolling",
   "version": "0.2.12",
   "description": "A crawler",
   "main": "dist/index.cjs.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hoyeungw/repsi.git"
+    "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "keywords": [
     "table-types",
@@ -39,7 +39,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hoyeungw/repsi.git"
+    "url": "https://github.com/hoyeungw/analys.git"
   },
-  "homepage": "https://github.com/hoyeungw/repsi#readme"
+  "homepage": "https://github.com/hoyeungw/analys#readme"
 }
