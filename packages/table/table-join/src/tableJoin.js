@@ -1,9 +1,9 @@
-import { NUM_ASC } from '@aryth/comparer'
-import { select } from '@vect/vector-select'
-import { splices } from '@vect/vector-update'
-import { Joiner } from './MatrixJoiner'
-import { INTERSECT } from '../resources/JoinType'
+import { INTERSECT }         from '@analys/enum-join-modes'
+import { NUM_ASC }           from '@aryth/comparer'
+import { select }            from '@vect/vector-select'
+import { splices }           from '@vect/vector-update'
 import { selectKeyedVector } from '../utils/selectKeyedVector'
+import { Joiner }            from './MatrixJoiner'
 
 /**
  *
@@ -15,8 +15,8 @@ import { selectKeyedVector } from '../utils/selectKeyedVector'
  * @returns {TableObject}
  */
 export function tableJoin (
-  tableL, 
-  tableR, 
+  tableL,
+  tableR,
   fields,
   joinType = INTERSECT,
   fillEmpty = null

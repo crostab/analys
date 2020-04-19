@@ -162,6 +162,14 @@ class Table {
     return columnsUpdate.shift(this.rows);
   }
 
+  mapHead(fn, {
+    mutate = true
+  } = {}) {
+    return this.boot({
+      head: vectorMapper.mapper(this.head, fn)
+    }, mutate);
+  }
+
   map(fn, {
     mutate = true
   } = {}) {
@@ -170,12 +178,16 @@ class Table {
     }, mutate);
   }
 
-  mapHead(fn, {
-    mutate = true
+  mutate(fn, {
+    fields,
+    exclusive
   } = {}) {
-    return this.boot({
-      head: vectorMapper.mapper(this.head, fn)
-    }, mutate);
+    var _fields;
+
+    if (!fields && !exclusive) return matrixMapper.mutate(this.rows, fn, this.ht, this.wd), this;
+    fields = (_fields = fields) !== null && _fields !== void 0 ? _fields : this.head;
+    fields = exclusive ? vectorAlgebra.difference(fields, exclusive) : fields;
+    return matrixMapper.selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this;
   }
 
   lookupOne(valueToFind, key, field, cached = true) {
@@ -380,12 +392,12 @@ class Table {
     var _this11;
 
     let o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
-    sortColumnsByKeys.call(o, comparer);
+    keyedColumns.sortColumnsByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
 
   join(another, fields, joinType, fillEmpty) {
-    return tableJoin.tableJoin(this, another, fields, joinType, fillEmpty);
+    return Table.from(tableJoin.tableJoin(this, another, fields, joinType, fillEmpty));
   }
   /**
    *
@@ -482,7 +494,7 @@ class Table {
     head,
     rows,
     types
-  } = {}, mutate) {
+  } = {}, mutate = true) {
     if (mutate) {
       if (head) this.head = head;
       if (rows) this.rows = rows;

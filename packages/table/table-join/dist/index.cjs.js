@@ -2,21 +2,27 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var enumJoinModes = require('@analys/enum-join-modes');
 var comparer = require('@aryth/comparer');
 var vectorSelect = require('@vect/vector-select');
 var vectorUpdate = require('@vect/vector-update');
 var vectorInit = require('@vect/vector-init');
 var vectorMapper = require('@vect/vector-mapper');
 
-const INTERSECT = -1;
-const UNION = 0;
-const LEFT = 1;
-const RIGHT = 2;
-const JoinTypes = {
-  intersect: INTERSECT,
-  union: UNION,
-  left: LEFT,
-  right: RIGHT
+const selectKeyedVector = function (vec) {
+  let {
+    indexes,
+    asc,
+    depth
+  } = this; // depth = depth || indexes.length, asc = asc || indexes.sort(NUM_ASC)
+
+  return depth === 1 ? {
+    key: [vec[indexes[0]]],
+    vector: (vec.splice(indexes[0], 1), vec)
+  } : {
+    key: vectorSelect.select(vec, indexes, depth),
+    vector: vectorUpdate.splices(vec, asc, depth)
+  };
 };
 
 const lookupKeyedVector = function (lookupKey) {
@@ -38,20 +44,23 @@ const lookupKeyedVectorIndex = function (lookupKey) {
  */
 
 const Joiner = joinType => {
-  switch (joinType) {
-    case UNION:
-      return joinUnion;
-
-    case LEFT:
-      return joinLeft;
-
-    case RIGHT:
-      return joinRight;
-
-    case INTERSECT:
-    default:
-      return joinIntersect;
+  if (joinType === enumJoinModes.UNION) {
+    return joinUnion;
   }
+
+  if (joinType === enumJoinModes.LEFT) {
+    return joinLeft;
+  }
+
+  if (joinType === enumJoinModes.RIGHT) {
+    return joinRight;
+  }
+
+  if (joinType === enumJoinModes.INTERSECT) {
+    return joinIntersect;
+  }
+
+  return joinIntersect;
 };
 /** @typedef {{keyIndex:*[],vector:*[]}} MultiKeyedVector */
 
@@ -136,23 +145,6 @@ const joinRight = (L, R, n) => {
   return rows;
 };
 
-const selectKeyedVector = function (vec) {
-  let {
-    indexes,
-    asc,
-    depth
-  } = this;
- // depth = depth || indexes.length, asc = asc || indexes.sort(NUM_ASC)
-
-  return depth === 1 ? {
-    key: [vec[indexes[0]]],
-    vector: (vec.splice(indexes[0], 1), vec)
-  } : {
-    key: vectorSelect.select(vec, indexes, depth),
-    vector: vectorUpdate.splices(vec, asc, depth)
-  };
-};
-
 /**
  *
  * @param {Table|TableObject} tableL
@@ -163,7 +155,7 @@ const selectKeyedVector = function (vec) {
  * @returns {TableObject}
  */
 
-function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = null) {
+function tableJoin(tableL, tableR, fields, joinType = enumJoinModes.INTERSECT, fillEmpty = null) {
   let joiner = Joiner(joinType),
       depth = fields.length,
       indexesL = fields.map(x => tableL.head.indexOf(x)),
@@ -192,9 +184,4 @@ function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = nul
 } // xr().fields(fields)['leftIndexes'](ascL)['rightIndexes'](ascR) |> logger
 // xr().head(head |> deco) |> logger
 
-exports.INTERSECT = INTERSECT;
-exports.JoinTypes = JoinTypes;
-exports.LEFT = LEFT;
-exports.RIGHT = RIGHT;
-exports.UNION = UNION;
 exports.tableJoin = tableJoin;

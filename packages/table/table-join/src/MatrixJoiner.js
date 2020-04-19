@@ -1,6 +1,6 @@
-import { iso } from '@vect/vector-init'
-import { iterate } from '@vect/vector-mapper'
-import { INTERSECT, LEFT, RIGHT, UNION } from '../resources/JoinType'
+import { INTERSECT, LEFT, RIGHT, UNION }             from '@analys/enum-join-modes'
+import { iso }                                       from '@vect/vector-init'
+import { iterate }                                   from '@vect/vector-mapper'
 import { lookupKeyedVector, lookupKeyedVectorIndex } from '../utils/lookupKeyedVector'
 
 /**
@@ -8,17 +8,11 @@ import { lookupKeyedVector, lookupKeyedVectorIndex } from '../utils/lookupKeyedV
  * @returns {function(MultiKeyedVector[], MultiKeyedVector[], number?):*[][]}
  */
 export const Joiner = (joinType) => {
-  switch (joinType) {
-    case UNION:
-      return joinUnion
-    case LEFT:
-      return joinLeft
-    case RIGHT:
-      return joinRight
-    case INTERSECT:
-    default:
-      return joinIntersect
-  }
+  if (joinType === UNION) { return joinUnion }
+  if (joinType === LEFT) { return joinLeft }
+  if (joinType === RIGHT) { return joinRight }
+  if (joinType === INTERSECT) { return joinIntersect }
+  return joinIntersect
 }
 
 /** @typedef {{keyIndex:*[],vector:*[]}} MultiKeyedVector */

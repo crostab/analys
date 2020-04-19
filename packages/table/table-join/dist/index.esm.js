@@ -1,18 +1,24 @@
+import { UNION, LEFT, RIGHT, INTERSECT } from '@analys/enum-join-modes';
 import { NUM_ASC } from '@aryth/comparer';
 import { select } from '@vect/vector-select';
 import { splices } from '@vect/vector-update';
 import { iso } from '@vect/vector-init';
 import { iterate } from '@vect/vector-mapper';
 
-const INTERSECT = -1;
-const UNION = 0;
-const LEFT = 1;
-const RIGHT = 2;
-const JoinTypes = {
-  intersect: INTERSECT,
-  union: UNION,
-  left: LEFT,
-  right: RIGHT
+const selectKeyedVector = function (vec) {
+  let {
+    indexes,
+    asc,
+    depth
+  } = this; // depth = depth || indexes.length, asc = asc || indexes.sort(NUM_ASC)
+
+  return depth === 1 ? {
+    key: [vec[indexes[0]]],
+    vector: (vec.splice(indexes[0], 1), vec)
+  } : {
+    key: select(vec, indexes, depth),
+    vector: splices(vec, asc, depth)
+  };
 };
 
 const lookupKeyedVector = function (lookupKey) {
@@ -34,20 +40,23 @@ const lookupKeyedVectorIndex = function (lookupKey) {
  */
 
 const Joiner = joinType => {
-  switch (joinType) {
-    case UNION:
-      return joinUnion;
-
-    case LEFT:
-      return joinLeft;
-
-    case RIGHT:
-      return joinRight;
-
-    case INTERSECT:
-    default:
-      return joinIntersect;
+  if (joinType === UNION) {
+    return joinUnion;
   }
+
+  if (joinType === LEFT) {
+    return joinLeft;
+  }
+
+  if (joinType === RIGHT) {
+    return joinRight;
+  }
+
+  if (joinType === INTERSECT) {
+    return joinIntersect;
+  }
+
+  return joinIntersect;
 };
 /** @typedef {{keyIndex:*[],vector:*[]}} MultiKeyedVector */
 
@@ -132,23 +141,6 @@ const joinRight = (L, R, n) => {
   return rows;
 };
 
-const selectKeyedVector = function (vec) {
-  let {
-    indexes,
-    asc,
-    depth
-  } = this;
- // depth = depth || indexes.length, asc = asc || indexes.sort(NUM_ASC)
-
-  return depth === 1 ? {
-    key: [vec[indexes[0]]],
-    vector: (vec.splice(indexes[0], 1), vec)
-  } : {
-    key: select(vec, indexes, depth),
-    vector: splices(vec, asc, depth)
-  };
-};
-
 /**
  *
  * @param {Table|TableObject} tableL
@@ -188,4 +180,4 @@ function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = nul
 } // xr().fields(fields)['leftIndexes'](ascL)['rightIndexes'](ascR) |> logger
 // xr().head(head |> deco) |> logger
 
-export { INTERSECT, JoinTypes, LEFT, RIGHT, UNION, tableJoin };
+export { tableJoin };

@@ -1,4 +1,9 @@
-import { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead }       from '@analys/keyed-columns'
+import {
+  keyedColumnsToSamples,
+  selectKeyedColumns,
+  selectSamplesByHead,
+  sortColumnsByKeys
+}                                                                               from '@analys/keyed-columns'
 import { tableChips }                                                           from '@analys/table-chips'
 import { tableDivide }                                                          from '@analys/table-divide'
 import { tableFilter }                                                          from '@analys/table-filter'
@@ -214,7 +219,7 @@ export class Table {
     return mutate ? this : this.copy(o)
   }
 
-  join (another, fields, joinType, fillEmpty) { return tableJoin(this, another, fields, joinType, fillEmpty) }
+  join (another, fields, joinType, fillEmpty) { return Table.from(tableJoin(this, another, fields, joinType, fillEmpty)) }
 
   /**
    *

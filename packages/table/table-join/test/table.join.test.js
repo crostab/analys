@@ -1,8 +1,7 @@
-import { LEFT, RIGHT, INTERSECT, UNION } from '../resources/JoinType'
-import { Table } from '@analys/table'
+import { INTERSECT }       from '@analys/enum-join-modes'
+import { Table }           from '@analys/table'
 import { decoTable, says } from '@spare/logger'
-import { tableJoin } from '../src/tableJoin'
-import { deco } from '@spare/deco'
+import { tableJoin }       from '../src/tableJoin'
 
 export class TableJoinTest {
   static test () {

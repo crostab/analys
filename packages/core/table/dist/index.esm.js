@@ -1,4 +1,4 @@
-import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns } from '@analys/keyed-columns';
+import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
 import { tableChips } from '@analys/table-chips';
 import { tableDivide } from '@analys/table-divide';
 import { tableFilter } from '@analys/table-filter';
@@ -17,9 +17,9 @@ import { column } from '@vect/column-getter';
 import { mutate } from '@vect/column-mapper';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { size, transpose } from '@vect/matrix';
-import { mapper } from '@vect/matrix-mapper';
-import { intersect } from '@vect/vector-algebra';
-import { mapper as mapper$1, iterate } from '@vect/vector-mapper';
+import { mapper as mapper$1, mutate as mutate$1, selectMutate } from '@vect/matrix-mapper';
+import { difference, intersect } from '@vect/vector-algebra';
+import { mapper, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
 import { StatMx } from 'borel';
 
@@ -158,20 +158,32 @@ class Table {
     return shift(this.rows);
   }
 
-  map(fn, {
-    mutate = true
-  } = {}) {
-    return this.boot({
-      rows: mapper(this.rows, fn, this.ht, this.wd)
-    }, mutate);
-  }
-
   mapHead(fn, {
     mutate = true
   } = {}) {
     return this.boot({
-      head: mapper$1(this.head, fn)
+      head: mapper(this.head, fn)
     }, mutate);
+  }
+
+  map(fn, {
+    mutate = true
+  } = {}) {
+    return this.boot({
+      rows: mapper$1(this.rows, fn, this.ht, this.wd)
+    }, mutate);
+  }
+
+  mutate(fn, {
+    fields,
+    exclusive
+  } = {}) {
+    var _fields;
+
+    if (!fields && !exclusive) return mutate$1(this.rows, fn, this.ht, this.wd), this;
+    fields = (_fields = fields) !== null && _fields !== void 0 ? _fields : this.head;
+    fields = exclusive ? difference(fields, exclusive) : fields;
+    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this;
   }
 
   lookupOne(valueToFind, key, field, cached = true) {
@@ -381,7 +393,7 @@ class Table {
   }
 
   join(another, fields, joinType, fillEmpty) {
-    return tableJoin(this, another, fields, joinType, fillEmpty);
+    return Table.from(tableJoin(this, another, fields, joinType, fillEmpty));
   }
   /**
    *
@@ -478,7 +490,7 @@ class Table {
     head,
     rows,
     types
-  } = {}, mutate) {
+  } = {}, mutate = true) {
     if (mutate) {
       if (head) this.head = head;
       if (rows) this.rows = rows;

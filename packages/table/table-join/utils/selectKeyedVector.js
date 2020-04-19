@@ -1,8 +1,8 @@
-import { select } from '@vect/vector-select'
+import { select }  from '@vect/vector-select'
 import { splices } from '@vect/vector-update'
 
 export const selectKeyedVector = function (vec) {
-  let { indexes, asc, depth } = this, i
+  let { indexes, asc, depth } = this
   // depth = depth || indexes.length, asc = asc || indexes.sort(NUM_ASC)
   return depth === 1
     ? {
