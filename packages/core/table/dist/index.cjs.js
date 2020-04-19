@@ -162,6 +162,11 @@ class Table {
     return columnsUpdate.shift(this.rows);
   }
 
+  renameColumn(field, newName) {
+    const ci = this.coin(field);
+    if (ci >= 0) this.head[ci] = newName;
+  }
+
   mapHead(fn, {
     mutate = true
   } = {}) {
