@@ -1,7 +1,7 @@
 import { init } from '@vect/vector-init';
 import { MERGE, ACCUM, INCRE, COUNT, AVERAGE, MAX, MIN, FIRST, LAST } from '@analys/enum-pivot-mode';
 import { max, min } from '@aryth/comparer';
-import { acquire } from '@vect/merge-acquire';
+import { acquire } from '@vect/vector-merge';
 
 const ampliCell = function (side, banner) {
   return this.m[arid.call(this, side)][acid.call(this, banner)];

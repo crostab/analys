@@ -4,7 +4,7 @@ import { tableFind } from '@analys/table-find';
 import { slice } from '@analys/table-init';
 import { parseKeyOnce, parseField } from '@analys/tablespec';
 import { isMatrix } from '@vect/matrix';
-import { acquire } from '@vect/merge-acquire';
+import { acquire } from '@vect/vector-merge';
 
 const tableGroup = function ({
   key,

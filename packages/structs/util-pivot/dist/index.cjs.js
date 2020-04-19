@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vectorInit = require('@vect/vector-init');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var comparer = require('@aryth/comparer');
-var mergeAcquire = require('@vect/merge-acquire');
+var vectorMerge = require('@vect/vector-merge');
 
 const ampliCell = function (side, banner) {
   return this.m[arid.call(this, side)][acid.call(this, banner)];
@@ -31,7 +31,7 @@ const qcid = function (y) {
   return this.b.indexOf(y);
 };
 
-const tallyMerge = (target, value) => mergeAcquire.acquire(target, value);
+const tallyMerge = (target, value) => vectorMerge.acquire(target, value);
 const tallyAccum = (target, value) => (target.push(value), target);
 const tallyIncre = (target, value) => target + value;
 const tallyCount = (target, value) => target + 1;

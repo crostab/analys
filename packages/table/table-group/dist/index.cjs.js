@@ -8,7 +8,7 @@ var tableFind = require('@analys/table-find');
 var tableInit = require('@analys/table-init');
 var tablespec = require('@analys/tablespec');
 var matrix = require('@vect/matrix');
-var mergeAcquire = require('@vect/merge-acquire');
+var vectorMerge = require('@vect/vector-merge');
 
 const tableGroup = function ({
   key,
@@ -29,7 +29,7 @@ const tableGroup = function ({
   let groupHead, label, pick, mode;
   [key, pick] = tablespec.parseKeyOnce(key);
   const groupingEngine = matrix.isMatrix(field = tablespec.parseField(field, key)) // field |> deco |> says['parsed field']
-  ? (groupHead = mergeAcquire.acquire([key], field.map(([label]) => label)), new group.Group([head.indexOf(key), pick], field.map(([label, mode]) => [head.indexOf(label), mode]))) : ([label, mode] = field, groupHead = [key, label], new chips.Chips([head.indexOf(key), pick], [head.indexOf(label), mode]));
+  ? (groupHead = vectorMerge.acquire([key], field.map(([label]) => label)), new group.Group([head.indexOf(key), pick], field.map(([label, mode]) => [head.indexOf(label), mode]))) : ([label, mode] = field, groupHead = [key, label], new chips.Chips([head.indexOf(key), pick], [head.indexOf(label), mode]));
 
   if (alias) {
     if (!Array.isArray(alias)) alias = Object.entries(alias);

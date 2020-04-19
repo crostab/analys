@@ -2,7 +2,7 @@ import { NUM, STR, OBJ } from '@typen/enum-data-types';
 import { COUNT, INCRE } from '@analys/enum-pivot-mode';
 import { mapper } from '@vect/vector-mapper';
 import { nullish } from '@typen/nullish';
-import { acquire } from '@vect/merge-acquire';
+import { acquire } from '@vect/vector-merge';
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;

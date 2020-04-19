@@ -1,4 +1,4 @@
-import { acquire, merge } from '@vect/merge-acquire';
+import { acquire, merge } from '@vect/vector-merge';
 import { mutazip, zipper } from '@vect/vector-zipper';
 
 /**

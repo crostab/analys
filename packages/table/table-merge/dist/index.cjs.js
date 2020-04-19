@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var mergeAcquire = require('@vect/merge-acquire');
+var vectorMerge = require('@vect/vector-merge');
 var vectorZipper = require('@vect/vector-zipper');
 
 /**
@@ -13,8 +13,8 @@ var vectorZipper = require('@vect/vector-zipper');
  */
 
 const tableAcquire = (ta, tb) => {
-  mergeAcquire.acquire(ta.head, tb.head);
-  vectorZipper.mutazip(ta.rows, tb.rows, (va, vb) => mergeAcquire.acquire(va, vb));
+  vectorMerge.acquire(ta.head, tb.head);
+  vectorZipper.mutazip(ta.rows, tb.rows, (va, vb) => vectorMerge.acquire(va, vb));
   return ta;
 };
 /**
@@ -25,8 +25,8 @@ const tableAcquire = (ta, tb) => {
  */
 
 const tableMerge = (ta, tb) => {
-  const head = mergeAcquire.merge(ta.head, tb.head);
-  const rows = vectorZipper.zipper(ta.rows, tb.rows, (va, vb) => mergeAcquire.merge(va, vb));
+  const head = vectorMerge.merge(ta.head, tb.head);
+  const rows = vectorZipper.zipper(ta.rows, tb.rows, (va, vb) => vectorMerge.merge(va, vb));
   return ta.copy ? ta.copy({
     head,
     rows

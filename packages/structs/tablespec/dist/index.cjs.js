@@ -6,7 +6,7 @@ var enumDataTypes = require('@typen/enum-data-types');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
 var nullish = require('@typen/nullish');
-var mergeAcquire = require('@vect/merge-acquire');
+var vectorMerge = require('@vect/vector-merge');
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -99,7 +99,7 @@ const parseFields = (fields, neglect) => {
   } else if ((t = typeof field) && (t === enumDataTypes.STR || t === enumDataTypes.NUM)) {
     ents.push([field, enumPivotMode.INCRE]);
   } else if (t === enumDataTypes.OBJ) {
-    mergeAcquire.acquire(ents, Object.entries(field));
+    vectorMerge.acquire(ents, Object.entries(field));
   } else {
     ents.push([neglect, enumPivotMode.COUNT]);
   }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var utilPivot = require('@analys/util-pivot');
-var mergeAcquire = require('@vect/merge-acquire');
+var vectorMerge = require('@vect/vector-merge');
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorZipper = require('@vect/vector-zipper');
@@ -95,7 +95,7 @@ class Group {
   }
 
   toRows() {
-    return Object.entries(this.data).map(([key, vec]) => mergeAcquire.acquire([key], vec));
+    return Object.entries(this.data).map(([key, vec]) => vectorMerge.acquire([key], vec));
   }
 
   toSamples() {
