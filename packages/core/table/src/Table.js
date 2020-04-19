@@ -77,6 +77,10 @@ export class Table {
   popColumn () { return popColumn(this.rows) }
   shiftColumn () { return shiftColumn(this.rows) }
 
+  renameColumn (field, newName) {
+    const ci = this.coin(field)
+    if (ci >= 0) this.head[ci] = newName
+  }
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
   map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
   mutate (fn, { fields, exclusive } = {}) {
@@ -117,7 +121,6 @@ export class Table {
     iterate(o.rows, (row, i) => row.splice(index, 0, column[i]))
     return mutate ? this : Table.from(o)
   }
-
   /**
    *
    * @param {*} field
@@ -130,7 +133,6 @@ export class Table {
     o.rows.forEach(row => row.splice(index, 1))
     return mutate ? this : Table.from(o)
   }
-
   /**
    *
    * @param {*[]|[*,*][]} fields
