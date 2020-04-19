@@ -10,7 +10,7 @@
     "upint": "yarn upgrade-interactive --latest",
     "pub": "lerna publish --force-publish",
     "build": "lerna exec --parallel -- rollup -c ../../../rollup.config.js",
-    "build-specific": "lerna exec --scope=@analys/util-pivot -- rollup -c ../../../rollup.config.js",
+    "build-specific": "lerna exec --scope=@analys/table -- rollup -c ../../../rollup.config.js",
     "watch": "lerna exec --parallel -- rollup -c ../../../rollup.config.js -w",
     "watch-specific": "lerna exec --scope=kalorie -- rollup -c ../../../rollup.config.js -w"
   },

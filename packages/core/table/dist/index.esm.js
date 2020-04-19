@@ -161,6 +161,7 @@ class Table {
   renameColumn(field, newName) {
     const ci = this.coin(field);
     if (ci >= 0) this.head[ci] = newName;
+    return this;
   }
 
   mapHead(fn, {
