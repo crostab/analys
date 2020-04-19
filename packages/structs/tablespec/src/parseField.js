@@ -1,7 +1,7 @@
 import { COUNT, INCRE }  from '@analys/enum-pivot-mode'
 import { NUM, OBJ, STR } from '@typen/enum-data-types'
 import { nullish }       from '@typen/nullish'
-import { acquire }       from '@vect/merge-acquire'
+import { acquire }      from '@vect/vector-merge'
 
 /**
  *

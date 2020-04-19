@@ -17,10 +17,10 @@
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.2.7",
     "@aryth/comparer": "^0.1.3",
-    "@vect/merge-acquire": "^0.2.2",
-    "@vect/vector-init": "^0.2.2",
-    "@vect/vector-mapper": "^0.2.2",
-    "@vect/vector-zipper": "^0.2.2"
+    "@vect/vector-merge": "^0.2.3",
+    "@vect/vector-init": "^0.2.3",
+    "@vect/vector-mapper": "^0.2.3",
+    "@vect/vector-zipper": "^0.2.3"
   },
   "repository": {
     "type": "git",

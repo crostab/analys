@@ -1,6 +1,6 @@
 import { ACCUM, AVERAGE, COUNT, FIRST, INCRE, LAST, MAX, MERGE, MIN } from '@analys/enum-pivot-mode'
 import { max, min }                                                   from '@aryth/comparer'
-import { acquire }                                                    from '@vect/merge-acquire'
+import { acquire }                                                    from '@vect/vector-merge'
 
 export const tallyMerge = (target, value) => acquire(target, value)
 export const tallyAccum = (target, value) => (target.push(value), target)

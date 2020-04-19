@@ -1,0 +1,46 @@
+{
+  "name": "@repsi/table-timeseries-rolling",
+  "version": "0.1.0",
+  "description": "A crawler",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node test"
+  },
+  "dependencies": {
+    "@analys/table": "^0.2.10",
+    "@aryth/math": "^0.1.3",
+    "@vect/vector-merge": "^0.2.3",
+    "@vect/vector-roller": "^0.2.3",
+    "@vect/vector-mapper": "^0.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/repsi.git"
+  },
+  "keywords": [
+    "table-types",
+    "crostab",
+    "cross-table-types",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": {
+    "name": "Hoyeung Wong",
+    "email": "hoyeungw@outlook.com",
+    "url": "https://github.com/hoyeungw"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/repsi.git"
+  },
+  "homepage": "https://github.com/hoyeungw/repsi#readme",
+  "gitHead": "a3873d4f2f0eb5c7959376ca447716b622ef7cb2"
+}
