@@ -1,0 +1,47 @@
+{
+  "name": "@analys/table-differencial",
+  "version": "0.3.0",
+  "description": "A crawler",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node test"
+  },
+  "dependencies": {
+    "@analys/table": "^0.3.0",
+    "@analys/table-timeseries-differential": "^0.3.0",
+    "@analys/table-timeseries-rolling": "^0.3.0",
+    "@analys/enum-difference-modes": "^0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table-types",
+    "crostab",
+    "cross-table-types",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": {
+    "name": "Hoyeung Wong",
+    "email": "hoyeungw@outlook.com",
+    "url": "https://github.com/hoyeungw"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys.git"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme"
+}
