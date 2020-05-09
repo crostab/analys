@@ -8,14 +8,17 @@ var vectorMapper = require('@vect/vector-mapper');
 var vectorRoller = require('@vect/vector-roller');
 
 const timeseriesRolling = function ({
+  dateLabel = 'date',
   fields,
   depth = 4,
   mutate = true
 }) {
   /** @type {Table} */
   const table = mutate ? this : this.copy();
+  const dateIndex = table.coin(dateLabel);
   const indexes = table.columnIndexes(fields),
         indexCount = indexes.length;
+  if (indexes.includes(dateIndex)) indexes.splice(indexes.indexOf(dateIndex), 1);
   const rows = table.rows;
 
   for (const collection of vectorRoller.Roller.build(rows, depth)) vectorMapper.iterate(indexes, y => collection[0][y] = math.roundD2(columnSum(collection, y, depth)), indexCount);

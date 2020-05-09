@@ -1,1 +1,1 @@
-export { differencial } from './src/differencial'
+export { differential } from './src/differential'

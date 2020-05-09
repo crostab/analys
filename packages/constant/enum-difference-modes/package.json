@@ -1,5 +1,5 @@
 {
-  "name": "@analys/enum-difference-mode",
+  "name": "@analys/enum-difference-modes",
   "version": "0.3.0",
   "description": "Enums for analys toolkit",
   "main": "dist/index.cjs.js",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "pub": "npm publish",
-    "test": "node -r @babel/register test/enum-difference-mode.test.js"
+    "test": "node -r @babel/register test/enum-difference-modes.test.js"
   },
   "repository": {
     "type": "git",

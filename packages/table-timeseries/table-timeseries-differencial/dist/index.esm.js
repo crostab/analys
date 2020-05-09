@@ -14,6 +14,7 @@ const timeseriesDifferential = function ({
   const dateIndex = table.coin(dateLabel);
   const indexes = table.columnIndexes(fields),
         depth = indexes.length;
+  if (indexes.includes(dateIndex)) indexes.splice(indexes.indexOf(dateIndex), 1);
   const rows = table.rows;
   let pv, cv, prevNum, currNum;
 

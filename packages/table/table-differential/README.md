@@ -1,4 +1,4 @@
-# @analys/table-differencial
+# @analys/table-differential
 
 [![npm version][badge-npm-version]][url-npm]
 [![npm download monthly][badge-npm-download-monthly]][url-npm]
@@ -10,18 +10,18 @@
 [![github commit total][badge-github-commit-count]][url-github]
 
 [//]: <> (Shields)
-[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/table-differencial
-[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/table-differencial
-[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/table-differencial
-[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/table-differencial
-[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/table-differencial
-[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/table-differencial
+[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/table-differential
+[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/table-differential
+[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/table-differential
+[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/table-differential
+[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/table-differential
+[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/table-differential
 [badge-github-last-commit]: https://flat.badgen.net/github/last-commit/hoyeungw/analys
 [badge-github-commit-count]: https://flat.badgen.net/github/commits/hoyeungw/analys
 
 [//]: <> (Link)
-[url-npm]: https://npmjs.org/package/@analys/table-differencial
-[url-pp]: https://packagephobia.now.sh/result?p=@analys/table-differencial
+[url-npm]: https://npmjs.org/package/@analys/table-differential
+[url-pp]: https://packagephobia.now.sh/result?p=@analys/table-differential
 [url-github]: https://github.com/hoyeungw/analys
 
 ##### Cross-table analytics tool
@@ -32,7 +32,7 @@
 
 #### Install
 ```console
-$ npm install @analys/table-differencial
+$ npm install @analys/table-differential
 ```
 
 #### Usage

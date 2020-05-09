@@ -8,6 +8,7 @@ export const timeseriesDifferential = function ({ dateLabel = 'date', fields, mu
   /** @type {Table} */ const table = mutate ? this : this.copy()
   const dateIndex = table.coin(dateLabel)
   const indexes = table.columnIndexes(fields), depth = indexes.length
+  if (indexes.includes(dateIndex)) indexes.splice(indexes.indexOf(dateIndex), 1)
   const rows = table.rows
   let pv, cv, prevNum, currNum
   for (const [prev, curr] of Differentiator.build(rows))
