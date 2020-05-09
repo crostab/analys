@@ -1,0 +1,34 @@
+{
+  "name": "@analys/enum-difference-mode",
+  "version": "0.3.0",
+  "description": "Enums for analys toolkit",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/enum-difference-mode.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/vect.git"
+  },
+  "keywords": [
+    "array",
+    "vector",
+    "matrix",
+    "object"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/vect"
+  },
+  "homepage": "https://github.com/hoyeungw/vect#readme",
+  "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
+}
