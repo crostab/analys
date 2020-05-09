@@ -30,7 +30,7 @@ import {
 import { size, transpose }                                                      from '@vect/matrix'
 import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }         from '@vect/matrix-mapper'
 import { difference, intersect }                                                from '@vect/vector-algebra'
-import { iterate, mapper }                                                      from '@vect/vector-mapper'
+import { iterate, mapper, mutate as mutateVector }                              from '@vect/vector-mapper'
 import { splices }                                                              from '@vect/vector-update'
 import { StatMx }                                                               from 'borel'
 
@@ -83,6 +83,7 @@ export class Table {
   }
 
   mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+  mutateHead (fn) { return mutateVector(this.head, fn), this }
   map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
   mutate (fn, { fields, exclusive } = {}) {
     if (!fields && !exclusive) return mutateMatrix(this.rows, fn, this.ht, this.wd), this

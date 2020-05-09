@@ -176,6 +176,10 @@ class Table {
     }, mutate);
   }
 
+  mutateHead(fn) {
+    return vectorMapper.mutate(this.head, fn), this;
+  }
+
   map(fn, {
     mutate = true
   } = {}) {

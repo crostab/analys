@@ -17,9 +17,9 @@ import { column } from '@vect/column-getter';
 import { mutate } from '@vect/column-mapper';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { size, transpose } from '@vect/matrix';
-import { mapper as mapper$1, mutate as mutate$1, selectMutate } from '@vect/matrix-mapper';
+import { mapper as mapper$1, mutate as mutate$2, selectMutate } from '@vect/matrix-mapper';
 import { difference, intersect } from '@vect/vector-algebra';
-import { mapper, iterate } from '@vect/vector-mapper';
+import { mapper, mutate as mutate$1, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
 import { StatMx } from 'borel';
 
@@ -172,6 +172,10 @@ class Table {
     }, mutate);
   }
 
+  mutateHead(fn) {
+    return mutate$1(this.head, fn), this;
+  }
+
   map(fn, {
     mutate = true
   } = {}) {
@@ -186,7 +190,7 @@ class Table {
   } = {}) {
     var _fields;
 
-    if (!fields && !exclusive) return mutate$1(this.rows, fn, this.ht, this.wd), this;
+    if (!fields && !exclusive) return mutate$2(this.rows, fn, this.ht, this.wd), this;
     fields = (_fields = fields) !== null && _fields !== void 0 ? _fields : this.head;
     fields = exclusive ? difference(fields, exclusive) : fields;
     return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this;
