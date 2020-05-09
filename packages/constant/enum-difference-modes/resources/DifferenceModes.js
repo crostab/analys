@@ -1,2 +1,3 @@
-export const DIFFERENCE = 0
-export const ROLLING = 1
+export const NONE = 0
+export const DIFFERENCE = 1
+export const ROLLING = 2
