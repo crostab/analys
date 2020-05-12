@@ -82,6 +82,10 @@ class Table {
     return mutate ? (_this = this, slice(_this)) : (_this2 = this, shallow(_this2));
   }
 
+  setTitle(title) {
+    return this.title = title, this;
+  }
+
   get size() {
     return size(this.rows);
   }

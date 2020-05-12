@@ -57,6 +57,7 @@ export class Table {
   toSamples (fields) { return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this) }
   toObject (mutate = false) { return mutate ? this |> slice : this |> shallow }
 
+  setTitle (title) { return this.title = title, this }
   get size () { return size(this.rows) }
   get ht () { return this.rows?.length }
   get wd () { return this.head?.length }

@@ -18,7 +18,7 @@
     "@analys/keyed-columns": "^0.3.2",
     "@analys/table-init": "^0.3.2",
     "@aryth/rand": "^0.1.4",
-    "@vect/vector-select": "^0.2.3"
+    "@vect/vector-select": "^0.2.4"
   },
   "repository": {
     "type": "git",
