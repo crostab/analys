@@ -1,6 +1,6 @@
 {
   "name": "@analys/convert",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "A cross-convert analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/keyed-columns": "^0.3.4",
-    "@analys/table-init": "^0.3.4",
+    "@analys/keyed-columns": "^0.3.5",
+    "@analys/table-init": "^0.3.5",
     "@vect/entries-unwind": "^0.2.5",
     "@vect/vector-mapper": "^0.2.5"
   },
