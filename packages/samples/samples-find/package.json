@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-find",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A cross-samples analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
