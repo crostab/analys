@@ -29,6 +29,7 @@ import {
 }                                                                               from '@vect/columns-update'
 import { size, transpose }                                                      from '@vect/matrix'
 import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }         from '@vect/matrix-mapper'
+import { wind }                                                                 from '@vect/object-init'
 import { difference, intersect }                                                from '@vect/vector-algebra'
 import { iterate, mapper, mutate as mutateVector }                              from '@vect/vector-mapper'
 import { splices }                                                              from '@vect/vector-update'
@@ -65,6 +66,10 @@ export class Table {
   cell (x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
   coin (field) { return this.head.indexOf(field) }
   columnIndexes (fields) { return fields.map(this.coin, this) }
+  row (field, value, objectify) {
+    const vector = this.rows.find(row => row[this.coin(field)] === value)
+    return vector && objectify ? wind(this.head, vector) : vector
+  }
   column (field) { return column(this.rows, this.coin(field), this.ht) }
   setColumn (field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
   mutateColumn (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
@@ -296,8 +301,7 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    }
-    else {
+    } else {
       return this.copy({ types, head, rows })
     }
   }

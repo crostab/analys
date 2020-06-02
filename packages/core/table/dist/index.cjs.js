@@ -22,6 +22,7 @@ var columnMapper = require('@vect/column-mapper');
 var columnsUpdate = require('@vect/columns-update');
 var matrix = require('@vect/matrix');
 var matrixMapper = require('@vect/matrix-mapper');
+var objectInit = require('@vect/object-init');
 var vectorAlgebra = require('@vect/vector-algebra');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
@@ -120,6 +121,11 @@ class Table {
 
   columnIndexes(fields) {
     return fields.map(this.coin, this);
+  }
+
+  row(field, value, objectify) {
+    const vector = this.rows.find(row => row[this.coin(field)] === value);
+    return vector && objectify ? objectInit.wind(this.head, vector) : vector;
   }
 
   column(field) {

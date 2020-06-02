@@ -18,6 +18,7 @@ import { mutate } from '@vect/column-mapper';
 import { push, unshift, pop, shift, splices } from '@vect/columns-update';
 import { size, transpose } from '@vect/matrix';
 import { mapper as mapper$1, mutate as mutate$2, selectMutate } from '@vect/matrix-mapper';
+import { wind } from '@vect/object-init';
 import { difference, intersect } from '@vect/vector-algebra';
 import { mapper, mutate as mutate$1, iterate } from '@vect/vector-mapper';
 import { splices as splices$1 } from '@vect/vector-update';
@@ -116,6 +117,11 @@ class Table {
 
   columnIndexes(fields) {
     return fields.map(this.coin, this);
+  }
+
+  row(field, value, objectify) {
+    const vector = this.rows.find(row => row[this.coin(field)] === value);
+    return vector && objectify ? wind(this.head, vector) : vector;
   }
 
   column(field) {

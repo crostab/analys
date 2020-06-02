@@ -17,8 +17,8 @@
   "dependencies": {
     "@analys/formula": "^0.3.4",
     "@analys/samples-find": "^0.3.4",
-    "@spare/deco-func": "^0.6.3",
-    "@vect/vector-zipper": "^0.2.4"
+    "@spare/deco-func": "^0.7.10",
+    "@vect/vector-zipper": "^0.2.5"
   },
   "repository": {
     "type": "git",
