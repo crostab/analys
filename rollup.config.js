@@ -1,13 +1,13 @@
 import { POME }                   from '@palett/presets'
+import babel                      from '@rollup/plugin-babel'
 import commonjs                   from '@rollup/plugin-commonjs'
 import json                       from '@rollup/plugin-json'
 import nodeResolve                from '@rollup/plugin-node-resolve'
 import { decoObject, DecoString } from '@spare/logger'
-import babel                      from 'rollup-plugin-babel'
 import fileInfo                   from 'rollup-plugin-fileinfo'
 
 const { name, dependencies, main, module } = require(process.cwd() + '/package.json')
-const decoString = DecoString({ vectify: x => x.split('/'), delim: '/', stringPreset: POME })
+const decoString = DecoString({ vectify: x => x.split('/'), delim: '/', presets: POME })
 
 console.log('Executing', decoString(name), decoString(process.cwd()))
 console.log('Dependencies', decoObject(dependencies, { bracket: true }))
@@ -17,6 +17,7 @@ const babelPluginOptions = {
   comments: true,
   sourceMap: true,
   exclude: 'node_modules/**',
+  babelHelpers: 'bundled',
   plugins: [
     ['@babel/plugin-transform-runtime', { helpers: false, }],
     ['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],

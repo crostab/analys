@@ -1,14 +1,14 @@
-import ora from 'ora'
-import { promises } from 'fs'
-import { NaiveCsv } from 'naivecsv'
+import { INCRE }                                              from '@analys/enum-pivot-mode'
+import { matchSlice }                                         from '@analys/table-init'
+import { STR_DESC }                                           from '@aryth/comparer'
+import { deca, delogger }                                     from '@spare/deco'
 import { DecoCrostab, DecoTable, DecoVector, logger, logNeL } from '@spare/logger'
-import { INCRE } from '@analys/enum-pivot-mode'
-import { isNumeric } from '@typen/num-strict'
-import { matchSlice } from '@analys/table-init'
-import { Table } from '../src/Table'
-import { ROWWISE } from '@vect/matrix'
-import { STR_DESC } from '@aryth/comparer'
-import { deca, delogger } from '@spare/deco'
+import { isNumeric }                                          from '@typen/num-strict'
+import { ROWWISE }                                            from '@vect/matrix'
+import { promises }                                           from 'fs'
+import { NaiveCsv }                                           from 'naivecsv'
+import ora                                                    from 'ora'
+import { Table }                                              from '../src/Table'
 
 const spn = ora()
 const WORKSPACE = './packages/core/table/'
@@ -17,11 +17,11 @@ const TARGET_TABLE = WORKSPACE + 'test/assets/out/BigMacIndex.Table.json'
 const TARGET_SAMPLES = WORKSPACE + 'test/assets/out/BigMacIndex.Samples.json'
 const TARGET_CROSTAB = WORKSPACE + 'test/assets/out/BigMacIndex.CrosTab.json'
 
-spn.start(`start reading: ${SOURCE}`)
+spn.start(`start reading: ${ SOURCE }`)
 promises
   .readFile(SOURCE, 'utf-8')
   .then(it => {
-    spn.succeed(`done reading: ${SOURCE}`)
+    spn.succeed(`done reading: ${ SOURCE }`)
     return NaiveCsv.toTable(it, { popBlank: true }) |> matchSlice
   })
   .then(async table => {
