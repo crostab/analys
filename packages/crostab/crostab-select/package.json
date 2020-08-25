@@ -18,8 +18,8 @@
     "@analys/crostab-init": "^0.3.6",
     "@analys/keyed-columns": "^0.3.6",
     "@analys/keyed-rows": "^0.3.6",
-    "@aryth/rand": "^0.2.6",
-    "@vect/vector-select": "^0.2.5"
+    "@aryth/rand": "^0.2.14",
+    "@vect/vector-select": "^0.2.9"
   },
   "repository": {
     "type": "git",

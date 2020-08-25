@@ -522,9 +522,9 @@ class Table {
       return this;
     } else {
       return this.copy({
-        types,
         head,
-        rows
+        rows,
+        types
       });
     }
   }

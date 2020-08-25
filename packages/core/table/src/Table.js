@@ -47,60 +47,60 @@ export class Table {
    * @param {string} [title]
    * @param {string[]} [types]
    */
-  constructor (head, rows, title, types) {
+  constructor(head, rows, title, types) {
     this.head = head || []
     this.rows = rows || [[]]
     this.title = title || ''
     this.types = types
   }
 
-  static from (o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
-  toSamples (fields) { return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this) }
-  toObject (mutate = false) { return mutate ? this |> slice : this |> shallow }
+  static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
+  toSamples(fields) { return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this) }
+  toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
 
-  setTitle (title) { return this.title = title, this }
-  get size () { return size(this.rows) }
-  get ht () { return this.rows?.length }
-  get wd () { return this.head?.length }
-  get columns () { return transpose(this.rows) }
-  cell (x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
-  coin (field) { return this.head.indexOf(field) }
-  columnIndexes (fields) { return fields.map(this.coin, this) }
-  row (field, value, objectify) {
+  setTitle(title) { return this.title = title, this }
+  get size() { return size(this.rows) }
+  get ht() { return this.rows?.length }
+  get wd() { return this.head?.length }
+  get columns() { return transpose(this.rows) }
+  cell(x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
+  coin(field) { return this.head.indexOf(field) }
+  columnIndexes(fields) { return fields.map(this.coin, this) }
+  row(field, value, objectify) {
     const vector = this.rows.find(row => row[this.coin(field)] === value)
     return vector && objectify ? wind(this.head, vector) : vector
   }
-  column (field) { return column(this.rows, this.coin(field), this.ht) }
-  setColumn (field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
-  mutateColumn (field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
+  column(field) { return column(this.rows, this.coin(field), this.ht) }
+  setColumn(field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
+  mutateColumn(field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
 
-  pushRow (row) { return this.rows.push(row), this }
-  unshiftRow (row) { return this.rows.unshift(row), this }
-  pushColumn (label, column) { return this.head.push(label), pushColumn(this.rows, column), this }
-  unshiftColumn (label, column) { return this.head.unshift(label), unshiftColumn(this.rows, column), this }
-  popRow () { return this.rows.pop() }
-  shiftRow () { return this.rows.shift() }
-  popColumn () { return popColumn(this.rows) }
-  shiftColumn () { return shiftColumn(this.rows) }
-  renameColumn (field, newName) {
+  pushRow(row) { return this.rows.push(row), this }
+  unshiftRow(row) { return this.rows.unshift(row), this }
+  pushColumn(label, column) { return this.head.push(label), pushColumn(this.rows, column), this }
+  unshiftColumn(label, column) { return this.head.unshift(label), unshiftColumn(this.rows, column), this }
+  popRow() { return this.rows.pop() }
+  shiftRow() { return this.rows.shift() }
+  popColumn() { return popColumn(this.rows) }
+  shiftColumn() { return shiftColumn(this.rows) }
+  renameColumn(field, newName) {
     const ci = this.coin(field)
     if (ci >= 0) this.head[ci] = newName
     return this
   }
 
-  mapHead (fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
-  mutateHead (fn) { return mutateVector(this.head, fn), this }
-  map (fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
-  mutate (fn, { fields, exclusive } = {}) {
+  mapHead(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+  mutateHead(fn) { return mutateVector(this.head, fn), this }
+  map(fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
+  mutate(fn, { fields, exclusive } = {}) {
     if (!fields && !exclusive) return mutateMatrix(this.rows, fn, this.ht, this.wd), this
     fields = fields ?? this.head
     fields = exclusive ? difference(fields, exclusive) : fields
     return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this
   }
 
-  lookupOne (valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
-  lookupMany (valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
-  lookupTable (key, field, objectify) { return lookupTable.call(this, key, field, objectify) }
+  lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
+  lookupMany(valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
+  lookupTable(key, field, objectify) { return lookupTable.call(this, key, field, objectify) }
 
   /**
    *
@@ -108,7 +108,7 @@ export class Table {
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
-  select (fields, { mutate = false } = {}) {
+  select(fields, { mutate = false } = {}) {
     let o = mutate ? this : slice(this)
     selectKeyedColumns.call(o, fields)
     return mutate ? this : this.copy(o)
@@ -123,7 +123,7 @@ export class Table {
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
-  insertColumn (label, column, { field, mutate = false } = {}) {
+  insertColumn(label, column, { field, mutate = false } = {}) {
     const o = mutate ? this : this |> shallow, index = this.coin(field) + 1
     o.head.splice(index, 0, label)
     iterate(o.rows, (row, i) => row.splice(index, 0, column[i]))
@@ -135,7 +135,7 @@ export class Table {
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
-  deleteColumn (field, { mutate = false } = {}) {
+  deleteColumn(field, { mutate = false } = {}) {
     const o = mutate ? this : this |> shallow, index = this.coin(field)
     o.head.splice(index, 1)
     o.rows.forEach(row => row.splice(index, 1))
@@ -147,13 +147,13 @@ export class Table {
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
-  spliceColumns (fields, { mutate = false } = {}) {
+  spliceColumns(fields, { mutate = false } = {}) {
     const o = mutate ? this : this |> shallow, indexes = this.columnIndexes(fields).sort(NUM_ASC)
     splicesColumns(o.rows, indexes), splices(o.head, indexes)
     return mutate ? this : this.copy(o)
   }
 
-  divide (fields, { mutate = false } = {}) {
+  divide(fields, { mutate = false } = {}) {
     const o = mutate ? this : this |> shallow
     const { pick, rest } = tableDivide.call(o, fields)
     return { pick: Table.from(pick), rest: mutate ? this : Table.from(rest) }
@@ -165,7 +165,7 @@ export class Table {
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
-  filter (filterCollection, { mutate = true } = {}) {
+  filter(filterCollection, { mutate = true } = {}) {
     const o = mutate ? this : this |> slice
     tableFilter.call(o, filterCollection)
     return mutate ? this : this.copy(o)
@@ -177,13 +177,13 @@ export class Table {
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
-  find (filter, { mutate = true } = {}) {
+  find(filter, { mutate = true } = {}) {
     const o = mutate ? this : this |> slice
     tableFind.call(o, filter)
     return mutate ? this : this.copy(o)
   }
 
-  distinct (fields, { mutate = true } = {}) {
+  distinct(fields, { mutate = true } = {}) {
     const o = mutate ? this : this |> slice
     for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field))
     return mutate ? this : this.copy(o)
@@ -196,7 +196,7 @@ export class Table {
    * @param {string|boolean} [sort=false] - When sort is function, sort must be a comparer between two point element.
    * @returns {[any, any][]|[]|any[]|*}
    */
-  distinctOnColumn (field, { count = false, sort = false } = {}) {
+  distinctOnColumn(field, { count = false, sort = false } = {}) {
     return count
       ? DistinctCountOnColumn(this.coin(field))(this.rows, { l: this.ht, sort })
       : DistinctOnColumn(this.coin(field))(this.rows, this.ht)
@@ -209,7 +209,7 @@ export class Table {
    * @param mutate
    * @returns {Table} - 'this' Table rows is mutated by sort function
    */
-  sort (field, comparer, { mutate = true } = {}) {
+  sort(field, comparer, { mutate = true } = {}) {
     const y = this.coin(field)
     const rowComparer = (a, b) => comparer(a[y], b[y])
     const o = mutate ? this : this |> slice
@@ -223,13 +223,13 @@ export class Table {
    * @param {boolean} mutate
    * @returns {Table|*}
    */
-  sortLabel (comparer, { mutate = true } = {}) {
+  sortLabel(comparer, { mutate = true } = {}) {
     let o = mutate ? this : this |> slice
     sortColumnsByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)
   }
 
-  join (another, fields, joinType, fillEmpty) { return Table.from(tableJoin(this, another, fields, joinType, fillEmpty)) }
+  join(another, fields, joinType, fillEmpty) { return Table.from(tableJoin(this, another, fields, joinType, fillEmpty)) }
 
   /**
    *
@@ -237,7 +237,7 @@ export class Table {
    * @param {boolean} [mutate=true]
    * @return {Table}
    */
-  union (another, { mutate = true } = {}) {
+  union(another, { mutate = true } = {}) {
     const self = mutate ? this : this.copy()
     const shared = intersect(self.head, another.head)
     if (shared.length) {
@@ -257,7 +257,7 @@ export class Table {
    * @param {boolean} [options.objectify=true]
    * @return {[*,*][]|{}}
    */
-  chips (options = {}) { return tableChips.call(this, options)}
+  chips(options = {}) { return tableChips.call(this, options)}
 
   /**
    * @param {Object} options
@@ -267,7 +267,7 @@ export class Table {
    * @param {Object|Array} [options.alias]
    * @return {Table}
    */
-  group (options = {}) { return Table.from(tableGroup.call(this, options)) }
+  group(options = {}) { return Table.from(tableGroup.call(this, options)) }
 
   /**
    * @param {Object} options
@@ -276,7 +276,7 @@ export class Table {
    * @param {boolean} [options.append=true]
    * @return {Table}
    */
-  formula (formulae, options = {}) { return Table.from(tableFormula.call(this, formulae, options)) }
+  formula(formulae, options = {}) { return Table.from(tableFormula.call(this, formulae, options)) }
 
   /**
    * @param {Object} options
@@ -287,27 +287,27 @@ export class Table {
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
-  crosTab (options = {}) { return tablePivot.call(this, options) }
+  crosTab(options = {}) { return tablePivot.call(this, options) }
 
-  inferTypes ({ inferType, omitNull = true, mutate = false } = {}) {
+  inferTypes({ inferType, omitNull = true, mutate = false } = {}) {
     const types = inferTypes.call(this, { inferType, omitNull })
     return mutate ? (this.types = types) : types
   }
 
   /** @returns {Table} */
-  boot ({ head, rows, types } = {}, mutate = true) {
+  boot({ head, rows, types } = {}, mutate = true) {
     if (mutate) {
       if (head) this.head = head
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
     } else {
-      return this.copy({ types, head, rows })
+      return this.copy({ head, rows, types })
     }
   }
 
   /** @returns {Table} */
-  copy ({ head, rows, types } = {}) {
+  copy({ head, rows, types } = {}) {
     if (!head) head = this.head.slice()
     if (!rows) rows = this.rows.map(row => row.slice())
     if (!types) types = this.types?.slice()
