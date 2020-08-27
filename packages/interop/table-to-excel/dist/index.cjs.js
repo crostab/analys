@@ -34,9 +34,11 @@ Array.prototype.zip = function (another, zipper) {
  */
 
 
-const matchSlice = o => {
-  const head = o.head || o.banner,
-        rows = o.rows || o.matrix;
+const matchSlice = (o = {}) => {
+  var _o$head, _o$rows;
+
+  const head = (_o$head = o.head) !== null && _o$head !== void 0 ? _o$head : o.banner,
+        rows = (_o$rows = o.rows) !== null && _o$rows !== void 0 ? _o$rows : o.matrix;
   return {
     head,
     rows
