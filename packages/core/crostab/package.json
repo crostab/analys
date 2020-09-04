@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,10 +15,10 @@
     "test": "node -r @babel/register test/crostab.select.test.js"
   },
   "dependencies": {
-    "@analys/crostab-init": "^0.3.9",
-    "@analys/crostab-lookup": "^0.3.9",
-    "@analys/keyed-columns": "^0.3.9",
-    "@analys/keyed-rows": "^0.3.9",
+    "@analys/crostab-init": "^0.4.0",
+    "@analys/crostab-lookup": "^0.4.0",
+    "@analys/keyed-columns": "^0.4.0",
+    "@analys/keyed-rows": "^0.4.0",
     "@aryth/comparer": "^0.2.14",
     "@vect/column-getter": "^0.2.9",
     "@vect/column-mapper": "^0.2.9",
@@ -28,8 +28,8 @@
     "@vect/matrix-mapper": "^0.2.9",
     "@vect/matrix-transpose": "^0.2.9",
     "@vect/object-init": "^0.2.9",
-    "@vect/vector-merge": "^0.2.9",
     "@vect/vector-mapper": "^0.2.9",
+    "@vect/vector-merge": "^0.2.9",
     "@vect/vector-zipper": "^0.2.9"
   },
   "repository": {
