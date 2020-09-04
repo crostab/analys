@@ -17,14 +17,7 @@
   "dependencies": {
     "@analys/crostab": "^0.3.9",
     "@analys/cubic": "^0.3.9",
-    "@analys/pivot": "^0.3.9",
-    "@analys/table-filter": "^0.3.9",
-    "@analys/table-find": "^0.3.9",
-    "@analys/table-init": "^0.3.9",
-    "@analys/tablespec": "^0.3.9",
-    "@analys/util-pivot": "^0.3.9",
-    "@vect/matrix": "^0.2.9",
-    "@vect/vector-mapper": "^0.2.9"
+    "@analys/tablespec": "^0.3.9"
   },
   "repository": {
     "type": "git",

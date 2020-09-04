@@ -1,7 +1,6 @@
-import { Foba } from '@foba/crostab'
-import { decoCrostab, says } from '@spare/logger'
-import { CrosTab } from '../src/CrosTab'
-import { delogger } from '@spare/deco'
+import { Foba }                                 from '@foba/crostab'
+import { decoCrostab, decoTable, logger, says } from '@spare/logger'
+import { CrosTab }                              from '../src/CrosTab'
 
 const TITLE = 'ArmsExports'
 
@@ -18,5 +17,7 @@ crostab.roin(sideLabel) |> says['roin']
 crostab.coin(headLabel) |> says['coin']
 crostab.cell(sideLabel, headLabel) |> says['cell']
 crostab.element(-1, -1) |> says['element']
+
+crostab.toTable('year') |> decoTable |> logger
 
 

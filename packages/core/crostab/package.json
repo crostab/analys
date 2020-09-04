@@ -28,6 +28,7 @@
     "@vect/matrix-mapper": "^0.2.9",
     "@vect/matrix-transpose": "^0.2.9",
     "@vect/object-init": "^0.2.9",
+    "@vect/vector-merge": "^0.2.9",
     "@vect/vector-mapper": "^0.2.9",
     "@vect/vector-zipper": "^0.2.9"
   },

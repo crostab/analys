@@ -12,6 +12,7 @@ import { mapper } from '@vect/matrix-mapper';
 import { transpose } from '@vect/matrix-transpose';
 import { pair } from '@vect/object-init';
 import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
+import { acquire } from '@vect/vector-merge';
 import { zipper } from '@vect/vector-zipper';
 
 function _defineProperty(obj, key, value) {
@@ -105,6 +106,15 @@ class CrosTab {
     var _this, _this2;
 
     return mutate ? (_this = this, slice(_this)) : (_this2 = this, shallow(_this2));
+  }
+
+  toTable(sideLabel) {
+    const head = acquire([sideLabel], this.head);
+    const rows = zipper(this.side, this.rows, (x, row) => acquire([x], row));
+    return {
+      head,
+      rows
+    };
   }
   /** @returns {*[][]} */
 

@@ -1,5 +1,5 @@
-import { TableCollection }   from '@foba/table'
 import { INCRE }             from '@analys/enum-pivot-mode'
+import { TableCollection }   from '@foba/table'
 import { decoCrostab, says } from '@spare/logger'
 import { Pivot }             from '../src/Pivot'
 
@@ -14,6 +14,6 @@ const dutiesBeta = {
   ]
 }
 
-let pivot = new Pivot([0], [1], [2, INCRE], x => !isNaN(x))
+let pivot = new Pivot({ key: 0 }, { key: 1 }, { key: 2, to: INCRE }) //  x => !isNaN(x)
 pivot.record(duties.rows).toObject() |> decoCrostab |> says['spreadPivot']
 pivot.record(dutiesBeta.rows).toObject() |> decoCrostab |> says['recordPivot']

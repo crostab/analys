@@ -3,8 +3,8 @@ import { INCRE }                     from '@analys/enum-pivot-mode'
 import { TableCollection }           from '@foba/table'
 import { decoCrostab, logger, says } from '@spare/logger'
 import { strategies }                from '@valjoux/strategies'
-import { Pivot }                     from '../../src/Pivot'
-import { PivotOri }                  from '../../src/PivotOri'
+import { Pivot }    from '../../src/Pivot'
+import { PivotOri } from '../archive/PivotOri'
 
 const duties = TableCollection.BistroDutyRoster
 const pivotDev = new Pivot([0], [1], [2, INCRE], x => !isNaN(x))

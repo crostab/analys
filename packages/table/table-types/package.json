@@ -35,12 +35,12 @@
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
   "dependencies": {
-    "@typen/vector-type": "^0.1.5",
+    "@typen/vector-type": "^0.1.7",
     "@vect/columns-mapper": "^0.2.9"
   },
   "devDependencies": {
-    "@typen/enum-tabular-types": "^0.1.5",
-    "@typen/infer-type": "^0.1.5"
+    "@typen/enum-tabular-types": "^0.1.7",
+    "@typen/infer-type": "^0.1.7"
   },
   "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
 }

@@ -33,34 +33,34 @@ class Chips {
   /**
    *
    * @param key
-   * @param [pick]
+   * @param [to]
    * @param field
    * @param mode
    * @param [filter]
    */
-  constructor([key, pick], [field, mode], filter) {
+  constructor([key, to], [field, mode], filter) {
     _defineProperty(this, "key", void 0);
 
     _defineProperty(this, "field", void 0);
 
     _defineProperty(this, "data", {});
 
-    _defineProperty(this, "pick", void 0);
+    _defineProperty(this, "to", void 0);
 
     _defineProperty(this, "updater", void 0);
 
     _defineProperty(this, "filter", void 0);
 
     this.key = key;
-    this.pick = pick;
+    this.to = to;
     this.field = field;
     this.init = modeToInit(mode);
-    this.tally = modeToTally(mode);
+    this.accum = modeToTally(mode);
     this.filter = filter;
   }
 
-  static build([key, pick], [field, mode], filter) {
-    return new Chips([key, pick], [field, mode], filter);
+  static build([key, to], [field, mode], filter) {
+    return new Chips([key, to], [field, mode], filter);
   }
 
   record(samples) {
@@ -68,9 +68,9 @@ class Chips {
   }
 
   note(sample) {
-    const key = this.pick ? this.pick(sample[this.key]) : sample[this.key];
+    const key = this.to ? this.to(sample[this.key]) : sample[this.key];
     const target = key in this.data ? this.data[key] : this.data[key] = this.init();
-    this.data[key] = this.tally(target, sample[this.field]);
+    this.data[key] = this.accum(target, sample[this.field]);
   }
 
   toObject() {

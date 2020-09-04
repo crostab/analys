@@ -1,12 +1,12 @@
-import { MUTABLE }                                        from '@analys/enum-mutabilities'
-import { ACCUM, AVERAGE, COUNT, FIRST, LAST, MERGE, MIN } from '@analys/enum-pivot-mode'
-import { Table }                                          from '@analys/table'
+import { MUTABLE }                                             from '@analys/enum-mutabilities'
+import { ACCUM, AVERAGE, COUNT, FIRST, LAST, MAX, MERGE, MIN } from '@analys/enum-pivot-mode'
+import { Table }                                               from '@analys/table'
 import { TableCollection }                                from '@foba/table'
 import { decoTable, logger, says }                        from '@spare/logger'
 import { isNumeric }                                      from '@typen/num-strict'
 import { tableGroup }                                     from '../src/tableGroup'
 
-const { MAX } = require('@analys/enum-pivot-mode')
+
 
 const table = TableCollection.AeroEngineSpecs |> Table.from
 table.map(x => isNumeric(x) ? +x : x, MUTABLE)

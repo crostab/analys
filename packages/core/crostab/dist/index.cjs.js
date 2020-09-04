@@ -16,6 +16,7 @@ var matrixMapper = require('@vect/matrix-mapper');
 var matrixTranspose = require('@vect/matrix-transpose');
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
+var vectorMerge = require('@vect/vector-merge');
 var vectorZipper = require('@vect/vector-zipper');
 
 function _defineProperty(obj, key, value) {
@@ -109,6 +110,15 @@ class CrosTab {
     var _this, _this2;
 
     return mutate ? (_this = this, crostabInit.slice(_this)) : (_this2 = this, crostabInit.shallow(_this2));
+  }
+
+  toTable(sideLabel) {
+    const head = vectorMerge.acquire([sideLabel], this.head);
+    const rows = vectorZipper.zipper(this.side, this.rows, (x, row) => vectorMerge.acquire([x], row));
+    return {
+      head,
+      rows
+    };
   }
   /** @returns {*[][]} */
 

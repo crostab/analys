@@ -22,7 +22,7 @@ const tableSpec = {
 }
 tableSpec |> deco |> says[ROSTER + ' tablespec']
 
-tablePivot.call(table, tableSpec) |> decoCrostab |> says[ROSTER + ' crostab: conversion rate']
+tablePivot.call(tableSpec, table) |> decoCrostab |> says[ROSTER + ' crostab: conversion rate']
 
 //((sold / served) * 100).toFixed(0) + '%',
 

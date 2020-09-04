@@ -6,7 +6,7 @@ export const tallyMerge = (target, value) => acquire(target, value)
 export const tallyAccum = (target, value) => (target.push(value), target)
 export const tallyIncre = (target, value) => target + value
 export const tallyCount = (target, value) => target + 1
-export const tallyAverage = (target, value) => (target.s += value, target.n += 1, target)
+export const tallyAverage = (target, value) => (target.sum += value, target.count += 1, target)
 export const tallyMax = (target, value) => max(target, value)
 export const tallyMin = (target, value) => min(target, value)
 export const tallyFirst = (target, value) => target ?? value

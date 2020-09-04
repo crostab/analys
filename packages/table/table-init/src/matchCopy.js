@@ -1,6 +1,10 @@
 import { Mx } from 'veho'
 
 /**
+ * @typedef {{head:*[],rows:*[][]}} TableObject
+ */
+
+/**
  *
  * @param {Object} o
  * @returns {TableObject}

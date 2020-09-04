@@ -1,35 +1,92 @@
-import { ampliCell, modeToInit, modeToTally } from '@analys/util-pivot'
-import { iterate }                            from '@vect/vector-mapper'
-import { mutazip }                            from '@vect/vector-zipper'
+import { modeToInit, modeToTally } from '@analys/util-pivot'
+import { iterate }                 from '@vect/vector-mapper'
+import { mutazip }                 from '@vect/vector-zipper'
+import { DataGram }                from '@analys/data-gram'
+import { NestGram }                from '@analys/nest-gram'
 
 export class Cubic {
+  side
+  head
+  field
+  accum
+  data
   /** @type {Function} */ cell
-  constructor ([x, xmap], [y, ymap], fields, filter) {
-    this.x = x
-    this.xm = xmap
-    this.y = y
-    this.ym = ymap
-    this.fields = fields.map(([index, mode]) => [index, modeToTally(mode, filter)])
-    const inits = fields.map(([, mode]) => modeToInit(mode))
-    this.data = { s: [], b: [], m: [], n: () => inits.map(fn => fn()) }
+
+
+  /**
+   *
+   * @param {{key:number, to:Function?}[]} side
+   * @param {{key:number, to:Function?}[]} head
+   * @param {{key:number, to:number}[]} field
+   */
+  constructor(side, head, field) {
+    if (side.length === 1 && head.length === 1) {
+      [this.side] = side;
+      [this.head] = head
+    } else {
+      this.nested = true
+      this.side = side
+      this.head = head
+    }
+    if (field.length === 1) {
+      const [_field] = field
+      this.field = { key: _field.key, accum: modeToTally(_field.to) }
+      this.data = (this.nested ? NestGram : DataGram).build(modeToInit(_field.to))
+    } else {
+      this.cubic = true
+      const initList = field.map(({ to }) => modeToInit(to))
+      this.field = field.map(({ key, to }) => ({ key, accum: modeToTally(to) }))
+      this.data = (this.nested ? NestGram : DataGram).build(() => initList.map(fn => fn()))
+    }
   }
 
-  static build (x, y, fields, filter) { return new Cubic(x, y, fields, filter) }
+  static build(side, head, field) { return new Cubic(side, head, field) }
 
-  record (samples) { return this.cell = ampliCell.bind(this.data), iterate(samples, this.note.bind(this)), this }
-
-  note (sample) {
-    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x]
-    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y]
-    mutazip(
-      this.cell(sk, bk),
-      this.fields,
-      (target, [index, tally]) => tally(target, sample[index])
-    )
+  record(samples) {
+    iterate(samples, Notes.init(this.nested, this.cubic, this))
+    return this
   }
 
-  toObject () {
-    const { s, b, m } = this.data
-    return { side: s, head: b, rows: m }
+  toObject() {
+    const { side, head, rows } = this.data
+    return { side, head, rows }
   }
 }
+
+class Notes {
+  static init(nested, cubic, thisArg) {
+    return nested
+      ? cubic
+        ? Notes.nestedCubic.bind(thisArg)
+        : Notes.nestedPivot.bind(thisArg)
+      : cubic
+        ? Notes.simpleCubic.bind(thisArg)
+        : Notes.simplePivot.bind(thisArg)
+  }
+  static simplePivot(sample) {
+    const { data, side, head, field } = this
+    const s = side.to ? side.to(sample[side.key]) : sample[side.key]
+    const b = head.to ? head.to(sample[head.key]) : sample[head.key]
+    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]))
+  }
+  static simpleCubic(sample) {
+    const { data, side, head, field } = this
+    const s = side.to ? side.to(sample[side.key]) : sample[side.key]
+    const b = head.to ? head.to(sample[head.key]) : sample[head.key]
+    return mutazip(data.cell(s, b), field, (target, { key, accum }) => accum(target, sample[key]))
+  }
+  static nestedPivot(sample) {
+    const { data, side, head, field } = this
+    const s = side.map(({ key, to }) => to ? to(sample[key]) : sample[key])
+    const b = head.map(({ key, to }) => to ? to(sample[key]) : sample[key])
+    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]))
+  }
+  static nestedCubic(sample) {
+    const { data, side, head, field } = this
+    const s = side.map(({ key, to }) => to ? to(sample[key]) : sample[key])
+    const b = head.map(({ key, to }) => to ? to(sample[key]) : sample[key])
+    return mutazip(data.cell(s, b), field, (target, { key, accum }) => accum(target, sample[key]))
+  }
+}
+
+// Xr().side(s).head(b).field(data.upQueryCell(s, b)|> deco) |> says['sample']

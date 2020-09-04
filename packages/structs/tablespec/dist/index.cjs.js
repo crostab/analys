@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var enumDataTypes = require('@typen/enum-data-types');
 var enumPivotMode = require('@analys/enum-pivot-mode');
 var vectorMapper = require('@vect/vector-mapper');
+var literal = require('@typen/literal');
 var nullish = require('@typen/nullish');
-var vectorMerge = require('@vect/vector-merge');
 
 const parseCell = (cell, defaultField) => {
   var _cell$field, _cell$mode;
@@ -37,13 +37,42 @@ const defaultCell = defaultField => ({
   mode: enumPivotMode.COUNT
 });
 
-const parseKey = key => {
-  if (nullish.nullish(key)) return [key];
-  let t = typeof key;
-  if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [key];
-  if (t === enumDataTypes.OBJ) return Array.isArray(key) ? key : Object.entries(key);
-  return key;
-};
+/**
+ * @typedef {string|number} str
+ */
+
+/**
+ *
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} field
+ * @param {number} level
+ * @returns {{key:str,to:number}|{key:str,to:number}[]}
+ */
+
+function parseKey(field, level = 0) {
+  const {
+    key: defaultKey = '',
+    to: defaultTo = null
+  } = this !== null && this !== void 0 ? this : {};
+  const fieldSets = [];
+  if (nullish.nullish(field)) fieldSets.push({
+    key: defaultKey,
+    to: defaultTo
+  });else if (literal.isNumStr(field)) fieldSets.push({
+    key: field,
+    to: defaultTo
+  });else if (Array.isArray(field)) {
+    if (level > 0) fieldSets.push({
+      key: field[0],
+      to: field[1]
+    });else for (let f of field) fieldSets.push(...parseField.call(this, f, level + 1));
+  } else if (typeof field === enumDataTypes.OBJ) {
+    for (let [key, to] of Object.entries(field)) fieldSets.push({
+      key,
+      to
+    });
+  }
+  return fieldSets;
+}
 /**
  * @param key
  * @return {[*,*]}
@@ -67,45 +96,41 @@ const getEntryOnce = o => {
 };
 
 /**
- *
- * @param {*} field
- * @param {str} neglect - default field
- * @returns {[str,number]|[str,number][]}
+ * @typedef {string|number} str
  */
 
-const parseField = (field, neglect) => {
-  let t = typeof field,
-      ents;
-  if (nullish.nullish(field)) return [neglect, enumPivotMode.COUNT];
+/**
+ *
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} field
+ * @param {number} level
+ * @returns {{key:str,to:number}|{key:str,to:number}[]}
+ */
 
-  if (t === enumDataTypes.OBJ) {
-    ents = Array.isArray(field) ? parseFields(field, neglect) : Object.entries(field);
-    if (ents.length === 0) return [neglect, enumPivotMode.COUNT];
-    if (ents.length === 1) return ents[0];
-    return ents;
+function parseField$1(field, level = 0) {
+  const {
+    key: defaultKey = '',
+    to: defaultTo = null
+  } = this !== null && this !== void 0 ? this : {};
+  const fieldSets = [];
+  if (nullish.nullish(field)) fieldSets.push({
+    key: defaultKey,
+    to: defaultTo
+  });else if (literal.isNumStr(field)) fieldSets.push({
+    key: field,
+    to: defaultTo
+  });else if (Array.isArray(field)) {
+    if (level > 0) fieldSets.push({
+      key: field[0],
+      to: field[1]
+    });else for (let f of field) fieldSets.push(...parseField$1.call(this, f, level + 1));
+  } else if (typeof field === enumDataTypes.OBJ) {
+    for (let [key, to] of Object.entries(field)) fieldSets.push({
+      key,
+      to
+    });
   }
-
-  if (t === enumDataTypes.STR || t === enumDataTypes.NUM) return [field, enumPivotMode.INCRE];
-  return [neglect, enumPivotMode.COUNT];
-};
-const parseFields = (fields, neglect) => {
-  let ents = [],
-      t;
-
-  for (let field of fields) if (nullish.nullish(field)) {
-    ents.push([neglect, enumPivotMode.COUNT]);
-  } else if (Array.isArray(field)) {
-    ents.push(field);
-  } else if ((t = typeof field) && (t === enumDataTypes.STR || t === enumDataTypes.NUM)) {
-    ents.push([field, enumPivotMode.INCRE]);
-  } else if (t === enumDataTypes.OBJ) {
-    vectorMerge.acquire(ents, Object.entries(field));
-  } else {
-    ents.push([neglect, enumPivotMode.COUNT]);
-  }
-
-  return ents;
-};
+  return fieldSets;
+}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -203,6 +228,6 @@ class TableSpec {
 
 exports.TableSpec = TableSpec;
 exports.parseCell = parseCell;
-exports.parseField = parseField;
+exports.parseField = parseField$1;
 exports.parseKey = parseKey;
 exports.parseKeyOnce = parseKeyOnce;

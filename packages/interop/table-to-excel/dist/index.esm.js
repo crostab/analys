@@ -24,6 +24,10 @@ Array.prototype.zip = function (another, zipper) {
 };
 
 /**
+ * @typedef {{head:*[],rows:*[][]}} TableObject
+ */
+
+/**
  *
  * @param {Object} o
  * @returns {TableObject}

@@ -2,92 +2,56 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var pivot = require('@analys/pivot');
-var cubic = require('@analys/cubic');
 var crostab = require('@analys/crostab');
-var tableInit = require('@analys/table-init');
-var tableFilter = require('@analys/table-filter');
-var vectorMapper = require('@vect/vector-mapper');
+var cubic = require('@analys/cubic');
 var tablespec = require('@analys/tablespec');
-var tableFind = require('@analys/table-find');
-var matrix = require('@vect/matrix');
 
 /**
- *
- * @param {TableObject} table
- * @param {str} side
- * @param {str} banner
- * @param {CubeCell|CubeCell[]} [cell]
- * @param {Filter|Filter[]} [filter]
- * @param {function():number} formula - formula is valid only when cell is CubeCell array.
- * @returns {CrosTab}
+ * @typedef {string|number} str
+ * @typedef {{head:*[],rows:*[][]}} TableObject
  */
 
-const pivotDev = (table, {
-  side,
-  banner,
-  cell,
-  filter,
-  formula
-}) => {
-  if (filter) {
-    var _table;
-
-    table = tableFilter.tableFilter.call((_table = table, tableInit.slice(_table)), filter);
-  }
-
-  const {
-    head,
-    rows
-  } = table,
-        [x, y] = [head.indexOf(side), head.indexOf(banner)];
-  let pivotter;
-  const pivot$1 = Array.isArray(cell = tablespec.parseCell(cell, side)) ? (pivotter = true, cubic.Cubic.build(x, y, vectorMapper.mapper(cell, ({
-    field,
-    mode
-  }) => [head.indexOf(field), mode]))) : (pivotter = false, pivot.Pivot.build(x, y, head.indexOf(cell.field), cell.mode));
-  const crostab$1 = crostab.CrosTab.from(pivot$1.spread(rows).toObject());
-  if (pivotter && formula) crostab$1.map(ar => formula.apply(null, ar));
-  return crostab$1;
-};
-
 /**
- *
- * @param {*} table
- * @param {string|number} side
- * @param {string|number} banner
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} side
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} banner
  * @param {Object|*[]|string|number} [field]
  * @param {Object<string|number,function(*?):boolean>} [filter]
  * @param {function():number} [formula] - formula is valid only when cell is CubeCell array.
+ */
+
+/**
+ *
+ * @param {Table|TableObject} table
  * @returns {CrosTab}
  */
 
-const tablePivot = function ({
-  side,
-  banner,
-  field,
-  filter,
-  formula
-}) {
-  const table = tableInit.slice(this);
-
-  if (filter) {
-    tableFind.tableFind.call(table, filter);
-  }
-
+const tablePivot = function (table) {
+  const {
+    side,
+    banner,
+    field,
+    formula
+  } = this;
   const {
     head,
     rows
   } = table;
-  let cubic$1, sideMap, bannerMap;
-  [side, sideMap] = tablespec.parseKeyOnce(side);
-  [banner, bannerMap] = tablespec.parseKeyOnce(banner);
-  const crostabEngine = matrix.isMatrix(field = tablespec.parseField(field, side)) // fieldSet |> deco |> says['fieldSet']
-  ? (cubic$1 = true, new cubic.Cubic([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], field.map(([key, mode]) => [head.indexOf(key), mode]))) : (cubic$1 = false, new pivot.Pivot([head.indexOf(side), sideMap], [head.indexOf(banner), bannerMap], [head.indexOf(field[0]), field[1]]));
-  const crostab$1 = crostab.CrosTab.from(crostabEngine.record(rows).toObject());
-  if (cubic$1 && formula) crostab$1.map(vec => formula.apply(null, vec));
+
+  const parseConf = keyConf => tablespec.parseField(keyConf).map(({
+    key,
+    to
+  }) => ({
+    key: head.indexOf(key),
+    to
+  }));
+
+  const sideConf = parseConf(side),
+        bannerConf = parseConf(banner),
+        fieldConf = parseConf(field);
+  const pivotEngine = cubic.Cubic.build(sideConf, bannerConf, fieldConf);
+  const crostab$1 = crostab.CrosTab.from(pivotEngine.record(rows).toObject());
+  if (fieldConf.length > 1 && formula) crostab$1.map(vec => formula.apply(null, vec));
   return crostab$1;
 };
 
-exports.pivotDev = pivotDev;
 exports.tablePivot = tablePivot;

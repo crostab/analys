@@ -1,15 +1,16 @@
 import { init } from '@vect/vector-init'
 
-export const ampliCell = function (side, banner) { return this.m[arid.call(this, side)][acid.call(this, banner)] }
+
+export const ampliCell = function (side, banner) { return this.rows[arid.call(this, side)][acid.call(this, banner)] }
 
 export const arid = function (x) {
-  const ri = this.s.indexOf(x)
+  const ri = this.side.indexOf(x)
   if (ri >= 0) return ri
-  return this.m.push(init(this.b.length, this.n)), ri + this.s.push(x)
+  return this.rows.push(init(this.head.length, this.init)), ri + this.side.push(x)
 }
 export const acid = function (y) {
-  const ci = this.b.indexOf(y)
+  const ci = this.head.indexOf(y)
   if (ci >= 0) return ci
-  return this.m.forEach(r => r.push(this.n())), ci + this.b.push(y)
+  return this.rows.forEach(r => r.push(this.init())), ci + this.head.push(y)
 }
 

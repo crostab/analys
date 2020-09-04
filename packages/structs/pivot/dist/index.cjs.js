@@ -2,67 +2,89 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var dataGram = require('@analys/data-gram');
 var utilPivot = require('@analys/util-pivot');
+var vectorMapper = require('@vect/vector-mapper');
 
-const iterate = function (vec, fn, l) {
-  l = l || (vec === null || vec === void 0 ? void 0 : vec.length);
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
-  for (let i = 0; i < l; i++) fn.call(this, vec[i], i);
-};
+  return obj;
+}
 
 class Pivot {
   /**
    *
-   * @param x
-   * @param [xmap]
-   * @param y
-   * @param [ymap]
-   * @param z
-   * @param mode
-   * @param [filter]
+   * @param {{key:number, to:Function?}} side
+   * @param {{key:number, to:Function?}} head
+   * @param {{key:number, to:number}} field
    */
-  constructor([x, xmap], [y, ymap], [z, mode], filter) {
-    this.data = {
-      s: [],
-      b: [],
-      m: [],
-      n: utilPivot.modeToInit(mode)
+  constructor(side, head, field) {
+    _defineProperty(this, "side", {});
+
+    _defineProperty(this, "head", {});
+
+    _defineProperty(this, "field", {});
+
+    _defineProperty(this, "accum", void 0);
+
+    _defineProperty(this, "data", void 0);
+
+    this.side = side;
+    this.head = head;
+    this.field = {
+      key: field.key,
+      accum: utilPivot.modeToTally(field.to)
     };
-    this.arid = utilPivot.arid.bind(this.data);
-    this.acid = utilPivot.acid.bind(this.data);
-    this.x = x;
-    this.xm = xmap;
-    this.y = y;
-    this.ym = ymap;
-    this.z = z;
-    this.tally = utilPivot.modeToTally(mode);
-    this.filter = filter;
+    this.data = dataGram.DataGram.build(utilPivot.modeToInit(field.to));
   }
 
-  static build([x, xmap], [y, ymap], [z, mode], filter) {
-    return new Pivot([x, xmap], [y, ymap], [z, mode], filter);
+  static build(sideDef, bannerDef, fieldDef) {
+    return new Pivot(sideDef, bannerDef, fieldDef);
   }
 
   record(samples) {
-    return iterate(samples, this.note.bind(this)), this;
-  }
-
-  note(sample) {
-    const sk = this.xm ? this.xm(sample[this.x]) : sample[this.x];
-    const bk = this.ym ? this.ym(sample[this.y]) : sample[this.y];
-    const row = this.data.m[this.arid(sk)],
-          ci = this.acid(bk);
-    row[ci] = this.tally(row[ci], sample[this.z]);
+    vectorMapper.iterate(samples, note.bind(this));
+    return this;
   }
 
   toObject() {
+    const {
+      side,
+      head,
+      rows
+    } = this.data;
     return {
-      side: this.data.s,
-      head: this.data.b,
-      rows: this.data.m
+      side,
+      head,
+      rows
     };
   }
 
 }
+
+const note = function (sample) {
+  const {
+    data,
+    side,
+    head,
+    field
+  } = this;
+  const s = side.to ? side.to(sample[side.key]) : sample[side.key];
+  const b = head.to ? head.to(sample[head.key]) : sample[head.key];
+  const v = sample[field.key];
+  const r = data.rows[data.indexSide(s)],
+        j = data.indexHead(b);
+  return r[j] = field.accum(r[j], v); // return data.mutateCell(s, b, x => conf.accum(x, sample[this.z]))
+};
 
 exports.Pivot = Pivot;

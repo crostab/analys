@@ -1,36 +1,27 @@
-import { COUNT, INCRE }  from '@analys/enum-pivot-mode'
-import { NUM, OBJ, STR } from '@typen/enum-data-types'
-import { nullish }       from '@typen/nullish'
-import { acquire }      from '@vect/vector-merge'
+import { OBJ }      from '@typen/enum-data-types'
+import { isNumStr } from '@typen/literal'
+import { nullish }  from '@typen/nullish'
+
+/**
+ * @typedef {string|number} str
+ */
 
 /**
  *
- * @param {*} field
- * @param {str} neglect - default field
- * @returns {[str,number]|[str,number][]}
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} field
+ * @param {number} level
+ * @returns {{key:str,to:number}|{key:str,to:number}[]}
  */
-export const parseField = (field, neglect) => {
-  let t = typeof field, ents
-  if (nullish(field)) return [neglect, COUNT]
-  if (t === OBJ) {
-    ents = Array.isArray(field)
-      ? parseFields(field, neglect)
-      : Object.entries(field)
-    if (ents.length === 0) return [neglect, COUNT]
-    if (ents.length === 1) return ents[0]
-    return ents
+export function parseField(field, level = 0) {
+  const { key: defaultKey = '', to: defaultTo = null } = this ?? {}
+  const fieldSets = []
+  if (nullish(field)) fieldSets.push({ key: defaultKey, to: defaultTo })
+  else if (isNumStr(field)) fieldSets.push({ key: field, to: defaultTo })
+  else if (Array.isArray(field)) {
+    if (level > 0) fieldSets.push({ key: field[0], to: field[1] })
+    else for (let f of field) fieldSets.push(...parseField.call(this, f, level + 1))
+  } else if (typeof field === OBJ) {
+    for (let [key, to] of Object.entries(field)) fieldSets.push({ key, to })
   }
-  if (t === STR || t === NUM) return [field, INCRE]
-  return [neglect, COUNT]
-}
-
-export const parseFields = (fields, neglect) => {
-  let ents = [], t
-  for (let field of fields)
-    if (nullish(field)) { ents.push([neglect, COUNT]) }
-    else if (Array.isArray(field)) { ents.push(field) }
-    else if ((t = typeof field) && (t === STR || t === NUM)) { ents.push([field, INCRE]) }
-    else if (t === OBJ) { acquire(ents, Object.entries(field)) }
-    else { ents.push([neglect, COUNT]) }
-  return ents
+  return fieldSets
 }

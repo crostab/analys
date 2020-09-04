@@ -483,17 +483,23 @@ class Table {
   }
   /**
    * @param {Object} options
-   * @param {*} options.side
-   * @param {*} options.banner
-   * @param {*} [options.field]
-   * @param {Object<*,function(*?):boolean>} [options.filter]
+   * @param {str|str[]|Object<str,Function>|[string,Function][]} options.side
+   * @param {str|str[]|Object<str,Function>|[string,Function][]} options.banner
+   * @param {Object|*[]|string|number} [options.field]
+   * @param {Object<string|number,function(*?):boolean>} [options.filter]
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
    * @returns {CrosTab}
    */
 
 
   crosTab(options = {}) {
-    return tablePivot.tablePivot.call(this, options);
+    const table = tableInit.slice(this);
+
+    if (options.filter) {
+      tableFind.tableFind.call(table, options.filter);
+    }
+
+    return tablePivot.tablePivot.call(options, this);
   }
 
   inferTypes({
@@ -545,5 +551,12 @@ class Table {
   }
 
 }
+/**
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} side
+ * @param {str|str[]|Object<str,Function>|[string,Function][]} banner
+ * @param {Object|*[]|string|number} [field]
+ * @param {Object<string|number,function(*?):boolean>} [filter]
+ * @param {function(...*):number} [formula] - formula is valid only when cell is CubeCell array.
+ */
 
 exports.Table = Table;

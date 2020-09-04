@@ -15,12 +15,12 @@ const dutiesBeta = {
 }
 
 let cubic = new Cubic(
-  [0,],
-  [1,],
+  [{ key: 0, to: null }],
+  [{ key: 1, to: null }],
   [
-    [2, INCRE],
-    [3, ACCUM],
-    [4, COUNT]
+    { key: 2, to: INCRE },
+    { key: 3, to: ACCUM },
+    { key: 4, to: COUNT }
   ]
 )
 

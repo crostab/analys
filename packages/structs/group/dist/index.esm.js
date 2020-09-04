@@ -37,12 +37,12 @@ class Group {
   /**
    *
    * @param key
-   * @param [pick]
+   * @param [to]
    * @param fields
    * @param [filter]
    * @param [aliases]
    */
-  constructor([key, pick], fields, filter, aliases) {
+  constructor([key, to], fields, filter, aliases) {
     _defineProperty(this, "key", void 0);
 
     _defineProperty(this, "data", {});
@@ -51,14 +51,14 @@ class Group {
 
     _defineProperty(this, "init", void 0);
 
-    _defineProperty(this, "pick", void 0);
+    _defineProperty(this, "to", void 0);
 
     _defineProperty(this, "filter", void 0);
 
     _defineProperty(this, "aliases", void 0);
 
     this.key = key;
-    this.pick = pick;
+    this.to = to;
     this.fields = fields.map(([index, mode]) => [index, modeToTally(mode)]);
     const inits = fields.map(([, mode]) => modeToInit(mode)),
           depth = inits.length;
@@ -82,8 +82,8 @@ class Group {
   }
 
   note(sample) {
-    const key = this.pick ? this.pick(sample[this.key]) : sample[this.key];
-    mutazip(key in this.data ? this.data[key] : this.data[key] = this.init(), this.fields, (target, [index, tally]) => tally(target, sample[index]));
+    const key = this.to ? this.to(sample[this.key]) : sample[this.key];
+    mutazip(key in this.data ? this.data[key] : this.data[key] = this.init(), this.fields, (target, [index, accum]) => accum(target, sample[index]));
   }
 
   toObject() {

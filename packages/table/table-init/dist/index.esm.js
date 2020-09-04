@@ -46,6 +46,10 @@ const clone = ({
 });
 
 /**
+ * @typedef {{head:*[],rows:*[][]}} TableObject
+ */
+
+/**
  *
  * @param {Object} o
  * @returns {TableObject}

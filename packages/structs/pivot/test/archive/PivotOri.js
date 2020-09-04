@@ -25,14 +25,14 @@ export class PivotOri {
 
   note (sample) { this.updater(sample[this.x], sample[this.y], sample[this.z]) }
 
-  toObject () { return { side: this.data.s, head: this.data.b, rows: this.data.m } }
+  toObject () { return { side: this.data.side, head: this.data.head, rows: this.data.rows } }
 }
 
 export const Updater = function (data, mode) {
   const ri = arid.bind(data), ci = acid.bind(data)
-  if (mode === MERGE) return function (x, y, value) { return tallyMerge(data.m[ri(this.sidePick(x))][ci(this.headPick(y))], value) }
-  if (mode === ACCUM) return function (x, y, value) { return tallyIncre(data.m[ri(this.sidePick(x))][ci(this.headPick(y))], value) }
-  if (mode === INCRE) return function (x, y, value) { return data.m[ri(this.sidePick(x))][ci(this.headPick(y))] += value }
-  if (mode === COUNT) return function (x, y) { return data.m[ri(this.sidePick(x))][ci(this.headPick(y))]++ }
+  if (mode === MERGE) return function (x, y, value) { return tallyMerge(data.rows[ri(this.sidePick(x))][ci(this.headPick(y))], value) }
+  if (mode === ACCUM) return function (x, y, value) { return tallyIncre(data.rows[ri(this.sidePick(x))][ci(this.headPick(y))], value) }
+  if (mode === INCRE) return function (x, y, value) { return data.rows[ri(this.sidePick(x))][ci(this.headPick(y))] += value }
+  if (mode === COUNT) return function (x, y) { return data.rows[ri(this.sidePick(x))][ci(this.headPick(y))]++ }
   return ampliCell.bind(data)
 }

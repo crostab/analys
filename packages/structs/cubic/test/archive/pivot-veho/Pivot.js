@@ -20,21 +20,21 @@ export class PivotVeho {
   }
 
   reboot () {
-    this.s = []
-    this.b = []
+    this.side = []
+    this.head = []
     this.mx = []
   }
 
   clearMatrix (mode) {
-    this.mx = Mx.ini(this.s?.length, this.b?.length, nullifierLauncher(mode))
+    this.mx = Mx.ini(this.side?.length, this.head?.length, nullifierLauncher(mode))
   }
 
   x (x) {
-    return this.s.indexOf(x)
+    return this.side.indexOf(x)
   }
 
   y (y) {
-    return this.b.indexOf(y)
+    return this.head.indexOf(y)
   }
 
   /**
@@ -64,13 +64,13 @@ export class PivotVeho {
   }
 
   xAmp (x, nf) {
-    let i = this.s.indexOf(x)
+    let i = this.side.indexOf(x)
     if (i < 0) i += this.rAmp(x, nf)
     return i
   }
 
   yAmp (y, nf) {
-    let j = this.b.indexOf(y)
+    let j = this.head.indexOf(y)
     if (j < 0) j += this.cAmp(y, nf)
     return j
   }
@@ -186,6 +186,6 @@ export class PivotVeho {
         return vec
       })
     }
-    return { side: this.s, banner: this.b, matrix: this.mx }
+    return { side: this.side, banner: this.head, matrix: this.mx }
   }
 }

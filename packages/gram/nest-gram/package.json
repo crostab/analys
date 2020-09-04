@@ -1,0 +1,38 @@
+{
+  "name": "@analys/nest-gram",
+  "version": "0.3.9",
+  "description": "A debugging tool",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/nest-gram.test.js"
+  },
+  "dependencies": {
+    "@vect/vector-init": "^0.2.9",
+    "@analys/data-gram": "^0.3.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/vect.git"
+  },
+  "keywords": [
+    "array",
+    "vector",
+    "matrix",
+    "object"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/vect"
+  },
+  "homepage": "https://github.com/hoyeungw/vect#readme",
+  "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
+}

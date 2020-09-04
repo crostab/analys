@@ -17,7 +17,7 @@
   "dependencies": {
     "@analys/table": "^0.3.9",
     "@aryth/math": "^0.2.14",
-    "@typen/num-strict": "^0.1.5",
+    "@typen/num-strict": "^0.1.7",
     "@vect/vector-differentiator": "^0.2.9",
     "@vect/vector-mapper": "^0.2.9"
   },
