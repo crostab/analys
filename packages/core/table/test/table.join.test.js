@@ -1,8 +1,9 @@
-import { INTERSECT }       from '@analys/enum-join-modes'
-import { Table }           from '@analys/table'
-import { decoTable, says } from '@spare/logger'
+import { INTERSECT, UNION } from '@analys/enum-join-modes'
+import { Table }            from '@analys/table'
+import { deco }             from '@spare/deco'
+import { decoTable, says }  from '@spare/logger'
 
-function test () {
+function test() {
   const balance = Table.from({
     head: ['date', 'symbol', 'ast', 'liab', 'eqt'],
     rows: [
@@ -31,8 +32,14 @@ function test () {
   balance |> decoTable |> says['balance']
   income |> decoTable |> says['income']
   balance.join(income, ['date', 'symbol'], INTERSECT) |> decoTable |> says['joined']
-
   '' |> console.log
+
+  const empty = Table.from({
+    head: ['date', 'symbol'],
+    rows: []
+  })
+  empty.join(income, ['date', 'symbol'], UNION) |> decoTable |> says['empty join income']
+
   // 'Original balance table' |> console.log
   // balance |> TableX.brief |> console.log
 }

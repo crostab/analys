@@ -152,29 +152,32 @@ const joinRight = (L, R, n) => {
  * @param {str[]} fields
  * @param {number} [joinType=-1] - union:0,left:1,right:2,intersect:-1
  * @param {*} [fillEmpty]
- * @returns {TableObject}
+ * @returns {Table|TableObject}
  */
 
 function tableJoin(tableL, tableR, fields, joinType = enumJoinModes.INTERSECT, fillEmpty = null) {
-  let joiner = Joiner(joinType),
-      depth = fields.length,
-      indexesL = fields.map(x => tableL.head.indexOf(x)),
-      ascL = indexesL.slice().sort(comparer.NUM_ASC),
-      indexesR = fields.map(x => tableR.head.indexOf(x)),
-      ascR = indexesR.slice().sort(comparer.NUM_ASC),
-      toKVL = selectKeyedVector.bind({
+  var _tableL$head, _tableL$rows;
+
+  if (!(tableL === null || tableL === void 0 ? void 0 : (_tableL$head = tableL.head) === null || _tableL$head === void 0 ? void 0 : _tableL$head.length) || !(tableL === null || tableL === void 0 ? void 0 : (_tableL$rows = tableL.rows) === null || _tableL$rows === void 0 ? void 0 : _tableL$rows.length)) return tableR;
+  const joiner = Joiner(joinType),
+        depth = fields.length,
+        indexesL = fields.map(x => tableL.head.indexOf(x)),
+        ascL = indexesL.slice().sort(comparer.NUM_ASC),
+        indexesR = fields.map(x => tableR.head.indexOf(x)),
+        ascR = indexesR.slice().sort(comparer.NUM_ASC),
+        toKVL = selectKeyedVector.bind({
     indexes: indexesL,
     asc: ascL,
     depth
   }),
-      toKVR = selectKeyedVector.bind({
+        toKVR = selectKeyedVector.bind({
     indexes: indexesR,
     asc: ascR,
     depth
   });
   const head = vectorSelect.select(tableL.head, indexesL).concat(vectorUpdate.splices(tableL.head.slice(), ascL), vectorUpdate.splices(tableR.head.slice(), ascR));
-  const L = tableL.rows.map(row => toKVL(row.slice())),
-        R = tableR.rows.map(row => toKVR(row.slice()));
+  const L = tableL.rows.map(row => toKVL(row === null || row === void 0 ? void 0 : row.slice())),
+        R = tableR.rows.map(row => toKVR(row === null || row === void 0 ? void 0 : row.slice()));
   const rows = joiner(L, R, fillEmpty);
   return {
     head,
