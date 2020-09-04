@@ -1,0 +1,6 @@
+222 error Error: Command failed: git push --follow-tags --no-verify --atomic origin master
+222 error remote: Invalid username or password.
+222 error fatal: Authentication failed for 'https://github.com/hoyeungw/analys.git/'
+222 error
+222 error     at makeError (/home/hazen/banyan/analys/node_modules/execa/index.js:174:9)
+222 error     at /home/hazen/banyan/analys/node_modules/execa/index.js:278:16
