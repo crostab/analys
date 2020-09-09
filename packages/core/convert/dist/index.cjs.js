@@ -40,7 +40,7 @@ function samplesToTable(samples, fields) {
 
 const voidTable = () => ({
   head: [],
-  rows: [[]]
+  rows: []
 });
 
 const lookupKeyHeadPairs = function (fields) {

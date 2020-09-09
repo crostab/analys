@@ -40,7 +40,7 @@ const joinIntersect = (L, R) => {
  */
 const joinUnion = (L, R, n) => {
   const leftL = L.length, rows = Array(leftL), joinedIndexes = new Set(),
-    wL = L[0].vector.length, wR = R[0].vector.length
+    wL = L[0]?.vector?.length, wR = R[0]?.vector?.length
   iterate(L,
     ({ key, vector }, i) => {
       let j = lookupKeyedVectorIndex.call(R, key)
@@ -64,7 +64,7 @@ const joinUnion = (L, R, n) => {
  * @returns {*[][]}
  */
 const joinLeft = (L, R, n) => {
-  let rows = Array(L.length), w = R[0].vector.length, another
+  let rows = Array(L.length), w = R[0]?.vector?.length, another
   iterate(L,
     ({ key, vector }, i) =>
       rows[i] = (another = lookupKeyedVector.call(R, key))
@@ -81,7 +81,7 @@ const joinLeft = (L, R, n) => {
  * @returns {*[][]}
  */
 const joinRight = (L, R, n) => {
-  let rows = Array(R.length), w = L[0].vector.length, another
+  let rows = Array(R.length), w = L[0]?.vector?.length, another
   iterate(R,
     ({ key, vector }, i) =>
       rows[i] = (another = lookupKeyedVector.call(L, key))

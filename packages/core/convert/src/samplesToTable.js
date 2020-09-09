@@ -7,7 +7,7 @@ import { iterate, mapper } from '@vect/vector-mapper'
  * @param {(str|[str,str])[]} [fields]
  * @returns {TableObject}
  */
-export function samplesToTable (samples, fields) {
+export function samplesToTable(samples, fields) {
   let h, w
   if (!(h = samples?.length)) return voidTable()
   if (!fields?.length) return samplesToTableDirectly(samples)
@@ -17,7 +17,7 @@ export function samplesToTable (samples, fields) {
   return { head, rows }
 }
 
-const voidTable = () => ({ head: [], rows: [[]] })
+const voidTable = () => ({ head: [], rows: [] })
 
 export const lookupKeyHeadPairs = function (fields) {
   const sample = this, keyHeadPairs = []
@@ -39,7 +39,7 @@ export const lookupKeyHeadPair = function (field) {
   return current in sample ? [current, projected] : void 0
 }
 
-export function samplesToTableDirectly (samples) {
+export function samplesToTableDirectly(samples) {
   const h = samples?.length
   let head, rows = Array(h)
   if (h) {

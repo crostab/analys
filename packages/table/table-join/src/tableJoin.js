@@ -3,7 +3,7 @@ import { NUM_ASC }           from '@aryth/comparer'
 import { select }            from '@vect/vector-select'
 import { splices }           from '@vect/vector-update'
 import { selectKeyedVector } from '../utils/selectKeyedVector'
-import { Joiner }            from './MatrixJoiner'
+import { Joiner }            from './Joiner'
 
 /**
  *
@@ -22,6 +22,7 @@ export function tableJoin(
   fillEmpty = null
 ) {
   if (!tableL?.head?.length || !tableL?.rows?.length) return tableR
+  if (!tableR?.head?.length || !tableR?.rows?.length) return tableL
   const
     joiner = Joiner(joinType), depth = fields.length,
     indexesL = fields.map(x => tableL.head.indexOf(x)), ascL = indexesL.slice().sort(NUM_ASC),
