@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-select",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,8 +15,8 @@
     "test": "node -r @babel/register test/table.select.test.js"
   },
   "dependencies": {
-    "@analys/keyed-columns": "^0.4.1",
-    "@analys/table-init": "^0.4.1",
+    "@analys/keyed-columns": "^0.4.2",
+    "@analys/table-init": "^0.4.2",
     "@aryth/rand": "^0.2.14",
     "@vect/vector-select": "^0.2.9"
   },
