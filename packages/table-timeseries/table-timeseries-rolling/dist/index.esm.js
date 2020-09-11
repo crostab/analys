@@ -25,7 +25,7 @@ const timeseriesRolling = function ({
 };
 
 const columnSum = (rows, y, h) => {
-  h = h || rows.ht;
+  h = h || rows.height;
   let sum = 0;
 
   for (let i = 0; i < h; i++) sum += rows[i][y];

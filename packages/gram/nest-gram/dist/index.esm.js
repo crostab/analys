@@ -2,7 +2,7 @@ import { init } from '@vect/vector-init';
 import { DataGram } from '@analys/data-gram';
 
 const indexOfWords = (wordsList, words) => {
-  return wordsList.findIndex(ve => ve.every((wd, i) => wd === words[i]));
+  return wordsList.findIndex(ve => ve.every((width, i) => width === words[i]));
 };
 
 class NestGram extends DataGram {

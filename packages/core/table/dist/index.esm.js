@@ -103,6 +103,18 @@ class Table {
     return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
   }
 
+  get height() {
+    var _this$rows2;
+
+    return (_this$rows2 = this.rows) === null || _this$rows2 === void 0 ? void 0 : _this$rows2.length;
+  }
+
+  get width() {
+    var _this$head2;
+
+    return (_this$head2 = this.head) === null || _this$head2 === void 0 ? void 0 : _this$head2.length;
+  }
+
   get columns() {
     return transpose(this.rows);
   }
@@ -125,15 +137,15 @@ class Table {
   }
 
   column(field) {
-    return column(this.rows, this.coin(field), this.ht);
+    return column(this.rows, this.coin(field), this.height);
   }
 
   setColumn(field, column) {
-    return mutate(this.rows, this.coin(field), (_, i) => column[i], this.ht), this;
+    return mutate(this.rows, this.coin(field), (_, i) => column[i], this.height), this;
   }
 
   mutateColumn(field, fn) {
-    return mutate(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this;
+    return mutate(this.rows, this.coin(field), (x, i) => fn(x, i), this.height), this;
   }
 
   pushRow(row) {
@@ -190,7 +202,7 @@ class Table {
     mutate = true
   } = {}) {
     return this.boot({
-      rows: mapper$1(this.rows, fn, this.ht, this.wd)
+      rows: mapper$1(this.rows, fn, this.height, this.width)
     }, mutate);
   }
 
@@ -200,10 +212,10 @@ class Table {
   } = {}) {
     var _fields;
 
-    if (!fields && !exclusive) return mutate$2(this.rows, fn, this.ht, this.wd), this;
+    if (!fields && !exclusive) return mutate$2(this.rows, fn, this.height, this.width), this;
     fields = (_fields = fields) !== null && _fields !== void 0 ? _fields : this.head;
     fields = exclusive ? difference(fields, exclusive) : fields;
-    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this;
+    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.height), this;
   }
 
   lookupOne(valueToFind, key, field, cached = true) {
@@ -368,9 +380,9 @@ class Table {
     sort = false
   } = {}) {
     return count ? DistinctCount(this.coin(field))(this.rows, {
-      l: this.ht,
+      l: this.height,
       sort
-    }) : Distinct(this.coin(field))(this.rows, this.ht);
+    }) : Distinct(this.coin(field))(this.rows, this.height);
   }
   /**
    *

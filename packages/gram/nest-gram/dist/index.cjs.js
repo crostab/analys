@@ -6,7 +6,7 @@ var vectorInit = require('@vect/vector-init');
 var dataGram = require('@analys/data-gram');
 
 const indexOfWords = (wordsList, words) => {
-  return wordsList.findIndex(ve => ve.every((wd, i) => wd === words[i]));
+  return wordsList.findIndex(ve => ve.every((width, i) => width === words[i]));
 };
 
 class NestGram extends dataGram.DataGram {

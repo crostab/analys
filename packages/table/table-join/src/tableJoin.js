@@ -22,7 +22,7 @@ export function tableJoin(
   fillEmpty = null
 ) {
   if (!tableL?.head?.length || !tableL?.rows?.length) return tableR
-  if (!tableR?.head?.length || !tableR?.rows?.length) return tableL
+  if (!tableR?.head?.length || !tableR?.rows?.alength) return tableL
   const
     joiner = Joiner(joinType), depth = fields.length,
     indexesL = fields.map(x => tableL.head.indexOf(x)), ascL = indexesL.slice().sort(NUM_ASC),

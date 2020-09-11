@@ -62,6 +62,8 @@ export class Table {
   get size() { return size(this.rows) }
   get ht() { return this.rows?.length }
   get wd() { return this.head?.length }
+  get height() { return this.rows?.length }
+  get width() { return this.head?.length }
   get columns() { return transpose(this.rows) }
   cell(x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
   coin(field) { return this.head.indexOf(field) }
@@ -70,9 +72,9 @@ export class Table {
     const vector = this.rows.find(row => row[this.coin(field)] === value)
     return vector && objectify ? wind(this.head, vector) : vector
   }
-  column(field) { return column(this.rows, this.coin(field), this.ht) }
-  setColumn(field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.ht), this }
-  mutateColumn(field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.ht), this }
+  column(field) { return column(this.rows, this.coin(field), this.height) }
+  setColumn(field, column) { return mutateColumn(this.rows, this.coin(field), (_, i) => column[i], this.height), this }
+  mutateColumn(field, fn) { return mutateColumn(this.rows, this.coin(field), (x, i) => fn(x, i), this.height), this }
 
   pushRow(row) { return this.rows.push(row), this }
   unshiftRow(row) { return this.rows.unshift(row), this }
@@ -90,12 +92,12 @@ export class Table {
 
   mapHead(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
   mutateHead(fn) { return mutateVector(this.head, fn), this }
-  map(fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate) }
+  map(fn, { mutate = true } = {}) { return this.boot({ rows: mapperMatrix(this.rows, fn, this.height, this.width) }, mutate) }
   mutate(fn, { fields, exclusive } = {}) {
-    if (!fields && !exclusive) return mutateMatrix(this.rows, fn, this.ht, this.wd), this
+    if (!fields && !exclusive) return mutateMatrix(this.rows, fn, this.height, this.width), this
     fields = fields ?? this.head
     fields = exclusive ? difference(fields, exclusive) : fields
-    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.ht), this
+    return selectMutate(this.rows, this.columnIndexes(fields), fn, this.height), this
   }
 
   lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
@@ -198,8 +200,8 @@ export class Table {
    */
   distinctOnColumn(field, { count = false, sort = false } = {}) {
     return count
-      ? DistinctCountOnColumn(this.coin(field))(this.rows, { l: this.ht, sort })
-      : DistinctOnColumn(this.coin(field))(this.rows, this.ht)
+      ? DistinctCountOnColumn(this.coin(field))(this.rows, { l: this.height, sort })
+      : DistinctOnColumn(this.coin(field))(this.rows, this.height)
   }
 
   /**

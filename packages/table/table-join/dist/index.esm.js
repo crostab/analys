@@ -161,7 +161,7 @@ function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = nul
   var _tableL$head, _tableL$rows, _tableR$head, _tableR$rows;
 
   if (!(tableL === null || tableL === void 0 ? void 0 : (_tableL$head = tableL.head) === null || _tableL$head === void 0 ? void 0 : _tableL$head.length) || !(tableL === null || tableL === void 0 ? void 0 : (_tableL$rows = tableL.rows) === null || _tableL$rows === void 0 ? void 0 : _tableL$rows.length)) return tableR;
-  if (!(tableR === null || tableR === void 0 ? void 0 : (_tableR$head = tableR.head) === null || _tableR$head === void 0 ? void 0 : _tableR$head.length) || !(tableR === null || tableR === void 0 ? void 0 : (_tableR$rows = tableR.rows) === null || _tableR$rows === void 0 ? void 0 : _tableR$rows.length)) return tableL;
+  if (!(tableR === null || tableR === void 0 ? void 0 : (_tableR$head = tableR.head) === null || _tableR$head === void 0 ? void 0 : _tableR$head.length) || !(tableR === null || tableR === void 0 ? void 0 : (_tableR$rows = tableR.rows) === null || _tableR$rows === void 0 ? void 0 : _tableR$rows.alength)) return tableL;
   const joiner = Joiner(joinType),
         depth = fields.length,
         indexesL = fields.map(x => tableL.head.indexOf(x)),

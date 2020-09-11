@@ -15,14 +15,14 @@ export const differentialOri = function (table, { dateLabel, excluded }) {
 }
 
 export const differentialBySide = function (side) {
-  const table = this, { ht, wd, rows } = table
+  const table = this, { height, width, rows } = table
   let i = 0, next, ndate, curr = rows[i], cdate = side[i] |> dashToYmd
-  while (++i < ht) {
+  while (++i < height) {
     next = rows[i], ndate = side[i] |> dashToYmd
     if (!isContinued(cdate, ndate))
       throw (new Error(`[${this.title}] (date discontinued by quarter) [curr] (${cdate}) [prev] (${ndate})`))
     if (equalYear(cdate, ndate))
-      mutazip(curr, next, (c, n) => isNumeric(c) && isNumeric(n) ? roundD2(c - n) : null, wd)
+      mutazip(curr, next, (c, n) => isNumeric(c) && isNumeric(n) ? roundD2(c - n) : null, width)
     curr = next, cdate = ndate
   }
   return table

@@ -8,7 +8,7 @@ import { mapper as mapperColumns } from '@vect/columns-mapper'
  */
 function changeType (field, typeName) {
   const y = this.coin(field), parser = parserSelector(typeName)
-  if (parser) mutateColumn(this.rows, y, parser, this.ht), this.types[y] = typeName
+  if (parser) mutateColumn(this.rows, y, parser, this.height), this.types[y] = typeName
   return this
 }
 

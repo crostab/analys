@@ -8,8 +8,8 @@ let crostab = CrosTab.from(Foba[TITLE])
 crostab |> decoCrostab |> says[TITLE + ' original']
 
 crostab.size |> says.size
-crostab.ht |> says.ht
-crostab.wd |> says.wd
+crostab.height |> says.height
+crostab.width |> says.width
 
 const sideLabel = 2018 // '2018'
 const headLabel = 'KOR'

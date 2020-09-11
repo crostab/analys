@@ -102,26 +102,26 @@ export class CrosTab {
 
   /** @returns {*[][]} */
   get columns() { return transpose(this.rows) }
-  get size() { return [this.ht, this.wd] }
-  get ht() { return this.side?.length }
-  get wd() { return this.head?.length }
+  get size() { return [this.height, this.width] }
+  get height() { return this.side?.length }
+  get width() { return this.head?.length }
   roin(r) { return this.side.indexOf(r) }
   coin(c) { return this.head.indexOf(c) }
   cell(r, c) { return this.element(this.roin(r), this.coin(c)) }
   element(x, y) { return x in this.rows ? this.rows[x][y] : undefined }
   coordinate(r, c) { return { x: this.roin(r), y: this.coin(c) } }
   row(r) { return this.rows[this.roin(r)] }
-  column(c) { return column(this.rows, this.coin(c), this.ht) }
+  column(c) { return column(this.rows, this.coin(c), this.height) }
   transpose(title, { mutate = true } = {}) {
     return this.boot({ side: this.head, head: this.side, rows: this.columns, title }, mutate)
   }
   setRow(r, row) { return this.rows[this.roin(r)] = row, this }
-  setRowBy(r, fn) { return mutate(this.row(r), fn, this.wd), this }
-  setColumn(c, column) { return mutateColumn(this.rows, this.coin(c), (_, i) => column[i], this.ht), this }
-  setColumnBy(c, fn) { return mutateColumn(this.rows, this.coin(c), fn, this.ht), this }
+  setRowBy(r, fn) { return mutate(this.row(r), fn, this.width), this }
+  setColumn(c, column) { return mutateColumn(this.rows, this.coin(c), (_, i) => column[i], this.height), this }
+  setColumnBy(c, fn) { return mutateColumn(this.rows, this.coin(c), fn, this.height), this }
 
   map(fn, { mutate = true } = {}) {
-    return this.boot({ rows: mapperMatrix(this.rows, fn, this.ht, this.wd) }, mutate)
+    return this.boot({ rows: mapperMatrix(this.rows, fn, this.height, this.width) }, mutate)
   }
   mapSide(fn, { mutate = true } = {}) { return this.boot({ side: mapper(this.side, fn) }, mutate) }
   mapBanner(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }

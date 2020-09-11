@@ -124,16 +124,16 @@ class CrosTab {
   }
 
   get size() {
-    return [this.ht, this.wd];
+    return [this.height, this.width];
   }
 
-  get ht() {
+  get height() {
     var _this$side;
 
     return (_this$side = this.side) === null || _this$side === void 0 ? void 0 : _this$side.length;
   }
 
-  get wd() {
+  get width() {
     var _this$head;
 
     return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
@@ -167,7 +167,7 @@ class CrosTab {
   }
 
   column(c) {
-    return column(this.rows, this.coin(c), this.ht);
+    return column(this.rows, this.coin(c), this.height);
   }
 
   transpose(title, {
@@ -186,22 +186,22 @@ class CrosTab {
   }
 
   setRowBy(r, fn) {
-    return mutate(this.row(r), fn, this.wd), this;
+    return mutate(this.row(r), fn, this.width), this;
   }
 
   setColumn(c, column) {
-    return mutate$1(this.rows, this.coin(c), (_, i) => column[i], this.ht), this;
+    return mutate$1(this.rows, this.coin(c), (_, i) => column[i], this.height), this;
   }
 
   setColumnBy(c, fn) {
-    return mutate$1(this.rows, this.coin(c), fn, this.ht), this;
+    return mutate$1(this.rows, this.coin(c), fn, this.height), this;
   }
 
   map(fn, {
     mutate = true
   } = {}) {
     return this.boot({
-      rows: mapper(this.rows, fn, this.ht, this.wd)
+      rows: mapper(this.rows, fn, this.height, this.width)
     }, mutate);
   }
 
