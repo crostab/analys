@@ -1,6 +1,6 @@
 {
   "name": "@analys/util-keyed-vectors",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A debugging tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
     "test": "node -r @babel/register test/util-keyed-vectors.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.4.3",
+    "@analys/enum-pivot-mode": "^0.4.4",
     "@vect/vector-init": "^0.2.9",
     "@vect/vector-mapper": "^0.2.9",
     "@vect/vector-zipper": "^0.2.9"
