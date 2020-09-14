@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-lookup",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A cross-table-lookup analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,13 +15,13 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-lookups": "^0.4.4",
-    "@analys/table-index": "^0.4.4",
-    "@analys/convert": "^0.4.4",
+    "@analys/convert": "^0.4.5",
+    "@analys/enum-lookups": "^0.4.5",
+    "@analys/table-index": "^0.4.5",
+    "@typen/nullish": "^0.1.9",
     "@vect/column-getter": "^0.2.9",
     "@vect/entries-init": "^0.2.9",
-    "@vect/object-init": "^0.2.9",
-    "@typen/nullish": "^0.1.9"
+    "@vect/object-init": "^0.2.9"
   },
   "repository": {
     "type": "git",
