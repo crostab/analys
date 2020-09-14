@@ -1,4 +1,4 @@
-# @analys/keyed-columns
+# @analys/tabular
 
 [![npm version][badge-npm-version]][url-npm]
 [![npm download monthly][badge-npm-download-monthly]][url-npm]
@@ -10,18 +10,18 @@
 [![github commit total][badge-github-commit-count]][url-github]
 
 [//]: <> (Shields)
-[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/keyed-columns
-[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/keyed-columns
-[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/keyed-columns
-[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/keyed-columns
-[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/keyed-columns
-[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/keyed-columns
+[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/tabular
+[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/tabular
+[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/tabular
+[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/tabular
+[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/tabular
+[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/tabular
 [badge-github-last-commit]: https://flat.badgen.net/github/last-commit/hoyeungw/analys
 [badge-github-commit-count]: https://flat.badgen.net/github/commits/hoyeungw/analys
 
 [//]: <> (Link)
-[url-npm]: https://npmjs.org/package/@analys/keyed-columns
-[url-pp]: https://packagephobia.now.sh/result?p=@analys/keyed-columns
+[url-npm]: https://npmjs.org/package/@analys/tabular
+[url-pp]: https://packagephobia.now.sh/result?p=@analys/tabular
 [url-github]: https://github.com/hoyeungw/analys
 
 ##### Cross-keyed-columns analytics tool
@@ -32,7 +32,7 @@
 
 #### Install
 ```console
-$ npm install @analys/keyed-columns
+$ npm install @analys/tabular
 ```
 
 #### Usage

@@ -4,8 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var crostabInit = require('@analys/crostab-init');
 var crostabLookup = require('@analys/crostab-lookup');
-var keyedColumns = require('@analys/keyed-columns');
 var keyedRows = require('@analys/keyed-rows');
+var tabular = require('@analys/tabular');
 var comparer = require('@aryth/comparer');
 var columnGetter = require('@vect/column-getter');
 var columnMapper = require('@vect/column-mapper');
@@ -97,7 +97,7 @@ class CrosTab {
   }
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
-    const samples = keyedColumns.selectSamplesByHead.call(this, headFields);
+    const samples = tabular.selectTabularToSamples.call(this, headFields);
     return indexed ? vectorZipper.zipper(this.side, samples, (l, s) => Object.assign(objectInit.pair(indexName, l), s)) : samples;
   }
 
@@ -314,7 +314,7 @@ class CrosTab {
     var _this4;
 
     let o = mutate ? this : (_this4 = this, crostabInit.slice(_this4));
-    keyedColumns.selectKeyedColumns.call(this, headLabels);
+    tabular.selectTabular.call(this, headLabels);
     return mutate ? this : this.copy(o);
   }
 
@@ -326,7 +326,7 @@ class CrosTab {
     var _this5;
 
     let o = mutate ? this : (_this5 = this, crostabInit.slice(_this5));
-    if (head === null || head === void 0 ? void 0 : head.length) keyedColumns.selectKeyedColumns.call(o, head);
+    if (head === null || head === void 0 ? void 0 : head.length) tabular.selectTabular.call(o, head);
     if (side === null || side === void 0 ? void 0 : side.length) keyedRows.selectKeyedRows.call(o, side);
     return mutate ? this : this.copy(o);
   }
@@ -341,7 +341,7 @@ class CrosTab {
 
     let o = mutate ? this : (_this6 = this, crostabInit.slice(_this6));
     if (direct === enumMatrixDirections.ROWWISE) keyedRows.sortKeyedRows.call(o, comparer$1, this.coin(field));
-    if (direct === enumMatrixDirections.COLUMNWISE) keyedColumns.sortKeyedColumns.call(o, comparer$1, this.roin(field));
+    if (direct === enumMatrixDirections.COLUMNWISE) tabular.sortTabular.call(o, comparer$1, this.roin(field));
     return mutate ? this : this.copy(o);
   }
 
@@ -354,7 +354,7 @@ class CrosTab {
 
     let o = mutate ? this : (_this7 = this, crostabInit.slice(_this7));
     if (direct === enumMatrixDirections.ROWWISE) keyedRows.sortRowsByKeys.call(o, comparer$1);
-    if (direct === enumMatrixDirections.COLUMNWISE) keyedColumns.sortColumnsByKeys.call(o, comparer$1);
+    if (direct === enumMatrixDirections.COLUMNWISE) tabular.sortTabularByKeys.call(o, comparer$1);
     return mutate ? this : this.copy(o);
   }
 

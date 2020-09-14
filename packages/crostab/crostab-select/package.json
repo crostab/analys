@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@analys/crostab-init": "^0.4.4",
-    "@analys/keyed-columns": "^0.4.4",
+    "@analys/tabular": "^0.4.4",
     "@analys/keyed-rows": "^0.4.4",
     "@aryth/rand": "^0.2.14",
     "@vect/vector-select": "^0.2.9"

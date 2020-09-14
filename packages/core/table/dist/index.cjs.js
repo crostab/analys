@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var keyedColumns = require('@analys/keyed-columns');
+var convert = require('@analys/convert');
 var tableChips = require('@analys/table-chips');
 var tableDivide = require('@analys/table-divide');
 var tableFilter = require('@analys/table-filter');
@@ -14,7 +14,9 @@ var tableJoin = require('@analys/table-join');
 var tableLookup = require('@analys/table-lookup');
 var tableMerge = require('@analys/table-merge');
 var tablePivot = require('@analys/table-pivot');
+var tableSelect = require('@analys/table-select');
 var tableTypes = require('@analys/table-types');
+var tabular = require('@analys/tabular');
 var comparer = require('@aryth/comparer');
 var distinctColumn = require('@aryth/distinct-column');
 var columnGetter = require('@vect/column-getter');
@@ -74,11 +76,13 @@ class Table {
   }
 
   static from(o) {
-    return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
+    var _o;
+
+    return _o = o, convert.toTable(_o);
   }
 
   toSamples(fields) {
-    return fields ? keyedColumns.selectSamplesByHead.call(this, fields) : keyedColumns.keyedColumnsToSamples.call(this);
+    return fields ? tabular.selectTabularToSamples.call(this, fields) : tabular.tabularToSamples.call(this);
   }
 
   toObject(mutate = false) {
@@ -229,9 +233,17 @@ class Table {
   lookupMany(valuesToFind, key, field) {
     return tableLookup.lookupMany.call(this, valuesToFind, key, field);
   }
+  /**
+   *
+   * @param {string} key
+   * @param {string|string[]|[string,string][]} [field]
+   * @param {boolean} [objectify=true]
+   * @return {Object|Array}
+   */
 
-  lookupTable(key, field, objectify) {
-    return tableLookup.lookupTable.call(this, key, field, objectify);
+
+  lookupTable(key, field, objectify = true) {
+    return tableSelect.tableToObject.call(this, key, field, objectify);
   }
   /**
    *
@@ -245,7 +257,7 @@ class Table {
     mutate = false
   } = {}) {
     let o = mutate ? this : tableInit.slice(this);
-    keyedColumns.selectKeyedColumns.call(o, fields);
+    tabular.selectTabular.call(o, fields);
     return mutate ? this : this.copy(o);
   }
   /**
@@ -424,7 +436,7 @@ class Table {
     var _this11;
 
     let o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
-    keyedColumns.sortColumnsByKeys.call(o, comparer);
+    tabular.sortTabularByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
 

@@ -6,7 +6,7 @@ import { unwind } from '@vect/entries-unwind'
  * @param {(str|[*,*])[]} labels
  * @return {TableObject} - mutated 'this' {head, rows}
  */
-export const selectKeyedColumns = function (labels) {
+export const selectTabular = function (labels) {
   let { rows } = this, indexes;
   [this.head, indexes] = lookupIndexes.call(this, labels) |> unwind;
   this.rows = selectCols(rows, indexes)

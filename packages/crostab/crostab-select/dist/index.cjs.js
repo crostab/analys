@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var rand = require('@aryth/rand');
 var crostabInit = require('@analys/crostab-init');
 var vectorSelect = require('@vect/vector-select');
-var keyedColumns = require('@analys/keyed-columns');
+var tabular = require('@analys/tabular');
 var keyedRows = require('@analys/keyed-rows');
 
 const MEAN = 4;
@@ -22,7 +22,7 @@ function crostabShuffle(crostab, {
   const sideSelection = vectorSelect.leap(crostab.side, rand.flopIndex(crostab.side), h),
         headSelection = vectorSelect.shuffle(crostab.head, w);
   if (sideSelection === null || sideSelection === void 0 ? void 0 : sideSelection.length) keyedRows.selectKeyedRows.call(crostab, sideSelection);
-  if (headSelection === null || headSelection === void 0 ? void 0 : headSelection.length) keyedColumns.selectKeyedColumns.call(crostab, headSelection);
+  if (headSelection === null || headSelection === void 0 ? void 0 : headSelection.length) tabular.selectTabular.call(crostab, headSelection);
   return crostab;
 }
 

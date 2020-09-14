@@ -1,7 +1,7 @@
 import { Foba } from '@foba/table'
 import { DecoTable, says } from '@spare/logger'
 import { slice as sliceTable } from '@analys/table-init'
-import { selectKeyedColumns } from '../src/selectKeyedColumns'
+import { selectTabular }       from '../src/selectTabular'
 
 const decoT = DecoTable({ top: 3, bottom: 1 })
 
@@ -11,10 +11,10 @@ const pickFields = ['director', 'name', 'boxoffice', 'year']
 
 table |> decoT |> says.original
 
-selectKeyedColumns.call(table, pickFields) |> decoT |> says.selected
-// selectKeyedColumns.call(table |> sliceTable, pickFields) |> decoT |> says.selected
+selectTabular.call(table, pickFields) |> decoT |> says.selected
+// selectTabular.call(table |> sliceTable, pickFields) |> decoT |> says.selected
 
-selectKeyedColumns.call(table, ['boxoffice']) |> decoT |> says.selected
+selectTabular.call(table, ['boxoffice']) |> decoT |> says.selected
 
 table |> decoT |> says.original
 

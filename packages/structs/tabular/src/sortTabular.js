@@ -9,8 +9,8 @@ import { transpose } from '@vect/matrix-transpose'
  * @param {number} [index]
  * @returns {TableObject} - mutated 'this' {head, rows}
  */
-export const sortKeyedColumns = function (comparer, index) {
-  if (index < 0) return sortColumnsByKeys.call(this, comparer)
+export const sortTabular = function (comparer, index) {
+  if (index < 0) return sortTabularByKeys.call(this, comparer)
   let { head, rows } = this, columns = transpose(rows)
   /** [column[i]s, head, columns]  */
   const Keyed = zipper(head, columns,

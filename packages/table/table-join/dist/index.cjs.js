@@ -172,19 +172,19 @@ function tableJoin(tableL, tableR, fields, joinType = enumJoinModes.INTERSECT, f
         ascL = indexesL.slice().sort(comparer.NUM_ASC),
         indexesR = fields.map(x => tableR.head.indexOf(x)),
         ascR = indexesR.slice().sort(comparer.NUM_ASC),
-        toKVL = selectKeyedVector.bind({
+        toKeyedVectorL = selectKeyedVector.bind({
     indexes: indexesL,
     asc: ascL,
     depth
   }),
-        toKVR = selectKeyedVector.bind({
+        toKeyedVectorR = selectKeyedVector.bind({
     indexes: indexesR,
     asc: ascR,
     depth
   });
   const head = vectorSelect.select(tableL.head, indexesL).concat(vectorUpdate.splices(tableL.head.slice(), ascL), vectorUpdate.splices(tableR.head.slice(), ascR));
-  const L = tableL.rows.map(row => toKVL(row === null || row === void 0 ? void 0 : row.slice())),
-        R = tableR.rows.map(row => toKVR(row === null || row === void 0 ? void 0 : row.slice()));
+  const L = tableL.rows.map(row => toKeyedVectorL(row === null || row === void 0 ? void 0 : row.slice())),
+        R = tableR.rows.map(row => toKeyedVectorR(row === null || row === void 0 ? void 0 : row.slice()));
   const rows = joiner(L, R, fillEmpty);
   return {
     head,

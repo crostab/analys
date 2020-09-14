@@ -1,7 +1,7 @@
 {
-  "name": "@analys/keyed-columns",
+  "name": "@analys/tabular",
   "version": "0.4.4",
-  "description": "A cross-keyed-columns analytics tool",
+  "description": "Skeleton for table",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [

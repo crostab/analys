@@ -8,7 +8,7 @@ import { unwind } from '@vect/entries-unwind'
  * @param comparer
  * @return {TableObject} - mutated 'this' {head, rows}
  */
-export const sortColumnsByKeys = function (comparer) {
+export const sortTabularByKeys = function (comparer) {
   let { head, rows } = this, columns = transpose(rows);
   [this.head, columns] = zipper(head, columns,
     (key, row) => [key, row]

@@ -27,12 +27,12 @@ export function tableJoin(
     joiner = Joiner(joinType), depth = fields.length,
     indexesL = fields.map(x => tableL.head.indexOf(x)), ascL = indexesL.slice().sort(NUM_ASC),
     indexesR = fields.map(x => tableR.head.indexOf(x)), ascR = indexesR.slice().sort(NUM_ASC),
-    toKVL = selectKeyedVector.bind({ indexes: indexesL, asc: ascL, depth }),
-    toKVR = selectKeyedVector.bind({ indexes: indexesR, asc: ascR, depth })
+    toKeyedVectorL = selectKeyedVector.bind({ indexes: indexesL, asc: ascL, depth }),
+    toKeyedVectorR = selectKeyedVector.bind({ indexes: indexesR, asc: ascR, depth })
   const head = select(tableL.head, indexesL).concat(splices(tableL.head.slice(), ascL), splices(tableR.head.slice(), ascR))
   const
-    L = tableL.rows.map(row => toKVL(row?.slice())),
-    R = tableR.rows.map(row => toKVR(row?.slice()))
+    L = tableL.rows.map(row => toKeyedVectorL(row?.slice())),
+    R = tableR.rows.map(row => toKeyedVectorR(row?.slice()))
   const rows = joiner(L, R, fillEmpty)
   return { head, rows, title: `${ tableL.title } ${ tableR.title }` }
 }

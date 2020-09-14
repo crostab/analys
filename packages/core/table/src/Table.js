@@ -1,39 +1,37 @@
-import {
-  keyedColumnsToSamples,
-  selectKeyedColumns,
-  selectSamplesByHead,
-  sortColumnsByKeys
-}                                                                               from '@analys/keyed-columns'
-import { tableChips }                                                           from '@analys/table-chips'
-import { tableDivide }                                                          from '@analys/table-divide'
-import { tableFilter }                                                          from '@analys/table-filter'
-import { tableFind }                                                            from '@analys/table-find'
-import { tableFormula }                                                         from '@analys/table-formula'
-import { tableGroup }                                                           from '@analys/table-group'
-import { shallow, slice }                                                       from '@analys/table-init'
-import { tableJoin }                                                            from '@analys/table-join'
-import { lookup, lookupCached, lookupMany, lookupTable }                        from '@analys/table-lookup'
-import { tableAcquire, tableMerge }                                             from '@analys/table-merge'
-import { tablePivot }                                                           from '@analys/table-pivot'
-import { inferTypes }                                                           from '@analys/table-types'
-import { NUM_ASC }                                                              from '@aryth/comparer'
-import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } from '@aryth/distinct-column'
-import { column }                                                               from '@vect/column-getter'
-import { mutate as mutateColumn }                                               from '@vect/column-mapper'
+import { toTable }                                                                    from '@analys/convert'
+import { tableChips }                                                                 from '@analys/table-chips'
+import { tableDivide }                                                                from '@analys/table-divide'
+import { tableFilter }                                                                from '@analys/table-filter'
+import { tableFind }                                                                  from '@analys/table-find'
+import { tableFormula }                                                               from '@analys/table-formula'
+import { tableGroup }                                                                 from '@analys/table-group'
+import { shallow, slice }                                                             from '@analys/table-init'
+import { tableJoin }                                                                  from '@analys/table-join'
+import { lookup, lookupCached, lookupMany }                                           from '@analys/table-lookup'
+import { tableAcquire, tableMerge }                                                   from '@analys/table-merge'
+import { tablePivot }                                                                 from '@analys/table-pivot'
+import { tableToObject }                                                              from '@analys/table-select'
+import { inferTypes }                                                                 from '@analys/table-types'
+import { selectTabular, selectTabularToSamples, sortTabularByKeys, tabularToSamples } from '@analys/tabular'
+import { NUM_ASC }                                                                    from '@aryth/comparer'
+import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn }       from '@aryth/distinct-column'
+import { column }                                                                     from '@vect/column-getter'
+import { mutate as mutateColumn }                                                     from '@vect/column-mapper'
 import {
   pop as popColumn,
   push as pushColumn,
   shift as shiftColumn,
   splices as splicesColumns,
   unshift as unshiftColumn
-}                                                                               from '@vect/columns-update'
-import { size, transpose }                                                      from '@vect/matrix'
-import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }         from '@vect/matrix-mapper'
-import { wind }                                                                 from '@vect/object-init'
-import { difference, intersect }                                                from '@vect/vector-algebra'
-import { iterate, mapper, mutate as mutateVector }                              from '@vect/vector-mapper'
-import { splices }                                                              from '@vect/vector-update'
-import { StatMx }                                                               from 'borel'
+}                                                                                     from '@vect/columns-update'
+import { size, transpose }                                                            from '@vect/matrix'
+import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }               from '@vect/matrix-mapper'
+import { wind }                                                                       from '@vect/object-init'
+import { difference, intersect }                                                      from '@vect/vector-algebra'
+import { iterate, mapper, mutate as mutateVector }                                    from '@vect/vector-mapper'
+import { splices }                                                                    from '@vect/vector-update'
+import { StatMx }                                                                     from 'borel'
+
 
 export class Table {
   /** @type {*[]} */ head
@@ -54,8 +52,8 @@ export class Table {
     this.types = types
   }
 
-  static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
-  toSamples(fields) { return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this) }
+  static from(o) { return o|> toTable }
+  toSamples(fields) { return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this) }
   toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
 
   setTitle(title) { return this.title = title, this }
@@ -102,7 +100,15 @@ export class Table {
 
   lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
   lookupMany(valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
-  lookupTable(key, field, objectify) { return lookupTable.call(this, key, field, objectify) }
+
+  /**
+   *
+   * @param {string} key
+   * @param {string|string[]|[string,string][]} [field]
+   * @param {boolean} [objectify=true]
+   * @return {Object|Array}
+   */
+  lookupTable(key, field, objectify = true) { return tableToObject.call(this, key, field, objectify) }
 
   /**
    *
@@ -112,7 +118,7 @@ export class Table {
    */
   select(fields, { mutate = false } = {}) {
     let o = mutate ? this : slice(this)
-    selectKeyedColumns.call(o, fields)
+    selectTabular.call(o, fields)
     return mutate ? this : this.copy(o)
   }
 
@@ -227,7 +233,7 @@ export class Table {
    */
   sortLabel(comparer, { mutate = true } = {}) {
     let o = mutate ? this : this |> slice
-    sortColumnsByKeys.call(o, comparer)
+    sortTabularByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)
   }
 

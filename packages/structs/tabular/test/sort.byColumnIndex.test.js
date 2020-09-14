@@ -1,7 +1,7 @@
 import { Foba } from '@foba/crostab'
 import { DecoCrostab, says } from '@spare/logger'
-import { sortColumnsByKeys } from '../src/sortColumnsByKeys'
-import { STR_DESC } from '@aryth/comparer'
+import { sortTabular }       from '../src/sortTabular'
+import { NUM_DESC }          from '@aryth/comparer'
 import { matchSlice as sliceCrostab } from '@analys/crostab-init'
 
 const decoX = DecoCrostab({ top: 5, bottom: 2 })
@@ -11,7 +11,8 @@ let crostab = Foba[MARKET_CAP] |> sliceCrostab
 
 crostab |> decoX |> says.original
 
-sortColumnsByKeys.call(crostab, STR_DESC) |> decoX |> says['sorted columns by head elements']
-// sortColumnsByKeys.call(crostab |> sliceCrostab, NUM_DESC) |> decoX |> says['sorted columns by head elements']
+sortTabular.call(crostab, NUM_DESC, 0) |> decoX |> says['sorted columns by column[0] on each columns']
+// sortTabular.call(crostab |> sliceCrostab, NUM_DESC, 0) |> decoX |> says['sorted columns by column[0] on each columns']
 
 crostab |> decoX |> says.original
+

@@ -1,7 +1,7 @@
 import { slice, shallow } from '@analys/crostab-init';
 import { vlookupCached, vlookup, vlookupMany, vlookupTable, hlookupCached, hlookup, hlookupMany, hlookupTable } from '@analys/crostab-lookup';
-import { selectSamplesByHead, selectKeyedColumns, sortKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
 import { selectSamplesBySide, selectKeyedRows, sortKeyedRows, sortRowsByKeys } from '@analys/keyed-rows';
+import { selectTabularToSamples, selectTabular, sortTabular, sortTabularByKeys } from '@analys/tabular';
 import { NUM_ASC, STR_ASC } from '@aryth/comparer';
 import { column } from '@vect/column-getter';
 import { mutate as mutate$1 } from '@vect/column-mapper';
@@ -93,7 +93,7 @@ class CrosTab {
   }
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
-    const samples = selectSamplesByHead.call(this, headFields);
+    const samples = selectTabularToSamples.call(this, headFields);
     return indexed ? zipper(this.side, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples;
   }
 
@@ -310,7 +310,7 @@ class CrosTab {
     var _this4;
 
     let o = mutate ? this : (_this4 = this, slice(_this4));
-    selectKeyedColumns.call(this, headLabels);
+    selectTabular.call(this, headLabels);
     return mutate ? this : this.copy(o);
   }
 
@@ -322,7 +322,7 @@ class CrosTab {
     var _this5;
 
     let o = mutate ? this : (_this5 = this, slice(_this5));
-    if (head === null || head === void 0 ? void 0 : head.length) selectKeyedColumns.call(o, head);
+    if (head === null || head === void 0 ? void 0 : head.length) selectTabular.call(o, head);
     if (side === null || side === void 0 ? void 0 : side.length) selectKeyedRows.call(o, side);
     return mutate ? this : this.copy(o);
   }
@@ -337,7 +337,7 @@ class CrosTab {
 
     let o = mutate ? this : (_this6 = this, slice(_this6));
     if (direct === ROWWISE) sortKeyedRows.call(o, comparer, this.coin(field));
-    if (direct === COLUMNWISE) sortKeyedColumns.call(o, comparer, this.roin(field));
+    if (direct === COLUMNWISE) sortTabular.call(o, comparer, this.roin(field));
     return mutate ? this : this.copy(o);
   }
 
@@ -350,7 +350,7 @@ class CrosTab {
 
     let o = mutate ? this : (_this7 = this, slice(_this7));
     if (direct === ROWWISE) sortRowsByKeys.call(o, comparer);
-    if (direct === COLUMNWISE) sortColumnsByKeys.call(o, comparer);
+    if (direct === COLUMNWISE) sortTabularByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
 

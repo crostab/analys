@@ -1,2 +1,3 @@
-export { tableToSamples } from './src/tableToSamples'
-export { samplesToTable } from './src/samplesToTable'
+export { tableToSamples }                   from './src/tableToSamples'
+export { samplesToTable, samplesToTabular } from './src/samplesToTable'
+export { toTable }                          from './src/tabularToTable'

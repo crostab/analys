@@ -1,7 +1,9 @@
-import { selectSamplesByHead, keyedColumnsToSamples } from '@analys/keyed-columns';
+import { selectTabularToSamples, tabularToSamples, voidTabular } from '@analys/tabular';
 import { matchSlice } from '@analys/table-init';
 import { unwind } from '@vect/entries-unwind';
 import { mapper, iterate } from '@vect/vector-mapper';
+import { select } from '@vect/vector-select';
+import { Table } from '@analys/table';
 
 /**
  *
@@ -10,7 +12,15 @@ import { mapper, iterate } from '@vect/vector-mapper';
  * @returns {Object[]} samples
  */
 
-const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? selectSamplesByHead.call(matchSlice(table), fields) : keyedColumnsToSamples.call(matchSlice(table));
+const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
+
+/**
+ *
+ * @param {Object} o
+ * @returns {Table}
+ */
+
+const toTable = o => new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
 
 /**
  *
@@ -19,34 +29,41 @@ const tableToSamples = (table, fields) => (fields === null || fields === void 0 
  * @returns {TableObject}
  */
 
-function samplesToTable(samples, fields) {
-  var _lookupKeyHeadPairs$c;
+const samplesToTable = (samples, fields) => {
+  var _samplesToTabular;
+
+  return _samplesToTabular = samplesToTabular(samples, fields), toTable(_samplesToTabular);
+};
+/**
+ *
+ * @param {Object[]} samples
+ * @param {(str|[str,str])[]} [fields]
+ * @returns {TableObject}
+ */
+
+function samplesToTabular(samples, fields) {
+  var _selectFieldMapping$c;
 
   let h, w;
-  if (!(h = samples === null || samples === void 0 ? void 0 : samples.length)) return voidTable();
-  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return samplesToTableDirectly(samples);
-  const [keys, head] = (_lookupKeyHeadPairs$c = lookupKeyHeadPairs.call(samples[0], fields), unwind(_lookupKeyHeadPairs$c));
-  if (!(w = keys === null || keys === void 0 ? void 0 : keys.length)) return voidTable();
-  const rows = mapper(samples, sample => mapper(keys, key => sample[key], w), h);
+  if (!(h = samples === null || samples === void 0 ? void 0 : samples.length)) return voidTabular();
+  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return convertSamplesToTabular(samples);
+  const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), unwind(_selectFieldMapping$c));
+  if (!(w = keys === null || keys === void 0 ? void 0 : keys.length)) return voidTabular();
+  const rows = mapper(samples, sample => select(sample, keys, w), h);
   return {
     head,
     rows
   };
 }
-
-const voidTable = () => ({
-  head: [],
-  rows: []
-});
-
-const lookupKeyHeadPairs = function (fields) {
+const selectFieldMapping = function (fields) {
   const sample = this,
-        keyHeadPairs = [];
-  let keyHead;
+        mapping = [],
+        fieldMapper = fieldMapping.bind(sample);
+  let kvp;
   iterate(fields, field => {
-    if (keyHead = lookupKeyHeadPair.call(sample, field)) keyHeadPairs.push(keyHead);
+    if (kvp = fieldMapper(field)) mapping.push(kvp);
   });
-  return keyHeadPairs;
+  return mapping;
 };
 /**
  *
@@ -54,23 +71,29 @@ const lookupKeyHeadPairs = function (fields) {
  * @returns {[str,number]}
  */
 
-const lookupKeyHeadPair = function (field) {
+const fieldMapping = function (field) {
   const sample = this;
-  if (!Array.isArray(field) && field in sample) return [field, field];
-  let [current, projected] = field;
-  return current in sample ? [current, projected] : void 0;
+
+  if (Array.isArray(field)) {
+    const [current, projected] = field;
+    return current in sample ? [current, projected] : null;
+  }
+
+  return field in sample ? [field, field] : null;
 };
-function samplesToTableDirectly(samples) {
-  const h = samples === null || samples === void 0 ? void 0 : samples.length;
-  let head,
-      rows = Array(h);
+function convertSamplesToTabular(samples) {
+  var _Object$entries;
 
-  if (h) {
-    var _Object$entries;
+  const height = samples === null || samples === void 0 ? void 0 : samples.length;
+  if (!height) return voidTabular();
+  const rows = Array(height);
+  let head;
+  [head, rows[0]] = (_Object$entries = Object.entries(samples[0]), unwind(_Object$entries));
 
-    [head, rows[0]] = (_Object$entries = Object.entries(samples[0]), unwind(_Object$entries));
+  for (let i = 1, w = (_head = head) === null || _head === void 0 ? void 0 : _head.length; i < height; i++) {
+    var _head;
 
-    for (let i = 1, sample, w = head.length; i < h; i++) sample = samples[i], rows[i] = mapper(head, field => sample[field], w);
+    rows[i] = select(samples[i], head, w);
   }
 
   return {
@@ -79,4 +102,4 @@ function samplesToTableDirectly(samples) {
   };
 }
 
-export { samplesToTable, tableToSamples };
+export { samplesToTable, samplesToTabular, tableToSamples, toTable };

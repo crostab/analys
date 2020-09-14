@@ -10,17 +10,17 @@ import {
   vlookupTable
 }                                 from '@analys/crostab-lookup'
 import {
-  selectKeyedColumns,
-  selectSamplesByHead,
-  sortColumnsByKeys,
-  sortKeyedColumns
-}                                 from '@analys/keyed-columns'
-import {
   selectKeyedRows,
   selectSamplesBySide,
   sortKeyedRows,
   sortRowsByKeys
 }                                 from '@analys/keyed-rows'
+import {
+  selectTabular,
+  selectTabularToSamples,
+  sortTabular,
+  sortTabularByKeys
+}                                 from '@analys/tabular'
 import {
   NUM_ASC,
   STR_ASC
@@ -86,7 +86,7 @@ export class CrosTab {
   }
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
-    const samples = selectSamplesByHead.call(this, headFields)
+    const samples = selectTabularToSamples.call(this, headFields)
     return indexed ? zipper(this.side, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples
   }
   columnwiseSamples(sideFields, indexed = false, indexName = '_') {
@@ -158,13 +158,13 @@ export class CrosTab {
 
   selectColumns(headLabels, mutate = false) {
     let o = mutate ? this : this |> slice
-    selectKeyedColumns.call(this, headLabels)
+    selectTabular.call(this, headLabels)
     return mutate ? this : this.copy(o)
   }
 
   select({ side, head, mutate = false } = {}) {
     let o = mutate ? this : this |> slice
-    if (head?.length) selectKeyedColumns.call(o, head)
+    if (head?.length) selectTabular.call(o, head)
     if (side?.length) selectKeyedRows.call(o, side)
     return mutate ? this : this.copy(o)
   }
@@ -172,13 +172,13 @@ export class CrosTab {
   sort({ direct = ROWWISE, field, comparer = NUM_ASC, mutate = false } = {}) {
     let o = mutate ? this : this |> slice
     if (direct === ROWWISE) sortKeyedRows.call(o, comparer, this.coin(field))
-    if (direct === COLUMNWISE) sortKeyedColumns.call(o, comparer, this.roin(field))
+    if (direct === COLUMNWISE) sortTabular.call(o, comparer, this.roin(field))
     return mutate ? this : this.copy(o)
   }
   sortByLabels({ direct = ROWWISE, comparer = STR_ASC, mutate = false }) {
     let o = mutate ? this : this |> slice
     if (direct === ROWWISE) sortRowsByKeys.call(o, comparer)
-    if (direct === COLUMNWISE) sortColumnsByKeys.call(o, comparer)
+    if (direct === COLUMNWISE) sortTabularByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)
   }
 

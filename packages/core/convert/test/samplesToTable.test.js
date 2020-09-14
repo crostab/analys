@@ -7,4 +7,7 @@ const samples = tableToSamples(Foba['USTechFirms'])
 
 samples |> decoSamples |> says['original']
 
-samplesToTable(samples, [['symbol', 'code'], 'industry', ['price', 'stock_price']]) |> decoTable |> says['samplesToTable']
+samplesToTable(
+  samples,
+  [['symbol', 'code'], 'industry', ['price', 'stock_price']]
+) |> decoTable |> says['samplesToTable']

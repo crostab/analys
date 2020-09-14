@@ -11,7 +11,7 @@ import { Columns } from '@vect/column-getter';
  * @returns {Object[]} - 'this' remains unchanged
  */
 
-const keyedColumnsToSamples = function () {
+const tabularToSamples = function () {
   const {
     head,
     rows
@@ -24,7 +24,7 @@ const keyedColumnsToSamples = function () {
  * @return {TableObject} - mutated 'this' {head, rows}
  */
 
-const selectKeyedColumns = function (labels) {
+const selectTabular = function (labels) {
   var _lookupIndexes$call;
 
   let {
@@ -76,7 +76,7 @@ const selectSamples = function (fieldIndexPairs) {
  * @returns {Object[]} - 'this' remains unchanged
  */
 
-const selectSamplesByHead = function (labels) {
+const selectTabularToSamples = function (labels) {
   const fieldIndexes = lookupIndexes.call(this, labels);
   return selectSamples.call(this, fieldIndexes);
 };
@@ -87,7 +87,7 @@ const selectSamplesByHead = function (labels) {
  * @return {TableObject} - mutated 'this' {head, rows}
  */
 
-const sortColumnsByKeys$1 = function (comparer) {
+const sortTabularByKeys$1 = function (comparer) {
   var _zipper$sort;
 
   let {
@@ -107,10 +107,10 @@ const sortColumnsByKeys$1 = function (comparer) {
  * @returns {TableObject} - mutated 'this' {head, rows}
  */
 
-const sortKeyedColumns = function (comparer, index) {
+const sortTabular = function (comparer, index) {
   var _zipper$sort;
 
-  if (index < 0) return sortColumnsByKeys.call(this, comparer);
+  if (index < 0) return sortTabularByKeys.call(this, comparer);
   let {
     head,
     rows
@@ -122,4 +122,9 @@ const sortKeyedColumns = function (comparer, index) {
   return this.head = Keyed(1), this.rows = transpose(Keyed(2)), this;
 };
 
-export { keyedColumnsToSamples, selectKeyedColumns, selectSamplesByHead, sortColumnsByKeys$1 as sortColumnsByKeys, sortKeyedColumns };
+const voidTabular = () => ({
+  head: [],
+  rows: []
+});
+
+export { selectTabular, selectTabularToSamples, sortTabular, sortTabularByKeys$1 as sortTabularByKeys, tabularToSamples, voidTabular };

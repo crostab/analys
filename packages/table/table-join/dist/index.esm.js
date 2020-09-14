@@ -168,19 +168,19 @@ function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = nul
         ascL = indexesL.slice().sort(NUM_ASC),
         indexesR = fields.map(x => tableR.head.indexOf(x)),
         ascR = indexesR.slice().sort(NUM_ASC),
-        toKVL = selectKeyedVector.bind({
+        toKeyedVectorL = selectKeyedVector.bind({
     indexes: indexesL,
     asc: ascL,
     depth
   }),
-        toKVR = selectKeyedVector.bind({
+        toKeyedVectorR = selectKeyedVector.bind({
     indexes: indexesR,
     asc: ascR,
     depth
   });
   const head = select(tableL.head, indexesL).concat(splices(tableL.head.slice(), ascL), splices(tableR.head.slice(), ascR));
-  const L = tableL.rows.map(row => toKVL(row === null || row === void 0 ? void 0 : row.slice())),
-        R = tableR.rows.map(row => toKVR(row === null || row === void 0 ? void 0 : row.slice()));
+  const L = tableL.rows.map(row => toKeyedVectorL(row === null || row === void 0 ? void 0 : row.slice())),
+        R = tableR.rows.map(row => toKeyedVectorR(row === null || row === void 0 ? void 0 : row.slice()));
   const rows = joiner(L, R, fillEmpty);
   return {
     head,

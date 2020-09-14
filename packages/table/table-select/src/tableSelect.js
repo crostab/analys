@@ -1,5 +1,5 @@
-import { selectKeyedColumns } from '@analys/keyed-columns'
-import { slice } from '@analys/table-init'
+import { slice }         from '@analys/table-init'
+import { selectTabular } from '@analys/tabular'
 
 /**
  *
@@ -10,6 +10,6 @@ import { slice } from '@analys/table-init'
  */
 export const tableSelect = function (table, fields, { mutate = false } = {}) {
   let o = mutate ? table : table |> slice
-  if (fields?.length) selectKeyedColumns.call(o, fields)
+  if (fields?.length) selectTabular.call(o, fields)
   return o
 }

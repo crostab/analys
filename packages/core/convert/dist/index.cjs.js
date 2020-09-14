@@ -2,10 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var keyedColumns = require('@analys/keyed-columns');
+var tabular = require('@analys/tabular');
 var tableInit = require('@analys/table-init');
 var entriesUnwind = require('@vect/entries-unwind');
 var vectorMapper = require('@vect/vector-mapper');
+var vectorSelect = require('@vect/vector-select');
+var table = require('@analys/table');
 
 /**
  *
@@ -14,7 +16,15 @@ var vectorMapper = require('@vect/vector-mapper');
  * @returns {Object[]} samples
  */
 
-const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? keyedColumns.selectSamplesByHead.call(tableInit.matchSlice(table), fields) : keyedColumns.keyedColumnsToSamples.call(tableInit.matchSlice(table));
+const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), fields) : tabular.tabularToSamples.call(tableInit.matchSlice(table));
+
+/**
+ *
+ * @param {Object} o
+ * @returns {Table}
+ */
+
+const toTable = o => new table.Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
 
 /**
  *
@@ -23,34 +33,41 @@ const tableToSamples = (table, fields) => (fields === null || fields === void 0 
  * @returns {TableObject}
  */
 
-function samplesToTable(samples, fields) {
-  var _lookupKeyHeadPairs$c;
+const samplesToTable = (samples, fields) => {
+  var _samplesToTabular;
+
+  return _samplesToTabular = samplesToTabular(samples, fields), toTable(_samplesToTabular);
+};
+/**
+ *
+ * @param {Object[]} samples
+ * @param {(str|[str,str])[]} [fields]
+ * @returns {TableObject}
+ */
+
+function samplesToTabular(samples, fields) {
+  var _selectFieldMapping$c;
 
   let h, w;
-  if (!(h = samples === null || samples === void 0 ? void 0 : samples.length)) return voidTable();
-  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return samplesToTableDirectly(samples);
-  const [keys, head] = (_lookupKeyHeadPairs$c = lookupKeyHeadPairs.call(samples[0], fields), entriesUnwind.unwind(_lookupKeyHeadPairs$c));
-  if (!(w = keys === null || keys === void 0 ? void 0 : keys.length)) return voidTable();
-  const rows = vectorMapper.mapper(samples, sample => vectorMapper.mapper(keys, key => sample[key], w), h);
+  if (!(h = samples === null || samples === void 0 ? void 0 : samples.length)) return tabular.voidTabular();
+  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return convertSamplesToTabular(samples);
+  const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), entriesUnwind.unwind(_selectFieldMapping$c));
+  if (!(w = keys === null || keys === void 0 ? void 0 : keys.length)) return tabular.voidTabular();
+  const rows = vectorMapper.mapper(samples, sample => vectorSelect.select(sample, keys, w), h);
   return {
     head,
     rows
   };
 }
-
-const voidTable = () => ({
-  head: [],
-  rows: []
-});
-
-const lookupKeyHeadPairs = function (fields) {
+const selectFieldMapping = function (fields) {
   const sample = this,
-        keyHeadPairs = [];
-  let keyHead;
+        mapping = [],
+        fieldMapper = fieldMapping.bind(sample);
+  let kvp;
   vectorMapper.iterate(fields, field => {
-    if (keyHead = lookupKeyHeadPair.call(sample, field)) keyHeadPairs.push(keyHead);
+    if (kvp = fieldMapper(field)) mapping.push(kvp);
   });
-  return keyHeadPairs;
+  return mapping;
 };
 /**
  *
@@ -58,23 +75,29 @@ const lookupKeyHeadPairs = function (fields) {
  * @returns {[str,number]}
  */
 
-const lookupKeyHeadPair = function (field) {
+const fieldMapping = function (field) {
   const sample = this;
-  if (!Array.isArray(field) && field in sample) return [field, field];
-  let [current, projected] = field;
-  return current in sample ? [current, projected] : void 0;
+
+  if (Array.isArray(field)) {
+    const [current, projected] = field;
+    return current in sample ? [current, projected] : null;
+  }
+
+  return field in sample ? [field, field] : null;
 };
-function samplesToTableDirectly(samples) {
-  const h = samples === null || samples === void 0 ? void 0 : samples.length;
-  let head,
-      rows = Array(h);
+function convertSamplesToTabular(samples) {
+  var _Object$entries;
 
-  if (h) {
-    var _Object$entries;
+  const height = samples === null || samples === void 0 ? void 0 : samples.length;
+  if (!height) return tabular.voidTabular();
+  const rows = Array(height);
+  let head;
+  [head, rows[0]] = (_Object$entries = Object.entries(samples[0]), entriesUnwind.unwind(_Object$entries));
 
-    [head, rows[0]] = (_Object$entries = Object.entries(samples[0]), entriesUnwind.unwind(_Object$entries));
+  for (let i = 1, w = (_head = head) === null || _head === void 0 ? void 0 : _head.length; i < height; i++) {
+    var _head;
 
-    for (let i = 1, sample, w = head.length; i < h; i++) sample = samples[i], rows[i] = vectorMapper.mapper(head, field => sample[field], w);
+    rows[i] = vectorSelect.select(samples[i], head, w);
   }
 
   return {
@@ -84,4 +107,6 @@ function samplesToTableDirectly(samples) {
 }
 
 exports.samplesToTable = samplesToTable;
+exports.samplesToTabular = samplesToTabular;
 exports.tableToSamples = tableToSamples;
+exports.toTable = toTable;

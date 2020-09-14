@@ -2,10 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var keyedColumns = require('@analys/keyed-columns');
 var tableInit = require('@analys/table-init');
+var tabular = require('@analys/tabular');
 var rand = require('@aryth/rand');
 var vectorSelect = require('@vect/vector-select');
+var convert = require('@analys/convert');
+var tableIndex = require('@analys/table-index');
+var nullish = require('@typen/nullish');
+var columnGetter = require('@vect/column-getter');
+var entriesInit = require('@vect/entries-init');
+var objectInit = require('@vect/object-init');
 
 /**
  *
@@ -21,7 +27,7 @@ const tableSelect = function (table, fields, {
   var _table;
 
   let o = mutate ? table : (_table = table, tableInit.slice(_table));
-  if (fields === null || fields === void 0 ? void 0 : fields.length) keyedColumns.selectKeyedColumns.call(o, fields);
+  if (fields === null || fields === void 0 ? void 0 : fields.length) tabular.selectTabular.call(o, fields);
   return o;
 };
 
@@ -41,11 +47,31 @@ function tableShuffle(table, {
   if (!w || oscillate) w = rand.randIntBetw(MEAN - 2, MEAN + 1);
   const headSelection = vectorSelect.shuffle(head.slice(), w);
   rows = vectorSelect.shuffle(rows.slice(), h);
-  return keyedColumns.selectKeyedColumns.call({
+  return tabular.selectTabular.call({
     head,
     rows
   }, headSelection);
 }
 
+/**
+ *
+ * @param {string} key
+ * @param {string|string[]|[string,string][]} [field]
+ * @param objectify
+ * @return {Object|Array}
+ */
+
+const tableToObject = function (key, field, objectify = true) {
+  var _table$rows;
+
+  const table = this;
+  const hi = table === null || table === void 0 ? void 0 : (_table$rows = table.rows) === null || _table$rows === void 0 ? void 0 : _table$rows.length;
+  let x, y;
+  const keys = (x = tableIndex.coin.call(table, key)) >= 0 ? columnGetter.column(table.rows, x, hi) : null;
+  const values = nullish.nullish(field) || Array.isArray(field) ? convert.tableToSamples(table, field) : (y = tableIndex.coin.call(table, field)) >= 0 ? columnGetter.column(table.rows, y, hi) : null;
+  return keys && values ? objectify ? objectInit.wind(keys, values) : entriesInit.wind(keys, values) : objectify ? {} : [];
+};
+
 exports.tableSelect = tableSelect;
 exports.tableShuffle = tableShuffle;
+exports.tableToObject = tableToObject;

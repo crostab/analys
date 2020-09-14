@@ -1,0 +1,6 @@
+export { tabularToSamples }       from './src/tabularToSamples'
+export { selectTabular }          from './src/selectTabular'
+export { selectTabularToSamples } from './src/selectTabularToSamples'
+export { sortTabularByKeys }      from './src/sortTabularByKeys'
+export { sortTabular }            from './src/sortTabular'
+export { voidTabular }            from './src/voidTabular'

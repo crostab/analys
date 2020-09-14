@@ -1,4 +1,4 @@
-import { selectSamplesByHead, keyedColumnsToSamples, selectKeyedColumns, sortColumnsByKeys } from '@analys/keyed-columns';
+import { toTable } from '@analys/convert';
 import { tableChips } from '@analys/table-chips';
 import { tableDivide } from '@analys/table-divide';
 import { tableFilter } from '@analys/table-filter';
@@ -7,10 +7,12 @@ import { tableFormula } from '@analys/table-formula';
 import { tableGroup } from '@analys/table-group';
 import { slice, shallow } from '@analys/table-init';
 import { tableJoin } from '@analys/table-join';
-import { lookupCached, lookup, lookupMany, lookupTable } from '@analys/table-lookup';
+import { lookupCached, lookup, lookupMany } from '@analys/table-lookup';
 import { tableAcquire, tableMerge } from '@analys/table-merge';
 import { tablePivot } from '@analys/table-pivot';
+import { tableToObject } from '@analys/table-select';
 import { inferTypes } from '@analys/table-types';
+import { selectTabularToSamples, tabularToSamples, selectTabular, sortTabularByKeys } from '@analys/tabular';
 import { NUM_ASC } from '@aryth/comparer';
 import { DistinctCount, Distinct } from '@aryth/distinct-column';
 import { column } from '@vect/column-getter';
@@ -70,11 +72,13 @@ class Table {
   }
 
   static from(o) {
-    return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
+    var _o;
+
+    return _o = o, toTable(_o);
   }
 
   toSamples(fields) {
-    return fields ? selectSamplesByHead.call(this, fields) : keyedColumnsToSamples.call(this);
+    return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this);
   }
 
   toObject(mutate = false) {
@@ -225,9 +229,17 @@ class Table {
   lookupMany(valuesToFind, key, field) {
     return lookupMany.call(this, valuesToFind, key, field);
   }
+  /**
+   *
+   * @param {string} key
+   * @param {string|string[]|[string,string][]} [field]
+   * @param {boolean} [objectify=true]
+   * @return {Object|Array}
+   */
 
-  lookupTable(key, field, objectify) {
-    return lookupTable.call(this, key, field, objectify);
+
+  lookupTable(key, field, objectify = true) {
+    return tableToObject.call(this, key, field, objectify);
   }
   /**
    *
@@ -241,7 +253,7 @@ class Table {
     mutate = false
   } = {}) {
     let o = mutate ? this : slice(this);
-    selectKeyedColumns.call(o, fields);
+    selectTabular.call(o, fields);
     return mutate ? this : this.copy(o);
   }
   /**
@@ -420,7 +432,7 @@ class Table {
     var _this11;
 
     let o = mutate ? this : (_this11 = this, slice(_this11));
-    sortColumnsByKeys.call(o, comparer);
+    sortTabularByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
 

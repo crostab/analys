@@ -1,5 +1,8 @@
+import { voidTabular }     from '@analys/tabular'
 import { unwind }          from '@vect/entries-unwind'
 import { iterate, mapper } from '@vect/vector-mapper'
+import { select }          from '@vect/vector-select'
+import { toTable }         from './tabularToTable'
 
 /**
  *
@@ -7,46 +10,59 @@ import { iterate, mapper } from '@vect/vector-mapper'
  * @param {(str|[str,str])[]} [fields]
  * @returns {TableObject}
  */
-export function samplesToTable(samples, fields) {
+export const samplesToTable = (samples, fields) =>
+  samplesToTabular(samples, fields) |> toTable
+
+/**
+ *
+ * @param {Object[]} samples
+ * @param {(str|[str,str])[]} [fields]
+ * @returns {TableObject}
+ */
+export function samplesToTabular(samples, fields) {
   let h, w
-  if (!(h = samples?.length)) return voidTable()
-  if (!fields?.length) return samplesToTableDirectly(samples)
-  const [keys, head] = lookupKeyHeadPairs.call(samples[0], fields) |> unwind
-  if (!(w = keys?.length)) return voidTable()
-  const rows = mapper(samples, sample => mapper(keys, key => sample[key], w), h)
+  if (!(h = samples?.length)) return voidTabular()
+  if (!fields?.length) return convertSamplesToTabular(samples)
+  const [keys, head] = selectFieldMapping.call(samples[0], fields) |> unwind
+  if (!(w = keys?.length)) return voidTabular()
+  const rows = mapper(samples, sample => select(sample, keys, w), h)
   return { head, rows }
 }
 
-const voidTable = () => ({ head: [], rows: [] })
-
-export const lookupKeyHeadPairs = function (fields) {
-  const sample = this, keyHeadPairs = []
-  let keyHead
-  iterate(fields, field => {
-    if ((keyHead = lookupKeyHeadPair.call(sample, field))) keyHeadPairs.push(keyHead)
-  })
-  return keyHeadPairs
+export const selectFieldMapping = function (fields) {
+  const sample = this, mapping = [], fieldMapper = fieldMapping.bind(sample)
+  let kvp
+  iterate(
+    fields,
+    field => { if ((kvp = fieldMapper(field))) mapping.push(kvp) }
+  )
+  return mapping
 }
 /**
  *
  * @param {str|[*,*]} [field]
  * @returns {[str,number]}
  */
-export const lookupKeyHeadPair = function (field) {
+export const fieldMapping = function (field) {
   const sample = this
-  if (!Array.isArray(field) && (field in sample)) return [field, field]
-  let [current, projected] = field
-  return current in sample ? [current, projected] : void 0
+  if (Array.isArray(field)) {
+    const [current, projected] = field
+    return current in sample
+      ? [current, projected]
+      : null
+  }
+  return field in sample
+    ? [field, field]
+    : null
 }
 
-export function samplesToTableDirectly(samples) {
-  const h = samples?.length
-  let head, rows = Array(h)
-  if (h) {
-    [head, rows[0]] = Object.entries(samples[0]) |> unwind
-    for (let i = 1, sample, w = head.length; i < h; i++)
-      sample = samples[i], rows[i] = mapper(head, field => sample[field], w)
-  }
+export function convertSamplesToTabular(samples) {
+  const height = samples?.length
+  if (!height) return voidTabular()
+  const rows = Array(height)
+  let head;
+  [head, rows[0]] = Object.entries(samples[0]) |> unwind
+  for (let i = 1, w = head?.length; i < height; i++) rows[i] = select(samples[i], head, w)
   return { head, rows }
 }
 
