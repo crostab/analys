@@ -1,8 +1,7 @@
 import { slice, matchSlice } from '@analys/table-init';
-import { selectTabular } from '@analys/tabular';
+import { selectTabular, selectTabularToSamples, tabularToSamples } from '@analys/tabular';
 import { randIntBetw } from '@aryth/rand';
 import { shuffle } from '@vect/vector-select';
-import { tableToSamples } from '@analys/convert';
 import { coin } from '@analys/table-index';
 import { nullish } from '@typen/nullish';
 import { column } from '@vect/column-getter';
@@ -64,7 +63,7 @@ const tableToObject = function (key, field, objectify = true) {
   const hi = table === null || table === void 0 ? void 0 : (_table$rows = table.rows) === null || _table$rows === void 0 ? void 0 : _table$rows.length;
   let x, y;
   const keys = (x = coin.call(table, key)) >= 0 ? column(table.rows, x, hi) : null;
-  const values = nullish(field) || Array.isArray(field) ? tableToSamples(table, field) : (y = coin.call(table, field)) >= 0 ? column(table.rows, y, hi) : null;
+  const values = nullish(field) || Array.isArray(field) ? (field === null || field === void 0 ? void 0 : field.length) ? selectTabularToSamples.call(matchSlice(table), field) : tabularToSamples.call(matchSlice(table)) : (y = coin.call(table, field)) >= 0 ? column(table.rows, y, hi) : null;
   return keys && values ? objectify ? wind(keys, values) : wind$1(keys, values) : objectify ? {} : [];
 };
 

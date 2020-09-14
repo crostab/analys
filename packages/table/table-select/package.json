@@ -15,7 +15,6 @@
     "test": "node -r @babel/register test/table.select.test.js"
   },
   "dependencies": {
-    "@analys/convert": "^0.4.7-alpha.0",
     "@analys/table-index": "^0.4.7-alpha.0",
     "@analys/table-init": "^0.4.7-alpha.0",
     "@analys/tabular": "^0.4.7-alpha.0",

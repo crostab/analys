@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var convert = require('@analys/convert');
 var tableChips = require('@analys/table-chips');
 var tableDivide = require('@analys/table-divide');
 var tableFilter = require('@analys/table-filter');
@@ -76,9 +75,7 @@ class Table {
   }
 
   static from(o) {
-    var _o;
-
-    return _o = o, convert.toTable(_o);
+    return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
   }
 
   toSamples(fields) {

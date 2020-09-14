@@ -1,4 +1,3 @@
-import { toTable } from '@analys/convert';
 import { tableChips } from '@analys/table-chips';
 import { tableDivide } from '@analys/table-divide';
 import { tableFilter } from '@analys/table-filter';
@@ -72,9 +71,7 @@ class Table {
   }
 
   static from(o) {
-    var _o;
-
-    return _o = o, toTable(_o);
+    return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types);
   }
 
   toSamples(fields) {

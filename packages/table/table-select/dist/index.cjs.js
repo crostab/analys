@@ -6,7 +6,6 @@ var tableInit = require('@analys/table-init');
 var tabular = require('@analys/tabular');
 var rand = require('@aryth/rand');
 var vectorSelect = require('@vect/vector-select');
-var convert = require('@analys/convert');
 var tableIndex = require('@analys/table-index');
 var nullish = require('@typen/nullish');
 var columnGetter = require('@vect/column-getter');
@@ -68,7 +67,7 @@ const tableToObject = function (key, field, objectify = true) {
   const hi = table === null || table === void 0 ? void 0 : (_table$rows = table.rows) === null || _table$rows === void 0 ? void 0 : _table$rows.length;
   let x, y;
   const keys = (x = tableIndex.coin.call(table, key)) >= 0 ? columnGetter.column(table.rows, x, hi) : null;
-  const values = nullish.nullish(field) || Array.isArray(field) ? convert.tableToSamples(table, field) : (y = tableIndex.coin.call(table, field)) >= 0 ? columnGetter.column(table.rows, y, hi) : null;
+  const values = nullish.nullish(field) || Array.isArray(field) ? (field === null || field === void 0 ? void 0 : field.length) ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), field) : tabular.tabularToSamples.call(tableInit.matchSlice(table)) : (y = tableIndex.coin.call(table, field)) >= 0 ? columnGetter.column(table.rows, y, hi) : null;
   return keys && values ? objectify ? objectInit.wind(keys, values) : entriesInit.wind(keys, values) : objectify ? {} : [];
 };
 

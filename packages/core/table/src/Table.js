@@ -1,4 +1,3 @@
-import { toTable }                                                                    from '@analys/convert'
 import { tableChips }                                                                 from '@analys/table-chips'
 import { tableDivide }                                                                from '@analys/table-divide'
 import { tableFilter }                                                                from '@analys/table-filter'
@@ -52,7 +51,7 @@ export class Table {
     this.types = types
   }
 
-  static from(o) { return o|> toTable }
+  static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
   toSamples(fields) { return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this) }
   toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
 
