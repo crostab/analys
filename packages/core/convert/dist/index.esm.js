@@ -26,7 +26,7 @@ const toTable = o => new Table(o.head || o.banner, o.rows || o.matrix, o.title, 
  *
  * @param {Object[]} samples
  * @param {(str|[str,str])[]} [fields]
- * @returns {TableObject}
+ * @returns {Table}
  */
 
 const samplesToTable = (samples, fields) => {

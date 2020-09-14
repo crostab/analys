@@ -46,7 +46,7 @@ export class Table {
    */
   constructor(head, rows, title, types) {
     this.head = head || []
-    this.rows = rows || [[]]
+    this.rows = rows || []
     this.title = title || ''
     this.types = types
   }

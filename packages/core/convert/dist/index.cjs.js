@@ -30,7 +30,7 @@ const toTable = o => new table.Table(o.head || o.banner, o.rows || o.matrix, o.t
  *
  * @param {Object[]} samples
  * @param {(str|[str,str])[]} [fields]
- * @returns {TableObject}
+ * @returns {Table}
  */
 
 const samplesToTable = (samples, fields) => {

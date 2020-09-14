@@ -8,7 +8,7 @@ import { toTable }         from './tabularToTable'
  *
  * @param {Object[]} samples
  * @param {(str|[str,str])[]} [fields]
- * @returns {TableObject}
+ * @returns {Table}
  */
 export const samplesToTable = (samples, fields) =>
   samplesToTabular(samples, fields) |> toTable

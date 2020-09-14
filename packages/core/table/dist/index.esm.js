@@ -65,7 +65,7 @@ class Table {
     _defineProperty(this, "types", void 0);
 
     this.head = head || [];
-    this.rows = rows || [[]];
+    this.rows = rows || [];
     this.title = title || '';
     this.types = types;
   }
