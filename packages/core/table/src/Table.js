@@ -345,7 +345,7 @@ export class Table {
   crosTab(options = {}) {
     const table = slice(this)
     if (options.filter) { tableFind.call(table, options.filter) }
-    return tablePivot.call(options, this)
+    return tablePivot.call(options, table)
   }
 
   inferTypes({ inferType, omitNull = true, mutate = false } = {}) {
