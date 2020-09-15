@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-join",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/enum-join-modes": "^0.4.8",
+    "@analys/enum-join-modes": "^0.4.9",
     "@aryth/comparer": "^0.2.14",
     "@vect/vector-init": "^0.2.9",
     "@vect/vector-mapper": "^0.2.9",
