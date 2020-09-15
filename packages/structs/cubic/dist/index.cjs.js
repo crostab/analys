@@ -2,11 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var dataGram = require('@analys/data-gram');
+var nestGram = require('@analys/nest-gram');
 var utilPivot = require('@analys/util-pivot');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorZipper = require('@vect/vector-zipper');
-var dataGram = require('@analys/data-gram');
-var nestGram = require('@analys/nest-gram');
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -115,7 +115,7 @@ class Notes {
     } = this;
     const s = side.to ? side.to(sample[side.key]) : sample[side.key];
     const b = head.to ? head.to(sample[head.key]) : sample[head.key];
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]));
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static simpleCubic(sample) {
@@ -148,7 +148,7 @@ class Notes {
       key,
       to
     }) => to ? to(sample[key]) : sample[key]);
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]));
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static nestedCubic(sample) {

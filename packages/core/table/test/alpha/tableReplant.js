@@ -11,7 +11,7 @@ export const tableReplant = (
     excludes,
     replant,
   }) => {
-  const [excl, incl] = [table.select(includes), table.spliceColumns(excludes)]
+  const [excl, incl] = [table.select(includes), table.deleteColumns(excludes)]
   replant(incl)
   return acquireTable(excl, incl)
 }

@@ -259,30 +259,102 @@ class Table {
   }
   /**
    *
-   * @param {*} label
-   * @param {*[]} column
-   * @param {*} field - next to the field, will the new column (label, column) be inserted
-   * @param afterField
+   * @param {*} field
+   * @param {Function} splitter
+   * @param {*} [fields] - new names of divided fields
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
 
 
-  insertColumn(label, column, {
-    field,
+  divideColumn(field, splitter, {
+    fields,
     mutate = false
   } = {}) {
     var _this3;
 
     const o = mutate ? this : (_this3 = this, tableInit.shallow(_this3)),
-          index = this.coin(field) + 1;
-    o.head.splice(index, 0, label);
-    vectorMapper.iterate(o.rows, (row, i) => row.splice(index, 0, column[i]));
+          y = this.coin(field);
+    o.head.splice(y, 1, ...(fields !== null && fields !== void 0 ? fields : splitter(field)));
+    vectorMapper.iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])));
     return mutate ? this : Table.from(o);
   }
   /**
    *
-   * @param {*} field
+   * @param {{key,to,as}|{key,to,as}[]} fieldSpec
+   * @param {*} [nextTo] - the existing field after which the newField inserts
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  proliferateColumn(fieldSpec, {
+    nextTo,
+    mutate = false
+  } = {}) {
+    var _this4, _fieldSpec;
+
+    if (!Array.isArray(fieldSpec)) fieldSpec = [fieldSpec];
+    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4)),
+          {
+      head,
+      rows
+    } = o,
+          y = nextTo ? this.coin(nextTo) + 1 : 0;
+    fieldSpec.forEach(o => o.index = this.coin(o.key));
+
+    if (((_fieldSpec = fieldSpec) === null || _fieldSpec === void 0 ? void 0 : _fieldSpec.length) === 1) {
+      const [{
+        index,
+        to,
+        as
+      }] = fieldSpec;
+      head.splice(y, 0, as);
+      vectorMapper.iterate(rows, row => row.splice(y, 0, to(row[index])));
+    } else {
+      head.splice(y, 0, ...fieldSpec.map(({
+        as
+      }) => as));
+      vectorMapper.iterate(rows, row => row.splice(y, 0, ...fieldSpec.map(({
+        index,
+        to
+      }) => to(row[index]))));
+    }
+
+    return mutate ? this : Table.from(o);
+  }
+  /**
+   *
+   * @param {*|*[]} newField
+   * @param {*[]|*[][]} column
+   * @param {*} [nextTo] - the existing field after which the newField inserts
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+
+
+  insertColumn(newField, column, {
+    nextTo,
+    mutate = false
+  } = {}) {
+    var _this5;
+
+    const o = mutate ? this : (_this5 = this, tableInit.shallow(_this5)),
+          y = nextTo ? this.coin(nextTo) + 1 : 0;
+
+    if (Array.isArray(newField)) {
+      o.head.splice(y, 0, ...newField);
+      vectorMapper.iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]));
+    } else {
+      o.head.splice(y, 0, newField);
+      vectorMapper.iterate(o.rows, (row, i) => row.splice(y, 0, column[i]));
+    }
+
+    return mutate ? this : Table.from(o);
+  }
+  /**
+   *
+   * @param {*|*[]} field
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
@@ -291,39 +363,33 @@ class Table {
   deleteColumn(field, {
     mutate = false
   } = {}) {
-    var _this4;
+    var _this6;
 
-    const o = mutate ? this : (_this4 = this, tableInit.shallow(_this4)),
-          index = this.coin(field);
-    o.head.splice(index, 1);
-    o.rows.forEach(row => row.splice(index, 1));
+    const o = mutate ? this : (_this6 = this, tableInit.shallow(_this6));
+    const {
+      head,
+      rows
+    } = o;
+
+    if (Array.isArray(field)) {
+      const indexes = this.columnIndexes(field).filter(i => i >= 0).sort(comparer.NUM_ASC);
+      vectorUpdate.splices(head, indexes);
+      columnsUpdate.splices(rows, indexes);
+    } else {
+      const index = this.coin(field);
+      head.splice(index, 1);
+      rows.forEach(row => row.splice(index, 1));
+    }
+
     return mutate ? this : Table.from(o);
-  }
-  /**
-   *
-   * @param {*[]|[*,*][]} fields
-   * @param {boolean=true} [mutate]
-   * @returns {Table}
-   */
-
-
-  spliceColumns(fields, {
-    mutate = false
-  } = {}) {
-    var _this5;
-
-    const o = mutate ? this : (_this5 = this, tableInit.shallow(_this5)),
-          indexes = this.columnIndexes(fields).sort(comparer.NUM_ASC);
-    columnsUpdate.splices(o.rows, indexes), vectorUpdate.splices(o.head, indexes);
-    return mutate ? this : this.copy(o);
   }
 
   divide(fields, {
     mutate = false
   } = {}) {
-    var _this6;
+    var _this7;
 
-    const o = mutate ? this : (_this6 = this, tableInit.shallow(_this6));
+    const o = mutate ? this : (_this7 = this, tableInit.shallow(_this7));
     const {
       pick,
       rest
@@ -344,9 +410,9 @@ class Table {
   filter(filterCollection, {
     mutate = true
   } = {}) {
-    var _this7;
+    var _this8;
 
-    const o = mutate ? this : (_this7 = this, tableInit.slice(_this7));
+    const o = mutate ? this : (_this8 = this, tableInit.slice(_this8));
     tableFilter.tableFilter.call(o, filterCollection);
     return mutate ? this : this.copy(o);
   }
@@ -361,9 +427,9 @@ class Table {
   find(filter, {
     mutate = true
   } = {}) {
-    var _this8;
+    var _this9;
 
-    const o = mutate ? this : (_this8 = this, tableInit.slice(_this8));
+    const o = mutate ? this : (_this9 = this, tableInit.slice(_this9));
     tableFind.tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
   }
@@ -371,9 +437,9 @@ class Table {
   distinct(fields, {
     mutate = true
   } = {}) {
-    var _this9;
+    var _this10;
 
-    const o = mutate ? this : (_this9 = this, tableInit.slice(_this9));
+    const o = mutate ? this : (_this10 = this, tableInit.slice(_this10));
 
     for (let field of fields) o.rows = borel.StatMx.distinct(o.rows, this.coin(field));
 
@@ -409,13 +475,13 @@ class Table {
   sort(field, comparer, {
     mutate = true
   } = {}) {
-    var _this10;
+    var _this11;
 
     const y = this.coin(field);
 
     const rowComparer = (a, b) => comparer(a[y], b[y]);
 
-    const o = mutate ? this : (_this10 = this, tableInit.slice(_this10));
+    const o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
     o.rows.sort(rowComparer);
     return mutate ? this : this.copy(o);
   }
@@ -430,9 +496,9 @@ class Table {
   sortLabel(comparer, {
     mutate = true
   } = {}) {
-    var _this11;
+    var _this12;
 
-    let o = mutate ? this : (_this11 = this, tableInit.slice(_this11));
+    let o = mutate ? this : (_this12 = this, tableInit.slice(_this12));
     tabular.sortTabularByKeys.call(o, comparer);
     return mutate ? this : this.copy(o);
   }
@@ -457,7 +523,7 @@ class Table {
     if (shared.length) {
       for (let label of shared) self.setColumn(label, another.column(label));
 
-      another = another.spliceColumns(shared, {
+      another = another.deleteColumns(shared, {
         mutate
       });
     }

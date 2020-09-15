@@ -10,7 +10,7 @@ import { nullish }  from '@typen/nullish'
  *
  * @param {str|str[]|Object<str,Function>|[string,Function][]} field
  * @param {number} level
- * @returns {{key:str,to:number}|{key:str,to:number}[]}
+ * @returns {{key:str,to:number}[]}
  */
 export function parseField(field, level = 0) {
   const { key: defaultKey = '', to: defaultTo = null } = this ?? {}

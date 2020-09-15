@@ -12,5 +12,5 @@ for (const [key, table] of Object.entries(TableCollection)) {
   }) |> decoTable |> says[key]
 }
 
-// Table.from(table).spliceColumns([SYMBOL], { mutate: true })
+// Table.from(table).deleteColumns([SYMBOL], { mutate: true })
 

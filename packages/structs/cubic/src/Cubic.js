@@ -1,8 +1,8 @@
+import { DataGram }                from '@analys/data-gram'
+import { NestGram }                from '@analys/nest-gram'
 import { modeToInit, modeToTally } from '@analys/util-pivot'
 import { iterate }                 from '@vect/vector-mapper'
 import { mutazip }                 from '@vect/vector-zipper'
-import { DataGram }                from '@analys/data-gram'
-import { NestGram }                from '@analys/nest-gram'
 
 export class Cubic {
   side
@@ -67,7 +67,7 @@ class Notes {
     const { data, side, head, field } = this
     const s = side.to ? side.to(sample[side.key]) : sample[side.key]
     const b = head.to ? head.to(sample[head.key]) : sample[head.key]
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]))
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]))
   }
   static simpleCubic(sample) {
     const { data, side, head, field } = this
@@ -79,7 +79,7 @@ class Notes {
     const { data, side, head, field } = this
     const s = side.map(({ key, to }) => to ? to(sample[key]) : sample[key])
     const b = head.map(({ key, to }) => to ? to(sample[key]) : sample[key])
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]))
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]))
   }
   static nestedCubic(sample) {
     const { data, side, head, field } = this

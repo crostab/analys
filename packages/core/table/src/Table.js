@@ -123,41 +123,89 @@ export class Table {
 
   /**
    *
-   * @param {*} label
-   * @param {*[]} column
-   * @param {*} field - next to the field, will the new column (label, column) be inserted
-   * @param afterField
+   * @param {*} field
+   * @param {Function} splitter
+   * @param {*} [fields] - new names of divided fields
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
-  insertColumn(label, column, { field, mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, index = this.coin(field) + 1
-    o.head.splice(index, 0, label)
-    iterate(o.rows, (row, i) => row.splice(index, 0, column[i]))
+  divideColumn(field, splitter, { fields, mutate = false } = {}) {
+    const
+      o = mutate ? this : this |> shallow,
+      y = this.coin(field)
+    o.head.splice(y, 1, ...(fields ?? splitter(field)))
+    iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])))
     return mutate ? this : Table.from(o)
   }
+
   /**
    *
-   * @param {*} field
+   * @param {{key,to,as}|{key,to,as}[]} fieldSpec
+   * @param {*} [nextTo] - the existing field after which the newField inserts
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+  proliferateColumn(fieldSpec, { nextTo, mutate = false } = {}) {
+    if (!Array.isArray(fieldSpec)) fieldSpec = [fieldSpec]
+    const
+      o = mutate ? this : this |> shallow,
+      { head, rows } = o,
+      y = nextTo ? (this.coin(nextTo) + 1) : 0
+    fieldSpec.forEach(o => o.index = this.coin(o.key))
+    if (fieldSpec?.length === 1) {
+      const [{ index, to, as }] = fieldSpec
+      head.splice(y, 0, as)
+      iterate(rows,
+        row => row.splice(y, 0, to(row[index]))
+      )
+    } else {
+      head.splice(y, 0, ...fieldSpec.map(({ as }) => as))
+      iterate(rows,
+        row => row.splice(y, 0, ...fieldSpec.map(({ index, to }) => to(row[index])))
+      )
+    }
+    return mutate ? this : Table.from(o)
+  }
+
+  /**
+   *
+   * @param {*|*[]} newField
+   * @param {*[]|*[][]} column
+   * @param {*} [nextTo] - the existing field after which the newField inserts
+   * @param {boolean=true} [mutate]
+   * @returns {Table}
+   */
+  insertColumn(newField, column, { nextTo, mutate = false } = {}) {
+    const o = mutate ? this : this |> shallow, y = nextTo ? (this.coin(nextTo) + 1) : 0
+    if (Array.isArray(newField)) {
+      o.head.splice(y, 0, ...newField)
+      iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]))
+    } else {
+      o.head.splice(y, 0, newField)
+      iterate(o.rows, (row, i) => row.splice(y, 0, column[i]))
+    }
+    return mutate ? this : Table.from(o)
+  }
+
+  /**
+   *
+   * @param {*|*[]} field
    * @param {boolean=true} [mutate]
    * @returns {Table}
    */
   deleteColumn(field, { mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, index = this.coin(field)
-    o.head.splice(index, 1)
-    o.rows.forEach(row => row.splice(index, 1))
+    const o = mutate ? this : this |> shallow
+    const { head, rows } = o
+    if (Array.isArray(field)) {
+      const indexes = this.columnIndexes(field).filter(i => i >= 0).sort(NUM_ASC)
+      splices(head, indexes)
+      splicesColumns(rows, indexes)
+    } else {
+      const index = this.coin(field)
+      head.splice(index, 1)
+      rows.forEach(row => row.splice(index, 1))
+    }
     return mutate ? this : Table.from(o)
-  }
-  /**
-   *
-   * @param {*[]|[*,*][]} fields
-   * @param {boolean=true} [mutate]
-   * @returns {Table}
-   */
-  spliceColumns(fields, { mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, indexes = this.columnIndexes(fields).sort(NUM_ASC)
-    splicesColumns(o.rows, indexes), splices(o.head, indexes)
-    return mutate ? this : this.copy(o)
   }
 
   divide(fields, { mutate = false } = {}) {
@@ -249,7 +297,7 @@ export class Table {
     const shared = intersect(self.head, another.head)
     if (shared.length) {
       for (let label of shared) self.setColumn(label, another.column(label))
-      another = another.spliceColumns(shared, { mutate })
+      another = another.deleteColumns(shared, { mutate })
     }
     return mutate
       ? tableAcquire(self, another)

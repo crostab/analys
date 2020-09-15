@@ -1,8 +1,8 @@
+import { DataGram } from '@analys/data-gram';
+import { NestGram } from '@analys/nest-gram';
 import { modeToTally, modeToInit } from '@analys/util-pivot';
 import { iterate } from '@vect/vector-mapper';
 import { mutazip } from '@vect/vector-zipper';
-import { DataGram } from '@analys/data-gram';
-import { NestGram } from '@analys/nest-gram';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -111,7 +111,7 @@ class Notes {
     } = this;
     const s = side.to ? side.to(sample[side.key]) : sample[side.key];
     const b = head.to ? head.to(sample[head.key]) : sample[head.key];
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]));
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static simpleCubic(sample) {
@@ -144,7 +144,7 @@ class Notes {
       key,
       to
     }) => to ? to(sample[key]) : sample[key]);
-    return data.mutateCell(s, b, pr => field.accum(pr, sample[field.key]));
+    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static nestedCubic(sample) {

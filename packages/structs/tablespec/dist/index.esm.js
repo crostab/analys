@@ -99,7 +99,7 @@ const getEntryOnce = o => {
  *
  * @param {str|str[]|Object<str,Function>|[string,Function][]} field
  * @param {number} level
- * @returns {{key:str,to:number}|{key:str,to:number}[]}
+ * @returns {{key:str,to:number}[]}
  */
 
 function parseField$1(field, level = 0) {
