@@ -17,9 +17,9 @@
   "dependencies": {
     "@analys/table": "^0.4.10",
     "@aryth/math": "^0.2.14",
-    "@vect/vector-mapper": "^0.2.9",
-    "@vect/vector-merge": "^0.2.9",
-    "@vect/vector-roller": "^0.2.9"
+    "@vect/vector-mapper": "^0.2.10",
+    "@vect/vector-merge": "^0.2.10",
+    "@vect/vector-roller": "^0.2.10"
   },
   "repository": {
     "type": "git",

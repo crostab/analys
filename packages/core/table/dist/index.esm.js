@@ -582,7 +582,7 @@ class Table {
       tableFind.call(table, options.filter);
     }
 
-    return tablePivot.call(options, this);
+    return tablePivot.call(options, table);
   }
 
   inferTypes({

@@ -17,10 +17,10 @@
   "dependencies": {
     "@analys/enum-join-modes": "^0.4.10",
     "@aryth/comparer": "^0.2.14",
-    "@vect/vector-init": "^0.2.9",
-    "@vect/vector-mapper": "^0.2.9",
-    "@vect/vector-select": "^0.2.9",
-    "@vect/vector-update": "^0.2.9"
+    "@vect/vector-init": "^0.2.10",
+    "@vect/vector-mapper": "^0.2.10",
+    "@vect/vector-select": "^0.2.10",
+    "@vect/vector-update": "^0.2.10"
   },
   "repository": {
     "type": "git",

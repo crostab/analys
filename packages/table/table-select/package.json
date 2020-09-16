@@ -19,11 +19,11 @@
     "@analys/table-init": "^0.4.10",
     "@analys/tabular": "^0.4.10",
     "@aryth/rand": "^0.2.14",
-    "@typen/nullish": "^0.1.9",
-    "@vect/column-getter": "^0.2.9",
-    "@vect/entries-init": "^0.2.9",
-    "@vect/object-init": "^0.2.9",
-    "@vect/vector-select": "^0.2.9"
+    "@typen/nullish": "^0.1.10",
+    "@vect/column-getter": "^0.2.10",
+    "@vect/entries-init": "^0.2.10",
+    "@vect/object-init": "^0.2.10",
+    "@vect/vector-select": "^0.2.10"
   },
   "repository": {
     "type": "git",
