@@ -8,7 +8,7 @@ import { mutate as mutate$1 } from '@vect/column-mapper';
 import { push, unshift, pop, shift } from '@vect/columns-update';
 import { ROWWISE, COLUMNWISE } from '@vect/enum-matrix-directions';
 import { init } from '@vect/matrix-init';
-import { mapper } from '@vect/matrix-mapper';
+import { mapper, mutate as mutate$2 } from '@vect/matrix-mapper';
 import { transpose } from '@vect/matrix-transpose';
 import { pair } from '@vect/object-init';
 import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
@@ -219,6 +219,18 @@ class CrosTab {
     return this.boot({
       head: mapper$1(this.head, fn)
     }, mutate);
+  }
+
+  mutate(fn) {
+    return mutate$2(this.rows, fn, this.height, this.width), this;
+  }
+
+  mutateSide(fn) {
+    return mutate(this.side, fn), this;
+  }
+
+  mutateBanner(fn) {
+    return mutate(this.head, fn), this;
   }
 
   pushRow(label, row) {

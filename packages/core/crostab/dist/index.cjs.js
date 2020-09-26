@@ -225,6 +225,18 @@ class CrosTab {
     }, mutate);
   }
 
+  mutate(fn) {
+    return matrixMapper.mutate(this.rows, fn, this.height, this.width), this;
+  }
+
+  mutateSide(fn) {
+    return vectorMapper.mutate(this.side, fn), this;
+  }
+
+  mutateBanner(fn) {
+    return vectorMapper.mutate(this.head, fn), this;
+  }
+
   pushRow(label, row) {
     return this.side.push(label), this.rows.push(row), this;
   }

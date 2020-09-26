@@ -297,7 +297,7 @@ export class Table {
     const shared = intersect(self.head, another.head)
     if (shared.length) {
       for (let label of shared) self.setColumn(label, another.column(label))
-      another = another.deleteColumns(shared, { mutate })
+      another = another.deleteColumn(shared, { mutate })
     }
     return mutate
       ? tableAcquire(self, another)

@@ -38,7 +38,10 @@ import {
   ROWWISE
 }                                 from '@vect/enum-matrix-directions'
 import { init as initMatrix }     from '@vect/matrix-init'
-import { mapper as mapperMatrix } from '@vect/matrix-mapper'
+import {
+  mapper as mapperMatrix,
+  mutate as mutateMatrix
+}                                 from '@vect/matrix-mapper'
 import { transpose }              from '@vect/matrix-transpose'
 import { pair }                   from '@vect/object-init'
 import {
@@ -125,6 +128,9 @@ export class CrosTab {
   }
   mapSide(fn, { mutate = true } = {}) { return this.boot({ side: mapper(this.side, fn) }, mutate) }
   mapBanner(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+  mutate(fn) { return mutateMatrix(this.rows, fn, this.height, this.width), this }
+  mutateSide(fn) { return mutate(this.side, fn), this }
+  mutateBanner(fn) { return mutate(this.head, fn), this }
 
   pushRow(label, row) { return this.side.push(label), this.rows.push(row), this }
   unshiftRow(label, row) { return this.side.unshift(label), this.rows.unshift(row), this }

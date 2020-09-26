@@ -27,6 +27,9 @@ export const tablePivot = function (table) {
   const sideConf = parseConf(side), bannerConf = parseConf(banner), fieldConf = parseConf(field)
   const pivotEngine = Cubic.build(sideConf, bannerConf, fieldConf)
   const crostab = CrosTab.from(pivotEngine.record(rows).toObject())
-  if ((fieldConf.length > 1) && formula) crostab.map(vec => formula.apply(null, vec))
+  if (formula) {
+    if (fieldConf.length === 1) crostab.mutate(el => formula.call(null, el))
+    if (fieldConf.length > 1) crostab.mutate(vec => formula.apply(null, vec))
+  }
   return crostab
 }

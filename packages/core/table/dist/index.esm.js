@@ -519,7 +519,7 @@ class Table {
     if (shared.length) {
       for (let label of shared) self.setColumn(label, another.column(label));
 
-      another = another.deleteColumns(shared, {
+      another = another.deleteColumn(shared, {
         mutate
       });
     }

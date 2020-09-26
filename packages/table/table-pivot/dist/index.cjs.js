@@ -50,7 +50,12 @@ const tablePivot = function (table) {
         fieldConf = parseConf(field);
   const pivotEngine = cubic.Cubic.build(sideConf, bannerConf, fieldConf);
   const crostab$1 = crostab.CrosTab.from(pivotEngine.record(rows).toObject());
-  if (fieldConf.length > 1 && formula) crostab$1.map(vec => formula.apply(null, vec));
+
+  if (formula) {
+    if (fieldConf.length === 1) crostab$1.mutate(el => formula.call(null, el));
+    if (fieldConf.length > 1) crostab$1.mutate(vec => formula.apply(null, vec));
+  }
+
   return crostab$1;
 };
 

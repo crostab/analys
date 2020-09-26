@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@analys/table": "^0.4.11",
-    "@aryth/math": "^0.2.14",
+    "@aryth/math": "^0.3.0",
     "@vect/vector-mapper": "^0.2.10",
     "@vect/vector-merge": "^0.2.10",
     "@vect/vector-roller": "^0.2.10"
