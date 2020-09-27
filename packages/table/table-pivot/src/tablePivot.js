@@ -24,7 +24,10 @@ export const tablePivot = function (table) {
   const { side, banner, field, formula } = this
   const { head, rows } = table
   const parseConf = keyConf => parseField(keyConf).map(({ key, to }) => ({ key: head.indexOf(key), to }))
-  const sideConf = parseConf(side), bannerConf = parseConf(banner), fieldConf = parseConf(field)
+  const
+    sideConf = parseConf(side),
+    bannerConf = parseConf(banner),
+    fieldConf = parseConf(field)
   const pivotEngine = Cubic.build(sideConf, bannerConf, fieldConf)
   const crostab = CrosTab.from(pivotEngine.record(rows).toObject())
   if (formula) {

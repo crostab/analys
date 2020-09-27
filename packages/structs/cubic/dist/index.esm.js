@@ -42,6 +42,7 @@ class Cubic {
     _defineProperty(this, "cell", void 0);
 
     if (side.length === 1 && head.length === 1) {
+      this.nested = false;
       [this.side] = side;
       [this.head] = head;
     } else {
@@ -51,6 +52,7 @@ class Cubic {
     }
 
     if (field.length === 1) {
+      this.cubic = false;
       const [_field] = field;
       this.field = {
         key: _field.key,

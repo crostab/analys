@@ -1,7 +1,9 @@
 import { init } from '@vect/vector-init';
-import { MERGE, ACCUM, INCRE, COUNT, AVERAGE, MAX, MIN, FIRST, LAST } from '@analys/enum-pivot-mode';
 import { max, min } from '@aryth/comparer';
+import { FUN } from '@typen/enum-data-types';
+import { nullish } from '@typen/nullish';
 import { acquire } from '@vect/vector-merge';
+import { MERGE, ACCUM, INCRE, COUNT, AVERAGE, MAX, MIN, FIRST, LAST } from '@analys/enum-pivot-mode';
 
 const ampliCell = function (side, banner) {
   return this.rows[arid.call(this, side)][acid.call(this, banner)];
@@ -27,29 +29,45 @@ const qcid = function (y) {
   return this.head.indexOf(y);
 };
 
-const tallyMerge = (target, value) => acquire(target, value);
-const tallyAccum = (target, value) => (target.push(value), target);
-const tallyIncre = (target, value) => target + value;
-const tallyCount = (target, value) => target + 1;
-const tallyAverage = (target, value) => (target.sum += value, target.count += 1, target);
-const tallyMax = (target, value) => max(target, value);
-const tallyMin = (target, value) => min(target, value);
-const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
-const tallyLast = (target, value) => value !== null && value !== void 0 ? value : target;
+const NaiveAccumulators = {
+  merge: (target, value) => acquire(target, value),
+  accum: (target, value) => (target.push(value), target),
+  incre: (target, value) => target + value,
+  count: (target, value) => target + 1,
+  average: (target, value) => (target.sum += value, target.count += 1, target),
+  max: (target, value) => max(target, value),
+  min: (target, value) => min(target, value),
+  first: (target, value) => target !== null && target !== void 0 ? target : value,
+  last: (target, value) => value !== null && value !== void 0 ? value : target
+};
+const Accumulators = {
+  merge: (target, value) => nullish(value) ? target : acquire(target, value),
+  accum: (target, value) => nullish(value) ? target : (target.push(value), target),
+  incre: (target, value) => nullish(value) ? target : target + value,
+  count: (target, value) => nullish(value) ? target : target + 1,
+  average: (target, value) => nullish(value) ? target : (target.sum += value, target.count += 1, target),
+  max: (target, value) => nullish(value) ? target : max(target, value),
+  min: (target, value) => nullish(value) ? target : min(target, value),
+  first: (target, value) => target !== null && target !== void 0 ? target : value,
+  last: (target, value) => value !== null && value !== void 0 ? value : target
+};
 const modeToTally = mode => {
-  if (mode === MERGE) return tallyMerge;
-  if (mode === ACCUM) return tallyAccum;
-  if (mode === INCRE) return tallyIncre;
-  if (mode === COUNT) return tallyCount;
-  if (mode === AVERAGE) return tallyAverage;
-  if (mode === MAX) return tallyMax;
-  if (mode === MIN) return tallyMin;
-  if (mode === FIRST) return tallyFirst;
-  if (mode === LAST) return tallyLast;
+  let accumulators = Accumulators;
+
+  if (Array.isArray(mode)) {
+    var _mode$;
+
+    accumulators = (_mode$ = mode[1]) !== null && _mode$ !== void 0 ? _mode$ : Accumulators;
+    mode = mode[0];
+  }
+
+  if (typeof mode === FUN) return mode;
+  if (mode in accumulators) return accumulators[mode];
   return () => {};
 };
 
 const modeToInit = mode => {
+  if (Array.isArray(mode)) mode = mode[0];
   if (mode === MERGE || mode === ACCUM) return () => [];
   if (mode === INCRE || mode === COUNT) return () => 0;
   if (mode === AVERAGE) return () => ({
@@ -64,7 +82,7 @@ const modeToInit = mode => {
   if (mode === MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === MIN) return () => Number.POSITIVE_INFINITY;
   if (mode === FIRST || mode === LAST) return () => void 0;
-  return () => [];
+  return () => 0;
 };
 
-export { acid, ampliCell, arid, modeToInit, modeToTally, qcid, qrid, queryCell, tallyAccum, tallyCount, tallyIncre, tallyMax, tallyMerge, tallyMin };
+export { Accumulators, NaiveAccumulators, acid, ampliCell, arid, modeToInit, modeToTally, qcid, qrid, queryCell };

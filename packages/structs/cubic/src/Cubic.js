@@ -12,7 +12,6 @@ export class Cubic {
   data
   /** @type {Function} */ cell
 
-
   /**
    *
    * @param {{key:number, to:Function?}[]} side
@@ -21,6 +20,7 @@ export class Cubic {
    */
   constructor(side, head, field) {
     if (side.length === 1 && head.length === 1) {
+      this.nested = false;
       [this.side] = side;
       [this.head] = head
     } else {
@@ -29,6 +29,7 @@ export class Cubic {
       this.head = head
     }
     if (field.length === 1) {
+      this.cubic = false
       const [_field] = field
       this.field = { key: _field.key, accum: modeToTally(_field.to) }
       this.data = (this.nested ? NestGram : DataGram).build(modeToInit(_field.to))

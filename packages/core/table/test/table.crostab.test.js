@@ -1,9 +1,10 @@
-import { CrosTab }                        from '@analys/crostab'
-import { COUNT, INCRE }                   from '@analys/enum-pivot-mode'
-import { delogger }                       from '@spare/deco'
-import { decoCrostab, DecoTable, logger } from '@spare/logger'
-import { Table }                          from '../src/Table'
-import BigMacTable                        from './assets/out/BigMacIndex.Table'
+import { COUNT, INCRE }                    from '@analys/enum-pivot-mode'
+import { Accumulators, NaiveAccumulators } from '@analys/util-pivot'
+import { says }                            from '@palett/says'
+import { delogger }                        from '@spare/deco'
+import { decoCrostab, DecoTable }          from '@spare/logger'
+import { Table }                           from '../src/Table'
+import BigMacTable                         from './assets/out/BigMacIndex.Table'
 
 const table = Table.from(BigMacTable)
 
@@ -24,26 +25,23 @@ const regions = [
 
 const yearEra = year => ~~(year / 5) * 5
 
-table.pushColumn(ERA,
-  table.column(DATE).map(dashed => +(dashed.slice(0, 4)) |> yearEra)
-)
-
 table |> DecoTable({ top: 5, bottom: 2 }) |> delogger
 
 const crosTab = table.crosTab({
-  side: { date: dashed => (+(dashed.slice(0, 4)) |> yearEra) },
-  banner: [REGION],
-  field: {
-    price: INCRE,
-    era: COUNT
-  },
+  side: { date: ymd => +ymd.slice(0, 4)|> yearEra },
+  banner: REGION,
+  field: [
+    ['price', INCRE],
+    ['price', [COUNT, Accumulators]],
+    ['gdppc', [COUNT, NaiveAccumulators]],
+  ],
   filter: {
     region: x => regions.includes(x),
     date: x => x.slice(-5) !== '01-01'
   },
-  formula: (p, c) => (p / c).toFixed(2)
-}) |> CrosTab.from
+  // formula: (p, c) => (p / c).toFixed(2)
+})
 
-crosTab |> decoCrostab |> logger
+crosTab |> decoCrostab |> says['average price']
 
 

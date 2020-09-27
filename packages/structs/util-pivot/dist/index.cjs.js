@@ -3,9 +3,11 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vectorInit = require('@vect/vector-init');
-var enumPivotMode = require('@analys/enum-pivot-mode');
 var comparer = require('@aryth/comparer');
+var enumDataTypes = require('@typen/enum-data-types');
+var nullish = require('@typen/nullish');
 var vectorMerge = require('@vect/vector-merge');
+var enumPivotMode = require('@analys/enum-pivot-mode');
 
 const ampliCell = function (side, banner) {
   return this.rows[arid.call(this, side)][acid.call(this, banner)];
@@ -31,29 +33,45 @@ const qcid = function (y) {
   return this.head.indexOf(y);
 };
 
-const tallyMerge = (target, value) => vectorMerge.acquire(target, value);
-const tallyAccum = (target, value) => (target.push(value), target);
-const tallyIncre = (target, value) => target + value;
-const tallyCount = (target, value) => target + 1;
-const tallyAverage = (target, value) => (target.sum += value, target.count += 1, target);
-const tallyMax = (target, value) => comparer.max(target, value);
-const tallyMin = (target, value) => comparer.min(target, value);
-const tallyFirst = (target, value) => target !== null && target !== void 0 ? target : value;
-const tallyLast = (target, value) => value !== null && value !== void 0 ? value : target;
+const NaiveAccumulators = {
+  merge: (target, value) => vectorMerge.acquire(target, value),
+  accum: (target, value) => (target.push(value), target),
+  incre: (target, value) => target + value,
+  count: (target, value) => target + 1,
+  average: (target, value) => (target.sum += value, target.count += 1, target),
+  max: (target, value) => comparer.max(target, value),
+  min: (target, value) => comparer.min(target, value),
+  first: (target, value) => target !== null && target !== void 0 ? target : value,
+  last: (target, value) => value !== null && value !== void 0 ? value : target
+};
+const Accumulators = {
+  merge: (target, value) => nullish.nullish(value) ? target : vectorMerge.acquire(target, value),
+  accum: (target, value) => nullish.nullish(value) ? target : (target.push(value), target),
+  incre: (target, value) => nullish.nullish(value) ? target : target + value,
+  count: (target, value) => nullish.nullish(value) ? target : target + 1,
+  average: (target, value) => nullish.nullish(value) ? target : (target.sum += value, target.count += 1, target),
+  max: (target, value) => nullish.nullish(value) ? target : comparer.max(target, value),
+  min: (target, value) => nullish.nullish(value) ? target : comparer.min(target, value),
+  first: (target, value) => target !== null && target !== void 0 ? target : value,
+  last: (target, value) => value !== null && value !== void 0 ? value : target
+};
 const modeToTally = mode => {
-  if (mode === enumPivotMode.MERGE) return tallyMerge;
-  if (mode === enumPivotMode.ACCUM) return tallyAccum;
-  if (mode === enumPivotMode.INCRE) return tallyIncre;
-  if (mode === enumPivotMode.COUNT) return tallyCount;
-  if (mode === enumPivotMode.AVERAGE) return tallyAverage;
-  if (mode === enumPivotMode.MAX) return tallyMax;
-  if (mode === enumPivotMode.MIN) return tallyMin;
-  if (mode === enumPivotMode.FIRST) return tallyFirst;
-  if (mode === enumPivotMode.LAST) return tallyLast;
+  let accumulators = Accumulators;
+
+  if (Array.isArray(mode)) {
+    var _mode$;
+
+    accumulators = (_mode$ = mode[1]) !== null && _mode$ !== void 0 ? _mode$ : Accumulators;
+    mode = mode[0];
+  }
+
+  if (typeof mode === enumDataTypes.FUN) return mode;
+  if (mode in accumulators) return accumulators[mode];
   return () => {};
 };
 
 const modeToInit = mode => {
+  if (Array.isArray(mode)) mode = mode[0];
   if (mode === enumPivotMode.MERGE || mode === enumPivotMode.ACCUM) return () => [];
   if (mode === enumPivotMode.INCRE || mode === enumPivotMode.COUNT) return () => 0;
   if (mode === enumPivotMode.AVERAGE) return () => ({
@@ -68,9 +86,11 @@ const modeToInit = mode => {
   if (mode === enumPivotMode.MAX) return () => Number.NEGATIVE_INFINITY;
   if (mode === enumPivotMode.MIN) return () => Number.POSITIVE_INFINITY;
   if (mode === enumPivotMode.FIRST || mode === enumPivotMode.LAST) return () => void 0;
-  return () => [];
+  return () => 0;
 };
 
+exports.Accumulators = Accumulators;
+exports.NaiveAccumulators = NaiveAccumulators;
 exports.acid = acid;
 exports.ampliCell = ampliCell;
 exports.arid = arid;
@@ -79,9 +99,3 @@ exports.modeToTally = modeToTally;
 exports.qcid = qcid;
 exports.qrid = qrid;
 exports.queryCell = queryCell;
-exports.tallyAccum = tallyAccum;
-exports.tallyCount = tallyCount;
-exports.tallyIncre = tallyIncre;
-exports.tallyMax = tallyMax;
-exports.tallyMerge = tallyMerge;
-exports.tallyMin = tallyMin;

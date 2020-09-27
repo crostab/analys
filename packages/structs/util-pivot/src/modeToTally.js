@@ -1,26 +1,39 @@
-import { ACCUM, AVERAGE, COUNT, FIRST, INCRE, LAST, MAX, MERGE, MIN } from '@analys/enum-pivot-mode'
-import { max, min }                                                   from '@aryth/comparer'
-import { acquire }                                                    from '@vect/vector-merge'
+import { max, min } from '@aryth/comparer'
+import { FUN }      from '@typen/enum-data-types'
+import { nullish }  from '@typen/nullish'
+import { acquire }  from '@vect/vector-merge'
 
-export const tallyMerge = (target, value) => acquire(target, value)
-export const tallyAccum = (target, value) => (target.push(value), target)
-export const tallyIncre = (target, value) => target + value
-export const tallyCount = (target, value) => target + 1
-export const tallyAverage = (target, value) => (target.sum += value, target.count += 1, target)
-export const tallyMax = (target, value) => max(target, value)
-export const tallyMin = (target, value) => min(target, value)
-export const tallyFirst = (target, value) => target ?? value
-export const tallyLast = (target, value) => value ?? target
+export const NaiveAccumulators = {
+  merge: (target, value) => acquire(target, value),
+  accum: (target, value) => (target.push(value), target),
+  incre: (target, value) => target + value,
+  count: (target, value) => target + 1,
+  average: (target, value) => (target.sum += value, target.count += 1, target),
+  max: (target, value) => max(target, value),
+  min: (target, value) => min(target, value),
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target,
+}
+
+export const Accumulators = {
+  merge: (target, value) => nullish(value) ? target : acquire(target, value),
+  accum: (target, value) => nullish(value) ? target : (target.push(value), target),
+  incre: (target, value) => nullish(value) ? target : (target + value),
+  count: (target, value) => nullish(value) ? target : (target + 1),
+  average: (target, value) => nullish(value) ? target : (target.sum += value, target.count += 1, target),
+  max: (target, value) => nullish(value) ? target : max(target, value),
+  min: (target, value) => nullish(value) ? target : min(target, value),
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target,
+}
 
 export const modeToTally = (mode) => {
-  if (mode === MERGE) return tallyMerge
-  if (mode === ACCUM) return tallyAccum
-  if (mode === INCRE) return tallyIncre
-  if (mode === COUNT) return tallyCount
-  if (mode === AVERAGE) return tallyAverage
-  if (mode === MAX) return tallyMax
-  if (mode === MIN) return tallyMin
-  if (mode === FIRST) return tallyFirst
-  if (mode === LAST) return tallyLast
+  let accumulators = Accumulators
+  if (Array.isArray(mode)) {
+    accumulators = mode[1] ?? Accumulators
+    mode = mode[0]
+  }
+  if (typeof mode === FUN) return mode
+  if (mode in accumulators) return accumulators[mode]
   return () => {}
 }

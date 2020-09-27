@@ -1,14 +1,14 @@
-export const MERGE = -1
-export const ACCUM = 0
-export const INCRE = 1
-export const COUNT = 2
-export const AVERAGE = 3
-export const MAX = 4
-export const MIN = 5
-export const FIRST = 6
-export const LAST = 7
+export const MERGE = 'merge'
+export const ACCUM = 'accum'
+export const INCRE = 'incre'
+export const COUNT = 'count'
+export const AVERAGE = 'average'
+export const MAX = 'max'
+export const MIN = 'min'
+export const FIRST = 'first'
+export const LAST = 'last'
 
-export const SUM = 1
+export const SUM = 'sum'
 
 export const PivotModes = {
   merge: MERGE,

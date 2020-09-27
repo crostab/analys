@@ -1,12 +1,12 @@
-const MERGE = -1;
-const ACCUM = 0;
-const INCRE = 1;
-const COUNT = 2;
-const AVERAGE = 3;
-const MAX = 4;
-const MIN = 5;
-const FIRST = 6;
-const LAST = 7;
+const MERGE = 'merge';
+const ACCUM = 'accum';
+const INCRE = 'incre';
+const COUNT = 'count';
+const AVERAGE = 'average';
+const MAX = 'max';
+const MIN = 'min';
+const FIRST = 'first';
+const LAST = 'last';
 const PivotModes = {
   merge: MERGE,
   accum: ACCUM,
