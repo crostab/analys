@@ -79,6 +79,15 @@ class Cubic {
 
   record(samples) {
     iterate(samples, Notes.init(this.nested, this.cubic, this));
+
+    if (this.nested) {
+      const {
+        data
+      } = this;
+      if (side.length === 1) data.side = data.side.map(([label]) => label);
+      if (head.length === 1) data.head = data.head.map(([label]) => label);
+    }
+
     return this;
   }
 

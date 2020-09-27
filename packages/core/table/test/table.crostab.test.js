@@ -31,7 +31,7 @@ table.pushColumn(ERA,
 table |> DecoTable({ top: 5, bottom: 2 }) |> delogger
 
 const crosTab = table.crosTab({
-  side: [ERA, x => x],
+  side: { date: dashed => (+(dashed.slice(0, 4)) |> yearEra) },
   banner: REGION,
   field: {
     price: INCRE,
