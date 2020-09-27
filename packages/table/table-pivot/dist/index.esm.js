@@ -43,7 +43,8 @@ const tablePivot = function (table) {
 
   const sideConf = parseConf(side),
         bannerConf = parseConf(banner),
-        fieldConf = parseConf(field);
+        fieldConf = parseConf(field); // ({ sideConf, bannerConf, fieldConf }) |> deco |> logger
+
   const pivotEngine = Cubic.build(sideConf, bannerConf, fieldConf);
   const crostab = CrosTab.from(pivotEngine.record(rows).toObject());
 

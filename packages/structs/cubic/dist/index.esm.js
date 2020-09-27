@@ -82,6 +82,8 @@ class Cubic {
 
     if (this.nested) {
       const {
+        side,
+        head,
         data
       } = this;
       if (side.length === 1) data.side = data.side.map(([label]) => label);

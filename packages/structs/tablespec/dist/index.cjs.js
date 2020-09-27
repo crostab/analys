@@ -119,10 +119,14 @@ function parseField$1(field, level = 0) {
     key: field,
     to: defaultTo
   });else if (Array.isArray(field)) {
-    if (level > 0) fieldSets.push({
-      key: field[0],
-      to: field[1]
-    });else for (let f of field) fieldSets.push(...parseField$1.call(this, f, level + 1));
+    if (level <= 0) {
+      for (let element of field) fieldSets.push(...parseField$1.call(this, element, level + 1));
+    } else {
+      fieldSets.push({
+        key: field[0],
+        to: field[1]
+      });
+    }
   } else if (typeof field === enumDataTypes.OBJ) {
     for (let [key, to] of Object.entries(field)) fieldSets.push({
       key,

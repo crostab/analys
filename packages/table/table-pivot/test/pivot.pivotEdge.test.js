@@ -10,7 +10,7 @@ const table = Foba[ROSTER] |> slice
 table |> decoTable |> says[ROSTER + ' original']
 
 const spec = {
-  side: 'day',
+  side: ['day', 'name'],
   banner: 'name',
   field: { sold: COUNT },
   filter: { sold: isNumeric },
