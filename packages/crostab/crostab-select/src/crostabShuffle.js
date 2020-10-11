@@ -1,15 +1,15 @@
-import { flopIndex, randIntBetw } from '@aryth/rand'
-import { matchSlice } from '@analys/crostab-init'
-import { leap, shuffle }      from '@vect/vector-select'
-import { selectTabular } from '@analys/tabular'
-import { selectKeyedRows }    from '@analys/keyed-rows'
+import { matchSlice }          from '@analys/crostab-init'
+import { selectKeyedRows }     from '@analys/keyed-rows'
+import { selectTabular }       from '@analys/tabular'
+import { flopIndex, randBetw } from '@aryth/rand'
+import { leap, shuffle }       from '@vect/vector-select'
 
 const MEAN = 4
 
-export function crostabShuffle (crostab, { h, w, oscillate } = {}) {
+export function crostabShuffle(crostab, { h, w, oscillate } = {}) {
   crostab = crostab |> matchSlice
-  if (!h || oscillate) h = randIntBetw(MEAN - 1, MEAN + 4)
-  if (!w || oscillate) w = randIntBetw(MEAN - 1, MEAN + 1);
+  if (!h || oscillate) h = randBetw(MEAN - 1, MEAN + 4)
+  if (!w || oscillate) w = randBetw(MEAN - 1, MEAN + 1)
   const
     sideSelection = leap(crostab.side, flopIndex(crostab.side), h),
     headSelection = shuffle(crostab.head, w)

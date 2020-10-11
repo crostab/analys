@@ -42,8 +42,8 @@ function tableShuffle(table, {
     head,
     rows
   } = (_table = table, tableInit.matchSlice(_table));
-  if (!h || oscillate) h = rand.randIntBetw(MEAN - 1, MEAN + 5);
-  if (!w || oscillate) w = rand.randIntBetw(MEAN - 2, MEAN + 1);
+  if (!h || oscillate) h = rand.randBetw(MEAN - 1, MEAN + 5);
+  if (!w || oscillate) w = rand.randBetw(MEAN - 2, MEAN + 1);
   const headSelection = vectorSelect.shuffle(head.slice(), w);
   rows = vectorSelect.shuffle(rows.slice(), h);
   return tabular.selectTabular.call({

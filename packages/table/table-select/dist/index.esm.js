@@ -1,6 +1,6 @@
 import { slice, matchSlice } from '@analys/table-init';
 import { selectTabular, selectTabularToSamples, tabularToSamples } from '@analys/tabular';
-import { randIntBetw } from '@aryth/rand';
+import { randBetw } from '@aryth/rand';
 import { shuffle } from '@vect/vector-select';
 import { coin } from '@analys/table-index';
 import { nullish } from '@typen/nullish';
@@ -38,8 +38,8 @@ function tableShuffle(table, {
     head,
     rows
   } = (_table = table, matchSlice(_table));
-  if (!h || oscillate) h = randIntBetw(MEAN - 1, MEAN + 5);
-  if (!w || oscillate) w = randIntBetw(MEAN - 2, MEAN + 1);
+  if (!h || oscillate) h = randBetw(MEAN - 1, MEAN + 5);
+  if (!w || oscillate) w = randBetw(MEAN - 2, MEAN + 1);
   const headSelection = shuffle(head.slice(), w);
   rows = shuffle(rows.slice(), h);
   return selectTabular.call({
