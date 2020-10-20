@@ -1,6 +1,7 @@
 import { ACCUM, COUNT, INCRE, MERGE } from '@analys/enum-pivot-mode'
-import { tallyAccum, tallyMerge }     from '@analys/util-pivot'
+import { Accumulators }               from '@analys/util-pivot'
 
+const { merge, accum } = Accumulators
 export const findEntry = function (key) {
   return this.find(([k]) => key === k)
 }
@@ -8,11 +9,11 @@ export const findEntry = function (key) {
 export const EntriesRecorder = mode => {
   if (mode === MERGE) return function (x, v) {
     const en = findEntry.call(this, x)
-    if (en) { tallyMerge(en[1], v) } else { this.push([x, v.slice()]) }
+    if (en) { merge(en[1], v) } else { this.push([x, v.slice()]) }
   }
   if (mode === ACCUM) return function (x, v) {
     const en = findEntry.call(this, x)
-    if (en) { tallyAccum(en[1], v) } else { this.push([x, [v]]) }
+    if (en) { accum(en[1], v) } else { this.push([x, [v]]) }
   }
   if (mode === INCRE) return function (x, v) {
     const en = findEntry.call(this, x)

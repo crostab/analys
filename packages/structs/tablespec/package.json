@@ -19,9 +19,9 @@
     "@typen/enum-data-types": "^0.1.10",
     "@typen/literal": "^0.1.10",
     "@typen/nullish": "^0.1.10",
-    "@vect/matrix": "^0.2.10",
-    "@vect/vector-mapper": "^0.2.10",
-    "@vect/vector-merge": "^0.2.10"
+    "@vect/matrix": "^0.3.0",
+    "@vect/vector-mapper": "^0.3.0",
+    "@vect/vector-merge": "^0.3.0"
   },
   "repository": {
     "type": "git",

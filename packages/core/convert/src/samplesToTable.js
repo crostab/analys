@@ -20,22 +20,19 @@ export const samplesToTable = (samples, fields) =>
  * @returns {TableObject}
  */
 export function samplesToTabular(samples, fields) {
-  let h, w
-  if (!(h = samples?.length)) return voidTabular()
+  let height, width
+  if (!(height = samples?.length)) return voidTabular()
   if (!fields?.length) return convertSamplesToTabular(samples)
   const [keys, head] = selectFieldMapping.call(samples[0], fields) |> unwind
-  if (!(w = keys?.length)) return voidTabular()
-  const rows = mapper(samples, sample => select(sample, keys, w), h)
+  if (!(width = keys?.length)) return voidTabular()
+  const rows = mapper(samples, sample => select(sample, keys, width), height)
   return { head, rows }
 }
 
 export const selectFieldMapping = function (fields) {
   const sample = this, mapping = [], fieldMapper = fieldMapping.bind(sample)
   let kvp
-  iterate(
-    fields,
-    field => { if ((kvp = fieldMapper(field))) mapping.push(kvp) }
-  )
+  iterate(fields, field => { if ((kvp = fieldMapper(field))) mapping.push(kvp) })
   return mapping
 }
 /**

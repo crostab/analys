@@ -48,12 +48,12 @@ const samplesToTable = (samples, fields) => {
 function samplesToTabular(samples, fields) {
   var _selectFieldMapping$c;
 
-  let h, w;
-  if (!(h = samples === null || samples === void 0 ? void 0 : samples.length)) return tabular.voidTabular();
+  let height, width;
+  if (!(height = samples === null || samples === void 0 ? void 0 : samples.length)) return tabular.voidTabular();
   if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return convertSamplesToTabular(samples);
   const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), entriesUnwind.unwind(_selectFieldMapping$c));
-  if (!(w = keys === null || keys === void 0 ? void 0 : keys.length)) return tabular.voidTabular();
-  const rows = vectorMapper.mapper(samples, sample => vectorSelect.select(sample, keys, w), h);
+  if (!(width = keys === null || keys === void 0 ? void 0 : keys.length)) return tabular.voidTabular();
+  const rows = vectorMapper.mapper(samples, sample => vectorSelect.select(sample, keys, width), height);
   return {
     head,
     rows

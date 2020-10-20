@@ -19,7 +19,7 @@
     "@analys/group": "^0.4.17",
     "@analys/samples-find": "^0.4.17",
     "@analys/tablespec": "^0.4.17",
-    "@vect/matrix": "^0.2.10"
+    "@vect/matrix": "^0.3.0"
   },
   "repository": {
     "type": "git",
