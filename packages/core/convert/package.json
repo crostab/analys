@@ -1,6 +1,6 @@
 {
   "name": "@analys/convert",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "description": "A cross-convert analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,19 +15,19 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/table": "^0.4.17",
-    "@analys/table-index": "^0.4.17",
-    "@analys/table-init": "^0.4.17",
-    "@analys/tabular": "^0.4.17",
+    "@analys/table": "^0.4.18",
+    "@analys/table-index": "^0.4.18",
+    "@analys/table-init": "^0.4.18",
+    "@analys/tabular": "^0.4.18",
     "@typen/nullish": "^0.1.10",
     "@vect/column-getter": "^0.3.0",
     "@vect/entries-init": "^0.3.0",
     "@vect/entries-unwind": "^0.3.0",
     "@vect/object-init": "^0.3.0",
-    "@vect/vector-mapper": "^0.3.0",
-    "@vect/vector-select": "^0.3.0",
     "@vect/object-select": "^0.3.0",
-    "@vect/vector-index": "^0.3.0"
+    "@vect/vector-index": "^0.3.0",
+    "@vect/vector-mapper": "^0.3.0",
+    "@vect/vector-select": "^0.3.0"
   },
   "repository": {
     "type": "git",
