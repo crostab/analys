@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-find",
-  "version": "0.4.20",
+  "version": "0.4.21",
   "description": "A cross-table-find analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
