@@ -4,6 +4,9 @@ import { unwind } from '@vect/entries-unwind';
 import { mapper, iterate } from '@vect/vector-mapper';
 import { select } from '@vect/vector-select';
 import { Table } from '@analys/table';
+import { CrosTab } from '@analys/crostab';
+import { selectValues } from '@vect/object-select';
+import { first } from '@vect/vector-index';
 
 /**
  *
@@ -102,4 +105,27 @@ function convertSamplesToTabular(samples) {
   };
 }
 
-export { samplesToTable, samplesToTabular, tableToSamples, toTable };
+/**
+ *
+ * @param sampleCollection
+ * @param {Object} config
+ * @param {[]} config.side
+ * @param {[]} config.head
+ * @returns {CrosTab}
+ */
+
+function samplesToCrostab(sampleCollection, config = {}) {
+  var _config$side, _config$head, _samples;
+
+  const samples = config.side ? selectValues(sampleCollection, config.side) : Object.values(sampleCollection);
+  const side = (_config$side = config.side) !== null && _config$side !== void 0 ? _config$side : Object.keys(sampleCollection);
+  const head = (_config$head = config.head) !== null && _config$head !== void 0 ? _config$head : Object.keys((_samples = samples, first(_samples)));
+  const rows = samples.map(config.head ? object => selectValues(object, config.head) : Object.values);
+  return CrosTab.from({
+    side,
+    head,
+    rows
+  });
+}
+
+export { samplesToCrostab, samplesToTable, samplesToTabular, tableToSamples, toTable };

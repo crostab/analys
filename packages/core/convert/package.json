@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@analys/table": "^0.4.20",
+    "@analys/crostab": "^0.4.20",
     "@analys/table-index": "^0.4.20",
     "@analys/table-init": "^0.4.20",
     "@analys/tabular": "^0.4.20",

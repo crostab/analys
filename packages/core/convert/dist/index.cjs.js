@@ -8,6 +8,9 @@ var entriesUnwind = require('@vect/entries-unwind');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorSelect = require('@vect/vector-select');
 var table = require('@analys/table');
+var crostab = require('@analys/crostab');
+var objectSelect = require('@vect/object-select');
+var vectorIndex = require('@vect/vector-index');
 
 /**
  *
@@ -106,6 +109,30 @@ function convertSamplesToTabular(samples) {
   };
 }
 
+/**
+ *
+ * @param sampleCollection
+ * @param {Object} config
+ * @param {[]} config.side
+ * @param {[]} config.head
+ * @returns {CrosTab}
+ */
+
+function samplesToCrostab(sampleCollection, config = {}) {
+  var _config$side, _config$head, _samples;
+
+  const samples = config.side ? objectSelect.selectValues(sampleCollection, config.side) : Object.values(sampleCollection);
+  const side = (_config$side = config.side) !== null && _config$side !== void 0 ? _config$side : Object.keys(sampleCollection);
+  const head = (_config$head = config.head) !== null && _config$head !== void 0 ? _config$head : Object.keys((_samples = samples, vectorIndex.first(_samples)));
+  const rows = samples.map(config.head ? object => objectSelect.selectValues(object, config.head) : Object.values);
+  return crostab.CrosTab.from({
+    side,
+    head,
+    rows
+  });
+}
+
+exports.samplesToCrostab = samplesToCrostab;
 exports.samplesToTable = samplesToTable;
 exports.samplesToTabular = samplesToTabular;
 exports.tableToSamples = tableToSamples;
