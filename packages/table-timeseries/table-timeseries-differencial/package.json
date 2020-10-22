@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-timeseries-differential",
-  "version": "0.4.22",
+  "version": "0.4.23",
   "description": "A crawler",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
     "test": "node test"
   },
   "dependencies": {
-    "@analys/table": "^0.4.22",
+    "@analys/table": "^0.4.23",
     "@aryth/math": "^0.3.0",
     "@typen/num-strict": "^0.1.10",
     "@vect/vector-differentiator": "^0.3.4",
