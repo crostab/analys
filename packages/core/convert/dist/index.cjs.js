@@ -124,7 +124,7 @@ function samplesToCrostab(sampleCollection, config = {}) {
   const samples = config.side ? objectSelect.selectValues(sampleCollection, config.side) : Object.values(sampleCollection);
   const side = (_config$side = config.side) !== null && _config$side !== void 0 ? _config$side : Object.keys(sampleCollection);
   const head = (_config$head = config.head) !== null && _config$head !== void 0 ? _config$head : Object.keys((_samples = samples, vectorIndex.first(_samples)));
-  const rows = samples.map(config.head ? object => objectSelect.selectValues(object, config.head) : Object.values);
+  const rows = samples.map(config.head ? objectSelect.SelectValues(config.head) : Object.values);
   return crostab.CrosTab.from({
     side,
     head,

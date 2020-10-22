@@ -19,10 +19,10 @@
     "@analys/enum-pivot-mode": "^0.4.21",
     "@analys/nest-gram": "^0.4.21",
     "@analys/util-pivot": "^0.4.21",
-    "@vect/entries-mapper": "^0.3.0",
-    "@vect/vector-mapper": "^0.3.0",
-    "@vect/vector-merge": "^0.3.0",
-    "@vect/vector-zipper": "^0.3.0"
+    "@vect/entries-mapper": "^0.3.2",
+    "@vect/vector-mapper": "^0.3.2",
+    "@vect/vector-merge": "^0.3.2",
+    "@vect/vector-zipper": "^0.3.2"
   },
   "repository": {
     "type": "git",

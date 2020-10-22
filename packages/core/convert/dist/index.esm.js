@@ -5,7 +5,7 @@ import { mapper, iterate } from '@vect/vector-mapper';
 import { select } from '@vect/vector-select';
 import { Table } from '@analys/table';
 import { CrosTab } from '@analys/crostab';
-import { selectValues } from '@vect/object-select';
+import { selectValues, SelectValues } from '@vect/object-select';
 import { first } from '@vect/vector-index';
 
 /**
@@ -120,7 +120,7 @@ function samplesToCrostab(sampleCollection, config = {}) {
   const samples = config.side ? selectValues(sampleCollection, config.side) : Object.values(sampleCollection);
   const side = (_config$side = config.side) !== null && _config$side !== void 0 ? _config$side : Object.keys(sampleCollection);
   const head = (_config$head = config.head) !== null && _config$head !== void 0 ? _config$head : Object.keys((_samples = samples, first(_samples)));
-  const rows = samples.map(config.head ? object => selectValues(object, config.head) : Object.values);
+  const rows = samples.map(config.head ? SelectValues(config.head) : Object.values);
   return CrosTab.from({
     side,
     head,

@@ -18,7 +18,7 @@
     "@analys/data-gram": "^0.4.21",
     "@analys/enum-pivot-mode": "^0.4.21",
     "@analys/util-pivot": "^0.4.21",
-    "@vect/vector-mapper": "^0.3.0"
+    "@vect/vector-mapper": "^0.3.2"
   },
   "repository": {
     "type": "git",
