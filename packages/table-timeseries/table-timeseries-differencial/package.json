@@ -18,8 +18,8 @@
     "@analys/table": "^0.4.22",
     "@aryth/math": "^0.3.0",
     "@typen/num-strict": "^0.1.10",
-    "@vect/vector-differentiator": "^0.3.2",
-    "@vect/vector-mapper": "^0.3.2"
+    "@vect/vector-differentiator": "^0.3.4",
+    "@vect/vector-mapper": "^0.3.4"
   },
   "repository": {
     "type": "git",
