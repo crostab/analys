@@ -19,7 +19,7 @@ var vectorIndex = require('@vect/vector-index');
  * @returns {Object[]} samples
  */
 
-const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), fields) : tabular.tabularToSamples.call(tableInit.matchSlice(table));
+const tableToSamples = (table, fields) => fields !== null && fields !== void 0 && fields.length ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), fields) : tabular.tabularToSamples.call(tableInit.matchSlice(table));
 
 /**
  *
@@ -53,7 +53,7 @@ function samplesToTabular(samples, fields) {
 
   let height, width;
   if (!(height = samples === null || samples === void 0 ? void 0 : samples.length)) return tabular.voidTabular();
-  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return convertSamplesToTabular(samples);
+  if (!(fields !== null && fields !== void 0 && fields.length)) return convertSamplesToTabular(samples);
   const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), entriesUnwind.unwind(_selectFieldMapping$c));
   if (!(width = keys === null || keys === void 0 ? void 0 : keys.length)) return tabular.voidTabular();
   const rows = vectorMapper.mapper(samples, sample => vectorSelect.select(sample, keys, width), height);

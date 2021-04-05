@@ -26,7 +26,7 @@ const tableSelect = function (table, fields, {
   var _table;
 
   let o = mutate ? table : (_table = table, tableInit.slice(_table));
-  if (fields === null || fields === void 0 ? void 0 : fields.length) tabular.selectTabular.call(o, fields);
+  if (fields !== null && fields !== void 0 && fields.length) tabular.selectTabular.call(o, fields);
   return o;
 };
 
@@ -67,7 +67,7 @@ const tableToObject = function (key, field, objectify = true) {
   const hi = table === null || table === void 0 ? void 0 : (_table$rows = table.rows) === null || _table$rows === void 0 ? void 0 : _table$rows.length;
   let x, y;
   const keys = (x = tableIndex.coin.call(table, key)) >= 0 ? columnGetter.column(table.rows, x, hi) : null;
-  const values = nullish.nullish(field) || Array.isArray(field) ? (field === null || field === void 0 ? void 0 : field.length) ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), field) : tabular.tabularToSamples.call(tableInit.matchSlice(table)) : (y = tableIndex.coin.call(table, field)) >= 0 ? columnGetter.column(table.rows, y, hi) : null;
+  const values = nullish.nullish(field) || Array.isArray(field) ? field !== null && field !== void 0 && field.length ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), field) : tabular.tabularToSamples.call(tableInit.matchSlice(table)) : (y = tableIndex.coin.call(table, field)) >= 0 ? columnGetter.column(table.rows, y, hi) : null;
   return keys && values ? objectify ? objectInit.wind(keys, values) : entriesInit.wind(keys, values) : objectify ? {} : [];
 };
 

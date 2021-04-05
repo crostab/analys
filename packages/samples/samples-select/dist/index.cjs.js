@@ -13,7 +13,7 @@ var vectorMapper = require('@vect/vector-mapper');
  */
 
 function samplesSelect(samples, fields) {
-  if (fields === null || fields === void 0 ? void 0 : fields.length) {
+  if (fields !== null && fields !== void 0 && fields.length) {
     const assigners = vectorMapper.mapper(fields, field => Array.isArray(field) ? assigner.bind({
       k: field[0],
       p: field[1]

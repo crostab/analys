@@ -338,8 +338,8 @@ class CrosTab {
     var _this5;
 
     let o = mutate ? this : (_this5 = this, crostabInit.slice(_this5));
-    if (head === null || head === void 0 ? void 0 : head.length) tabular.selectTabular.call(o, head);
-    if (side === null || side === void 0 ? void 0 : side.length) keyedRows.selectKeyedRows.call(o, side);
+    if (head !== null && head !== void 0 && head.length) tabular.selectTabular.call(o, head);
+    if (side !== null && side !== void 0 && side.length) keyedRows.selectKeyedRows.call(o, side);
     return mutate ? this : this.copy(o);
   }
 

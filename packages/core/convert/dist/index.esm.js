@@ -15,7 +15,7 @@ import { first } from '@vect/vector-index';
  * @returns {Object[]} samples
  */
 
-const tableToSamples = (table, fields) => (fields === null || fields === void 0 ? void 0 : fields.length) ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
+const tableToSamples = (table, fields) => fields !== null && fields !== void 0 && fields.length ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
 
 /**
  *
@@ -49,7 +49,7 @@ function samplesToTabular(samples, fields) {
 
   let height, width;
   if (!(height = samples === null || samples === void 0 ? void 0 : samples.length)) return voidTabular();
-  if (!(fields === null || fields === void 0 ? void 0 : fields.length)) return convertSamplesToTabular(samples);
+  if (!(fields !== null && fields !== void 0 && fields.length)) return convertSamplesToTabular(samples);
   const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), unwind(_selectFieldMapping$c));
   if (!(width = keys === null || keys === void 0 ? void 0 : keys.length)) return voidTabular();
   const rows = mapper(samples, sample => select(sample, keys, width), height);

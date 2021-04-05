@@ -2,8 +2,8 @@ import { MERGE, ACCUM, INCRE, COUNT } from '@analys/enum-pivot-mode';
 import { Accumulators } from '@analys/util-pivot';
 
 const {
-  merge,
-  accum
+  merge: merge$1,
+  accum: accum$1
 } = Accumulators;
 const findEntry = function (key) {
   return this.find(([k]) => key === k);
@@ -13,7 +13,7 @@ const EntriesRecorder = mode => {
     const en = findEntry.call(this, x);
 
     if (en) {
-      merge(en[1], v);
+      merge$1(en[1], v);
     } else {
       this.push([x, v.slice()]);
     }
@@ -22,7 +22,7 @@ const EntriesRecorder = mode => {
     const en = findEntry.call(this, x);
 
     if (en) {
-      accum(en[1], v);
+      accum$1(en[1], v);
     } else {
       this.push([x, [v]]);
     }
@@ -49,20 +49,20 @@ const EntriesRecorder = mode => {
 };
 
 const {
-  merge: merge$1,
-  accum: accum$1
+  merge,
+  accum
 } = Accumulators;
 const ObjectRecorder = mode => {
   if (mode === MERGE) return function (x, v) {
     if (x in this) {
-      merge$1(this[x], v);
+      merge(this[x], v);
     } else {
       this[x] = v.slice();
     }
   };
   if (mode === ACCUM) return function (x, v) {
     if (x in this) {
-      accum$1(this[x], v);
+      accum(this[x], v);
     } else {
       this[x] = [v];
     }

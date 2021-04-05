@@ -3,7 +3,7 @@ import commonjs                   from '@rollup/plugin-commonjs'
 import json                       from '@rollup/plugin-json'
 import nodeResolve                from '@rollup/plugin-node-resolve'
 import { decoObject, decoString } from '@spare/logger'
-// import fileInfo                   from 'rollup-plugin-fileinfo'
+import fileInfo                   from 'rollup-plugin-fileinfo'
 
 const { name, dependencies, main, module } = require(process.cwd() + '/package.json')
 
@@ -17,12 +17,12 @@ const babelPluginOptions = {
   exclude: 'node_modules/**',
   babelHelpers: 'bundled',
   plugins: [
-    ['@babel/plugin-transform-runtime', { helpers: false, }],
-    ['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
-    ['@babel/plugin-proposal-nullish-coalescing-operator'],
-    ['@babel/plugin-proposal-class-properties'],
-    ['@babel/plugin-proposal-private-methods'],
-    ['@babel/plugin-proposal-optional-chaining']
+    [ '@babel/plugin-transform-runtime', { helpers: false, } ],
+    [ '@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' } ],
+    [ '@babel/plugin-proposal-nullish-coalescing-operator' ],
+    [ '@babel/plugin-proposal-class-properties' ],
+    [ '@babel/plugin-proposal-private-methods' ],
+    [ '@babel/plugin-proposal-optional-chaining' ]
   ]
 }
 
@@ -35,15 +35,11 @@ export default [
       { file: module, format: 'esm' }  // ES module (for bundlers) build.
     ],
     plugins: [
-      nodeResolve({
-        preferBuiltins: true
-      }),
-      commonjs({
-        include: /node_modules/,
-      }),
+      nodeResolve({ preferBuiltins: true }),
+      commonjs({ include: /node_modules/ }),
       babel(babelPluginOptions),
       json(),
-      // fileInfo()
+      fileInfo()
     ]
   }
 ]

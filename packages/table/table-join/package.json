@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@analys/enum-join-modes": "^0.4.23",
-    "@aryth/comparer": "^0.3.14",
+    "@aryth/comparer": "^0.3.15",
     "@vect/vector-init": "^0.3.8",
     "@vect/vector-mapper": "^0.3.8",
     "@vect/vector-select": "^0.3.8",
