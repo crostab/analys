@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.4.23",
-    "@vect/vector-init": "^0.3.4",
-    "@vect/vector-mapper": "^0.3.4",
-    "@vect/vector-zipper": "^0.3.4"
+    "@vect/vector-init": "^0.3.8",
+    "@vect/vector-mapper": "^0.3.8",
+    "@vect/vector-zipper": "^0.3.8"
   },
   "repository": {
     "type": "git",

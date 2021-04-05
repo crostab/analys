@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@analys/table": "^0.4.23",
-    "@aryth/math": "^0.3.0",
-    "@vect/vector-mapper": "^0.3.4",
-    "@vect/vector-merge": "^0.3.4",
-    "@vect/vector-roller": "^0.3.4"
+    "@aryth/math": "^0.3.14",
+    "@vect/vector-mapper": "^0.3.8",
+    "@vect/vector-merge": "^0.3.8",
+    "@vect/vector-roller": "^0.3.8"
   },
   "repository": {
     "type": "git",
