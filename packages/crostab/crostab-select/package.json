@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab-select",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A cross-table analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,11 +15,11 @@
     "test": "node -r @babel/register test/crostab-select.select.test.js"
   },
   "dependencies": {
-    "@analys/crostab-init": "^0.5.0",
-    "@analys/keyed-rows": "^0.5.0",
-    "@analys/tabular": "^0.5.0",
-    "@aryth/rand": "^0.3.15",
-    "@vect/vector-select": "^0.3.8"
+    "@analys/crostab-init": "^0.5.1",
+    "@analys/keyed-rows": "^0.5.1",
+    "@analys/tabular": "^0.5.1",
+    "@aryth/rand": "^0.3.21",
+    "@vect/vector-select": "^0.3.10"
   },
   "repository": {
     "type": "git",
