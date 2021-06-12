@@ -17,11 +17,7 @@ import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn } 
 import { column }                                                                     from '@vect/column-getter'
 import { mutate as mutateColumn }                                                     from '@vect/column-mapper'
 import {
-  pop as popColumn,
-  push as pushColumn,
-  shift as shiftColumn,
-  splices as splicesColumns,
-  unshift as unshiftColumn
+  pop as popColumn, push as pushColumn, shift as shiftColumn, splices as splicesColumns, unshift as unshiftColumn
 }                                                                                     from '@vect/columns-update'
 import { size, transpose }                                                            from '@vect/matrix'
 import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }               from '@vect/matrix-mapper'
@@ -30,7 +26,6 @@ import { difference, intersect }                                                
 import { iterate, mapper, mutate as mutateVector }                                    from '@vect/vector-mapper'
 import { splices }                                                                    from '@vect/vector-update'
 import { StatMx }                                                                     from 'borel'
-
 
 export class Table {
   /** @type {*[]} */ head
@@ -62,7 +57,7 @@ export class Table {
   get height() { return this.rows?.length }
   get width() { return this.head?.length }
   get columns() { return transpose(this.rows) }
-  cell(x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
+  cell(x, field) { return ( x in this.rows ) ? this.rows[x][this.coin(field)] : undefined }
   coin(field) { return this.head.indexOf(field) }
   columnIndexes(fields) { return fields.map(this.coin, this) }
   row(field, value, objectify) {
@@ -97,7 +92,7 @@ export class Table {
     return selectMutate(this.rows, this.columnIndexes(fields), fn, this.height), this
   }
 
-  lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
+  lookupOne(valueToFind, key, field, cached = true) { return ( cached ? lookupCached : lookup ).call(this, valueToFind, key, field) }
   lookupMany(valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
 
   /**
@@ -133,7 +128,7 @@ export class Table {
     const
       o = mutate ? this : this |> shallow,
       y = this.coin(field)
-    o.head.splice(y, 1, ...(fields ?? splitter(field)))
+    o.head.splice(y, 1, ...( fields ?? splitter(field) ))
     iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])))
     return mutate ? this : Table.from(o)
   }
@@ -146,19 +141,20 @@ export class Table {
    * @returns {Table}
    */
   proliferateColumn(fieldSpec, { nextTo, mutate = false } = {}) {
-    if (!Array.isArray(fieldSpec)) fieldSpec = [fieldSpec]
+    if (!Array.isArray(fieldSpec)) fieldSpec = [ fieldSpec ]
     const
-      o = mutate ? this : this |> shallow,
+      o              = mutate ? this : this |> shallow,
       { head, rows } = o,
-      y = nextTo ? (this.coin(nextTo) + 1) : 0
+      y              = nextTo ? ( this.coin(nextTo) + 1 ) : 0
     fieldSpec.forEach(o => o.index = this.coin(o.key))
     if (fieldSpec?.length === 1) {
-      const [{ index, to, as }] = fieldSpec
+      const [ { index, to, as } ] = fieldSpec
       head.splice(y, 0, as)
       iterate(rows,
         row => row.splice(y, 0, to(row[index]))
       )
-    } else {
+    }
+    else {
       head.splice(y, 0, ...fieldSpec.map(({ as }) => as))
       iterate(rows,
         row => row.splice(y, 0, ...fieldSpec.map(({ index, to }) => to(row[index])))
@@ -176,11 +172,12 @@ export class Table {
    * @returns {Table}
    */
   insertColumn(newField, column, { nextTo, mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, y = nextTo ? (this.coin(nextTo) + 1) : 0
+    const o = mutate ? this : this |> shallow, y = nextTo ? ( this.coin(nextTo) + 1 ) : 0
     if (Array.isArray(newField)) {
       o.head.splice(y, 0, ...newField)
       iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]))
-    } else {
+    }
+    else {
       o.head.splice(y, 0, newField)
       iterate(o.rows, (row, i) => row.splice(y, 0, column[i]))
     }
@@ -200,7 +197,8 @@ export class Table {
       const indexes = this.columnIndexes(field).filter(i => i >= 0).sort(NUM_ASC)
       splices(head, indexes)
       splicesColumns(rows, indexes)
-    } else {
+    }
+    else {
       const index = this.coin(field)
       head.splice(index, 1)
       rows.forEach(row => row.splice(index, 1))
@@ -350,7 +348,7 @@ export class Table {
 
   inferTypes({ inferType, omitNull = true, mutate = false } = {}) {
     const types = inferTypes.call(this, { inferType, omitNull })
-    return mutate ? (this.types = types) : types
+    return mutate ? ( this.types = types ) : types
   }
 
   /** @returns {Table} */
@@ -360,7 +358,8 @@ export class Table {
       if (rows) this.rows = rows
       if (types) this.types = types
       return this
-    } else {
+    }
+    else {
       return this.copy({ head, rows, types })
     }
   }

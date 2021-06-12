@@ -1,10 +1,10 @@
+import { Table }           from '@analys/table'
 import { TableCollection } from '@foba/table'
+import { delogger }        from '@spare/deco'
 import { decoTable, says } from '@spare/logger'
-import { delogger } from '@spare/deco'
-import { InferType } from '@typen/infer-type'
-import { isNumeric } from '@typen/num-strict'
-import { NUMSTR } from '@typen/enum-tabular-types'
-import { Table } from '@analys/table'
+import { NUMSTR }          from '@typen/enum-tabular-types'
+import { InferType }       from '@typen/infer-type'
+import { isNumeric }       from '@typen/num-strict'
 
 let table = TableCollection.AeroEngineSpecs |> Table.from
 

@@ -15,7 +15,7 @@ import { first } from '@vect/vector-index';
  * @returns {Object[]} samples
  */
 
-const tableToSamples = (table, fields) => fields !== null && fields !== void 0 && fields.length ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
+const tableToSamples = (table, fields) => fields != null && fields.length ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
 
 /**
  *
@@ -48,10 +48,10 @@ function samplesToTabular(samples, fields) {
   var _selectFieldMapping$c;
 
   let height, width;
-  if (!(height = samples === null || samples === void 0 ? void 0 : samples.length)) return voidTabular();
-  if (!(fields !== null && fields !== void 0 && fields.length)) return convertSamplesToTabular(samples);
+  if (!(height = samples == null ? void 0 : samples.length)) return voidTabular();
+  if (!(fields != null && fields.length)) return convertSamplesToTabular(samples);
   const [keys, head] = (_selectFieldMapping$c = selectFieldMapping.call(samples[0], fields), unwind(_selectFieldMapping$c));
-  if (!(width = keys === null || keys === void 0 ? void 0 : keys.length)) return voidTabular();
+  if (!(width = keys == null ? void 0 : keys.length)) return voidTabular();
   const rows = mapper(samples, sample => select(sample, keys, width), height);
   return {
     head,
@@ -87,13 +87,13 @@ const fieldMapping = function (field) {
 function convertSamplesToTabular(samples) {
   var _Object$entries;
 
-  const height = samples === null || samples === void 0 ? void 0 : samples.length;
+  const height = samples == null ? void 0 : samples.length;
   if (!height) return voidTabular();
   const rows = Array(height);
   let head;
   [head, rows[0]] = (_Object$entries = Object.entries(samples[0]), unwind(_Object$entries));
 
-  for (let i = 1, w = (_head = head) === null || _head === void 0 ? void 0 : _head.length; i < height; i++) {
+  for (let i = 1, w = (_head = head) == null ? void 0 : _head.length; i < height; i++) {
     var _head;
 
     rows[i] = select(samples[i], head, w);
@@ -115,11 +115,11 @@ function convertSamplesToTabular(samples) {
  */
 
 function samplesToCrostab(sampleCollection, config = {}) {
-  var _config$side, _config$head, _samples;
+  var _samples;
 
   const samples = config.side ? selectValues(sampleCollection, config.side) : Object.values(sampleCollection);
-  const side = (_config$side = config.side) !== null && _config$side !== void 0 ? _config$side : Object.keys(sampleCollection);
-  const head = (_config$head = config.head) !== null && _config$head !== void 0 ? _config$head : Object.keys((_samples = samples, first(_samples)));
+  const side = config.side ?? Object.keys(sampleCollection);
+  const head = config.head ?? Object.keys((_samples = samples, first(_samples)));
   const rows = samples.map(config.head ? SelectValues(config.head) : Object.values);
   return CrosTab.from({
     side,

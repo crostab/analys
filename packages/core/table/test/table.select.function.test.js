@@ -8,7 +8,7 @@ const table = Table.from(Foba[US_TECH])
 
 table |> decoTable |> says.original
 
-tableSelect(table, ['symbol', 'ceo', 'price'], { mutate: true }) |> decoTable |> says.selected
+tableSelect(table, [ 'symbol', 'ceo', 'price' ], { mutate: true }) |> decoTable |> says.selected
 
 table |> decoTable |> says.original
 

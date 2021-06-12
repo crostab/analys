@@ -2,21 +2,6 @@ import { modeToInit, modeToTally } from '@analys/util-pivot';
 import { wind } from '@vect/object-init';
 import { iterate } from '@vect/vector-mapper';
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class Chips {
   /** @type {*} */
 
@@ -39,18 +24,12 @@ class Chips {
    * @param [filter]
    */
   constructor([key, to], [field, mode], filter) {
-    _defineProperty(this, "key", void 0);
-
-    _defineProperty(this, "field", void 0);
-
-    _defineProperty(this, "data", {});
-
-    _defineProperty(this, "to", void 0);
-
-    _defineProperty(this, "updater", void 0);
-
-    _defineProperty(this, "filter", void 0);
-
+    this.key = void 0;
+    this.field = void 0;
+    this.data = {};
+    this.to = void 0;
+    this.updater = void 0;
+    this.filter = void 0;
     this.key = key;
     this.to = to;
     this.field = field;

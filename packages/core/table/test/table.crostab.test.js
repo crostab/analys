@@ -23,7 +23,7 @@ const regions = [
   'TWN'
 ]
 
-const yearEra = year => ~~(year / 5) * 5
+const yearEra = year => ~~( year / 5 ) * 5
 
 table |> DecoTable({ top: 5, bottom: 2 }) |> delogger
 
@@ -31,9 +31,9 @@ const crosTab = table.crosTab({
   side: { date: ymd => +ymd.slice(0, 4)|> yearEra },
   banner: REGION,
   field: [
-    ['price', INCRE],
-    ['price', [COUNT, Accumulators]],
-    ['gdppc', [COUNT, NaiveAccumulators]],
+    [ 'price', INCRE ],
+    [ 'price', [ COUNT, Accumulators ] ],
+    [ 'gdppc', [ COUNT, NaiveAccumulators ] ],
   ],
   filter: {
     region: x => regions.includes(x),

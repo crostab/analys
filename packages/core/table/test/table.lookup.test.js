@@ -1,10 +1,10 @@
-import { TableCollection } from '@foba/table'
-import { deco } from '@spare/deco'
-import { DecoEntries, decoTable, DecoTable, logger, says } from '@spare/logger'
-import { camelToSnake } from '@spare/phrasing'
-import { Table } from '../src/Table'
-import { xr } from '@spare/xr'
-import { LF } from '@spare/enum-chars'
+import { TableCollection }                      from '@foba/table'
+import { deco }                                 from '@spare/deco'
+import { LF }                                   from '@spare/enum-chars'
+import { DecoEntries, decoTable, logger, says } from '@spare/logger'
+import { camelToSnake }                         from '@spare/phrasing'
+import { xr }                                   from '@spare/xr'
+import { Table }                                from '../src/Table'
 
 const TITLE = 'AeroEngineSpecs' |> camelToSnake
 const table = TableCollection.AeroEngineSpecs |> Table.from
@@ -32,7 +32,7 @@ xr('lookup once').p(LF)
 
 '' |> logger
 
-const valuesToFind = ['EJ200', 'F100-PW-229', 'F110', 'WS-13']
+const valuesToFind = [ 'EJ200', 'F100-PW-229', 'F110', 'WS-13' ]
 xr('lookup once').p(LF)
   ['values to find'](valueToFind).p(LF)
   ['keyIndex field'](KEY_FIELD)['value field'](VALUE_FIELD).p(LF)

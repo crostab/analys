@@ -4,21 +4,6 @@ import { pair, wind } from '@vect/object-init';
 import { mapper, iterate } from '@vect/vector-mapper';
 import { mutazip } from '@vect/vector-zipper';
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class Group {
   /** @type {*} */
 
@@ -43,20 +28,13 @@ class Group {
    * @param [aliases]
    */
   constructor([key, to], fields, filter, aliases) {
-    _defineProperty(this, "key", void 0);
-
-    _defineProperty(this, "data", {});
-
-    _defineProperty(this, "fields", void 0);
-
-    _defineProperty(this, "init", void 0);
-
-    _defineProperty(this, "to", void 0);
-
-    _defineProperty(this, "filter", void 0);
-
-    _defineProperty(this, "aliases", void 0);
-
+    this.key = void 0;
+    this.data = {};
+    this.fields = void 0;
+    this.init = void 0;
+    this.to = void 0;
+    this.filter = void 0;
+    this.aliases = void 0;
     this.key = key;
     this.to = to;
     this.fields = fields.map(([index, mode]) => [index, modeToTally(mode)]);

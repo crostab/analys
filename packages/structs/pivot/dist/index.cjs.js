@@ -6,21 +6,6 @@ var dataGram = require('@analys/data-gram');
 var utilPivot = require('@analys/util-pivot');
 var vectorMapper = require('@vect/vector-mapper');
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class Pivot {
   /**
    *
@@ -29,16 +14,11 @@ class Pivot {
    * @param {{key:number, to:number}} field
    */
   constructor(side, head, field) {
-    _defineProperty(this, "side", {});
-
-    _defineProperty(this, "head", {});
-
-    _defineProperty(this, "field", {});
-
-    _defineProperty(this, "accum", void 0);
-
-    _defineProperty(this, "data", void 0);
-
+    this.side = {};
+    this.head = {};
+    this.field = {};
+    this.accum = void 0;
+    this.data = void 0;
     this.side = side;
     this.head = head;
     this.field = {

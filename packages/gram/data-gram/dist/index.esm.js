@@ -1,20 +1,5 @@
 import { init } from '@vect/vector-init';
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class DataGram {
   /** @type {*[]} */
 
@@ -24,14 +9,10 @@ class DataGram {
 
   /** @type {Function} */
   constructor(init) {
-    _defineProperty(this, "side", void 0);
-
-    _defineProperty(this, "head", void 0);
-
-    _defineProperty(this, "rows", void 0);
-
-    _defineProperty(this, "init", void 0);
-
+    this.side = void 0;
+    this.head = void 0;
+    this.rows = void 0;
+    this.init = void 0;
     this.side = [];
     this.head = [];
     this.rows = [];

@@ -21,8 +21,8 @@ function crostabShuffle(crostab, {
   if (!w || oscillate) w = rand.randBetw(MEAN - 1, MEAN + 1);
   const sideSelection = vectorSelect.leap(crostab.side, rand.flopIndex(crostab.side), h),
         headSelection = vectorSelect.shuffle(crostab.head, w);
-  if (sideSelection !== null && sideSelection !== void 0 && sideSelection.length) keyedRows.selectKeyedRows.call(crostab, sideSelection);
-  if (headSelection !== null && headSelection !== void 0 && headSelection.length) tabular.selectTabular.call(crostab, headSelection);
+  if (sideSelection != null && sideSelection.length) keyedRows.selectKeyedRows.call(crostab, sideSelection);
+  if (headSelection != null && headSelection.length) tabular.selectTabular.call(crostab, headSelection);
   return crostab;
 }
 

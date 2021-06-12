@@ -35,10 +35,8 @@ Array.prototype.zip = function (another, zipper) {
 
 
 const matchSlice = (o = {}) => {
-  var _o$head, _o$rows;
-
-  const head = (_o$head = o.head) !== null && _o$head !== void 0 ? _o$head : o.banner,
-        rows = (_o$rows = o.rows) !== null && _o$rows !== void 0 ? _o$rows : o.matrix;
+  const head = o.head ?? o.banner,
+        rows = o.rows ?? o.matrix;
   return {
     head,
     rows
@@ -64,10 +62,8 @@ const tableToWorksheet = table => {
 };
 
 const tableToWorkbook = (table, sheetName) => {
-  var _ref;
-
   const workbook = utils.book_new();
-  utils.book_append_sheet(workbook, tableToWorksheet(table), (_ref = sheetName !== null && sheetName !== void 0 ? sheetName : table.name) !== null && _ref !== void 0 ? _ref : 'Sheet1');
+  utils.book_append_sheet(workbook, tableToWorksheet(table), sheetName ?? table.name ?? 'Sheet1');
   return workbook;
 };
 const tableCollectionToWorkbook = tableCollection => {

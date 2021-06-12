@@ -37,8 +37,8 @@ const NaiveAccumulators = {
   average: (target, value) => (target.sum += value, target.count += 1, target),
   max: (target, value) => max(target, value),
   min: (target, value) => min(target, value),
-  first: (target, value) => target !== null && target !== void 0 ? target : value,
-  last: (target, value) => value !== null && value !== void 0 ? value : target
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target
 };
 const Accumulators = {
   merge: (target, value) => nullish(value) ? target : acquire(target, value),
@@ -48,16 +48,14 @@ const Accumulators = {
   average: (target, value) => nullish(value) ? target : (target.sum += value, target.count += 1, target),
   max: (target, value) => nullish(value) ? target : max(target, value),
   min: (target, value) => nullish(value) ? target : min(target, value),
-  first: (target, value) => target !== null && target !== void 0 ? target : value,
-  last: (target, value) => value !== null && value !== void 0 ? value : target
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target
 };
 const modeToTally = mode => {
   let accumulators = Accumulators;
 
   if (Array.isArray(mode)) {
-    var _mode$;
-
-    accumulators = (_mode$ = mode[1]) !== null && _mode$ !== void 0 ? _mode$ : Accumulators;
+    accumulators = mode[1] ?? Accumulators;
     mode = mode[0];
   }
 

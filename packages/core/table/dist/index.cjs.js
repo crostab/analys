@@ -29,21 +29,6 @@ var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
 var borel = require('borel');
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class Table {
   /** @type {*[]} */
 
@@ -60,14 +45,10 @@ class Table {
    * @param {string[]} [types]
    */
   constructor(head, rows, title, types) {
-    _defineProperty(this, "head", void 0);
-
-    _defineProperty(this, "rows", void 0);
-
-    _defineProperty(this, "title", void 0);
-
-    _defineProperty(this, "types", void 0);
-
+    this.head = void 0;
+    this.rows = void 0;
+    this.title = void 0;
+    this.types = void 0;
     this.head = head || [];
     this.rows = rows || [];
     this.title = title || '';
@@ -99,25 +80,25 @@ class Table {
   get ht() {
     var _this$rows;
 
-    return (_this$rows = this.rows) === null || _this$rows === void 0 ? void 0 : _this$rows.length;
+    return (_this$rows = this.rows) == null ? void 0 : _this$rows.length;
   }
 
   get wd() {
     var _this$head;
 
-    return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
+    return (_this$head = this.head) == null ? void 0 : _this$head.length;
   }
 
   get height() {
     var _this$rows2;
 
-    return (_this$rows2 = this.rows) === null || _this$rows2 === void 0 ? void 0 : _this$rows2.length;
+    return (_this$rows2 = this.rows) == null ? void 0 : _this$rows2.length;
   }
 
   get width() {
     var _this$head2;
 
-    return (_this$head2 = this.head) === null || _this$head2 === void 0 ? void 0 : _this$head2.length;
+    return (_this$head2 = this.head) == null ? void 0 : _this$head2.length;
   }
 
   get columns() {
@@ -215,10 +196,8 @@ class Table {
     fields,
     exclusive
   } = {}) {
-    var _fields;
-
     if (!fields && !exclusive) return matrixMapper.mutate(this.rows, fn, this.height, this.width), this;
-    fields = (_fields = fields) !== null && _fields !== void 0 ? _fields : this.head;
+    fields = fields ?? this.head;
     fields = exclusive ? vectorAlgebra.difference(fields, exclusive) : fields;
     return matrixMapper.selectMutate(this.rows, this.columnIndexes(fields), fn, this.height), this;
   }
@@ -275,7 +254,7 @@ class Table {
 
     const o = mutate ? this : (_this3 = this, tableInit.shallow(_this3)),
           y = this.coin(field);
-    o.head.splice(y, 1, ...(fields !== null && fields !== void 0 ? fields : splitter(field)));
+    o.head.splice(y, 1, ...(fields ?? splitter(field)));
     vectorMapper.iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])));
     return mutate ? this : Table.from(o);
   }
@@ -303,7 +282,7 @@ class Table {
           y = nextTo ? this.coin(nextTo) + 1 : 0;
     fieldSpec.forEach(o => o.index = this.coin(o.key));
 
-    if (((_fieldSpec = fieldSpec) === null || _fieldSpec === void 0 ? void 0 : _fieldSpec.length) === 1) {
+    if (((_fieldSpec = fieldSpec) == null ? void 0 : _fieldSpec.length) === 1) {
       const [{
         index,
         to,
@@ -633,7 +612,7 @@ class Table {
 
     if (!head) head = this.head.slice();
     if (!rows) rows = this.rows.map(row => row.slice());
-    if (!types) types = (_this$types = this.types) === null || _this$types === void 0 ? void 0 : _this$types.slice();
+    if (!types) types = (_this$types = this.types) == null ? void 0 : _this$types.slice();
     return new Table(head, rows, this.title, types);
   }
 

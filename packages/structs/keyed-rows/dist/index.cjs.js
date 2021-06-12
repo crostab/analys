@@ -15,7 +15,7 @@ const selectSamples = function (fieldIndexPairs) {
     rows
   } = this,
         columns = matrixTranspose.transpose(rows),
-        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
+        depth = fieldIndexPairs == null ? void 0 : fieldIndexPairs.length;
   return vectorMapper.mapper(columns, column => {
     let o = {};
     vectorMapper.iterate(fieldIndexPairs, ([field, index]) => o[field] = column[index], depth);

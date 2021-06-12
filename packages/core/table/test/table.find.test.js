@@ -1,6 +1,6 @@
-import { Foba } from '@foba/table'
+import { Foba }                        from '@foba/table'
 import { decoTable, decoVector, says } from '@spare/logger'
-import { Table } from '../src/Table'
+import { Table }                       from '../src/Table'
 
 const US_TECH = 'USTechFirms'
 const table = Table.from(Foba[US_TECH])

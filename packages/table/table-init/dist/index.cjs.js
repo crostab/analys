@@ -60,10 +60,8 @@ const clone = ({
  */
 
 const matchSlice = (o = {}) => {
-  var _o$head, _o$rows;
-
-  const head = (_o$head = o.head) !== null && _o$head !== void 0 ? _o$head : o.banner,
-        rows = (_o$rows = o.rows) !== null && _o$rows !== void 0 ? _o$rows : o.matrix;
+  const head = o.head ?? o.banner,
+        rows = o.rows ?? o.matrix;
   return {
     head,
     rows
@@ -76,10 +74,8 @@ const matchSlice = (o = {}) => {
  */
 
 const matchShallow = (o = {}) => {
-  var _o$head2, _o$rows2;
-
-  const head = (_o$head2 = o.head) !== null && _o$head2 !== void 0 ? _o$head2 : o.banner,
-        rows = (_o$rows2 = o.rows) !== null && _o$rows2 !== void 0 ? _o$rows2 : o.matrix;
+  const head = o.head ?? o.banner,
+        rows = o.rows ?? o.matrix;
   return {
     head: head.slice(),
     rows: rows.map(row => row.slice())
@@ -92,10 +88,8 @@ const matchShallow = (o = {}) => {
  */
 
 const matchClone = (o = {}) => {
-  var _o$head3, _o$rows3;
-
-  const head = (_o$head3 = o.head) !== null && _o$head3 !== void 0 ? _o$head3 : o.banner,
-        rows = (_o$rows3 = o.rows) !== null && _o$rows3 !== void 0 ? _o$rows3 : o.matrix;
+  const head = o.head ?? o.banner,
+        rows = o.rows ?? o.matrix;
   return {
     head: head.slice(),
     rows: veho.Mx.clone(rows)

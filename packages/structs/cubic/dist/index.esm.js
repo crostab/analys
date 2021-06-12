@@ -4,21 +4,6 @@ import { modeToTally, modeToInit } from '@analys/util-pivot';
 import { iterate } from '@vect/vector-mapper';
 import { mutazip } from '@vect/vector-zipper';
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class Cubic {
   /** @type {Function} */
 
@@ -29,17 +14,12 @@ class Cubic {
    * @param {{key:number, to:number}[]} field
    */
   constructor(side, head, field) {
-    _defineProperty(this, "side", void 0);
-
-    _defineProperty(this, "head", void 0);
-
-    _defineProperty(this, "field", void 0);
-
-    _defineProperty(this, "accum", void 0);
-
-    _defineProperty(this, "data", void 0);
-
-    _defineProperty(this, "cell", void 0);
+    this.side = void 0;
+    this.head = void 0;
+    this.field = void 0;
+    this.accum = void 0;
+    this.data = void 0;
+    this.cell = void 0;
 
     if (side.length === 1 && head.length === 1) {
       this.nested = false;

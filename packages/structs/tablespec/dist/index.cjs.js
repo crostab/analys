@@ -9,15 +9,13 @@ var literal = require('@typen/literal');
 var nullish = require('@typen/nullish');
 
 const parseCell = (cell, defaultField) => {
-  var _cell$field, _cell$mode;
-
   if (cell === void 0 || cell === null) return defaultCell(defaultField);
 
   switch (typeof cell) {
     case enumDataTypes.OBJ:
       if (Array.isArray(cell)) return cell.length ? vectorMapper.mapper(cell, cell => parseCell(cell, defaultField)) : defaultCell(defaultField);
-      cell.field = (_cell$field = cell.field) !== null && _cell$field !== void 0 ? _cell$field : defaultField;
-      cell.mode = (_cell$mode = cell.mode) !== null && _cell$mode !== void 0 ? _cell$mode : enumPivotMode.COUNT;
+      cell.field = cell.field ?? defaultField;
+      cell.mode = cell.mode ?? enumPivotMode.COUNT;
       return cell;
 
     case enumDataTypes.STR:
@@ -52,7 +50,7 @@ function parseKey(field, level = 0) {
   const {
     key: defaultKey = '',
     to: defaultTo = null
-  } = this !== null && this !== void 0 ? this : {};
+  } = this ?? {};
   const fieldSets = [];
   if (nullish.nullish(field)) fieldSets.push({
     key: defaultKey,
@@ -110,7 +108,7 @@ function parseField$1(field, level = 0) {
   const {
     key: defaultKey = '',
     to: defaultTo = null
-  } = this !== null && this !== void 0 ? this : {};
+  } = this ?? {};
   const fieldSets = [];
   if (nullish.nullish(field)) fieldSets.push({
     key: defaultKey,
@@ -136,21 +134,6 @@ function parseField$1(field, level = 0) {
   return fieldSets;
 }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 class TableSpec {
   /** @type {TableObject} */
 
@@ -172,18 +155,12 @@ class TableSpec {
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
    */
   constructor(side, banner, cell, filter, formula) {
-    _defineProperty(this, "table", void 0);
-
-    _defineProperty(this, "side", void 0);
-
-    _defineProperty(this, "banner", void 0);
-
-    _defineProperty(this, "cell", void 0);
-
-    _defineProperty(this, "filter", void 0);
-
-    _defineProperty(this, "formula", void 0);
-
+    this.table = void 0;
+    this.side = void 0;
+    this.banner = void 0;
+    this.cell = void 0;
+    this.filter = void 0;
+    this.formula = void 0;
     Object.assign(this, {
       side,
       banner,

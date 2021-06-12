@@ -11,7 +11,7 @@ const selectSamples = function (fieldIndexPairs) {
     rows
   } = this,
         columns = transpose(rows),
-        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
+        depth = fieldIndexPairs == null ? void 0 : fieldIndexPairs.length;
   return mapper(columns, column => {
     let o = {};
     iterate(fieldIndexPairs, ([field, index]) => o[field] = column[index], depth);

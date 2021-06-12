@@ -1,12 +1,12 @@
-import 'xbrief'
-import axios from 'axios'
-import { CrosTabX, deco } from 'xbrief'
-import { round } from '@aryth/math'
-import { xr } from '@spare/xr'
+import { round }                  from '@aryth/math'
+import { deca }                   from '@spare/deco'
+import { logger }                 from '@spare/logger'
+import { xr }                     from '@spare/xr'
+import axios                      from 'axios'
+import { Dawdle, GP }             from 'elprimero'
 import { promises as fsPromises } from 'fs'
-import { deca } from '@spare/deco'
-import { logger } from '@spare/logger'
-import { Dawdle, GP } from 'elprimero'
+import 'xbrief'
+import { CrosTabX }               from 'xbrief'
 
 const target = 'packages/table/test/assets/'
 const FORMAT_JSON = 'json'
@@ -32,30 +32,30 @@ const Indicators = {
 }
 
 const fetchWorldBank = async ({ country, year: { min, max }, indicator }) => {
-  xr(GP.now()).p('fetching').args([country, [min, max], indicator] |> deca({ vu: 1 }))|> logger
+  xr(GP.now()).p('fetching').args([ country, [ min, max ], indicator ] |> deca({ vu: 1 }))|> logger
   return await axios
-    .get(`/country/${country.join(';')}/indicator/${indicator}`, {
-      params: { date: `${min}:${max}`, format: FORMAT_JSON, per_page: 2048 },
+    .get(`/country/${ country.join(';') }/indicator/${ indicator }`, {
+      params: { date: `${ min }:${ max }`, format: FORMAT_JSON, per_page: 2048 },
       baseURL: 'https://api.worldbank.org/v2'
     })
     .then(({ data }) => data)
-    .then(([, samples]) => samples
-      .map(({ country, countryiso3code, date, value, indicator }) => ({
+    .then(([ , samples ]) => samples
+      .map(({ country, countryiso3code, date, value, indicator }) => ( {
         unit: indicator.value,
         id: country.id,
         iso: countryiso3code,
         date: date,
         value: value ? round(value / MILLION) : NaN,
         country: country.value,
-      }))
+      } ))
     )
     .catch(console.error)
 }
 
 const testWorldBank = async () => {
-  const country = ['USA', 'CHN', 'DEU', 'GBR', 'FRA', 'JPN', 'KOR', 'IND', 'EUU', 'CME',]
+  const country = [ 'USA', 'CHN', 'DEU', 'GBR', 'FRA', 'JPN', 'KOR', 'IND', 'EUU', 'CME', ]
   const year = { min: 1998, max: 2018 }
-  for (let [key, indicator] of Object.entries(Indicators)) {
+  for (let [ key, indicator ] of Object.entries(Indicators)) {
     key |> logger
     await Dawdle
       .linger(200, fetchWorldBank, { country, year, indicator })
@@ -69,7 +69,7 @@ const testWorldBank = async () => {
         return crosTab
       })
       .then(async crosTab =>
-        await fsPromises.writeFile(`${target}/${key}.json`, JSON.stringify(table))
+        await fsPromises.writeFile(`${ target }/${ key }.json`, JSON.stringify(table))
       )
       .catch(console.error)
   }

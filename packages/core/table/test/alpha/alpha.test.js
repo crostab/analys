@@ -1,6 +1,6 @@
 import { deco, says } from '@spare/logger'
 
-const alpha = { foo: 1, bar: [2, 4] }
+const alpha = { foo: 1, bar: [ 2, 4 ] }
 alpha |> deco |>  says.alpha
 const beta = alpha
 beta.foo = -1

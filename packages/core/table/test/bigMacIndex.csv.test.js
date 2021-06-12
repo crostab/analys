@@ -25,7 +25,7 @@ promises
     return NaiveCsv.toTable(it, { popBlank: true }) |> matchSlice
   })
   .then(async table => {
-    const head = ['date', ['iso_a3', 'region'], ['dollar_price', 'price'], ['GDP_dollar', 'gdppc'], 'name', ['currency_code', 'cur']]
+    const head = [ 'date', [ 'iso_a3', 'region' ], [ 'dollar_price', 'price' ], [ 'GDP_dollar', 'gdppc' ], 'name', [ 'currency_code', 'cur' ] ]
     table = Table.from(table)
     table
       .filter({ field: 'date', filter: x => !x.endsWith('01-01') })
@@ -45,7 +45,7 @@ promises
     return table
   })
   .then(table => {
-    const countryList = ['USA', 'CHN', 'EUZ', 'GBR', 'RUS', 'JPN', 'KOR', 'HKG', 'SGP', 'TWN', 'BRA']
+    const countryList = [ 'USA', 'CHN', 'EUZ', 'GBR', 'RUS', 'JPN', 'KOR', 'HKG', 'SGP', 'TWN', 'BRA' ]
     const DATE = 'date', REGION = 'region', PRICE = 'price'
     const spec = {
       side: DATE,
@@ -58,7 +58,7 @@ promises
     }
     const crosTab = Table.from(table).crosTab(spec)
     crosTab
-      .map(x => (+x).toFixed(2), { mutate: true })
+      .map(x => ( +x ).toFixed(2), { mutate: true })
       .sortByLabels({ direct: ROWWISE, comparer: STR_DESC, mutate: true })
     return crosTab
   })

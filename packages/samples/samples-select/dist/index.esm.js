@@ -9,7 +9,7 @@ import { mapper, iterate } from '@vect/vector-mapper';
  */
 
 function samplesSelect(samples, fields) {
-  if (fields !== null && fields !== void 0 && fields.length) {
+  if (fields != null && fields.length) {
     const assigners = mapper(fields, field => Array.isArray(field) ? assigner.bind({
       k: field[0],
       p: field[1]
@@ -26,9 +26,7 @@ function samplesSelect(samples, fields) {
   return mapper(samples, sample => mapper$1(sample, x => x));
 }
 const assigner = function (target, source) {
-  var _this$p;
-
-  target[(_this$p = this.p) !== null && _this$p !== void 0 ? _this$p : this.k] = source[this.k];
+  target[this.p ?? this.k] = source[this.k];
 };
 
 export { samplesSelect };

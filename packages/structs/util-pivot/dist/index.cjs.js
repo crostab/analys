@@ -41,8 +41,8 @@ const NaiveAccumulators = {
   average: (target, value) => (target.sum += value, target.count += 1, target),
   max: (target, value) => comparer.max(target, value),
   min: (target, value) => comparer.min(target, value),
-  first: (target, value) => target !== null && target !== void 0 ? target : value,
-  last: (target, value) => value !== null && value !== void 0 ? value : target
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target
 };
 const Accumulators = {
   merge: (target, value) => nullish.nullish(value) ? target : vectorMerge.acquire(target, value),
@@ -52,16 +52,14 @@ const Accumulators = {
   average: (target, value) => nullish.nullish(value) ? target : (target.sum += value, target.count += 1, target),
   max: (target, value) => nullish.nullish(value) ? target : comparer.max(target, value),
   min: (target, value) => nullish.nullish(value) ? target : comparer.min(target, value),
-  first: (target, value) => target !== null && target !== void 0 ? target : value,
-  last: (target, value) => value !== null && value !== void 0 ? value : target
+  first: (target, value) => target ?? value,
+  last: (target, value) => value ?? target
 };
 const modeToTally = mode => {
   let accumulators = Accumulators;
 
   if (Array.isArray(mode)) {
-    var _mode$;
-
-    accumulators = (_mode$ = mode[1]) !== null && _mode$ !== void 0 ? _mode$ : Accumulators;
+    accumulators = mode[1] ?? Accumulators;
     mode = mode[0];
   }
 

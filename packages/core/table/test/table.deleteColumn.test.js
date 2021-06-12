@@ -8,7 +8,7 @@ import { Table }                                           from '../src/Table'
 
   table |> decoTable |> logger
 
-  table.deleteColumn(['l', 'd', 'dryw', 'maxt', 'nonExist'], MUT) |> decoTable |> logger
+  table.deleteColumn([ 'l', 'd', 'dryw', 'maxt', 'nonExist' ], MUT) |> decoTable |> logger
 
   table.deleteColumn('app', MUT) |> decoTable |> logger
 }
@@ -21,7 +21,7 @@ import { Table }                                           from '../src/Table'
 
   table |> decoT |> says.original
 
-  table.deleteColumn(['companyName', 'price', 'mktCap'], { mutate: true }) |> decoT |> says.splice
+  table.deleteColumn([ 'companyName', 'price', 'mktCap' ], { mutate: true }) |> decoT |> says.splice
 
   table.toSamples() |> decoSamples |> says['original samples']
 }
