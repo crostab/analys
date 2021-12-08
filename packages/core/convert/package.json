@@ -30,6 +30,11 @@
     "@vect/vector-mapper": "^0.4.9",
     "@vect/vector-select": "^0.4.9"
   },
+  "devDependencies": {
+    "@flua/vinylize": "^0.3.3",
+    "@spare/markdown": "^0.11.22",
+    "gulp": "^4.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"
