@@ -19,8 +19,8 @@
     "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "dependencies": {
-    "@vect/vector-merge": "^0.4.2",
-    "@vect/vector-zipper": "^0.4.2"
+    "@vect/vector-merge": "^0.4.9",
+    "@vect/vector-zipper": "^0.4.9"
   },
   "keywords": [
     "table-merge",

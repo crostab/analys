@@ -18,7 +18,7 @@
     "@analys/enum-difference-modes": "^0.5.2",
     "@analys/table-timeseries-differential": "^0.5.2",
     "@analys/table-timeseries-rolling": "^0.5.2",
-    "@typen/enum-data-types": "^0.1.16"
+    "@typen/enum-data-types": "^0.1.17"
   },
   "repository": {
     "type": "git",

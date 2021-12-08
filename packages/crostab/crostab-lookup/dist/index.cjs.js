@@ -52,27 +52,19 @@ const hlookupCached = function (valueToFind, keyField, valueField) {
 
 Object.defineProperty(exports, 'vlookup', {
   enumerable: true,
-  get: function () {
-    return tableLookup.lookup;
-  }
+  get: function () { return tableLookup.lookup; }
 });
 Object.defineProperty(exports, 'vlookupCached', {
   enumerable: true,
-  get: function () {
-    return tableLookup.lookupCached;
-  }
+  get: function () { return tableLookup.lookupCached; }
 });
 Object.defineProperty(exports, 'vlookupMany', {
   enumerable: true,
-  get: function () {
-    return tableLookup.lookupMany;
-  }
+  get: function () { return tableLookup.lookupMany; }
 });
 Object.defineProperty(exports, 'vlookupTable', {
   enumerable: true,
-  get: function () {
-    return tableLookup.lookupTable;
-  }
+  get: function () { return tableLookup.lookupTable; }
 });
 exports.hlookup = hlookup;
 exports.hlookupCached = hlookupCached;

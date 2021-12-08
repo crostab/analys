@@ -26,7 +26,7 @@ const lookupKeyedVector = function (lookupKey) {
 
   return (_this$find = this.find(({
     key
-  }) => key.every((x, i) => x === lookupKey[i]))) == null ? void 0 : _this$find.vector;
+  }) => key.every((x, i) => x === lookupKey[i]))) === null || _this$find === void 0 ? void 0 : _this$find.vector;
 };
 const lookupKeyedVectorIndex = function (lookupKey) {
   return this.findIndex(({
@@ -91,8 +91,8 @@ const joinUnion = (L, R, n) => {
   const leftL = L.length,
         rows = Array(leftL),
         joinedIndexes = new Set(),
-        wL = (_L$ = L[0]) == null ? void 0 : (_L$$vector = _L$.vector) == null ? void 0 : _L$$vector.length,
-        wR = (_R$ = R[0]) == null ? void 0 : (_R$$vector = _R$.vector) == null ? void 0 : _R$$vector.length;
+        wL = (_L$ = L[0]) === null || _L$ === void 0 ? void 0 : (_L$$vector = _L$.vector) === null || _L$$vector === void 0 ? void 0 : _L$$vector.length,
+        wR = (_R$ = R[0]) === null || _R$ === void 0 ? void 0 : (_R$$vector = _R$.vector) === null || _R$$vector === void 0 ? void 0 : _R$$vector.length;
   iterate(L, ({
     key,
     vector
@@ -118,7 +118,7 @@ const joinLeft = (L, R, n) => {
   var _R$2, _R$2$vector;
 
   let rows = Array(L.length),
-      w = (_R$2 = R[0]) == null ? void 0 : (_R$2$vector = _R$2.vector) == null ? void 0 : _R$2$vector.length,
+      w = (_R$2 = R[0]) === null || _R$2 === void 0 ? void 0 : (_R$2$vector = _R$2.vector) === null || _R$2$vector === void 0 ? void 0 : _R$2$vector.length,
       another;
   iterate(L, ({
     key,
@@ -138,7 +138,7 @@ const joinRight = (L, R, n) => {
   var _L$2, _L$2$vector;
 
   let rows = Array(R.length),
-      w = (_L$2 = L[0]) == null ? void 0 : (_L$2$vector = _L$2.vector) == null ? void 0 : _L$2$vector.length,
+      w = (_L$2 = L[0]) === null || _L$2 === void 0 ? void 0 : (_L$2$vector = _L$2.vector) === null || _L$2$vector === void 0 ? void 0 : _L$2$vector.length,
       another;
   iterate(R, ({
     key,
@@ -160,8 +160,8 @@ const joinRight = (L, R, n) => {
 function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = null) {
   var _tableL$head, _tableL$rows, _tableR$head, _tableR$rows;
 
-  if (!(tableL != null && (_tableL$head = tableL.head) != null && _tableL$head.length) || !(tableL != null && (_tableL$rows = tableL.rows) != null && _tableL$rows.length)) return tableR;
-  if (!(tableR != null && (_tableR$head = tableR.head) != null && _tableR$head.length) || !(tableR != null && (_tableR$rows = tableR.rows) != null && _tableR$rows.length)) return tableL;
+  if (!(tableL !== null && tableL !== void 0 && (_tableL$head = tableL.head) !== null && _tableL$head !== void 0 && _tableL$head.length) || !(tableL !== null && tableL !== void 0 && (_tableL$rows = tableL.rows) !== null && _tableL$rows !== void 0 && _tableL$rows.length)) return tableR;
+  if (!(tableR !== null && tableR !== void 0 && (_tableR$head = tableR.head) !== null && _tableR$head !== void 0 && _tableR$head.length) || !(tableR !== null && tableR !== void 0 && (_tableR$rows = tableR.rows) !== null && _tableR$rows !== void 0 && _tableR$rows.length)) return tableL;
   const joiner = Joiner(joinType),
         depth = fields.length,
         indexesL = fields.map(x => tableL.head.indexOf(x)),
@@ -179,8 +179,8 @@ function tableJoin(tableL, tableR, fields, joinType = INTERSECT, fillEmpty = nul
     depth
   });
   const head = select(tableL.head, indexesL).concat(splices(tableL.head.slice(), ascL), splices(tableR.head.slice(), ascR));
-  const L = tableL.rows.map(row => toKeyedVectorL(row == null ? void 0 : row.slice())),
-        R = tableR.rows.map(row => toKeyedVectorR(row == null ? void 0 : row.slice()));
+  const L = tableL.rows.map(row => toKeyedVectorL(row === null || row === void 0 ? void 0 : row.slice())),
+        R = tableR.rows.map(row => toKeyedVectorR(row === null || row === void 0 ? void 0 : row.slice()));
   const rows = joiner(L, R, fillEmpty);
   return {
     head,

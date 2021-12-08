@@ -6,19 +6,25 @@ import { mutazip } from '@vect/vector-zipper';
 
 class Group {
   /** @type {*} */
-
+  key;
   /** @type {Object} */
 
+  data = {};
   /** @type {Array} */
 
+  fields;
   /** @type {Function} */
 
+  init;
   /** @type {Function} */
 
+  to;
   /** @type {Function} */
 
+  filter;
   /** @type {Array} */
 
+  aliases;
   /**
    *
    * @param key
@@ -27,14 +33,8 @@ class Group {
    * @param [filter]
    * @param [aliases]
    */
+
   constructor([key, to], fields, filter, aliases) {
-    this.key = void 0;
-    this.data = {};
-    this.fields = void 0;
-    this.init = void 0;
-    this.to = void 0;
-    this.filter = void 0;
-    this.aliases = void 0;
     this.key = key;
     this.to = to;
     this.fields = fields.map(([index, mode]) => [index, modeToTally(mode)]);

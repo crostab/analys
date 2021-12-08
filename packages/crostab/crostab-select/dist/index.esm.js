@@ -17,8 +17,8 @@ function crostabShuffle(crostab, {
   if (!w || oscillate) w = randBetw(MEAN - 1, MEAN + 1);
   const sideSelection = leap(crostab.side, flopIndex(crostab.side), h),
         headSelection = shuffle(crostab.head, w);
-  if (sideSelection != null && sideSelection.length) selectKeyedRows.call(crostab, sideSelection);
-  if (headSelection != null && headSelection.length) selectTabular.call(crostab, headSelection);
+  if (sideSelection !== null && sideSelection !== void 0 && sideSelection.length) selectKeyedRows.call(crostab, sideSelection);
+  if (headSelection !== null && headSelection !== void 0 && headSelection.length) selectTabular.call(crostab, headSelection);
   return crostab;
 }
 

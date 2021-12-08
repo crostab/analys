@@ -4,17 +4,22 @@ import { iterate } from '@vect/vector-mapper';
 
 class Chips {
   /** @type {*} */
-
+  key;
   /** @type {*} */
 
+  field;
   /** @type {Object} */
 
+  data = {};
   /** @type {Function} */
 
+  to;
   /** @type {Function} */
 
+  updater;
   /** @type {Function} */
 
+  filter;
   /**
    *
    * @param key
@@ -23,13 +28,8 @@ class Chips {
    * @param mode
    * @param [filter]
    */
+
   constructor([key, to], [field, mode], filter) {
-    this.key = void 0;
-    this.field = void 0;
-    this.data = {};
-    this.to = void 0;
-    this.updater = void 0;
-    this.filter = void 0;
     this.key = key;
     this.to = to;
     this.field = field;

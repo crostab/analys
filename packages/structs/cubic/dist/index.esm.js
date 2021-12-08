@@ -5,22 +5,22 @@ import { iterate } from '@vect/vector-mapper';
 import { mutazip } from '@vect/vector-zipper';
 
 class Cubic {
+  side;
+  head;
+  field;
+  accum;
+  data;
   /** @type {Function} */
 
+  cell;
   /**
    *
    * @param {{key:number, to:Function?}[]} side
    * @param {{key:number, to:Function?}[]} head
    * @param {{key:number, to:number}[]} field
    */
-  constructor(side, head, field) {
-    this.side = void 0;
-    this.head = void 0;
-    this.field = void 0;
-    this.accum = void 0;
-    this.data = void 0;
-    this.cell = void 0;
 
+  constructor(side, head, field) {
     if (side.length === 1 && head.length === 1) {
       this.nested = false;
       [this.side] = side;

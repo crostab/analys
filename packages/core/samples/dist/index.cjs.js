@@ -86,7 +86,7 @@ class Samples {
     var _this$types;
 
     if (!data) data = this.data.map(sample => Object.assign({}, sample));
-    if (!types) types = (_this$types = this.types) == null ? void 0 : _this$types.slice();
+    if (!types) types = (_this$types = this.types) === null || _this$types === void 0 ? void 0 : _this$types.slice();
     return new Samples(data, this.title, types);
   }
 

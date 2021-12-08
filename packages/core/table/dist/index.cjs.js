@@ -31,24 +31,24 @@ var borel = require('borel');
 
 class Table {
   /** @type {*[]} */
-
+  head;
   /** @type {*[][]} */
 
+  rows;
   /** @type {string} */
 
+  title;
   /** @type {string[]} */
 
+  types;
   /**
    * @param {*[]} [head]
    * @param {*[][]} [rows]
    * @param {string} [title]
    * @param {string[]} [types]
    */
+
   constructor(head, rows, title, types) {
-    this.head = void 0;
-    this.rows = void 0;
-    this.title = void 0;
-    this.types = void 0;
     this.head = head || [];
     this.rows = rows || [];
     this.title = title || '';
@@ -80,25 +80,25 @@ class Table {
   get ht() {
     var _this$rows;
 
-    return (_this$rows = this.rows) == null ? void 0 : _this$rows.length;
+    return (_this$rows = this.rows) === null || _this$rows === void 0 ? void 0 : _this$rows.length;
   }
 
   get wd() {
     var _this$head;
 
-    return (_this$head = this.head) == null ? void 0 : _this$head.length;
+    return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
   }
 
   get height() {
     var _this$rows2;
 
-    return (_this$rows2 = this.rows) == null ? void 0 : _this$rows2.length;
+    return (_this$rows2 = this.rows) === null || _this$rows2 === void 0 ? void 0 : _this$rows2.length;
   }
 
   get width() {
     var _this$head2;
 
-    return (_this$head2 = this.head) == null ? void 0 : _this$head2.length;
+    return (_this$head2 = this.head) === null || _this$head2 === void 0 ? void 0 : _this$head2.length;
   }
 
   get columns() {
@@ -282,7 +282,7 @@ class Table {
           y = nextTo ? this.coin(nextTo) + 1 : 0;
     fieldSpec.forEach(o => o.index = this.coin(o.key));
 
-    if (((_fieldSpec = fieldSpec) == null ? void 0 : _fieldSpec.length) === 1) {
+    if (((_fieldSpec = fieldSpec) === null || _fieldSpec === void 0 ? void 0 : _fieldSpec.length) === 1) {
       const [{
         index,
         to,
@@ -612,7 +612,7 @@ class Table {
 
     if (!head) head = this.head.slice();
     if (!rows) rows = this.rows.map(row => row.slice());
-    if (!types) types = (_this$types = this.types) == null ? void 0 : _this$types.slice();
+    if (!types) types = (_this$types = this.types) === null || _this$types === void 0 ? void 0 : _this$types.slice();
     return new Table(head, rows, this.title, types);
   }
 

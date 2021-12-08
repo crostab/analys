@@ -2,17 +2,18 @@ import { init } from '@vect/vector-init';
 
 class DataGram {
   /** @type {*[]} */
-
+  side;
   /** @type {*[]} */
 
+  head;
   /** @type {*[][]} */
 
+  rows;
   /** @type {Function} */
+
+  init;
+
   constructor(init) {
-    this.side = void 0;
-    this.head = void 0;
-    this.rows = void 0;
-    this.init = void 0;
     this.side = [];
     this.head = [];
     this.rows = [];

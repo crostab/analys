@@ -25,13 +25,16 @@ var vectorZipper = require('@vect/vector-zipper');
 
 class CrosTab {
   /** @type {*[]} */
-
+  side;
   /** @type {*[]} */
 
+  head;
   /** @type {*[][]} */
 
+  rows;
   /** @type {string} */
 
+  title;
   /**
    *
    * @param {*[]} side
@@ -39,11 +42,8 @@ class CrosTab {
    * @param {*[][]} rows
    * @param {string} [title]
    */
+
   constructor(side, head, rows, title) {
-    this.side = void 0;
-    this.head = void 0;
-    this.rows = void 0;
-    this.title = void 0;
     this.side = side;
     this.head = head;
     this.rows = rows;
@@ -72,7 +72,7 @@ class CrosTab {
     return CrosTab.from({
       side,
       head,
-      rows: matrixInit.init(side == null ? void 0 : side.length, head == null ? void 0 : head.length, (x, y) => func(x, y)),
+      rows: matrixInit.init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y)),
       title
     });
   }
@@ -115,13 +115,13 @@ class CrosTab {
   get height() {
     var _this$side;
 
-    return (_this$side = this.side) == null ? void 0 : _this$side.length;
+    return (_this$side = this.side) === null || _this$side === void 0 ? void 0 : _this$side.length;
   }
 
   get width() {
     var _this$head;
 
-    return (_this$head = this.head) == null ? void 0 : _this$head.length;
+    return (_this$head = this.head) === null || _this$head === void 0 ? void 0 : _this$head.length;
   }
 
   roin(r) {
@@ -319,8 +319,8 @@ class CrosTab {
     var _this5;
 
     let o = mutate ? this : (_this5 = this, crostabInit.slice(_this5));
-    if (head != null && head.length) tabular.selectTabular.call(o, head);
-    if (side != null && side.length) keyedRows.selectKeyedRows.call(o, side);
+    if (head !== null && head !== void 0 && head.length) tabular.selectTabular.call(o, head);
+    if (side !== null && side !== void 0 && side.length) keyedRows.selectKeyedRows.call(o, side);
     return mutate ? this : this.copy(o);
   }
 

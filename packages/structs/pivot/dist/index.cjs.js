@@ -7,18 +7,19 @@ var utilPivot = require('@analys/util-pivot');
 var vectorMapper = require('@vect/vector-mapper');
 
 class Pivot {
+  side = {};
+  head = {};
+  field = {};
+  accum;
+  data;
   /**
    *
    * @param {{key:number, to:Function?}} side
    * @param {{key:number, to:Function?}} head
    * @param {{key:number, to:number}} field
    */
+
   constructor(side, head, field) {
-    this.side = {};
-    this.head = {};
-    this.field = {};
-    this.accum = void 0;
-    this.data = void 0;
     this.side = side;
     this.head = head;
     this.field = {

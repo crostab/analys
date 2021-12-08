@@ -136,17 +136,22 @@ function parseField$1(field, level = 0) {
 
 class TableSpec {
   /** @type {TableObject} */
-
+  table;
   /** @type {str} */
 
+  side;
   /** @type {str} */
 
+  banner;
   /** @type {CubeCell[]|CubeCell} */
 
+  cell;
   /** @type {Filter[]|Filter} */
 
+  filter;
   /** @type {function():number} */
 
+  formula;
   /**
    * @param {str} side
    * @param {str} banner
@@ -154,13 +159,8 @@ class TableSpec {
    * @param {Filter[]|Filter} [filter]
    * @param {function():number} formula - formula is valid only when cell is CubeCell array.
    */
+
   constructor(side, banner, cell, filter, formula) {
-    this.table = void 0;
-    this.side = void 0;
-    this.banner = void 0;
-    this.cell = void 0;
-    this.filter = void 0;
-    this.formula = void 0;
     Object.assign(this, {
       side,
       banner,

@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "@analys/enum-join-modes": "^0.5.2",
-    "@aryth/comparer": "^0.3.21",
-    "@vect/vector-init": "^0.4.2",
-    "@vect/vector-mapper": "^0.4.2",
-    "@vect/vector-select": "^0.4.2",
-    "@vect/vector-update": "^0.4.2"
+    "@aryth/comparer": "^0.3.26",
+    "@vect/vector-init": "^0.4.9",
+    "@vect/vector-mapper": "^0.4.9",
+    "@vect/vector-select": "^0.4.9",
+    "@vect/vector-update": "^0.4.9"
   },
   "repository": {
     "type": "git",

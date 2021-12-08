@@ -63,7 +63,7 @@ const selectSamples = function (fieldIndexPairs) {
   const {
     rows
   } = this,
-        depth = fieldIndexPairs == null ? void 0 : fieldIndexPairs.length;
+        depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
   return mapper(rows, row => {
     let o = {};
     iterate(fieldIndexPairs, ([field, index]) => o[field] = row[index], depth);
