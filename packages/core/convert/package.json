@@ -1,6 +1,6 @@
 {
   "name": "@analys/convert",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A cross-convert analytics tool",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,11 +15,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.5.2",
-    "@analys/table": "^0.5.2",
-    "@analys/table-index": "^0.5.2",
-    "@analys/table-init": "^0.5.2",
-    "@analys/tabular": "^0.5.2",
+    "@analys/crostab": "^0.5.3",
+    "@analys/table": "^0.5.3",
+    "@analys/table-index": "^0.5.3",
+    "@analys/table-init": "^0.5.3",
+    "@analys/tabular": "^0.5.3",
     "@typen/nullish": "^0.1.17",
     "@vect/column-getter": "^0.4.9",
     "@vect/entries-init": "^0.4.9",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@flua/vinylize": "^0.3.3",
-    "@spare/markdown": "^0.11.22",
+    "@spare/markdown": "^0.12.5",
     "gulp": "^4.0.2"
   },
   "repository": {
