@@ -2,8 +2,11 @@
   "name": "@analys/formula",
   "version": "0.5.3",
   "description": "Formula for algebra of columns in matrix",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+    "main": "./dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "files": [
     "dist"
   ],

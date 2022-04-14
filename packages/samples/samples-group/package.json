@@ -2,8 +2,11 @@
   "name": "@analys/samples-group",
   "version": "0.5.3",
   "description": "A cross-samples-group analytics tool",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+    "main": "./dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "files": [
     "dist"
   ],
