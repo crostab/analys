@@ -14,17 +14,17 @@ import {
   selectSamplesBySide,
   sortKeyedRows,
   sortRowsByKeys
-}                                 from '@analys/keyed-rows'
+} from '@analys/keyed-rows'
 import {
   selectTabular,
   selectTabularToSamples,
   sortTabular,
   sortTabularByKeys
-}                                 from '@analys/tabular'
+} from '@analys/tabular'
 import {
   NUM_ASC,
   STR_ASC
-}                                 from '@aryth/comparer'
+} from '@aryth/comparer'
 import { column }                 from '@vect/column-getter'
 import { mutate as mutateColumn } from '@vect/column-mapper'
 import {

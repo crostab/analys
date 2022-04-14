@@ -1,5 +1,5 @@
-import { toTable }                            from '@analys/convert'
-import { ACCUM, COUNT, INCRE }                from '@analys/enum-pivot-mode'
+import { toTable }             from '@analys/convert'
+import { ACCUM, COUNT, INCRE } from '@analys/enum-pivot-mode'
 import { slice }                              from '@analys/table-init'
 import { Accumulators }                       from '@analys/util-pivot'
 import { Foba }                               from '@foba/table'

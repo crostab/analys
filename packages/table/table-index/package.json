@@ -2,7 +2,7 @@
   "name": "@analys/table-index",
   "version": "0.5.3",
   "description": "A cross-table-index analytics tool",
-    "main": "./dist/index.cjs",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"

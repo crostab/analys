@@ -1,5 +1,5 @@
 import { tabularToSamples, selectTabularToSamples } from '@analys/tabular'
-import { matchSlice }                                 from '@analys/table-init'
+import { matchSlice }                               from '@analys/table-init'
 
 /**
  *

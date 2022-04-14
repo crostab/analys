@@ -1,5 +1,5 @@
-import { tableToSamples }                 from '@analys/convert'
-import { ACCUM, INCRE }                   from '@analys/enum-pivot-mode'
+import { tableToSamples } from '@analys/convert'
+import { ACCUM, INCRE }   from '@analys/enum-pivot-mode'
 import { samplesFind }                    from '@analys/samples-find'
 import { Foba }                           from '@foba/table'
 import { decoCrostab, decoSamples, says } from '@spare/logger'

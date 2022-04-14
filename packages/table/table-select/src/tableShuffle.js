@@ -1,6 +1,6 @@
 import { matchSlice }    from '@analys/table-init'
 import { selectTabular } from '@analys/tabular'
-import { randBetw }   from '@aryth/rand'
+import { randBetw }      from '@aryth/rand'
 import { shuffle }       from '@vect/vector-select'
 
 const MEAN = 5

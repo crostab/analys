@@ -1,5 +1,5 @@
-import { voidTabular }     from '@analys/tabular'
-import { unwind }          from '@vect/entries-unwind'
+import { voidTabular } from '@analys/tabular'
+import { unwind }      from '@vect/entries-unwind'
 import { iterate, mapper } from '@vect/vector-mapper'
 import { select }          from '@vect/vector-select'
 import { toTable }         from './tabularToTable'

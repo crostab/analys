@@ -1,5 +1,5 @@
-import { tableToSamples }    from '@analys/convert'
-import { Foba }              from '@foba/table'
+import { tableToSamples } from '@analys/convert'
+import { Foba }           from '@foba/table'
 import { decoSamples, says } from '@spare/logger'
 import { samplesSelect }     from '../src/samplesSelect'
 

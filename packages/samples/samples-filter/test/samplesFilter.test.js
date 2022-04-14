@@ -1,6 +1,6 @@
-import { Foba } from '@foba/table'
+import { Foba }           from '@foba/table'
 import { tableToSamples } from '@analys/convert'
-import { samplesFilter } from '../src/samplesFilter'
+import { samplesFilter }  from '../src/samplesFilter'
 import { deca, says } from '@spare/logger'
 import { deco } from '@spare/deco'
 
