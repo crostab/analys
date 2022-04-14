@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-select",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,9 +18,9 @@
     "test": "node -r @babel/register test/table.select.test.js"
   },
   "dependencies": {
-    "@analys/table-index": "^0.5.5",
-    "@analys/table-init": "^0.5.5",
-    "@analys/tabular": "^0.5.5",
+    "@analys/table-index": "^0.5.6",
+    "@analys/table-init": "^0.5.6",
+    "@analys/tabular": "^0.5.6",
     "@aryth/rand": "^0.4.10",
     "@typen/nullish": "^0.1.17",
     "@vect/column-getter": "^0.5.1",
