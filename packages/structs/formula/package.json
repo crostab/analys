@@ -15,9 +15,9 @@
     "test": "node -r @babel/register test/formula.test.js"
   },
   "dependencies": {
-    "@vect/object-init": "^0.4.9",
-    "@vect/vector-mapper": "^0.4.9",
-    "@vect/vector-select": "^0.4.9"
+    "@vect/object-init": "^0.5.1",
+    "@vect/vector-mapper": "^0.5.1",
+    "@vect/vector-select": "^0.5.1"
   },
   "repository": {
     "type": "git",

@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@analys/table": "^0.5.3",
-    "@aryth/math": "^0.3.26",
+    "@aryth/math": "^0.4.10",
     "@typen/num-strict": "^0.1.17",
-    "@vect/vector-differentiator": "^0.4.9",
-    "@vect/vector-mapper": "^0.4.9"
+    "@vect/vector-differentiator": "^0.5.1",
+    "@vect/vector-mapper": "^0.5.1"
   },
   "repository": {
     "type": "git",
