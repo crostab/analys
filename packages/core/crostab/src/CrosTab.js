@@ -1,56 +1,49 @@
-import { shallow, slice }                                             from '@analys/crostab-init'
+import { shallow, slice } from '@analys/crostab-init'
 import {
-  hlookup,
-  hlookupCached,
-  hlookupMany,
-  hlookupTable,
-  vlookup,
-  vlookupCached,
-  vlookupMany,
-  vlookupTable
-}                                                                     from '@analys/crostab-lookup'
+  hlookup, hlookupCached, hlookupMany, hlookupTable, vlookup, vlookupCached, vlookupMany, vlookupTable
+}                         from '@analys/crostab-lookup'
 import {
-  selectKeyedRows,
-  selectSamplesBySide,
-  sortKeyedRows,
-  sortRowsByKeys
-}                                                                     from '@analys/keyed-rows'
+  selectKeyedRows, selectSamplesBySide, sortKeyedRows, sortRowsByKeys
+}                         from '@analys/keyed-rows'
 import {
-  selectTabular,
-  selectTabularToSamples,
-  sortTabular,
-  sortTabularByKeys
-}                                                                     from '@analys/tabular'
+  selectTabular, selectTabularToSamples, sortTabular, sortTabularByKeys
+}                         from '@analys/tabular'
 import {
-  NUM_ASC,
-  STR_ASC
-}                                                                     from '@aryth/comparer'
-import { logger }                                                     from '@spare/logger'
-import { column }                                                     from '@vect/column-getter'
-import { mutate as mutateColumn }                                     from '@vect/column-mapper'
+  NUM_ASC, STR_ASC
+}                         from '@aryth/comparer'
 import {
-  pop as popColumn,
-  push as pushColumn,
-  shift as shiftColumn,
-  unshift as unshiftColumn
-}                                                                     from '@vect/columns-update'
+  column
+}                         from '@vect/column-getter'
 import {
-  COLUMNWISE,
-  ROWWISE
-}                                                                     from '@vect/enum-matrix-directions'
-import { init as initMatrix, iso as isoMatrix, draft as draftMatrix } from '@vect/matrix-init'
+  mutate as mutateColumn
+}                         from '@vect/column-mapper'
 import {
-  mapper as mapperMatrix,
-  mutate as mutateMatrix
-}                                                                     from '@vect/matrix-mapper'
-import { transpose }                                                  from '@vect/matrix-transpose'
-import { pair }                                                       from '@vect/object-init'
+  pop as popColumn, push as pushColumn, shift as shiftColumn, unshift as unshiftColumn
+}                         from '@vect/columns-update'
 import {
-  mapper,
-  mutate
-}                                                                     from '@vect/vector-mapper'
-import { acquire }                                                    from '@vect/vector-merge'
-import { zipper }                                                     from '@vect/vector-zipper'
+  COLUMNWISE, ROWWISE
+}                         from '@vect/enum-matrix-directions'
+import {
+  draft as draftMatrix, init as initMatrix, iso as isoMatrix
+}                         from '@vect/matrix-init'
+import {
+  mapper as mapperMatrix, mutate as mutateMatrix
+}                         from '@vect/matrix-mapper'
+import {
+  transpose
+}                         from '@vect/matrix-transpose'
+import {
+  pair
+}                         from '@vect/object-init'
+import {
+  mapper, mutate
+}                         from '@vect/vector-mapper'
+import {
+  acquire
+}                         from '@vect/vector-merge'
+import {
+  zipper
+}                         from '@vect/vector-zipper'
 
 /**
  *
