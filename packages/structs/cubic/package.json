@@ -2,7 +2,6 @@
   "name": "@analys/cubic",
   "version": "0.5.6",
   "description": "A debugging tool",
-  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -22,10 +21,10 @@
     "@analys/enum-pivot-mode": "^0.5.6",
     "@analys/nest-gram": "^0.5.6",
     "@analys/util-pivot": "^0.5.6",
-    "@vect/entries-mapper": "^0.5.1",
-    "@vect/vector-mapper": "^0.5.1",
-    "@vect/vector-merge": "^0.5.1",
-    "@vect/vector-zipper": "^0.5.1"
+    "@vect/entries-mapper": "^0.5.4",
+    "@vect/vector-mapper": "^0.5.4",
+    "@vect/vector-merge": "^0.5.4",
+    "@vect/vector-zipper": "^0.5.4"
   },
   "repository": {
     "type": "git",

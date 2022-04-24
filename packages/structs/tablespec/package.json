@@ -2,7 +2,6 @@
   "name": "@analys/tablespec",
   "version": "0.5.6",
   "description": "A cross-table analytics tool",
-  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -22,9 +21,9 @@
     "@typen/enum-data-types": "^0.1.17",
     "@typen/literal": "^0.1.17",
     "@typen/nullish": "^0.1.17",
-    "@vect/matrix": "^0.5.1",
-    "@vect/vector-mapper": "^0.5.1",
-    "@vect/vector-merge": "^0.5.1"
+    "@vect/matrix": "^0.5.4",
+    "@vect/vector-mapper": "^0.5.4",
+    "@vect/vector-merge": "^0.5.4"
   },
   "repository": {
     "type": "git",

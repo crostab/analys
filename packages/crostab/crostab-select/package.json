@@ -2,7 +2,6 @@
   "name": "@analys/crostab-select",
   "version": "0.5.6",
   "description": "A cross-table analytics tool",
-  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -22,7 +21,7 @@
     "@analys/keyed-rows": "^0.5.6",
     "@analys/tabular": "^0.5.6",
     "@aryth/rand": "^0.4.10",
-    "@vect/vector-select": "^0.5.1"
+    "@vect/vector-select": "^0.5.4"
   },
   "repository": {
     "type": "git",

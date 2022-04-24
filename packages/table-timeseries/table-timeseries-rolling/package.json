@@ -2,7 +2,6 @@
   "name": "@analys/table-timeseries-rolling",
   "version": "0.5.6",
   "description": "A crawler",
-  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -20,9 +19,9 @@
   "dependencies": {
     "@analys/table": "^0.5.6",
     "@aryth/math": "^0.4.10",
-    "@vect/vector-mapper": "^0.5.1",
-    "@vect/vector-merge": "^0.5.1",
-    "@vect/vector-roller": "^0.5.1"
+    "@vect/vector-mapper": "^0.5.4",
+    "@vect/vector-merge": "^0.5.4",
+    "@vect/vector-roller": "^0.5.4"
   },
   "repository": {
     "type": "git",
