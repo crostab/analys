@@ -1,6 +1,6 @@
 {
   "name": "@analys/convert",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "A cross-convert analytics tool",
   "exports": {
     "import": "./dist/index.mjs",
@@ -17,11 +17,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.5.6",
-    "@analys/table": "^0.5.6",
-    "@analys/table-index": "^0.5.6",
-    "@analys/table-init": "^0.5.6",
-    "@analys/tabular": "^0.5.6",
+    "@analys/crostab": "^0.5.7",
+    "@analys/table": "^0.5.7",
+    "@analys/table-index": "^0.5.7",
+    "@analys/table-init": "^0.5.7",
+    "@analys/tabular": "^0.5.7",
     "@typen/nullish": "^0.1.17",
     "@vect/column-getter": "^0.5.4",
     "@vect/entries-init": "^0.5.4",

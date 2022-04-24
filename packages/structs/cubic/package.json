@@ -1,6 +1,6 @@
 {
   "name": "@analys/cubic",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "A debugging tool",
   "exports": {
     "import": "./dist/index.mjs",
@@ -17,10 +17,10 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/data-gram": "^0.5.6",
-    "@analys/enum-pivot-mode": "^0.5.6",
-    "@analys/nest-gram": "^0.5.6",
-    "@analys/util-pivot": "^0.5.6",
+    "@analys/data-gram": "^0.5.7",
+    "@analys/enum-pivot-mode": "^0.5.7",
+    "@analys/nest-gram": "^0.5.7",
+    "@analys/util-pivot": "^0.5.7",
     "@vect/entries-mapper": "^0.5.4",
     "@vect/vector-mapper": "^0.5.4",
     "@vect/vector-merge": "^0.5.4",

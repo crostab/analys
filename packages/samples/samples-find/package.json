@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-find",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "A cross-samples analytics tool",
   "exports": {
     "import": "./dist/index.mjs",
