@@ -2,6 +2,7 @@
   "name": "@analys/table-divide",
   "version": "0.5.7",
   "description": "A cross-table-divide analytics tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -19,9 +20,9 @@
   "dependencies": {
     "@analys/enum-mutabilities": "^0.5.7",
     "@analys/table-init": "^0.5.7",
-    "@vect/columns-select": "^0.5.4",
-    "@vect/vector-mapper": "^0.5.4",
-    "@vect/vector-select": "^0.5.4"
+    "@vect/columns-select": "^0.5.5",
+    "@vect/vector-mapper": "^0.5.5",
+    "@vect/vector-select": "^0.5.5"
   },
   "repository": {
     "type": "git",

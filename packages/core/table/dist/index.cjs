@@ -159,11 +159,11 @@ class Table {
   }
 
   popColumn() {
-    return columnsUpdate.pop(this.rows);
+    return [this.head.pop(), columnsUpdate.pop(this.rows)];
   }
 
   shiftColumn() {
-    return columnsUpdate.shift(this.rows);
+    return [this.head.shift(), columnsUpdate.shift(this.rows)];
   }
 
   renameColumn(field, newName) {

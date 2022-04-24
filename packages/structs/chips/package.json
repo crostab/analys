@@ -2,6 +2,7 @@
   "name": "@analys/chips",
   "version": "0.5.7",
   "description": "A debugging tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -19,8 +20,8 @@
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.5.7",
     "@analys/util-pivot": "^0.5.7",
-    "@vect/object-init": "^0.5.4",
-    "@vect/vector-mapper": "^0.5.4"
+    "@vect/object-init": "^0.5.5",
+    "@vect/vector-mapper": "^0.5.5"
   },
   "repository": {
     "type": "git",

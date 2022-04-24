@@ -2,6 +2,7 @@
   "name": "@analys/pivot",
   "version": "0.5.7",
   "description": "A debugging tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -20,7 +21,7 @@
     "@analys/data-gram": "^0.5.7",
     "@analys/enum-pivot-mode": "^0.5.7",
     "@analys/util-pivot": "^0.5.7",
-    "@vect/vector-mapper": "^0.5.4"
+    "@vect/vector-mapper": "^0.5.5"
   },
   "repository": {
     "type": "git",

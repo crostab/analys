@@ -2,6 +2,7 @@
   "name": "@analys/samples-select",
   "version": "0.5.7",
   "description": "A cross-samples analytics tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -17,8 +18,8 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@vect/object-mapper": "^0.5.4",
-    "@vect/vector-mapper": "^0.5.4"
+    "@vect/object-mapper": "^0.5.5",
+    "@vect/vector-mapper": "^0.5.5"
   },
   "repository": {
     "type": "git",

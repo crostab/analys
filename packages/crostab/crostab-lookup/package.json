@@ -2,6 +2,7 @@
   "name": "@analys/crostab-lookup",
   "version": "0.5.7",
   "description": "A cross-crostab-lookup analytics tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -19,8 +20,8 @@
   "dependencies": {
     "@analys/enum-lookups": "^0.5.7",
     "@analys/table-lookup": "^0.5.7",
-    "@vect/entries-init": "^0.5.4",
-    "@vect/object-init": "^0.5.4"
+    "@vect/entries-init": "^0.5.5",
+    "@vect/object-init": "^0.5.5"
   },
   "repository": {
     "type": "git",

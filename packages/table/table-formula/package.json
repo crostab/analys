@@ -2,6 +2,7 @@
   "name": "@analys/table-formula",
   "version": "0.5.7",
   "description": "Table formula",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"

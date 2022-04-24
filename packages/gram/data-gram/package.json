@@ -2,6 +2,7 @@
   "name": "@analys/data-gram",
   "version": "0.5.7",
   "description": "A debugging tool",
+  "main": "./dist/index.cjs",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
@@ -17,7 +18,7 @@
     "test": "node -r @babel/register test/data-gram.test.js"
   },
   "dependencies": {
-    "@vect/vector-init": "^0.5.4"
+    "@vect/vector-init": "^0.5.5"
   },
   "repository": {
     "type": "git",
