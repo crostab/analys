@@ -74,8 +74,8 @@ export class Table {
   unshiftColumn(label, column) { return this.head.unshift(label), unshiftColumn(this.rows, column), this }
   popRow() { return this.rows.pop() }
   shiftRow() { return this.rows.shift() }
-  popColumn() { return popColumn(this.rows) }
-  shiftColumn() { return shiftColumn(this.rows) }
+  popColumn() { return [ this.head.pop(), popColumn(this.rows) ] }
+  shiftColumn() { return [ this.head.shift(), shiftColumn(this.rows) ] }
   renameColumn(field, newName) {
     const ci = this.coin(field)
     if (ci >= 0) this.head[ci] = newName
@@ -92,7 +92,7 @@ export class Table {
     return selectMutate(this.rows, this.columnIndexes(fields), fn, this.height), this
   }
 
-  lookupOne(valueToFind, key, field, cached = true) { return ( cached ? lookupCached : lookup ).call(this, valueToFind, key, field) }
+  lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
   lookupMany(valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
 
   /**
@@ -128,7 +128,7 @@ export class Table {
     const
       o = mutate ? this : this |> shallow,
       y = this.coin(field)
-    o.head.splice(y, 1, ...( fields ?? splitter(field) ))
+    o.head.splice(y, 1, ...(fields ?? splitter(field)))
     iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])))
     return mutate ? this : Table.from(o)
   }
@@ -145,7 +145,7 @@ export class Table {
     const
       o              = mutate ? this : this |> shallow,
       { head, rows } = o,
-      y              = nextTo ? ( this.coin(nextTo) + 1 ) : 0
+      y              = nextTo ? (this.coin(nextTo) + 1) : 0
     fieldSpec.forEach(o => o.index = this.coin(o.key))
     if (fieldSpec?.length === 1) {
       const [ { index, to, as } ] = fieldSpec
@@ -172,7 +172,7 @@ export class Table {
    * @returns {Table}
    */
   insertColumn(newField, column, { nextTo, mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, y = nextTo ? ( this.coin(nextTo) + 1 ) : 0
+    const o = mutate ? this : this |> shallow, y = nextTo ? (this.coin(nextTo) + 1) : 0
     if (Array.isArray(newField)) {
       o.head.splice(y, 0, ...newField)
       iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]))
@@ -348,7 +348,7 @@ export class Table {
 
   inferTypes({ inferType, omitNull = true, mutate = false } = {}) {
     const types = inferTypes.call(this, { inferType, omitNull })
-    return mutate ? ( this.types = types ) : types
+    return mutate ? (this.types = types) : types
   }
 
   /** @returns {Table} */

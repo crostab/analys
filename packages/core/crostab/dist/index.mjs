@@ -173,9 +173,7 @@ class CrosTab {
   }
 
   setCell(r, c, value) {
-    const x = this.roin(r),
-          y = this.coin(c);
-    if (x >= 0 && y >= 0) this.rows[x][y] = value;
+    if ((r = this.roin(r)) >= 0 && (c = this.coin(c)) >= 0) this.rows[r][c] = value;
   }
 
   setElement(x, y, value) {
@@ -251,19 +249,19 @@ class CrosTab {
   }
 
   popRow() {
-    return this.rows.pop();
+    return [this.side.pop(), this.rows.pop()];
   }
 
   shiftRow() {
-    return this.rows.shift();
+    return [this.side.shift(), this.rows.shift()];
   }
 
   popColumn() {
-    return pop(this.rows);
+    return [this.head.pop(), pop(this.rows)];
   }
 
   shiftColumn() {
-    return shift(this.rows);
+    return [this.head.shift(), shift(this.rows)];
   }
 
   slice({

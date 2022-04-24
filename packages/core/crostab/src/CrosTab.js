@@ -126,13 +126,8 @@ export class CrosTab {
   transpose(title, { mutate = true } = {}) {
     return this.boot({ side: this.head, head: this.side, rows: this.columns, title }, mutate)
   }
-  setCell(r, c, value) {
-    const x = this.roin(r), y = this.coin(c)
-    if (x >= 0 && y >= 0) this.rows[x][y] = value
-  }
-  setElement(x, y, value) {
-    if (x >= 0 && y >= 0) this.rows[x][y] = value
-  }
+  setCell(r, c, value) { if ((r = this.roin(r)) >= 0 && (c = this.coin(c)) >= 0) this.rows[r][c] = value }
+  setElement(x, y, value) { if (x >= 0 && y >= 0) this.rows[x][y] = value }
   setRow(r, row) { return this.rows[this.roin(r)] = row, this }
   setRowBy(r, fn) { return mutate(this.row(r), fn, this.width), this }
   setColumn(c, column) { return mutateColumn(this.rows, this.coin(c), (_, i) => column[i], this.height), this }
@@ -151,10 +146,10 @@ export class CrosTab {
   unshiftRow(label, row) { return this.side.unshift(label), this.rows.unshift(row), this }
   pushColumn(label, col) { return this.head.push(label), pushColumn(this.rows, col), this }
   unshiftColumn(label, col) { return this.head.unshift(label), unshiftColumn(this.rows, col), this }
-  popRow() { return this.rows.pop() }
-  shiftRow() { return this.rows.shift() }
-  popColumn() { return popColumn(this.rows) }
-  shiftColumn() { return shiftColumn(this.rows) }
+  popRow() { return [ this.side.pop(), this.rows.pop() ] }
+  shiftRow() { return [ this.side.shift(), this.rows.shift() ] }
+  popColumn() { return [ this.head.pop(), popColumn(this.rows) ] }
+  shiftColumn() { return [ this.head.shift(), shiftColumn(this.rows) ] }
 
   slice({ top, bottom, left, right, mutate = true } = {}) {
     let { side, head, rows } = this
