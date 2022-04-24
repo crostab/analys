@@ -57,7 +57,7 @@ export class Table {
   get height() { return this.rows?.length }
   get width() { return this.head?.length }
   get columns() { return transpose(this.rows) }
-  cell(x, field) { return ( x in this.rows ) ? this.rows[x][this.coin(field)] : undefined }
+  cell(x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
   coin(field) { return this.head.indexOf(field) }
   columnIndexes(fields) { return fields.map(this.coin, this) }
   row(field, value, objectify) {
