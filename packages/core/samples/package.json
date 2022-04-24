@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "A cross-samples analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,11 +18,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/samples-find": "^0.5.7",
-    "@analys/samples-formula": "^0.5.7",
-    "@analys/samples-group": "^0.5.7",
-    "@analys/samples-pivot": "^0.5.7",
-    "@analys/samples-select": "^0.5.7"
+    "@analys/samples-find": "^0.5.8",
+    "@analys/samples-formula": "^0.5.8",
+    "@analys/samples-group": "^0.5.8",
+    "@analys/samples-pivot": "^0.5.8",
+    "@analys/samples-select": "^0.5.8"
   },
   "repository": {
     "type": "git",
