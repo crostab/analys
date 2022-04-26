@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-lookups",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {

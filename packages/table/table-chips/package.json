@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-chips",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "A cross-table-chips analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.5.14",
-    "@analys/util-pivot": "^0.5.14"
+    "@analys/enum-pivot-mode": "^0.5.15",
+    "@analys/util-pivot": "^0.5.15"
   },
   "repository": {
     "type": "git",

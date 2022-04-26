@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-merge",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "A cross-table-merge analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
