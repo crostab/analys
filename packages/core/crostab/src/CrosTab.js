@@ -1,15 +1,29 @@
 import { shallow, slice } from '@analys/crostab-init'
 import {
-  hlookup, hlookupCached, hlookupMany, hlookupTable, vlookup, vlookupCached, vlookupMany, vlookupTable
+  hlookup,
+  hlookupCached,
+  hlookupMany,
+  hlookupTable,
+  vlookup,
+  vlookupCached,
+  vlookupMany,
+  vlookupTable
 }                         from '@analys/crostab-lookup'
 import {
-  selectKeyedRows, selectSamplesBySide, sortKeyedRows, sortRowsByKeys
+  selectKeyedRows,
+  selectSamplesBySide,
+  sortKeyedRows,
+  sortRowsByKeys
 }                         from '@analys/keyed-rows'
 import {
-  selectTabular, selectTabularToSamples, sortTabular, sortTabularByKeys
+  selectTabular,
+  selectTabularToSamples,
+  sortTabular,
+  sortTabularByKeys
 }                         from '@analys/tabular'
 import {
-  NUM_ASC, STR_ASC
+  NUM_ASC,
+  STR_ASC
 }                         from '@aryth/comparer'
 import {
   column
@@ -18,16 +32,23 @@ import {
   mutate as mutateColumn
 }                         from '@vect/column-mapper'
 import {
-  pop as popColumn, push as pushColumn, shift as shiftColumn, unshift as unshiftColumn
+  pop as popColumn,
+  push as pushColumn,
+  shift as shiftColumn,
+  unshift as unshiftColumn
 }                         from '@vect/columns-update'
 import {
-  COLUMNWISE, ROWWISE
+  COLUMNWISE,
+  ROWWISE
 }                         from '@vect/enum-matrix-directions'
 import {
-  draft as draftMatrix, init as initMatrix, iso as isoMatrix
+  draft as draftMatrix,
+  init as initMatrix,
+  iso as isoMatrix
 }                         from '@vect/matrix-init'
 import {
-  mapper as mapperMatrix, mutate as mutateMatrix
+  mapper as mapperMatrix,
+  mutate as mutateMatrix
 }                         from '@vect/matrix-mapper'
 import {
   transpose
@@ -36,7 +57,8 @@ import {
   pair
 }                         from '@vect/object-init'
 import {
-  mapper, mutate
+  mapper,
+  mutate
 }                         from '@vect/vector-mapper'
 import {
   acquire
@@ -106,14 +128,14 @@ export class CrosTab {
   }
   toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
   toTable(sideLabel) {
-    const head = acquire([ sideLabel ], this.head)
-    const rows = zipper(this.side, this.rows, (x, row) => acquire([ x ], row))
+    const head = acquire([sideLabel], this.head)
+    const rows = zipper(this.side, this.rows, (x, row) => acquire([x], row))
     return { head, rows }
   }
 
   /** @returns {*[][]} */
   get columns() { return transpose(this.rows) }
-  get size() { return [ this.height, this.width ] }
+  get size() { return [this.height, this.width] }
   get height() { return this.side?.length }
   get width() { return this.head?.length }
   roin(r) { return this.side.indexOf(r) }
@@ -146,10 +168,10 @@ export class CrosTab {
   unshiftRow(label, row) { return this.side.unshift(label), this.rows.unshift(row), this }
   pushColumn(label, col) { return this.head.push(label), pushColumn(this.rows, col), this }
   unshiftColumn(label, col) { return this.head.unshift(label), unshiftColumn(this.rows, col), this }
-  popRow() { return [ this.side.pop(), this.rows.pop() ] }
-  shiftRow() { return [ this.side.shift(), this.rows.shift() ] }
-  popColumn() { return [ this.head.pop(), popColumn(this.rows) ] }
-  shiftColumn() { return [ this.head.shift(), shiftColumn(this.rows) ] }
+  popRow() { return [this.side.pop(), this.rows.pop()] }
+  shiftRow() { return [this.side.shift(), this.rows.shift()] }
+  popColumn() { return [this.head.pop(), popColumn(this.rows)] }
+  shiftColumn() { return [this.head.shift(), shiftColumn(this.rows)] }
 
   slice({ top, bottom, left, right, mutate = true } = {}) {
     let { side, head, rows } = this
@@ -205,8 +227,7 @@ export class CrosTab {
       if (rows) this.rows = rows
       if (title) this.title = title
       return this
-    }
-    else {
+    } else {
       return this.copy({ side, head, rows, title })
     }
   }
