@@ -1,0 +1,44 @@
+{
+  "name": "@analys/crostab-indexed",
+  "version": "0.5.9",
+  "description": "A cross-table analytics tool",
+  "main": "./dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/crostab-indexed.select.test.js"
+  },
+  "dependencies": {
+    "veho": "^0.2.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table",
+    "crostab",
+    "cross-table",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme",
+  "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
+}
