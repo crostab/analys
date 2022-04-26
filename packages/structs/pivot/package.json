@@ -1,6 +1,6 @@
 {
   "name": "@analys/pivot",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,9 +18,9 @@
     "test": "node -r @babel/register test/util-pivot.test.js"
   },
   "dependencies": {
-    "@analys/data-gram": "^0.5.11",
-    "@analys/enum-pivot-mode": "^0.5.11",
-    "@analys/util-pivot": "^0.5.11",
+    "@analys/data-gram": "^0.5.12",
+    "@analys/enum-pivot-mode": "^0.5.12",
+    "@analys/util-pivot": "^0.5.12",
     "@vect/vector-mapper": "^0.5.8"
   },
   "repository": {
