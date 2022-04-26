@@ -1,27 +1,10 @@
 import { utils } from 'xlsx';
 
 /**
- * Take the first "n" elements from an array.
- * @param len. The number denote the first "n" elements in an array.
- * @returns {*[]}. A new array length at "len".
+ *
+ * @type {Function|function(*):string}
  */
-
-
-Array.prototype.take = function (len) {
-  return this.slice(0, len);
-};
-
-Array.prototype.zip = function (another, zipper) {
-  const {
-    length
-  } = this,
-        arr = Array(length);
-
-  for (let i = 0; i < length; i++) arr[i] = zipper(this[i], another[i], i);
-
-  return arr; // return Array.from({ length: size }, (v, i) => zipper(this[i], another[i], i))
-  // return this.map((x, i) => zipper(x, another[i]))
-};
+Function.prototype.call.bind(Object.prototype.toString);
 
 /**
  * @typedef {{head:*[],rows:*[][]}} TableObject

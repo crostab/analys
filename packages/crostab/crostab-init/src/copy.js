@@ -1,4 +1,4 @@
-import { Mx } from 'veho'
+import { cloneArray } from '@vect/clone'
 
 /** @typedef {{side:*[],head:*[],rows:*[][]}} CrostabObject */
 
@@ -34,5 +34,5 @@ export const shallow = ({ side, head, rows }) => ({
 export const clone = ({ side, head, rows }) => ({
   side: side.slice(),
   head: head.slice(),
-  rows: Mx.clone(rows)
+  rows: cloneArray(rows)
 })

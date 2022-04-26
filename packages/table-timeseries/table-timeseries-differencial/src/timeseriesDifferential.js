@@ -1,4 +1,4 @@
-import { Table }          from '@analys/table'
+// import { Table }          from '@analys/table'
 import { roundD2 }        from '@aryth/math'
 import { isNumeric }      from '@typen/num-strict'
 import { Differentiator } from '@vect/vector-differentiator'

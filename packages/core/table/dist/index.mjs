@@ -14,6 +14,7 @@ import { inferTypes } from '@analys/table-types';
 import { selectTabularToSamples, tabularToSamples, selectTabular, sortTabularByKeys } from '@analys/tabular';
 import { NUM_ASC } from '@aryth/comparer';
 import { DistinctCount, Distinct } from '@aryth/distinct-column';
+import { distinctByColumn } from '@aryth/distinct-matrix';
 import { column } from '@vect/column-getter';
 import { mutate } from '@vect/column-mapper';
 import { push, unshift, pop, shift, splices as splices$1 } from '@vect/columns-update';
@@ -23,7 +24,6 @@ import { wind } from '@vect/object-init';
 import { difference, intersect } from '@vect/vector-algebra';
 import { mapper, mutate as mutate$1, iterate } from '@vect/vector-mapper';
 import { splices } from '@vect/vector-update';
-import { StatMx } from 'borel';
 
 class Table {
   /** @type {*[]} */
@@ -407,7 +407,8 @@ class Table {
     const o = mutate ? this : (_this9 = this, slice(_this9));
     tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
-  }
+  } //TODO: supposedly returns rows, currently only returns specific column
+
 
   distinct(fields, {
     mutate = true
@@ -416,7 +417,7 @@ class Table {
 
     const o = mutate ? this : (_this10 = this, slice(_this10));
 
-    for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field));
+    for (let field of fields) o.rows = distinctByColumn.call(o.rows, this.coin(field));
 
     return mutate ? this : this.copy(o);
   }

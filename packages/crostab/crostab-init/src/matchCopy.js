@@ -1,4 +1,4 @@
-import { Mx } from 'veho'
+import { cloneArray } from '@vect/clone'
 
 /**
  *
@@ -34,6 +34,6 @@ export const matchClone = (o) => {
   return ({
     side: side.slice(),
     head: head.slice(),
-    rows: Mx.clone(rows)
+    rows: cloneArray(rows)
   })
 }

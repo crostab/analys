@@ -1,4 +1,4 @@
-import { Mx } from 'veho'
+import { cloneArray } from '@vect/clone'
 
 /**
  * @typedef {{head:*[],rows:*[][]}} TableObject
@@ -34,8 +34,8 @@ export const matchShallow = (o = {}) => {
  */
 export const matchClone = (o = {}) => {
   const head = o.head ?? o.banner, rows = o.rows ?? o.matrix
-  return ({
+  return {
     head: head.slice(),
-    rows: Mx.clone(rows)
-  })
+    rows: cloneArray(rows)
+  }
 }

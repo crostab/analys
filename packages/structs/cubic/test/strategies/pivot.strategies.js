@@ -1,6 +1,5 @@
-import { Chrono } from 'elprimero'
+
 import { decoCrostab, says }      from '@spare/logger'
-import { PivotVeho }              from '../archive/pivot-veho/Pivot'
 import { ACCUM, COUNT, INCRE }    from '@analys/enum-pivot-mode'
 import { Pivot }                  from '@analys/pivot'
 import { mapper as matrixMapper } from '@vect/matrix-mapper'
@@ -30,14 +29,13 @@ const duties = {
 
 class PivotStrategies {
   static testPivot () {
-    const { lapse, result } = Chrono.strategies({
+    const { lapse, result } = strategies({
       repeat: 1E+4,
       paramsList: {
         simple: [duties.rows, { x: 0, y: 1, z: 2, mode: INCRE, filter: x => !isNaN(x) }],
       },
       funcList: {
         bench: (rows, config) => matrixMapper(rows, x => x),
-        fut: (rows, config) => new PivotVeho(config.mode).spreadPivot(rows, config),
         arch: (rows, { x, y, z, mode, filter }) => new Pivot(x, y, z, mode, filter).spreadPivot(rows).toObject(),
       }
     })

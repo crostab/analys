@@ -24,19 +24,19 @@
     "@analys/table-index": "^0.5.12",
     "@analys/table-init": "^0.5.12",
     "@analys/tabular": "^0.5.12",
-    "@typen/nullish": "^0.1.17",
-    "@vect/column-getter": "^0.5.8",
-    "@vect/entries-init": "^0.5.8",
-    "@vect/entries-unwind": "^0.5.8",
-    "@vect/object-init": "^0.5.8",
-    "@vect/object-select": "^0.5.8",
-    "@vect/vector-index": "^0.5.8",
-    "@vect/vector-mapper": "^0.5.8",
-    "@vect/vector-select": "^0.5.8"
+    "@typen/nullish": "^0.1.19",
+    "@vect/column-getter": "^0.5.12",
+    "@vect/entries-init": "^0.5.12",
+    "@vect/entries-unwind": "^0.5.12",
+    "@vect/object-init": "^0.5.12",
+    "@vect/object-select": "^0.5.12",
+    "@vect/vector-index": "^0.5.12",
+    "@vect/vector-mapper": "^0.5.12",
+    "@vect/vector-select": "^0.5.12"
   },
   "devDependencies": {
     "@flua/vinylize": "^0.3.3",
-    "@spare/markdown": "^0.13.5",
+    "@spare/markdown": "^0.13.6",
     "gulp": "^4.0.2"
   },
   "repository": {

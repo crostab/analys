@@ -1,4 +1,4 @@
-import { Mx } from 'veho';
+import { cloneArray } from '@vect/clone';
 
 /** @typedef {{head:*[],rows:*[][]}} TableObject */
 
@@ -42,7 +42,7 @@ const clone = ({
   rows
 }) => ({
   head: head.slice(),
-  rows: Mx.clone(rows)
+  rows: cloneArray(rows)
 });
 
 /**
@@ -88,7 +88,7 @@ const matchClone = (o = {}) => {
         rows = o.rows ?? o.matrix;
   return {
     head: head.slice(),
-    rows: Mx.clone(rows)
+    rows: cloneArray(rows)
   };
 };
 

@@ -1,4 +1,3 @@
-import '@analys/table';
 import { roundD2 } from '@aryth/math';
 import { iterate } from '@vect/vector-mapper';
 import { Roller } from '@vect/vector-roller';

@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var veho = require('veho');
+var clone$1 = require('@vect/clone');
 
 /** @typedef {{head:*[],rows:*[][]}} TableObject */
 
@@ -46,7 +46,7 @@ const clone = ({
   rows
 }) => ({
   head: head.slice(),
-  rows: veho.Mx.clone(rows)
+  rows: clone$1.cloneArray(rows)
 });
 
 /**
@@ -92,7 +92,7 @@ const matchClone = (o = {}) => {
         rows = o.rows ?? o.matrix;
   return {
     head: head.slice(),
-    rows: veho.Mx.clone(rows)
+    rows: clone$1.cloneArray(rows)
   };
 };
 

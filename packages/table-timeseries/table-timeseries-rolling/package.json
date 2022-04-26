@@ -18,11 +18,10 @@
     "test": "node test"
   },
   "dependencies": {
-    "@analys/table": "^0.5.12",
-    "@aryth/math": "^0.4.10",
-    "@vect/vector-mapper": "^0.5.8",
-    "@vect/vector-merge": "^0.5.8",
-    "@vect/vector-roller": "^0.5.8"
+    "@aryth/math": "^0.5.3",
+    "@vect/vector-mapper": "^0.5.12",
+    "@vect/vector-merge": "^0.5.12",
+    "@vect/vector-roller": "^0.5.12"
   },
   "repository": {
     "type": "git",

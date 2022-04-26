@@ -2,12 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('@analys/table');
 var math = require('@aryth/math');
 var numStrict = require('@typen/num-strict');
 var vectorDifferentiator = require('@vect/vector-differentiator');
 var vectorMapper = require('@vect/vector-mapper');
 
+// import { Table }          from '@analys/table'
 const timeseriesDifferential = function ({
   dateLabel = 'date',
   fields,

@@ -14,6 +14,7 @@ import { inferTypes }                                                           
 import { selectTabular, selectTabularToSamples, sortTabularByKeys, tabularToSamples } from '@analys/tabular'
 import { NUM_ASC }                                                                    from '@aryth/comparer'
 import { Distinct as DistinctOnColumn, DistinctCount as DistinctCountOnColumn }       from '@aryth/distinct-column'
+import { distinctByColumn }                                                           from '@aryth/distinct-matrix'
 import { column }                                                                     from '@vect/column-getter'
 import { mutate as mutateColumn }                                                     from '@vect/column-mapper'
 import {
@@ -25,7 +26,6 @@ import { wind }                                                                 
 import { difference, intersect }                                                      from '@vect/vector-algebra'
 import { iterate, mapper, mutate as mutateVector }                                    from '@vect/vector-mapper'
 import { splices }                                                                    from '@vect/vector-update'
-import { StatMx }                                                                     from 'borel'
 
 export class Table {
   /** @type {*[]} */ head
@@ -236,9 +236,10 @@ export class Table {
     return mutate ? this : this.copy(o)
   }
 
+  //TODO: supposedly returns rows, currently only returns specific column
   distinct(fields, { mutate = true } = {}) {
     const o = mutate ? this : this |> slice
-    for (let field of fields) o.rows = StatMx.distinct(o.rows, this.coin(field))
+    for (let field of fields) o.rows = distinctByColumn.call(o.rows, this.coin(field))
     return mutate ? this : this.copy(o)
   }
 

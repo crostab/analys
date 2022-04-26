@@ -18,6 +18,7 @@ var tableTypes = require('@analys/table-types');
 var tabular = require('@analys/tabular');
 var comparer = require('@aryth/comparer');
 var distinctColumn = require('@aryth/distinct-column');
+var distinctMatrix = require('@aryth/distinct-matrix');
 var columnGetter = require('@vect/column-getter');
 var columnMapper = require('@vect/column-mapper');
 var columnsUpdate = require('@vect/columns-update');
@@ -27,7 +28,6 @@ var objectInit = require('@vect/object-init');
 var vectorAlgebra = require('@vect/vector-algebra');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorUpdate = require('@vect/vector-update');
-var borel = require('borel');
 
 class Table {
   /** @type {*[]} */
@@ -411,7 +411,8 @@ class Table {
     const o = mutate ? this : (_this9 = this, tableInit.slice(_this9));
     tableFind.tableFind.call(o, filter);
     return mutate ? this : this.copy(o);
-  }
+  } //TODO: supposedly returns rows, currently only returns specific column
+
 
   distinct(fields, {
     mutate = true
@@ -420,7 +421,7 @@ class Table {
 
     const o = mutate ? this : (_this10 = this, tableInit.slice(_this10));
 
-    for (let field of fields) o.rows = borel.StatMx.distinct(o.rows, this.coin(field));
+    for (let field of fields) o.rows = distinctMatrix.distinctByColumn.call(o.rows, this.coin(field));
 
     return mutate ? this : this.copy(o);
   }

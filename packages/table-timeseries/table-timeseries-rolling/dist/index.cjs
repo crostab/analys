@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('@analys/table');
 var math = require('@aryth/math');
 var vectorMapper = require('@vect/vector-mapper');
 var vectorRoller = require('@vect/vector-roller');

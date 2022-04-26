@@ -1,9 +1,9 @@
-import '@analys/table';
 import { roundD2 } from '@aryth/math';
 import { isNumeric } from '@typen/num-strict';
 import { Differentiator } from '@vect/vector-differentiator';
 import { iterate } from '@vect/vector-mapper';
 
+// import { Table }          from '@analys/table'
 const timeseriesDifferential = function ({
   dateLabel = 'date',
   fields,

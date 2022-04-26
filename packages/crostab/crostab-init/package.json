@@ -10,14 +10,15 @@
   "files": [
     "dist"
   ],
+  "dependencies": {
+    "@vect/clone": "^0.5.12"
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "pub": "npm publish",
     "test": "node -r @babel/register test/crostab-init.select.test.js"
-  },
-  "dependencies": {
   },
   "repository": {
     "type": "git",

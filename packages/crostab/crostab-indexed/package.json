@@ -17,8 +17,6 @@
     "pub": "npm publish",
     "test": "node -r @babel/register test/crostab-indexed.select.test.js"
   },
-  "dependencies": {
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyeungw/analys.git"

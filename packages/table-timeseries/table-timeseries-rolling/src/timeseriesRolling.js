@@ -1,4 +1,3 @@
-import { Table }   from '@analys/table'
 import { roundD2 } from '@aryth/math'
 import { iterate } from '@vect/vector-mapper'
 import { Roller }  from '@vect/vector-roller'
@@ -11,8 +10,8 @@ export const timeseriesRolling = function ({
                                            }) {
   /** @type {Table} */ const table = mutate ? this : this.copy()
   const
-    dateIndex = table.coin(dateLabel),
-    indexes = table.columnIndexes(fields),
+    dateIndex  = table.coin(dateLabel),
+    indexes    = table.columnIndexes(fields),
     indexCount = indexes.length
   if (indexes.includes(dateIndex)) indexes.splice(indexes.indexOf(dateIndex), 1)
   const rows = table.rows
