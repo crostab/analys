@@ -1,6 +1,6 @@
 {
   "name": "@analys/formula",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "Formula for algebra of columns in matrix",
   "main": "./dist/index.cjs",
   "exports": {
