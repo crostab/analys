@@ -20,10 +20,10 @@
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.5.9",
     "@analys/util-pivot": "^0.5.9",
-    "@vect/object-init": "^0.5.5",
-    "@vect/vector-mapper": "^0.5.5",
-    "@vect/vector-merge": "^0.5.5",
-    "@vect/vector-zipper": "^0.5.5"
+    "@vect/object-init": "^0.5.8",
+    "@vect/vector-mapper": "^0.5.8",
+    "@vect/vector-merge": "^0.5.8",
+    "@vect/vector-zipper": "^0.5.8"
   },
   "repository": {
     "type": "git",
