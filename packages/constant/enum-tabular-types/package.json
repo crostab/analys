@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-tabular-types",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {
