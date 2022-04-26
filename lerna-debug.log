@@ -1,0 +1,6 @@
+232 error Error: Command failed with exit code 1: git push --follow-tags --no-verify --atomic origin master
+232 error fatal: the remote end hung up unexpectedly
+232 error fatal: the remote end hung up unexpectedly
+232 error Everything up-to-date
+232 error     at makeError (C:\Users\hoyeu\banyan\analys\node_modules\execa\lib\error.js:60:11)
+232 error     at handlePromise (C:\Users\hoyeu\banyan\analys\node_modules\execa\index.js:118:26)
