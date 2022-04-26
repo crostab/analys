@@ -7,6 +7,8 @@ import { Table } from '@analys/table';
 import { CrosTab } from '@analys/crostab';
 import { selectValues, SelectValues } from '@vect/object-select';
 import { first } from '@vect/vector-index';
+import { filterIndexed, simpleIndexed } from '@analys/crostab-indexed';
+import { filterIndexed as filterIndexed$1, simpleIndexed as simpleIndexed$1 } from '@vect/nested';
 
 /**
  *
@@ -128,4 +130,81 @@ function samplesToCrostab(sampleCollection, config = {}) {
   });
 }
 
-export { samplesToCrostab, samplesToTable, samplesToTabular, tableToSamples, toTable };
+const groupedToSurject = grouped => {
+  const o = {};
+
+  for (let y in grouped) {
+    if (Array.isArray(grouped[y])) for (let x of grouped[y]) {
+      if (!(x in o)) o[x] = y;
+    }
+  }
+
+  return o;
+};
+
+const surjectToGrouped = surject => {
+  const o = {};
+
+  for (let x in surject) {
+    const y = surject[x];
+    (o[y] ?? (o[y] = [])).push(x);
+  }
+};
+
+// from x => typeof x
+const FUN = 'function';
+
+const crostabToNested = (crostab, filter) => {
+  // const by = conf?.by, to = conf?.to ?? conf
+  const o = {};
+
+  if (typeof filter === FUN) {
+    for (const [x, y, v] of filterIndexed(crostab, filter)) (o[x] ?? (o[x] = {}))[y] = v;
+  } else {
+    for (const [x, y, v] of simpleIndexed(crostab)) (o[x] ?? (o[x] = {}))[y] = v;
+  }
+
+  return o;
+};
+
+const nestedToTable = (nested, {
+  head,
+  title,
+  filter
+}) => {
+  const enumerator = filter ? filterIndexed$1(nested, filter) : simpleIndexed$1(nested);
+  return Table.from({
+    head: head,
+    rows: [...enumerator],
+    title: title
+  });
+};
+
+/**
+ *
+ * @param {Table} table
+ * @param x
+ * @param y
+ * @param v
+ */
+const tableToNested = (table, {
+  x,
+  y,
+  v
+}) => {
+  const nested = {};
+  const xi = table.coin(x),
+        yi = table.coin(y),
+        vi = table.coin(v);
+
+  for (let row of table.rows) {
+    x = row[xi];
+    y = row[yi];
+    v = row[vi];
+    (nested[x] ?? (nested[x] = {}))[y] = v;
+  }
+
+  return nested;
+};
+
+export { crostabToNested, groupedToSurject, nestedToTable, samplesToCrostab, samplesToTable, samplesToTabular, surjectToGrouped, tableToNested, tableToSamples, toTable };

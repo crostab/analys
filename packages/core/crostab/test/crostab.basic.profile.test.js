@@ -1,10 +1,10 @@
 import { Foba }                                 from '@foba/crostab'
 import { decoCrostab, decoTable, logger, says } from '@spare/logger'
-import { CrosTab }                              from '../src/CrosTab'
+import { Crostab }                              from '../src/Crostab'
 
 const TITLE = 'ArmsExports'
 
-let crostab = CrosTab.from(Foba[TITLE])
+let crostab = Crostab.from(Foba[TITLE])
 crostab |> decoCrostab |> says[TITLE + ' original']
 
 crostab.size |> says.size

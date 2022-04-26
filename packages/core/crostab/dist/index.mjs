@@ -19,7 +19,7 @@ import { zipper } from '@vect/vector-zipper';
  *
  */
 
-class CrosTab {
+class Crostab {
   /** @type {*[]} */
   side;
   /** @type {*[]} */
@@ -52,7 +52,7 @@ class CrosTab {
         rows = o.rows || o.matrix,
         title = o.title;
     if (side && head && !rows) rows = draft(side.length, head.length);
-    return new CrosTab(side, head, rows, title);
+    return new Crostab(side, head, rows, title);
   }
   /**
    * Shallow copy
@@ -60,7 +60,7 @@ class CrosTab {
    * @param {*[]} head
    * @param {function(number,number):*} func
    * @param {string} [title]
-   * @return {CrosTab}
+   * @return {Crostab}
    */
 
 
@@ -70,7 +70,7 @@ class CrosTab {
     func,
     title
   }) {
-    return new CrosTab(side, head, init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y)), title);
+    return new Crostab(side, head, init(side === null || side === void 0 ? void 0 : side.length, head === null || head === void 0 ? void 0 : head.length, (x, y) => func(x, y)), title);
   }
 
   static draft({
@@ -80,7 +80,7 @@ class CrosTab {
     title
   }) {
     const rows = iso(side.length, head.length, value);
-    return new CrosTab(side, head, rows, title);
+    return new Crostab(side, head, rows, title);
   }
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
@@ -397,9 +397,9 @@ class CrosTab {
     if (!head) head = this.head.slice();
     if (!rows) rows = this.rows.map(row => row.slice());
     if (!title) title = this.title;
-    return new CrosTab(side, head, rows, title);
+    return new Crostab(side, head, rows, title);
   }
 
 }
 
-export { CrosTab };
+export { Crostab as CrosTab, Crostab };

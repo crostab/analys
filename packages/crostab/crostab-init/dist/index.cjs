@@ -60,7 +60,7 @@ const clone = ({
 
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 
@@ -76,7 +76,7 @@ const matchSlice = o => {
 };
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 
@@ -92,7 +92,7 @@ const matchShallow = o => {
 };
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 

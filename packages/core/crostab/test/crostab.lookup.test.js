@@ -1,5 +1,5 @@
 import { deco, DecoCrostab, says } from '@spare/logger'
-import { CrosTab as Crostab } from '../src/CrosTab'
+import { Crostab as Crostab }      from '../src/Crostab'
 
 const crostab = Crostab.from({
   side: ['RG', 'T', 'M', 'B'],

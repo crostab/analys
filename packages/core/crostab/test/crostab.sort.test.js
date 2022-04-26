@@ -1,13 +1,13 @@
 import { Foba } from '@foba/crostab'
 import { DecoCrostab, decoCrostab, says } from '@spare/logger'
-import { CrosTab } from '../src/CrosTab'
-import { COLUMNWISE, ROWWISE } from '@vect/matrix'
+import { Crostab }                        from '../src/Crostab'
+import { COLUMNWISE, ROWWISE }            from '@vect/matrix'
 import { NUM_ASC, NUM_DESC, STR_DESC } from '@aryth/comparer'
 
 const decoX = DecoCrostab({ top: 5, bottom: 2 })
 const TITLE = 'ArmsExports'
 
-let crostab = CrosTab.from(Foba[TITLE])
+let crostab = Crostab.from(Foba[TITLE])
 crostab |> decoX |> says[TITLE + ' original']
 
 crostab.sort({ direct: ROWWISE, field: 'EUU', comparer: NUM_DESC })

@@ -1,1 +1,1 @@
-export { CrosTab } from './src/CrosTab'
+export { Crostab, Crostab as CrosTab } from './src/Crostab'

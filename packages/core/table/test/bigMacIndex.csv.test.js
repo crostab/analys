@@ -15,7 +15,7 @@ const WORKSPACE = './packages/core/table/'
 const SOURCE = WORKSPACE + 'test/assets/big-mac-source-data.csv'
 const TARGET_TABLE = WORKSPACE + 'test/assets/out/BigMacIndex.Table.json'
 const TARGET_SAMPLES = WORKSPACE + 'test/assets/out/BigMacIndex.Samples.json'
-const TARGET_CROSTAB = WORKSPACE + 'test/assets/out/BigMacIndex.CrosTab.json'
+const TARGET_CROSTAB = WORKSPACE + 'test/assets/out/BigMacIndex.Crostab.json'
 
 spn.start(`start reading: ${ SOURCE }`)
 promises

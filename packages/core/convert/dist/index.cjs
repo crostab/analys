@@ -11,6 +11,8 @@ var table = require('@analys/table');
 var crostab = require('@analys/crostab');
 var objectSelect = require('@vect/object-select');
 var vectorIndex = require('@vect/vector-index');
+var crostabIndexed = require('@analys/crostab-indexed');
+var nested = require('@vect/nested');
 
 /**
  *
@@ -132,8 +134,90 @@ function samplesToCrostab(sampleCollection, config = {}) {
   });
 }
 
+const groupedToSurject = grouped => {
+  const o = {};
+
+  for (let y in grouped) {
+    if (Array.isArray(grouped[y])) for (let x of grouped[y]) {
+      if (!(x in o)) o[x] = y;
+    }
+  }
+
+  return o;
+};
+
+const surjectToGrouped = surject => {
+  const o = {};
+
+  for (let x in surject) {
+    const y = surject[x];
+    (o[y] ?? (o[y] = [])).push(x);
+  }
+};
+
+// from x => typeof x
+const FUN = 'function';
+
+const crostabToNested = (crostab, filter) => {
+  // const by = conf?.by, to = conf?.to ?? conf
+  const o = {};
+
+  if (typeof filter === FUN) {
+    for (const [x, y, v] of crostabIndexed.filterIndexed(crostab, filter)) (o[x] ?? (o[x] = {}))[y] = v;
+  } else {
+    for (const [x, y, v] of crostabIndexed.simpleIndexed(crostab)) (o[x] ?? (o[x] = {}))[y] = v;
+  }
+
+  return o;
+};
+
+const nestedToTable = (nested$1, {
+  head,
+  title,
+  filter
+}) => {
+  const enumerator = filter ? nested.filterIndexed(nested$1, filter) : nested.simpleIndexed(nested$1);
+  return table.Table.from({
+    head: head,
+    rows: [...enumerator],
+    title: title
+  });
+};
+
+/**
+ *
+ * @param {Table} table
+ * @param x
+ * @param y
+ * @param v
+ */
+const tableToNested = (table, {
+  x,
+  y,
+  v
+}) => {
+  const nested = {};
+  const xi = table.coin(x),
+        yi = table.coin(y),
+        vi = table.coin(v);
+
+  for (let row of table.rows) {
+    x = row[xi];
+    y = row[yi];
+    v = row[vi];
+    (nested[x] ?? (nested[x] = {}))[y] = v;
+  }
+
+  return nested;
+};
+
+exports.crostabToNested = crostabToNested;
+exports.groupedToSurject = groupedToSurject;
+exports.nestedToTable = nestedToTable;
 exports.samplesToCrostab = samplesToCrostab;
 exports.samplesToTable = samplesToTable;
 exports.samplesToTabular = samplesToTabular;
+exports.surjectToGrouped = surjectToGrouped;
+exports.tableToNested = tableToNested;
 exports.tableToSamples = tableToSamples;
 exports.toTable = toTable;

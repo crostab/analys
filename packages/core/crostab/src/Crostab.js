@@ -70,7 +70,7 @@ import {
 /**
  *
  */
-export class CrosTab {
+export class Crostab {
   /** @type {*[]} */ side
   /** @type {*[]} */ head
   /** @type {*[][]} */ rows
@@ -93,7 +93,7 @@ export class CrosTab {
   static from(o) {
     let side = o.side, head = o.head || o.banner, rows = o.rows || o.matrix, title = o.title
     if (side && head && !rows) rows = draftMatrix(side.length, head.length)
-    return new CrosTab(side, head, rows, title)
+    return new Crostab(side, head, rows, title)
   }
 
   /**
@@ -102,10 +102,10 @@ export class CrosTab {
    * @param {*[]} head
    * @param {function(number,number):*} func
    * @param {string} [title]
-   * @return {CrosTab}
+   * @return {Crostab}
    */
   static init({ side, head, func, title }) {
-    return new CrosTab(
+    return new Crostab(
       side,
       head,
       initMatrix(side?.length, head?.length, (x, y) => func(x, y)),
@@ -115,7 +115,7 @@ export class CrosTab {
 
   static draft({ side, head, value, title }) {
     const rows = isoMatrix(side.length, head.length, value)
-    return new CrosTab(side, head, rows, title)
+    return new Crostab(side, head, rows, title)
   }
 
   rowwiseSamples(headFields, indexed = false, indexName = '_') {
@@ -237,6 +237,6 @@ export class CrosTab {
     if (!head) head = this.head.slice()
     if (!rows) rows = this.rows.map(row => row.slice())
     if (!title) title = this.title
-    return new CrosTab(side, head, rows, title)
+    return new Crostab(side, head, rows, title)
   }
 }

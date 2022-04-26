@@ -2,7 +2,7 @@ import { cloneArray } from '@vect/clone'
 
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 export const matchSlice = (o) => {
@@ -12,7 +12,7 @@ export const matchSlice = (o) => {
 
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 export const matchShallow = (o) => {
@@ -26,7 +26,7 @@ export const matchShallow = (o) => {
 
 /**
  *
- * @param {Object} o - CrosTab like
+ * @param {Object} o - Crostab like
  * @returns {CrostabObject}
  */
 export const matchClone = (o) => {
