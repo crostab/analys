@@ -551,7 +551,7 @@ class Table {
    * @param {Object|*[]|string|number} [options.field]
    * @param {Object<string|number,function(*?):boolean>} [options.filter]
    * @param {function(...*):number} [options.formula] - formula is valid only when cell is CubeCell array.
-   * @returns {CrosTab}
+   * @returns {Crostab|CrostabObject}
    */
 
 
