@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-lookup",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "A cross-table-lookup analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-lookups": "^0.5.10",
-    "@analys/table-index": "^0.5.10",
+    "@analys/enum-lookups": "^0.5.11",
+    "@analys/table-index": "^0.5.11",
     "@vect/column-getter": "^0.5.8",
     "@vect/entries-init": "^0.5.8",
     "@vect/object-init": "^0.5.8"
