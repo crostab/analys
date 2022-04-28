@@ -1,8 +1,9 @@
 export const surjectToGrouped = surject => {
-  const o = {}
+  const grouped = {}
   for (let x in surject) {
     const y = surject[x];
-    (o[y] ?? (o[y] = [])).push(x)
+    (grouped[y] ?? (grouped[y] = [])).push(x)
   }
+  return grouped
 }
 
