@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-group",
-  "version": "0.5.15",
+  "version": "0.5.16",
   "description": "A cross-table-chips analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,11 +18,11 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/chips": "^0.5.15",
-    "@analys/group": "^0.5.15",
-    "@analys/table-find": "^0.5.15",
-    "@analys/table-init": "^0.5.15",
-    "@analys/tablespec": "^0.5.15",
+    "@analys/chips": "^0.5.16",
+    "@analys/group": "^0.5.16",
+    "@analys/table-find": "^0.5.16",
+    "@analys/table-init": "^0.5.16",
+    "@analys/tablespec": "^0.5.16",
     "@vect/matrix": "^0.5.16",
     "@vect/vector-merge": "^0.5.16"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-group",
-  "version": "0.5.15",
+  "version": "0.5.16",
   "description": "A cross-samples-group analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,10 +18,10 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/chips": "^0.5.15",
-    "@analys/group": "^0.5.15",
-    "@analys/samples-find": "^0.5.15",
-    "@analys/tablespec": "^0.5.15",
+    "@analys/chips": "^0.5.16",
+    "@analys/group": "^0.5.16",
+    "@analys/samples-find": "^0.5.16",
+    "@analys/tablespec": "^0.5.16",
     "@vect/matrix": "^0.5.16"
   },
   "repository": {
