@@ -20,8 +20,8 @@
   "dependencies": {
     "@analys/enum-lookups": "^0.5.15",
     "@analys/table-lookup": "^0.5.15",
-    "@vect/entries-init": "^0.5.12",
-    "@vect/object-init": "^0.5.12"
+    "@vect/entries-init": "^0.5.16",
+    "@vect/object-init": "^0.5.16"
   },
   "repository": {
     "type": "git",

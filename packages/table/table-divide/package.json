@@ -20,9 +20,9 @@
   "dependencies": {
     "@analys/enum-mutabilities": "^0.5.15",
     "@analys/table-init": "^0.5.15",
-    "@vect/columns-select": "^0.5.12",
-    "@vect/vector-mapper": "^0.5.12",
-    "@vect/vector-select": "^0.5.12"
+    "@vect/columns-select": "^0.5.16",
+    "@vect/vector-mapper": "^0.5.16",
+    "@vect/vector-select": "^0.5.16"
   },
   "repository": {
     "type": "git",
