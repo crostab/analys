@@ -1,7 +1,7 @@
 import { TableCollection } from '@foba/table'
 import { delogger }        from '@spare/deco'
 import xlsx                from 'xlsx'
-import { tableToWorkbook } from '../src/tableToWorkbook'
+import { tableToWorkbook } from '../index'
 
 const test = async () => {
   const table = TableCollection.flopShuffle()
