@@ -6,14 +6,15 @@ import { RegUtil } from './RegUtil'
  * @param content
  * @param de
  * @param qt
- * @returns {Generator<string[], string[], *>}
+ * @returns {Generator<string[], void, *>}
  */
 export function* indexed(content, { de = ',', qt = '"' } = {}) {
+  if (!content?.length) return void 0
   const regex = RegUtil.csv(de, qt), quote2 = RegUtil.quoteRep(qt)
   let matches, delim, quote, value, row = []
   if (content.startsWith(de)) row.push('')
   while ((matches = regex.exec(content)) && ([ , delim, quote, value ] = matches)) {
-    // `[delim] (${delim.replace(/\r?\n/g, '[LF]')}) [quote] (${quote ?? '[UDF]'}) [value] (${value?.replace(/\r?\n/g, '[LF]')})`  |> logger
+    // `[delim] (${delim.replace(/\r?\n/g, '[LF]')}) [quote] (${quote ?? '[UDF]'}) [value] (${value?.replace(/\r?\n/g, '[LF]')})`  |> console.log
     if (delim && delim !== de) {
       yield row
       row = []
