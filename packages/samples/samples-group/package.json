@@ -22,7 +22,7 @@
     "@analys/group": "^0.5.16",
     "@analys/samples-find": "^0.5.16",
     "@analys/tablespec": "^0.5.16",
-    "@vect/matrix": "^0.5.16"
+    "@vect/matrix": "^0.5.22"
   },
   "repository": {
     "type": "git",

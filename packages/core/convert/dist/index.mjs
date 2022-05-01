@@ -9,6 +9,7 @@ import { selectValues, SelectValues } from '@vect/object-select';
 import { first } from '@vect/vector-index';
 import { filterIndexed, simpleIndexed } from '@analys/crostab-indexed';
 import { filterIndexed as filterIndexed$1, simpleIndexed as simpleIndexed$1 } from '@vect/nested';
+import { acquire } from '@vect/vector-merge';
 
 /**
  *
@@ -143,12 +144,14 @@ const groupedToSurject = grouped => {
 };
 
 const surjectToGrouped = surject => {
-  const o = {};
+  const grouped = {};
 
   for (let x in surject) {
     const y = surject[x];
-    (o[y] ?? (o[y] = [])).push(x);
+    (grouped[y] ?? (grouped[y] = [])).push(x);
   }
+
+  return grouped;
 };
 
 // from x => typeof x
@@ -207,4 +210,52 @@ const tableToNested = (table, {
   return nested;
 };
 
-export { crostabToNested, groupedToSurject, nestedToTable, samplesToCrostab, samplesToTable, samplesToTabular, surjectToGrouped, tableToNested, tableToSamples, toTable };
+function duozipper(a, b) {
+  let {
+    fn,
+    hi,
+    lo
+  } = this;
+  const zip = Array(hi = hi ?? (a === null || a === void 0 ? void 0 : a.length));
+
+  for (let i = lo ?? 0; i < hi; i++) zip[i] = fn(a[i], b[i], i);
+
+  return zip;
+}
+/**
+ * zip two arrays, return the zipped array
+ * @param {Array} a
+ * @param {Array} b
+ * @param {function(*,*,number?):*} fn
+ * @param {number} [hi]
+ * @returns {*[]}
+ */
+
+
+const zipper = (a, b, fn, hi) => duozipper.call({
+  fn,
+  hi
+}, a, b);
+
+const crostabToTable = (crostab, title) => {
+  const head = acquire([title ?? crostab.title ?? ''], crostab.head);
+  const rows = zipper(crostab.side, crostab.rows, (x, row) => acquire([x], row));
+  return {
+    head,
+    rows
+  };
+};
+const tableToMatrix = table => {
+  const {
+    head,
+    rows
+  } = table;
+  return acquire([head], rows);
+};
+const crostabToMatrix = (crostab, title) => {
+  var _crostabToTable;
+
+  return _crostabToTable = crostabToTable(crostab, title), tableToMatrix(_crostabToTable);
+};
+
+export { crostabToMatrix, crostabToNested, crostabToTable, groupedToSurject, nestedToTable, samplesToCrostab, samplesToTable, samplesToTabular, surjectToGrouped, tableToMatrix, tableToNested, tableToSamples, toTable };

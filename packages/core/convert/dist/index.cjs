@@ -13,6 +13,7 @@ var objectSelect = require('@vect/object-select');
 var vectorIndex = require('@vect/vector-index');
 var crostabIndexed = require('@analys/crostab-indexed');
 var nested = require('@vect/nested');
+var vectorMerge = require('@vect/vector-merge');
 
 /**
  *
@@ -147,12 +148,14 @@ const groupedToSurject = grouped => {
 };
 
 const surjectToGrouped = surject => {
-  const o = {};
+  const grouped = {};
 
   for (let x in surject) {
     const y = surject[x];
-    (o[y] ?? (o[y] = [])).push(x);
+    (grouped[y] ?? (grouped[y] = [])).push(x);
   }
+
+  return grouped;
 };
 
 // from x => typeof x
@@ -211,13 +214,64 @@ const tableToNested = (table, {
   return nested;
 };
 
+function duozipper(a, b) {
+  let {
+    fn,
+    hi,
+    lo
+  } = this;
+  const zip = Array(hi = hi ?? (a === null || a === void 0 ? void 0 : a.length));
+
+  for (let i = lo ?? 0; i < hi; i++) zip[i] = fn(a[i], b[i], i);
+
+  return zip;
+}
+/**
+ * zip two arrays, return the zipped array
+ * @param {Array} a
+ * @param {Array} b
+ * @param {function(*,*,number?):*} fn
+ * @param {number} [hi]
+ * @returns {*[]}
+ */
+
+
+const zipper = (a, b, fn, hi) => duozipper.call({
+  fn,
+  hi
+}, a, b);
+
+const crostabToTable = (crostab, title) => {
+  const head = vectorMerge.acquire([title ?? crostab.title ?? ''], crostab.head);
+  const rows = zipper(crostab.side, crostab.rows, (x, row) => vectorMerge.acquire([x], row));
+  return {
+    head,
+    rows
+  };
+};
+const tableToMatrix = table => {
+  const {
+    head,
+    rows
+  } = table;
+  return vectorMerge.acquire([head], rows);
+};
+const crostabToMatrix = (crostab, title) => {
+  var _crostabToTable;
+
+  return _crostabToTable = crostabToTable(crostab, title), tableToMatrix(_crostabToTable);
+};
+
+exports.crostabToMatrix = crostabToMatrix;
 exports.crostabToNested = crostabToNested;
+exports.crostabToTable = crostabToTable;
 exports.groupedToSurject = groupedToSurject;
 exports.nestedToTable = nestedToTable;
 exports.samplesToCrostab = samplesToCrostab;
 exports.samplesToTable = samplesToTable;
 exports.samplesToTabular = samplesToTabular;
 exports.surjectToGrouped = surjectToGrouped;
+exports.tableToMatrix = tableToMatrix;
 exports.tableToNested = tableToNested;
 exports.tableToSamples = tableToSamples;
 exports.toTable = toTable;

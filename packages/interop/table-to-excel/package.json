@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/table-to-excel.select.test.js"
   },
   "dependencies": {
-    "xlsx": "^0.18.5"
+    "@analys/excel": "^0.5.16"
   },
   "repository": {
     "type": "git",

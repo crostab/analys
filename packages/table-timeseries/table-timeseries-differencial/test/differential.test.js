@@ -1,4 +1,4 @@
-import { says }                   from '@palett/says'
+import { says }                   from '@spare/logger'
 import { decoTable }              from '@spare/logger'
 import { timeseriesDifferential } from '../src/timeseriesDifferential'
 import { TableCollection }        from './assets/tableCollection'

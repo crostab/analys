@@ -21,7 +21,7 @@
     "@analys/formula": "^0.5.16",
     "@analys/samples-find": "^0.5.16",
     "@spare/deco-func": "^0.13.7",
-    "@vect/vector-zipper": "^0.5.16"
+    "@vect/vector-zipper": "^0.5.22"
   },
   "repository": {
     "type": "git",

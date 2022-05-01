@@ -1,6 +1,6 @@
 import { COUNT, INCRE }                    from '@analys/enum-pivot-mode'
 import { Accumulators, NaiveAccumulators } from '@analys/util-pivot'
-import { says }                            from '@palett/says'
+import { says }                            from '@spare/logger'
 import { delogger }                        from '@spare/deco'
 import { decoCrostab, DecoTable }          from '@spare/logger'
 import { Table }                           from '../src/Table'

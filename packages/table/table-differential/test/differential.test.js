@@ -1,5 +1,5 @@
 import { DIFFERENCE, ROLLING } from '@analys/enum-difference-modes'
-import { says }                from '@palett/says'
+import { says }                from '@spare/logger'
 import { decoTable }           from '@spare/logger'
 import { differential }        from '../src/differential'
 import { TableCollection }     from './assets/tableCollection'
