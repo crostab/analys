@@ -1,4 +1,4 @@
-import { says }                     from "@palett/says"
+import { says }                     from "@spare/logger"
 import { decoCrostab, DecoSamples } from "@spare/logger"
 import { samplesToCrostab }         from "../src/samplesToCrostab"
 
