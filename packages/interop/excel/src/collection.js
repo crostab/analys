@@ -1,4 +1,4 @@
-import { indexed, mapValues }           from '@vect/object-mapper'
+import { indexed, mapKeyValue }         from '@vect/object-mapper'
 import { readFile, utils, utils as XL } from 'xlsx'
 
 export const collectionToWorkbook = (collection, toWorksheet) => {
@@ -11,5 +11,5 @@ export const collectionToWorkbook = (collection, toWorksheet) => {
 
 export const readCollection = (filename, csvParser) => {
   const workbook = readFile(filename)
-  return mapValues(workbook.Sheets, (sheet) => utils.sheet_to_csv(sheet) |> csvParser)
+  return mapKeyValue(workbook.Sheets, (name, sheet) => utils.sheet_to_csv(sheet) |> csvParser)
 }

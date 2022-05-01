@@ -1,7 +1,7 @@
 import { crostabToMatrix, tableToMatrix } from '@analys/convert';
 import { csvToCrostab, csvToTable } from '@analys/csv';
 import { utils, readFile } from 'xlsx';
-import { mapValues, indexed } from '@vect/object-mapper';
+import { mapKeyValue, indexed } from '@vect/object-mapper';
 
 const collectionToWorkbook = (collection, toWorksheet) => {
   const workbook = utils.book_new();
@@ -14,7 +14,7 @@ const collectionToWorkbook = (collection, toWorksheet) => {
 };
 const readCollection = (filename, csvParser) => {
   const workbook = readFile(filename);
-  return mapValues(workbook.Sheets, sheet => {
+  return mapKeyValue(workbook.Sheets, (name, sheet) => {
     var _utils$sheet_to_csv;
 
     return _utils$sheet_to_csv = utils.sheet_to_csv(sheet), csvParser(_utils$sheet_to_csv);

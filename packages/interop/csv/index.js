@@ -6,20 +6,20 @@ export { indexed }
 
 export const csvToTable = (csv, options) => {
   const enumerator = indexed(csv, options)
-  const { done, value } = enumerator.next()
-  const head = !done ? value : null
-  const rows = [ ...enumerator ]
-  return head ? Table.from({ head, rows }) : null
+  const { done, value: head } = enumerator.next()
+  if (done) return null
+  return Table.from({ head, rows: [ ...enumerator ] })
 }
 
 export const csvToCrostab = (csv, options) => {
   const enumerator = indexed(csv, options)
   const { done, value } = enumerator.next()
-  const [ title, ...head ] = !done ? value : null
+  if (done) return null
+  const [ title, ...head ] = value
   const side = [], rows = []
   for (let [ mark, ...row ] of enumerator) {
     side.push(mark)
     rows.push(row)
   }
-  return head ? Crostab.from({ side, head, rows, title }) : null
+  return Crostab.from({ side, head, rows, title })
 }

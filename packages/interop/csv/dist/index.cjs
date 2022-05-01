@@ -28,13 +28,14 @@ class RegUtil {
  * @param content
  * @param de
  * @param qt
- * @returns {Generator<string[], string[], *>}
+ * @returns {Generator<string[], void, *>}
  */
 
 function* indexed(content, {
   de = ',',
   qt = '"'
 } = {}) {
+  if (!(content !== null && content !== void 0 && content.length)) return void 0;
   const regex = RegUtil.csv(de, qt),
         quote2 = RegUtil.quoteRep(qt);
   let matches,
@@ -47,7 +48,7 @@ function* indexed(content, {
   while ((matches = regex.exec(content)) && ([, delim, quote, value] = matches)) {
     var _value;
 
-    // `[delim] (${delim.replace(/\r?\n/g, '[LF]')}) [quote] (${quote ?? '[UDF]'}) [value] (${value?.replace(/\r?\n/g, '[LF]')})`  |> logger
+    // `[delim] (${delim.replace(/\r?\n/g, '[LF]')}) [quote] (${quote ?? '[UDF]'}) [value] (${value?.replace(/\r?\n/g, '[LF]')})`  |> console.log
     if (delim && delim !== de) {
       yield row;
       row = [];
@@ -72,14 +73,13 @@ const csvToTable = (csv, options) => {
   const enumerator = indexed(csv, options);
   const {
     done,
-    value
+    value: head
   } = enumerator.next();
-  const head = !done ? value : null;
-  const rows = [...enumerator];
-  return head ? table.Table.from({
+  if (done) return null;
+  return table.Table.from({
     head,
-    rows
-  }) : null;
+    rows: [...enumerator]
+  });
 };
 const csvToCrostab = (csv, options) => {
   const enumerator = indexed(csv, options);
@@ -87,7 +87,8 @@ const csvToCrostab = (csv, options) => {
     done,
     value
   } = enumerator.next();
-  const [title, ...head] = !done ? value : null;
+  if (done) return null;
+  const [title, ...head] = value;
   const side = [],
         rows = [];
 
@@ -96,13 +97,14 @@ const csvToCrostab = (csv, options) => {
     rows.push(row);
   }
 
-  return head ? crostab.Crostab.from({
+  return crostab.Crostab.from({
     side,
     head,
     rows,
     title
-  }) : null;
+  });
 };
 
 exports.csvToCrostab = csvToCrostab;
 exports.csvToTable = csvToTable;
+exports.indexed = indexed;
