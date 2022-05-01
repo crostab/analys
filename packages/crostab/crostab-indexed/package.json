@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab-indexed",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {

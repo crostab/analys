@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,10 +18,10 @@
     "test": "node -r @babel/register test/crostab.select.test.js"
   },
   "dependencies": {
-    "@analys/crostab-init": "^0.6.0",
-    "@analys/crostab-lookup": "^0.6.0",
-    "@analys/keyed-rows": "^0.6.0",
-    "@analys/tabular": "^0.6.0",
+    "@analys/crostab-init": "^0.6.1",
+    "@analys/crostab-lookup": "^0.6.1",
+    "@analys/keyed-rows": "^0.6.1",
+    "@analys/tabular": "^0.6.1",
     "@aryth/comparer": "^0.5.3",
     "@vect/column-getter": "^0.5.22",
     "@vect/column-mapper": "^0.5.22",
