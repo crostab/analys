@@ -1,6 +1,6 @@
 {
   "name": "@analys/nest-gram",
-  "version": "0.5.16",
+  "version": "0.6.0",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/nest-gram.test.js"
   },
   "dependencies": {
-    "@analys/data-gram": "^0.5.16",
+    "@analys/data-gram": "^0.6.0",
     "@vect/vector-init": "^0.5.22"
   },
   "repository": {
