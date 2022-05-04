@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-timeseries-differential",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A crawler",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,10 +18,10 @@
     "test": "node test"
   },
   "dependencies": {
-    "@aryth/math": "^0.5.3",
+    "@aryth/math": "^0.5.6",
     "@typen/num-strict": "^0.1.19",
-    "@vect/vector-differentiator": "^0.5.22",
-    "@vect/vector-mapper": "^0.5.22"
+    "@vect/vector-differentiator": "^0.5.23",
+    "@vect/vector-mapper": "^0.5.23"
   },
   "repository": {
     "type": "git",

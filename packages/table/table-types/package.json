@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-types",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A cross-table-types analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -39,7 +39,7 @@
   "homepage": "https://github.com/hoyeungw/analys#readme",
   "dependencies": {
     "@typen/vector-type": "^0.1.19",
-    "@vect/columns-mapper": "^0.5.22"
+    "@vect/columns-mapper": "^0.5.23"
   },
   "devDependencies": {
     "@typen/enum-tabular-types": "^0.1.19",

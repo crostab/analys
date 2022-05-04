@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-merge",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A cross-table-merge analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -22,8 +22,8 @@
     "url": "git+https://github.com/hoyeungw/analys.git"
   },
   "dependencies": {
-    "@vect/vector-merge": "^0.5.22",
-    "@vect/vector-zipper": "^0.5.22"
+    "@vect/vector-merge": "^0.5.23",
+    "@vect/vector-zipper": "^0.5.23"
   },
   "keywords": [
     "table-merge",

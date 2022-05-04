@@ -1,6 +1,6 @@
 {
   "name": "@analys/chips",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,10 +18,10 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.6.1",
-    "@analys/util-pivot": "^0.6.1",
-    "@vect/object-init": "^0.5.22",
-    "@vect/vector-mapper": "^0.5.22"
+    "@analys/enum-pivot-mode": "^0.6.2",
+    "@analys/util-pivot": "^0.6.2",
+    "@vect/object-init": "^0.5.23",
+    "@vect/vector-mapper": "^0.5.23"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab-init",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vect/clone": "^0.5.22"
+    "@vect/clone": "^0.5.23"
   },
   "publishConfig": {
     "access": "public"
