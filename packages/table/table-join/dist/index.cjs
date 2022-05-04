@@ -168,24 +168,24 @@ function tableJoin(tableL, tableR, fields, joinType = enumJoinModes.INTERSECT, f
   if (!(tableR !== null && tableR !== void 0 && (_tableR$head = tableR.head) !== null && _tableR$head !== void 0 && _tableR$head.length) || !(tableR !== null && tableR !== void 0 && (_tableR$rows = tableR.rows) !== null && _tableR$rows !== void 0 && _tableR$rows.length)) return tableL;
   const joiner = Joiner(joinType),
         depth = fields.length,
-        indexesL = fields.map(x => tableL.head.indexOf(x)),
-        ascL = indexesL.slice().sort(comparer.NUM_ASC),
-        indexesR = fields.map(x => tableR.head.indexOf(x)),
-        ascR = indexesR.slice().sort(comparer.NUM_ASC),
-        toKeyedVectorL = selectKeyedVector.bind({
-    indexes: indexesL,
+        indL = fields.map(x => tableL.head.indexOf(x)),
+        indR = fields.map(x => tableR.head.indexOf(x)),
+        ascL = indL.slice().sort(comparer.NUM_ASC),
+        ascR = indR.slice().sort(comparer.NUM_ASC),
+        keyVecL = selectKeyedVector.bind({
+    indexes: indL,
     asc: ascL,
     depth
   }),
-        toKeyedVectorR = selectKeyedVector.bind({
-    indexes: indexesR,
+        keyVecR = selectKeyedVector.bind({
+    indexes: indR,
     asc: ascR,
     depth
   });
-  const head = vectorSelect.select(tableL.head, indexesL).concat(vectorUpdate.splices(tableL.head.slice(), ascL), vectorUpdate.splices(tableR.head.slice(), ascR));
-  const L = tableL.rows.map(row => toKeyedVectorL(row === null || row === void 0 ? void 0 : row.slice())),
-        R = tableR.rows.map(row => toKeyedVectorR(row === null || row === void 0 ? void 0 : row.slice()));
-  const rows = joiner(L, R, fillEmpty);
+  const head = vectorSelect.select(tableL.head, indL).concat(vectorUpdate.splices(tableL.head.slice(), ascL), vectorUpdate.splices(tableR.head.slice(), ascR));
+  const nextL = tableL.rows.map(row => keyVecL(row === null || row === void 0 ? void 0 : row.slice())),
+        nextR = tableR.rows.map(row => keyVecR(row === null || row === void 0 ? void 0 : row.slice()));
+  const rows = joiner(nextL, nextR, fillEmpty);
   return {
     head,
     rows,
@@ -194,4 +194,18 @@ function tableJoin(tableL, tableR, fields, joinType = enumJoinModes.INTERSECT, f
 } // xr().fields(fields)['leftIndexes'](ascL)['rightIndexes'](ascR) |> logger
 // xr().head(head |> deco) |> logger
 
+function merge(...tables) {
+  const {
+    fields,
+    joinType,
+    fillEmpty
+  } = this;
+  const n = tables.length;
+  if (n === 0) return null;
+  if (n === 1) return tables[0];
+  if (n === 2) return tableJoin(tables[0], tables[1], fields, joinType, fillEmpty);
+  return tables.reduce((accum, next) => tableJoin(accum, next, fields, joinType, fillEmpty));
+}
+
+exports.merge = merge;
 exports.tableJoin = tableJoin;

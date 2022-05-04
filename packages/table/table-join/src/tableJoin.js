@@ -18,24 +18,28 @@ export function tableJoin(
   tableL,
   tableR,
   fields,
-  joinType = INTERSECT,
+  joinType  = INTERSECT,
   fillEmpty = null
 ) {
   if (!tableL?.head?.length || !tableL?.rows?.length) return tableR
   if (!tableR?.head?.length || !tableR?.rows?.length) return tableL
   const
-    joiner = Joiner(joinType), depth = fields.length,
-    indexesL = fields.map(x => tableL.head.indexOf(x)), ascL = indexesL.slice().sort(NUM_ASC),
-    indexesR = fields.map(x => tableR.head.indexOf(x)), ascR = indexesR.slice().sort(NUM_ASC),
-    toKeyedVectorL = selectKeyedVector.bind({ indexes: indexesL, asc: ascL, depth }),
-    toKeyedVectorR = selectKeyedVector.bind({ indexes: indexesR, asc: ascR, depth })
-  const head = select(tableL.head, indexesL).concat(splices(tableL.head.slice(), ascL), splices(tableR.head.slice(), ascR))
+    joiner  = Joiner(joinType),
+    depth   = fields.length,
+    indL    = fields.map(x => tableL.head.indexOf(x)),
+    indR    = fields.map(x => tableR.head.indexOf(x)),
+    ascL    = indL.slice().sort(NUM_ASC),
+    ascR    = indR.slice().sort(NUM_ASC),
+    keyVecL = selectKeyedVector.bind({ indexes: indL, asc: ascL, depth }),
+    keyVecR = selectKeyedVector.bind({ indexes: indR, asc: ascR, depth })
+  const head = select(tableL.head, indL).concat(splices(tableL.head.slice(), ascL), splices(tableR.head.slice(), ascR))
   const
-    L = tableL.rows.map(row => toKeyedVectorL(row?.slice())),
-    R = tableR.rows.map(row => toKeyedVectorR(row?.slice()))
-  const rows = joiner(L, R, fillEmpty)
-  return { head, rows, title: `${ tableL.title } ${ tableR.title }` }
+    nextL = tableL.rows.map(row => keyVecL(row?.slice())),
+    nextR = tableR.rows.map(row => keyVecR(row?.slice()))
+  const rows = joiner(nextL, nextR, fillEmpty)
+  return { head, rows, title: `${tableL.title} ${tableR.title}` }
 }
+
 
 // xr().fields(fields)['leftIndexes'](ascL)['rightIndexes'](ascR) |> logger
 // xr().head(head |> deco) |> logger
