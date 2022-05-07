@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-indexed",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {

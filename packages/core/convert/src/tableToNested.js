@@ -16,3 +16,4 @@ export const tableToNested = (table, { x, y, v }) => {
   }
   return nested
 }
+

@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-join-modes",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {
