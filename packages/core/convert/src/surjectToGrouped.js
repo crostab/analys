@@ -1,9 +1,23 @@
-export const surjectToGrouped = surject => {
+import { indexed }     from '@vect/object-mapper'
+import { appendValue } from '@vect/object-update'
+
+/**
+ *
+ * @param {Object} surject
+ * @param {function(*,*):boolean} by
+ * @param {function(*,*):[*,*]} to
+ * @returns {Object<string,[]>}
+ */
+export const surjectToGrouped = (surject, by, to) => {
   const grouped = {}
-  for (let x in surject) {
-    const y = surject[x];
-    (grouped[y] ?? (grouped[y] = [])).push(x)
+  if (by || to) {
+    for (let [ x, y ] of indexed(surject, by, to)) appendValue.call(grouped, y, x)
+    return grouped
   }
-  return grouped
+  else {
+    for (let x in surject) appendValue.call(grouped, surject[x], x)
+    return grouped
+  }
+
 }
 
