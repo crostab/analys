@@ -13,7 +13,7 @@ export class NestGram extends DataGram {
 
   static build(init) { return new NestGram(init) }
 
-  // queryCell(x, y) {
+  // query(x, y) {
   //   return (x = this.sideIndex(x)) >= 0 && (y = this.headIndex(y)) >= 0
   //     ? this.rows[x][y]
   //     : undefined
