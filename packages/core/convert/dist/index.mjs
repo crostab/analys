@@ -197,8 +197,8 @@ const groupedToSurject = grouped => {
 /**
  *
  * @param {Object} surject
- * @param {function(*,*):boolean} by
- * @param {function(*,*):[*,*]} to
+ * @param {function(*,*):boolean} [by]
+ * @param {function(*,*):[*,*]} [to]
  * @returns {Object<string,[]>}
  */
 

@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var matrixMapper = require('@vect/matrix-mapper');
 var vectorInit = require('@vect/vector-init');
 
-const ZERO$1 = 'zero';
-class DataGram$1 {
+const ZERO = 'zero';
+class DataGram {
   /** @type {*[]}      */
   side = [];
   /** @type {*[]}      */
@@ -27,7 +27,7 @@ class DataGram$1 {
   }
 
   static build(element) {
-    return new DataGram$1(element);
+    return new DataGram(element);
   }
 
   get zero() {
@@ -39,7 +39,7 @@ class DataGram$1 {
   roin(x) {
     const i = this.side.indexOf(x);
     if (~i) return i;
-    this.rows.push(vectorInit.collect.call(this, ZERO$1, this.head.length));
+    this.rows.push(vectorInit.collect.call(this, ZERO, this.head.length));
     return i + this.side.push(x);
   }
 
@@ -128,9 +128,9 @@ const MIN = 'min';
 const FIRST = 'first';
 const LAST = 'last';
 
-const ZERO = 'zero';
+const ZERO$1 = 'zero';
 
-class DataGram {
+class DataGram$1 {
   /** @type {*[]}      */
   side = [];
   /** @type {*[]}      */
@@ -151,7 +151,7 @@ class DataGram {
   }
 
   static build(element) {
-    return new DataGram(element);
+    return new DataGram$1(element);
   }
 
   get zero() {
@@ -163,7 +163,7 @@ class DataGram {
   roin(x) {
     const i = this.side.indexOf(x);
     if (~i) return i;
-    this.rows.push(vectorInit.collect.call(this, ZERO, this.head.length));
+    this.rows.push(vectorInit.collect.call(this, ZERO$1, this.head.length));
     return i + this.side.push(x);
   }
 
@@ -216,7 +216,7 @@ const nullish = x => x === null || x === void 0;
 
 const valid = x => x !== null && x !== void 0;
 
-class ListGram extends DataGram {
+class ListGram extends DataGram$1 {
   constructor(listInit = List.build) {
     super(listInit);
   }
@@ -238,7 +238,7 @@ class ListGram extends DataGram {
   }
 
 }
-class MaxGram extends DataGram {
+class MaxGram extends DataGram$1 {
   constructor() {
     super(Number.NEGATIVE_INFINITY);
   }
@@ -254,7 +254,7 @@ class MaxGram extends DataGram {
   }
 
 }
-class MinGram extends DataGram {
+class MinGram extends DataGram$1 {
   constructor() {
     super(Number.POSITIVE_INFINITY);
   }
@@ -270,7 +270,7 @@ class MinGram extends DataGram {
   }
 
 }
-class SumGram extends DataGram {
+class SumGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -284,7 +284,7 @@ class SumGram extends DataGram {
   }
 
 }
-class CountGram extends DataGram {
+class CountGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -298,7 +298,7 @@ class CountGram extends DataGram {
   }
 
 }
-class FirstGram extends DataGram {
+class FirstGram extends DataGram$1 {
   constructor() {
     super(null);
   }
@@ -314,7 +314,7 @@ class FirstGram extends DataGram {
   }
 
 }
-class LastGram extends DataGram {
+class LastGram extends DataGram$1 {
   constructor() {
     super(null);
   }
@@ -350,7 +350,7 @@ class GramUtil {
 }
 
 exports.CountGram = CountGram;
-exports.DataGram = DataGram$1;
+exports.DataGram = DataGram;
 exports.FirstGram = FirstGram;
 exports.GramUtil = GramUtil;
 exports.LastGram = LastGram;
