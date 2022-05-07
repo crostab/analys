@@ -44,5 +44,5 @@ const note = function (sample) {
     r = data.rows[data.indexSide(s)],
     j = data.indexHead(b)
   return r[j] = field.accum(r[j], v)
-  // return data.mutateCell(s, b, x => conf.accum(x, sample[this.z]))
+  // return data.mutate(s, b, x => conf.accum(x, sample[this.z]))
 }
