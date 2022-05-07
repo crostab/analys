@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-divide",
-  "version": "0.6.1",
+  "version": "0.6.3",
   "description": "A cross-table-divide analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/enum-mutabilities": "^0.6.1",
-    "@analys/table-init": "^0.6.1",
+    "@analys/enum-mutabilities": "^0.6.3",
+    "@analys/table-init": "^0.6.3",
     "@vect/columns-select": "^0.6.2",
     "@vect/vector-mapper": "^0.6.2",
     "@vect/vector-select": "^0.6.2"

@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-differential",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A crawler",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,7 +18,7 @@
     "test": "node test"
   },
   "dependencies": {
-    "@analys/enum-difference-modes": "^0.6.2",
+    "@analys/enum-difference-modes": "^0.6.3",
     "@analys/table-timeseries-differential": "^0.6.2",
     "@analys/table-timeseries-rolling": "^0.6.2",
     "@typen/enum-data-types": "^0.1.19"

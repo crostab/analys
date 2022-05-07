@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-difference-modes",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {
