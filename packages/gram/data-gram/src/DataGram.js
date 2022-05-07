@@ -1,3 +1,4 @@
+import { mapper }  from '@vect/matrix-mapper'
 import { collect } from '@vect/vector-init'
 
 const ZERO = 'zero'
@@ -15,26 +16,27 @@ export class DataGram {
 
   get zero() { return this.init?.call(this) ?? this.val }
 
-  roflex(x) {
+  roin(x) {
     const i = this.side.indexOf(x)
     if (~i) return i
     this.rows.push(collect.call(this, ZERO, this.head.length))
     return i + this.side.push(x)
   }
-  coflex(y) {
+  coin(y) {
     const i = this.head.indexOf(y)
     if (~i) return i
     for (let row of this.rows) row.push(this.zero)
     return i + this.head.push(y)
   }
 
-  update(x, y, v) { return this.rows[this.roflex(x)][this.coflex(y)] = v }
-  append(x, y, v) { return this.rows[this.roflex(x)][this.coflex(y)].push(v) }
-  assign(x, y, k, v) { return this.rows[this.roflex(x)][this.coflex(y)][k] = v }
+  update(x, y, v) { return this.rows[this.roin(x)][this.coin(y)] = v }
+  append(x, y, v) { return this.rows[this.roin(x)][this.coin(y)].push(v) }
+  assign(x, y, k, v) { return this.rows[this.roin(x)][this.coin(y)][k] = v }
   mutate(x, y, fn) {
-    const row = this.rows[this.roflex(x)], coin = this.coflex(y)
+    const row = this.rows[this.roin(x)], coin = this.coin(y)
     return row[coin] = fn(row[coin])
   }
-  cell(x, y) { return this.rows[this.roflex(x)][this.coflex(y)] }
+  cell(x, y) { return this.rows[this.roin(x)][this.coin(y)] }
   query(x, y) { return ~(x = this.side.indexOf(x)) && ~(y = this.head.indexOf(y)) ? this.rows[x][y] : void 0 }
+  toObject(po) { return { side: this.side, head: this.head, rows: po ? mapper(this.rows, po) : this.rows } }
 }
