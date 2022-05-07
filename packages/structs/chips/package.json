@@ -1,6 +1,6 @@
 {
   "name": "@analys/chips",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.6.4",
-    "@analys/util-pivot": "^0.6.4",
+    "@analys/enum-pivot-mode": "^0.6.5",
+    "@analys/util-pivot": "^0.6.5",
     "@vect/object-init": "^0.6.2",
     "@vect/vector-mapper": "^0.6.2"
   },
@@ -39,5 +39,5 @@
     "url": "https://github.com/hoyeungw/vect"
   },
   "homepage": "https://github.com/hoyeungw/vect#readme",
-  "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
+  "gitHead": "00097b725b017eacdb2a34bc142306120cc21313"
 }

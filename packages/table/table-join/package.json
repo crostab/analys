@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-join",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/enum-join-modes": "^0.6.4",
+    "@analys/enum-join-modes": "^0.6.5",
     "@aryth/comparer": "^0.5.9",
     "@vect/vector-init": "^0.6.2",
     "@vect/vector-mapper": "^0.6.2",
@@ -45,5 +45,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "6ec86f4f239fd66ffe6bb52d6aa75b3253eeade9"
+  "gitHead": "00097b725b017eacdb2a34bc142306120cc21313"
 }
