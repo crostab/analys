@@ -1,7 +1,11 @@
 export {
+  indexedOf,
+  indexedBy,
+  indexedTo,
   indexed,
-  simpleIndexed,
-  filterIndexed,
-  mappedIndexed,
-  filterMappedIndexed,
-} from './src/indexed'
+  indexedVia,
+  indexedOf as simpleIndexed,
+  indexedBy as filterIndexed,
+  indexedTo as mappedIndexed,
+  indexedVia as filterMappedIndexed
+}                 from './src/indexed'

@@ -4,12 +4,15 @@ import { unwind } from '@vect/entries-unwind';
 import { mapper, iterate } from '@vect/vector-mapper';
 import { select } from '@vect/vector-select';
 import { Table } from '@analys/table';
-import { CrosTab } from '@analys/crostab';
+import { CrosTab, Crostab } from '@analys/crostab';
 import { selectValues, SelectValues } from '@vect/object-select';
 import { first } from '@vect/vector-index';
-import { filterIndexed, simpleIndexed } from '@analys/crostab-indexed';
-import { filterIndexed as filterIndexed$1, simpleIndexed as simpleIndexed$1 } from '@vect/nested';
 import { acquire } from '@vect/vector-merge';
+import { indexed } from '@vect/object-mapper';
+import { appendValue } from '@vect/object-update';
+import { filterIndexed, simpleIndexed, updateCell, indexed as indexed$2 } from '@vect/nested';
+import { indexed as indexed$1 } from '@analys/crostab-indexed';
+import '@typen/nullish';
 
 /**
  *
@@ -131,85 +134,6 @@ function samplesToCrostab(sampleCollection, config = {}) {
   });
 }
 
-const groupedToSurject = grouped => {
-  const o = {};
-
-  for (let y in grouped) {
-    if (Array.isArray(grouped[y])) for (let x of grouped[y]) {
-      if (!(x in o)) o[x] = y;
-    }
-  }
-
-  return o;
-};
-
-const surjectToGrouped = surject => {
-  const grouped = {};
-
-  for (let x in surject) {
-    const y = surject[x];
-    (grouped[y] ?? (grouped[y] = [])).push(x);
-  }
-
-  return grouped;
-};
-
-// from x => typeof x
-const FUN = 'function';
-
-const crostabToNested = (crostab, filter) => {
-  // const by = conf?.by, to = conf?.to ?? conf
-  const o = {};
-
-  if (typeof filter === FUN) {
-    for (const [x, y, v] of filterIndexed(crostab, filter)) (o[x] ?? (o[x] = {}))[y] = v;
-  } else {
-    for (const [x, y, v] of simpleIndexed(crostab)) (o[x] ?? (o[x] = {}))[y] = v;
-  }
-
-  return o;
-};
-
-const nestedToTable = (nested, {
-  head,
-  title,
-  filter
-}) => {
-  const enumerator = filter ? filterIndexed$1(nested, filter) : simpleIndexed$1(nested);
-  return Table.from({
-    head: head,
-    rows: [...enumerator],
-    title: title
-  });
-};
-
-/**
- *
- * @param {Table} table
- * @param x
- * @param y
- * @param v
- */
-const tableToNested = (table, {
-  x,
-  y,
-  v
-}) => {
-  const nested = {};
-  const xi = table.coin(x),
-        yi = table.coin(y),
-        vi = table.coin(v);
-
-  for (let row of table.rows) {
-    x = row[xi];
-    y = row[yi];
-    v = row[vi];
-    (nested[x] ?? (nested[x] = {}))[y] = v;
-  }
-
-  return nested;
-};
-
 function duozipper(a, b) {
   let {
     fn,
@@ -258,4 +182,189 @@ const crostabToMatrix = (crostab, title) => {
   return _crostabToTable = crostabToTable(crostab, title), tableToMatrix(_crostabToTable);
 };
 
-export { crostabToMatrix, crostabToNested, crostabToTable, groupedToSurject, nestedToTable, samplesToCrostab, samplesToTable, samplesToTabular, surjectToGrouped, tableToMatrix, tableToNested, tableToSamples, toTable };
+const groupedToSurject = grouped => {
+  const o = {};
+
+  for (let y in grouped) {
+    if (Array.isArray(grouped[y])) for (let x of grouped[y]) {
+      if (!(x in o)) o[x] = y;
+    }
+  }
+
+  return o;
+};
+
+/**
+ *
+ * @param {Object} surject
+ * @param {function(*,*):boolean} by
+ * @param {function(*,*):[*,*]} to
+ * @returns {Object<string,[]>}
+ */
+
+const surjectToGrouped = (surject, by, to) => {
+  const grouped = {};
+
+  if (by || to) {
+    for (let [x, y] of indexed(surject, by, to)) appendValue.call(grouped, y, x);
+
+    return grouped;
+  } else {
+    for (let x in surject) appendValue.call(grouped, surject[x], x);
+
+    return grouped;
+  }
+};
+
+const nestedToTable = (nested, {
+  head,
+  title,
+  filter
+}) => {
+  const enumerator = filter ? filterIndexed(nested, filter) : simpleIndexed(nested);
+  return Table.from({
+    head: head,
+    rows: [...enumerator],
+    title: title
+  });
+};
+
+/**
+ *
+ * @param {Table} table
+ * @param x
+ * @param y
+ * @param v
+ */
+const tableToNested = (table, {
+  x,
+  y,
+  v
+}) => {
+  const nested = {};
+  const xi = table.coin(x),
+        yi = table.coin(y),
+        vi = table.coin(v);
+
+  for (let row of table.rows) {
+    x = row[xi];
+    y = row[yi];
+    v = row[vi];
+    (nested[x] ?? (nested[x] = {}))[y] = v;
+  }
+
+  return nested;
+};
+
+const crostabToNested = (crostab, by, to) => {
+  const o = {};
+
+  for (const [x, y, v] of indexed$1(crostab, by, to)) updateCell.call(o, x, y, v);
+
+  return o;
+};
+
+function collect(key, size) {
+  const vec = Array(size);
+
+  for (let i = 0; i < size; i++) vec[i] = this[key];
+
+  return vec;
+}
+
+const ZERO = 'zero';
+
+class DataGram {
+  /** @type {*[]}      */
+  side = [];
+  /** @type {*[]}      */
+
+  head = [];
+  /** @type {*[][]}    */
+
+  rows = [];
+  /** @type {function} */
+
+  init = null;
+  /** @type {*}        */
+
+  val = null;
+
+  constructor(element) {
+    element instanceof Function ? this.init = element : this.val = element;
+  }
+
+  static build(element) {
+    return new DataGram(element);
+  }
+
+  get zero() {
+    var _this$init;
+
+    return ((_this$init = this.init) === null || _this$init === void 0 ? void 0 : _this$init.call(this)) ?? this.val;
+  }
+
+  roflex(x) {
+    const i = this.side.indexOf(x);
+    if (~i) return i;
+    this.rows.push(collect.call(this, ZERO, this.head.length));
+    return i + this.side.push(x);
+  }
+
+  coflex(y) {
+    const i = this.head.indexOf(y);
+    if (~i) return i;
+
+    for (let row of this.rows) row.push(this.zero);
+
+    return i + this.head.push(y);
+  }
+
+  update(x, y, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)] = v;
+  }
+
+  append(x, y, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)].push(v);
+  }
+
+  assign(x, y, k, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)][k] = v;
+  }
+
+  mutate(x, y, fn) {
+    const row = this.rows[this.roflex(x)],
+          coin = this.coflex(y);
+    return row[coin] = fn(row[coin]);
+  }
+
+  cell(x, y) {
+    return this.rows[this.roflex(x)][this.coflex(y)];
+  }
+
+  query(x, y) {
+    return ~(x = this.side.indexOf(x)) && ~(y = this.head.indexOf(y)) ? this.rows[x][y] : void 0;
+  }
+
+}
+
+function nestedToCrostab(nested, init, by, to) {
+  const dataGram = DataGram.build(init);
+
+  for (let [x, y, v] of indexed$2(nested, by, to)) {
+    dataGram.update(x, y, v);
+  }
+
+  return Crostab.from(dataGram);
+}
+function nestedToCrostabOfArray(nested, by, to) {
+  const dataGram = DataGram.build(Array);
+
+  for (let [x, y, v] of indexed$2(nested, by, to)) {
+    dataGram.append(x, y, v);
+  }
+
+  return Crostab.from(dataGram);
+}
+
+export { crostabToMatrix, crostabToNested, crostabToTable, groupedToSurject, nestedToCrostab, nestedToCrostabOfArray, nestedToTable, samplesToCrostab, samplesToTable, samplesToTabular, surjectToGrouped, tableToMatrix, tableToNested, tableToSamples, toTable };

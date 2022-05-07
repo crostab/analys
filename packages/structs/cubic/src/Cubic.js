@@ -73,7 +73,7 @@ class Notes {
     const { data, side, head, field } = this
     const s = side.to ? side.to(sample[side.key]) : sample[side.key]
     const b = head.to ? head.to(sample[head.key]) : sample[head.key]
-    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]))
+    return data.mutate(s, b, target => field.accum(target, sample[field.key]))
   }
   static simpleCubic(sample) {
     const { data, side, head, field } = this
@@ -85,7 +85,7 @@ class Notes {
     const { data, side, head, field } = this
     const s = side.map(({ key, to }) => to ? to(sample[key]) : sample[key])
     const b = head.map(({ key, to }) => to ? to(sample[key]) : sample[key])
-    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]))
+    return data.mutate(s, b, target => field.accum(target, sample[field.key]))
   }
   static nestedCubic(sample) {
     const { data, side, head, field } = this

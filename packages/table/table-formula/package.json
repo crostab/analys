@@ -22,7 +22,7 @@
     "@analys/table-find": "^0.6.1",
     "@analys/table-init": "^0.6.1",
     "@analys/table-merge": "^0.6.1",
-    "@spare/deco-func": "^0.13.7"
+    "@spare/deco-func": "^0.13.16"
   },
   "repository": {
     "type": "git",

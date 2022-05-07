@@ -104,7 +104,7 @@ class Notes {
     } = this;
     const s = side.to ? side.to(sample[side.key]) : sample[side.key];
     const b = head.to ? head.to(sample[head.key]) : sample[head.key];
-    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
+    return data.mutate(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static simpleCubic(sample) {
@@ -137,7 +137,7 @@ class Notes {
       key,
       to
     }) => to ? to(sample[key]) : sample[key]);
-    return data.mutateCell(s, b, target => field.accum(target, sample[field.key]));
+    return data.mutate(s, b, target => field.accum(target, sample[field.key]));
   }
 
   static nestedCubic(sample) {

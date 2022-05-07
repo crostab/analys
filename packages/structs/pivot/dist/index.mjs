@@ -61,7 +61,7 @@ const note = function (sample) {
   const v = sample[field.key];
   const r = data.rows[data.indexSide(s)],
         j = data.indexHead(b);
-  return r[j] = field.accum(r[j], v); // return data.mutateCell(s, b, x => conf.accum(x, sample[this.z]))
+  return r[j] = field.accum(r[j], v); // return data.mutate(s, b, x => conf.accum(x, sample[this.z]))
 };
 
 export { Pivot };

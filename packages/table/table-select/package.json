@@ -21,12 +21,12 @@
     "@analys/table-index": "^0.6.1",
     "@analys/table-init": "^0.6.1",
     "@analys/tabular": "^0.6.1",
-    "@aryth/rand": "^0.5.3",
+    "@aryth/rand": "^0.5.9",
     "@typen/nullish": "^0.1.19",
-    "@vect/column-getter": "^0.5.22",
-    "@vect/entries-init": "^0.5.22",
-    "@vect/object-init": "^0.5.22",
-    "@vect/vector-select": "^0.5.22"
+    "@vect/column-getter": "^0.6.2",
+    "@vect/entries-init": "^0.6.2",
+    "@vect/object-init": "^0.6.2",
+    "@vect/vector-select": "^0.6.2"
   },
   "repository": {
     "type": "git",

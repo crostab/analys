@@ -4,62 +4,77 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vectorInit = require('@vect/vector-init');
 
+const ZERO = 'zero';
 class DataGram {
-  /** @type {*[]} */
-  side;
-  /** @type {*[]} */
+  /** @type {*[]}      */
+  side = [];
+  /** @type {*[]}      */
 
-  head;
-  /** @type {*[][]} */
+  head = [];
+  /** @type {*[][]}    */
 
-  rows;
-  /** @type {Function} */
+  rows = [];
+  /** @type {function} */
 
-  init;
+  init = null;
+  /** @type {*}        */
 
-  constructor(init) {
-    this.side = [];
-    this.head = [];
-    this.rows = [];
-    this.init = init;
+  val = null;
+
+  constructor(element) {
+    element instanceof Function ? this.init = element : this.val = element;
   }
 
-  static build(init) {
-    return new DataGram(init);
+  static build(element) {
+    return new DataGram(element);
   }
 
-  mutateCell(x, y, fn) {
-    const r = this.rows[this.indexSide(x)],
-          j = this.indexHead(y);
-    return r[j] = fn(r[j]);
+  get zero() {
+    var _this$init;
+
+    return ((_this$init = this.init) === null || _this$init === void 0 ? void 0 : _this$init.call(this)) ?? this.val;
+  }
+
+  roflex(x) {
+    const i = this.side.indexOf(x);
+    if (~i) return i;
+    this.rows.push(vectorInit.collect.call(this, ZERO, this.head.length));
+    return i + this.side.push(x);
+  }
+
+  coflex(y) {
+    const i = this.head.indexOf(y);
+    if (~i) return i;
+
+    for (let row of this.rows) row.push(this.zero);
+
+    return i + this.head.push(y);
+  }
+
+  update(x, y, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)] = v;
+  }
+
+  append(x, y, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)].push(v);
+  }
+
+  assign(x, y, k, v) {
+    return this.rows[this.roflex(x)][this.coflex(y)][k] = v;
+  }
+
+  mutate(x, y, fn) {
+    const row = this.rows[this.roflex(x)],
+          coin = this.coflex(y);
+    return row[coin] = fn(row[coin]);
   }
 
   cell(x, y) {
-    return this.rows[this.indexSide(x)][this.indexHead(y)];
+    return this.rows[this.roflex(x)][this.coflex(y)];
   }
 
-  indexSide(x) {
-    const ri = this.side.indexOf(x);
-    if (ri >= 0) return ri;
-    return this.rows.push(vectorInit.init(this.head.length, this.init)), ri + this.side.push(x);
-  }
-
-  indexHead(y) {
-    const ci = this.head.indexOf(y);
-    if (ci >= 0) return ci;
-    return this.rows.forEach(r => r.push(this.init())), ci + this.head.push(y);
-  }
-
-  queryCell(x, y) {
-    return (x = this.querySide(x)) >= 0 && (y = this.queryHead(y)) >= 0 ? this.rows[x][y] : undefined;
-  }
-
-  querySide(x) {
-    return this.side.indexOf(x);
-  }
-
-  queryHead(y) {
-    return this.head.indexOf(y);
+  query(x, y) {
+    return ~(x = this.side.indexOf(x)) && ~(y = this.head.indexOf(y)) ? this.rows[x][y] : void 0;
   }
 
 }
