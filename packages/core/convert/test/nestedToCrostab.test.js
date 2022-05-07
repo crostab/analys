@@ -1,6 +1,8 @@
-import { decoCrostab }                             from '@spare/logger'
-import { says }                                    from '@spare/xr'
-import { nestedToCrostab, nestedToCrostabOfArray } from '../src/nestedToCrostab'
+import { AVERAGE, FIRST }                    from '@analys/enum-pivot-mode'
+import { round }                             from '@aryth/math'
+import { decoCrostab }                       from '@spare/logger'
+import { says }                              from '@spare/xr'
+import { nestedToCrostab, nestedToListGram } from '../src/nestedToCrostab'
 
 const PAIRS = {
   '@A1': { '@O2': '-32', '@S2': '-24', '@T2': '-80', '@U2': '-48', '@V2': '-72', '@l2': '-24' },
@@ -25,17 +27,17 @@ const PAIRS = {
   '@v1': { '@a2': '-18', '@o2': '-32', '@s2': '-12' },
 }
 
-nestedToCrostab(PAIRS, '') |> decoCrostab |> says.raw
+nestedToCrostab(PAIRS, FIRST) |> decoCrostab |> says.raw
 const UPPER = /(?<=^@*)([A-Z])(?=\d*$)/, LOWER = /(?<=^@*)([a-z])(?=\d*$)/
 
 const trimKey = x => x.replace(/^@*/, '').replace(/\d*$/, '')
 
-nestedToCrostab(PAIRS, '',
+nestedToCrostab(PAIRS, FIRST,
   (x, y, v) => UPPER.test(x) && UPPER.test(y),
   (x, y, v) => [ trimKey(x), trimKey(y), v * 2 ]
 ) |> decoCrostab |> says.upper
 
-nestedToCrostab(PAIRS, '',
+nestedToCrostab(PAIRS, FIRST,
   (x, y, v) => LOWER.test(x) && LOWER.test(y),
   (x, y, v) => [ trimKey(x), trimKey(y), v * 2 ]
 ) |> decoCrostab |> says.lower
@@ -63,7 +65,13 @@ const recto = {
   H: 'H',
 }
 
-nestedToCrostabOfArray(PAIRS,
+nestedToListGram(PAIRS,
   (x, y, v) => UPPER.test(x) && UPPER.test(y),
   (x, y, v) => [ verso[trimKey(x)] ?? x, recto[trimKey(y)] ?? y, v ]
+) |> decoCrostab |> says.upper.br('grouped')
+
+nestedToCrostab(PAIRS, AVERAGE,
+  (x, y, v) => UPPER.test(x) && UPPER.test(y),
+  (x, y, v) => [ verso[trimKey(x)] ?? x, recto[trimKey(y)] ?? y, +v ],
+  list => round(list.average)
 ) |> decoCrostab |> says.upper.br('grouped')

@@ -46,6 +46,10 @@ class Crostab {
     this.title = title || '';
   }
 
+  static build(side, head, rows, title) {
+    return new Crostab(side, head, rows, title);
+  }
+
   static from(o) {
     let side = o.side,
         head = o.head || o.banner,

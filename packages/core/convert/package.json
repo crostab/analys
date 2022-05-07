@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@flua/vinylize": "^0.3.3",
-    "@spare/markdown": "^0.13.16",
+    "@spare/markdown": "^0.14.0",
     "gulp": "^4.0.2"
   },
   "repository": {

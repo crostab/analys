@@ -8,7 +8,7 @@ export { crostabToTable, tableToMatrix, crostabToMatrix } from './src/specializa
 export { groupedToSurject } from './src/groupedToSurject'
 export { surjectToGrouped } from './src/surjectToGrouped'
 
-export { nestedToTable }                           from './src/nestedToTable'
-export { tableToNested }                           from './src/tableToNested'
-export { crostabToNested }                         from './src/crostabToNested'
-export { nestedToCrostabOfArray, nestedToCrostab } from './src/nestedToCrostab'
+export { nestedToTable }                     from './src/nestedToTable'
+export { tableToNested }                     from './src/tableToNested'
+export { crostabToNested }                   from './src/crostabToNested'
+export { nestedToListGram, nestedToCrostab } from './src/nestedToCrostab'

@@ -35,13 +35,13 @@ class NestGram extends DataGram {
     return indexOfWords(this.head, ys);
   }
 
-  indexSide(xs) {
+  roin(xs) {
     const ri = indexOfWords(this.side, xs);
     if (ri >= 0) return ri;
     return this.rows.push(init(this.head.length, this.init)), ri + this.side.push(xs.slice());
   }
 
-  indexHead(ys) {
+  coin(ys) {
     const ci = indexOfWords(this.head, ys);
     if (ci >= 0) return ci;
     return this.rows.forEach(r => r.push(this.init())), ci + this.head.push(ys.slice());

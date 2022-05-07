@@ -90,6 +90,8 @@ export class Crostab {
     this.title = title || ''
   }
 
+  static build(side, head, rows, title) { return new Crostab(side, head, rows, title) }
+
   static from(o) {
     let side = o.side, head = o.head || o.banner, rows = o.rows || o.matrix, title = o.title
     if (side && head && !rows) rows = draftMatrix(side.length, head.length)
@@ -128,14 +130,14 @@ export class Crostab {
   }
   toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
   toTable(sideLabel) {
-    const head = acquire([sideLabel], this.head)
-    const rows = zipper(this.side, this.rows, (x, row) => acquire([x], row))
+    const head = acquire([ sideLabel ], this.head)
+    const rows = zipper(this.side, this.rows, (x, row) => acquire([ x ], row))
     return { head, rows }
   }
 
   /** @returns {*[][]} */
   get columns() { return transpose(this.rows) }
-  get size() { return [this.height, this.width] }
+  get size() { return [ this.height, this.width ] }
   get height() { return this.side?.length }
   get width() { return this.head?.length }
   roin(r) { return this.side.indexOf(r) }
@@ -168,10 +170,10 @@ export class Crostab {
   unshiftRow(label, row) { return this.side.unshift(label), this.rows.unshift(row), this }
   pushColumn(label, col) { return this.head.push(label), pushColumn(this.rows, col), this }
   unshiftColumn(label, col) { return this.head.unshift(label), unshiftColumn(this.rows, col), this }
-  popRow() { return [this.side.pop(), this.rows.pop()] }
-  shiftRow() { return [this.side.shift(), this.rows.shift()] }
-  popColumn() { return [this.head.pop(), popColumn(this.rows)] }
-  shiftColumn() { return [this.head.shift(), shiftColumn(this.rows)] }
+  popRow() { return [ this.side.pop(), this.rows.pop() ] }
+  shiftRow() { return [ this.side.shift(), this.rows.shift() ] }
+  popColumn() { return [ this.head.pop(), popColumn(this.rows) ] }
+  shiftColumn() { return [ this.head.shift(), shiftColumn(this.rows) ] }
 
   slice({ top, bottom, left, right, mutate = true } = {}) {
     let { side, head, rows } = this
@@ -227,7 +229,8 @@ export class Crostab {
       if (rows) this.rows = rows
       if (title) this.title = title
       return this
-    } else {
+    }
+    else {
       return this.copy({ side, head, rows, title })
     }
   }

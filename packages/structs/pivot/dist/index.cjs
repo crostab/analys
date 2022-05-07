@@ -13,7 +13,6 @@ class Pivot {
   accum;
   data;
   /**
-   *
    * @param {{key:number, to:Function?}} side
    * @param {{key:number, to:Function?}} head
    * @param {{key:number, to:number}} field
@@ -63,8 +62,8 @@ const note = function (sample) {
   const s = side.to ? side.to(sample[side.key]) : sample[side.key];
   const b = head.to ? head.to(sample[head.key]) : sample[head.key];
   const v = sample[field.key];
-  const r = data.rows[data.indexSide(s)],
-        j = data.indexHead(b);
+  const r = data.rows[data.roin(s)],
+        j = data.coin(b);
   return r[j] = field.accum(r[j], v); // return data.mutate(s, b, x => conf.accum(x, sample[this.z]))
 };
 
