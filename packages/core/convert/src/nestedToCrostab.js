@@ -1,19 +1,19 @@
 import { Crostab }                  from '@analys/crostab'
-import { DataGram }                 from '@analys/data-gram'
+import { GramUtil, ListGram }       from '@analys/data-gram'
 import { indexed as indexedNested } from '@vect/nested'
 
-export function nestedToCrostab(nested, init, by, to) {
-  const dataGram = DataGram.build(init)
+export function nestedToCrostab(nested, mode, by, to, po) {
+  const gram = GramUtil.factory(mode)
   for (let [ x, y, v ] of indexedNested(nested, by, to)) {
-    dataGram.update(x, y, v)
+    gram.update(x, y, v)
   }
-  return Crostab.from(dataGram)
+  return Crostab.from(gram.toObject(po))
 }
 
-export function nestedToCrostabOfArray(nested, by, to) {
-  const dataGram = DataGram.build(Array)
+export function nestedToListGram(nested, by, to) {
+  const gram = ListGram.build()
   for (let [ x, y, v ] of indexedNested(nested, by, to)) {
-    dataGram.append(x, y, v)
+    gram.append(x, y, v)
   }
-  return Crostab.from(dataGram)
+  return gram
 }
