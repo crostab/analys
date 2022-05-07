@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-index",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "A cross-table-index analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -37,5 +37,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "00097b725b017eacdb2a34bc142306120cc21313"
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
 }

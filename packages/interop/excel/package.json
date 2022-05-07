@@ -1,6 +1,6 @@
 {
   "name": "@analys/excel",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Convert table to excel based on npm package 'xlsx'",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/excel.select.test.js"
   },
   "dependencies": {
-    "@analys/convert": "^0.6.5",
-    "@analys/csv": "^0.6.5",
+    "@analys/convert": "^0.6.6",
+    "@analys/csv": "^0.6.6",
     "@vect/object-mapper": "^0.6.2",
     "xlsx": "^0.18.5"
   },
@@ -44,5 +44,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "00097b725b017eacdb2a34bc142306120cc21313"
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
 }

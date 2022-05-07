@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-difference-modes",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {
@@ -33,5 +33,5 @@
     "url": "https://github.com/hoyeungw/vect"
   },
   "homepage": "https://github.com/hoyeungw/vect#readme",
-  "gitHead": "00097b725b017eacdb2a34bc142306120cc21313"
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
 }
