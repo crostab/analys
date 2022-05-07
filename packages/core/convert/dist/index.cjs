@@ -418,11 +418,11 @@ class DataGram {
     return ~(x = this.side.indexOf(x)) && ~(y = this.head.indexOf(y)) ? this.rows[x][y] : void 0;
   }
 
-  toObject(fn) {
+  toObject(po) {
     return {
       side: this.side,
       head: this.head,
-      rows: fn ? mapper(this.rows, fn) : this.rows
+      rows: po ? mapper(this.rows, po) : this.rows
     };
   }
 
