@@ -1,6 +1,6 @@
 {
   "name": "@analys/csv",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Convert between table/crostab and csv",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,11 +18,11 @@
     "test": "node -r @babel/register test/table-to-excel.select.test.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.6.3",
-    "@analys/table": "^0.6.3"
+    "@analys/crostab": "^0.6.4",
+    "@analys/table": "^0.6.4"
   },
   "devDependencies": {
-    "@analys/convert": "^0.6.3",
+    "@analys/convert": "^0.6.4",
     "@spare/enum-chars": "^0.14.0",
     "iconv-lite": "^0.6.3"
   },

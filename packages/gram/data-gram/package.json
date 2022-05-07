@@ -1,6 +1,6 @@
 {
   "name": "@analys/data-gram",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@typen/enum-data-types": "^0.1.19",
-    "@vect/vector-init": "^0.6.2",
-    "@vect/matrix-mapper": "^0.6.2"
+    "@vect/matrix-mapper": "^0.6.2",
+    "@vect/vector-init": "^0.6.2"
   },
   "devDependencies": {
     "@vect/nested": "^0.6.2"
