@@ -20,8 +20,8 @@
   "dependencies": {
     "@aryth/math": "^0.5.9",
     "@typen/num-strict": "^0.1.19",
-    "@vect/vector-differentiator": "^0.6.2",
-    "@vect/vector-mapper": "^0.6.2"
+    "@vect/vector-differentiator": "^0.6.6",
+    "@vect/vector-mapper": "^0.6.6"
   },
   "repository": {
     "type": "git",

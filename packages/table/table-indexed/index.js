@@ -1,7 +1,13 @@
 export {
-  indexed,
-  simpleIndexed,
-  filterIndexed,
-  mappedIndexed,
-  filterMappedIndexed,
-} from './src/indexed'
+  tripletIndexedOf,
+  tripletIndexedBy,
+  tripletIndexedTo,
+  tripletIndexed,
+} from './src/tripletIndexed'
+
+export {
+  entryIndexedOf,
+  entryIndexedBy,
+  entryIndexedTo,
+  entryIndexed,
+} from './src/entryIndexed'

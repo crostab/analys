@@ -265,14 +265,6 @@ const crostabToNested = (crostab, by, to) => {
 };
 
 /**
- *
- * @param {*[][]} mx
- * @param {function} fn
- * @param {number} [h]
- * @param {number} [w]
- * @returns {undefined}
- */
-/**
  * Iterate through elements on each (x of rows,y of columns) coordinate of a 2d-array.
  * @param {*[][]} mx
  * @param {function} fn
@@ -280,8 +272,6 @@ const crostabToNested = (crostab, by, to) => {
  * @param {number} [w]
  * @returns {*[]}
  */
-
-
 const mapper = (mx, fn, h, w) => {
   var _mx$;
 

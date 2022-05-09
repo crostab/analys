@@ -23,10 +23,10 @@
     "@analys/tabular": "^0.6.6",
     "@aryth/rand": "^0.5.9",
     "@typen/nullish": "^0.1.19",
-    "@vect/column-getter": "^0.6.2",
-    "@vect/entries-init": "^0.6.2",
-    "@vect/object-init": "^0.6.2",
-    "@vect/vector-select": "^0.6.2"
+    "@vect/column-getter": "^0.6.6",
+    "@vect/entries-init": "^0.6.6",
+    "@vect/object-init": "^0.6.6",
+    "@vect/vector-select": "^0.6.6"
   },
   "repository": {
     "type": "git",

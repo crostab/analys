@@ -20,8 +20,8 @@
   "dependencies": {
     "@analys/enum-pivot-mode": "^0.6.6",
     "@analys/util-pivot": "^0.6.6",
-    "@vect/object-init": "^0.6.2",
-    "@vect/vector-mapper": "^0.6.2"
+    "@vect/object-init": "^0.6.6",
+    "@vect/vector-mapper": "^0.6.6"
   },
   "repository": {
     "type": "git",

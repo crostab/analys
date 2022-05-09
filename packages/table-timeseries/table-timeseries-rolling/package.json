@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@aryth/math": "^0.5.9",
-    "@vect/vector-mapper": "^0.6.2",
-    "@vect/vector-merge": "^0.6.2",
-    "@vect/vector-roller": "^0.6.2"
+    "@vect/vector-mapper": "^0.6.6",
+    "@vect/vector-merge": "^0.6.6",
+    "@vect/vector-roller": "^0.6.6"
   },
   "repository": {
     "type": "git",

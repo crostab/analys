@@ -1,90 +1,131 @@
-// from x => typeof x
-const FUN = 'function';
+function* tripletIndexedOf(table, xyz) {
+  const {
+    head,
+    rows
+  } = table,
+        [xi, yi, zi] = xyz.map(x => head.indexOf(x));
 
+  for (let row of rows) {
+    yield [row[xi], row[yi], row[zi]];
+  }
+}
+function* tripletIndexedBy(table, xyz, by) {
+  const {
+    head,
+    rows
+  } = table,
+        [xi, yi, zi] = xyz.map(x => head.indexOf(x));
+
+  for (let row of rows) {
+    const x = row[xi],
+          y = row[yi],
+          z = row[zi];
+    if (by(x, y, z)) yield [x, y, z];
+  }
+}
+function* tripletIndexedTo(table, xyz, to) {
+  const {
+    head,
+    rows
+  } = table,
+        [xi, yi, zi] = xyz.map(x => head.indexOf(x));
+
+  for (let row of rows) {
+    yield to(row[xi], row[yi], row[zi]);
+  }
+}
 /**
  *
- * @param {CrosTab|CrostabObject} table
- * @param {[*,*,*]|{from:[*,*,*],by:function,to:function}} [conf]
+ * @param {Table|TableObject} table
+ * @param {[*,*,*]} xyz
+ * @param {function(*,*,*):boolean} [by]
+ * @param {function(*,*,*):*} [to]
  * @returns {Generator<*, void, *>}
  */
 
-function* indexed(table, conf) {
-  const by = conf === null || conf === void 0 ? void 0 : conf.by,
-        to = conf === null || conf === void 0 ? void 0 : conf.to;
-
-  if (typeof by === FUN) {
-    if (typeof to === FUN) {
-      yield* filterMappedIndexed(table, conf);
-    } else {
-      yield* filterIndexed(table, conf);
-    }
-  } else {
-    if (typeof to === FUN) {
-      yield* mappedIndexed(table, conf);
-    } else {
-      yield* simpleIndexed(table, (conf === null || conf === void 0 ? void 0 : conf.from) ?? conf);
-    }
+function* tripletIndexed(table, xyz, by, to) {
+  if (!to) {
+    return yield* !by ? tripletIndexedOf(table, xyz) : tripletIndexedBy(table, xyz, by);
   }
-}
-function* simpleIndexed(table, from) {
+
   const {
     head,
     rows
-  } = table;
-  const [i, j, k] = from.map(x => head.indexOf(x));
+  } = table,
+        [xi, yi, zi] = xyz.map(x => head.indexOf(x));
 
   for (let row of rows) {
-    yield [row[i], row[j], row[k]];
+    const x = row[xi],
+          y = row[yi],
+          z = row[zi];
+    if (by(x, y, z)) yield to(x, y, z);
   }
 }
-function* filterIndexed(table, {
-  from,
-  by
-}) {
+
+function* entryIndexedOf(table, [k, v]) {
   const {
     head,
     rows
-  } = table;
-  const [i, j, k] = from.map(x => head.indexOf(x));
+  } = table,
+        ki = head.indexOf(k),
+        vi = head.indexOf(v);
 
   for (let row of rows) {
-    const x = row[i],
-          y = row[j],
-          v = row[k];
-    if (by(x, y, v)) yield [x, y, v];
+    yield [row[ki], row[vi]];
   }
 }
-function* mappedIndexed(table, {
-  from,
-  to
-}) {
+function* entryIndexedBy(table, [k, v], by) {
   const {
     head,
     rows
-  } = table;
-  const [i, j, k] = from.map(x => head.indexOf(x));
+  } = table,
+        ki = head.indexOf(k),
+        vi = head.indexOf(v);
 
   for (let row of rows) {
-    yield to(row[i], row[j], row[k]);
+    const x = row[ki],
+          y = row[vi];
+    if (by(x, y)) yield [x, y];
   }
 }
-function* filterMappedIndexed(table, {
-  from,
-  by,
-  to
-}) {
+function* entryIndexedTo(table, [k, v], to) {
   const {
     head,
     rows
-  } = table;
-  const [i, j, k] = from.map(x => head.indexOf(x));
+  } = table,
+        ki = head.indexOf(k),
+        vi = head.indexOf(v);
 
   for (let row of rows) {
-    const x = row[i],
-          y = row[j],
-          v = row[k];
-    if (by(x, y, v)) yield to(x, y, v);
+    yield to(row[ki], row[vi]);
+  }
+}
+/**
+ *
+ * @param {Table|TableObject} table
+ * @param {[*,*]} kv
+ * @param {function(*,*):boolean} [by]
+ * @param {function(*,*):*} [to]
+ * @returns {Generator<*, void, *>}
+ */
+
+function* entryIndexed(table, kv, by, to) {
+  if (!to) {
+    return yield* !by ? tripletIndexedOf(table, kv) : tripletIndexedBy(table, kv, by);
+  }
+
+  const {
+    head,
+    rows
+  } = table,
+        ki = head.indexOf(kv[0]),
+        vi = head.indexOf(kv[1]);
+
+  for (let row of rows) {
+    const x = row[ki],
+          y = row[vi];
+    if (by(x, y)) yield to(x, y);
   }
 }
 
-export { filterIndexed, filterMappedIndexed, indexed, mappedIndexed, simpleIndexed };
+export { entryIndexed, entryIndexedBy, entryIndexedOf, entryIndexedTo, tripletIndexed, tripletIndexedBy, tripletIndexedOf, tripletIndexedTo };
