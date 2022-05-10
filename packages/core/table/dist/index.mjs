@@ -25,6 +25,14 @@ import { difference, intersect } from '@vect/vector-algebra';
 import { mapper, mutate as mutate$1, iterate } from '@vect/vector-mapper';
 import { splices } from '@vect/vector-update';
 
+function gather(iter) {
+  const vec = Array();
+
+  for (let x of iter) vec.push(x);
+
+  return vec;
+}
+
 class Table {
   /** @type {*[]} */
   head;
@@ -49,6 +57,14 @@ class Table {
     this.rows = rows || [];
     this.title = title || '';
     this.types = types;
+  }
+
+  static build(head, rows, title, types) {
+    return new Table(head, rows, title, types);
+  }
+
+  static gather(head, iter, title, types) {
+    return new Table(head, gather(iter), title, types);
   }
 
   static from(o) {

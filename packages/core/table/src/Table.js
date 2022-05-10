@@ -18,12 +18,17 @@ import { distinctByColumn }                                                     
 import { column }                                                                     from '@vect/column-getter'
 import { mutate as mutateColumn }                                                     from '@vect/column-mapper'
 import {
-  pop as popColumn, push as pushColumn, shift as shiftColumn, splices as splicesColumns, unshift as unshiftColumn
+  pop as popColumn,
+  push as pushColumn,
+  shift as shiftColumn,
+  splices as splicesColumns,
+  unshift as unshiftColumn
 }                                                                                     from '@vect/columns-update'
 import { size, transpose }                                                            from '@vect/matrix'
 import { mapper as mapperMatrix, mutate as mutateMatrix, selectMutate }               from '@vect/matrix-mapper'
 import { wind }                                                                       from '@vect/object-init'
 import { difference, intersect }                                                      from '@vect/vector-algebra'
+import { gather }                                                                     from '@vect/vector-init'
 import { iterate, mapper, mutate as mutateVector }                                    from '@vect/vector-mapper'
 import { splices }                                                                    from '@vect/vector-update'
 
@@ -46,7 +51,10 @@ export class Table {
     this.types = types
   }
 
+  static build(head, rows, title, types) { return new Table(head, rows, title, types) }
+  static gather(head, iter, title, types) { return new Table(head, gather(iter), title, types) }
   static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
+
   toSamples(fields) { return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this) }
   toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
 
@@ -143,9 +151,9 @@ export class Table {
   proliferateColumn(fieldSpec, { nextTo, mutate = false } = {}) {
     if (!Array.isArray(fieldSpec)) fieldSpec = [ fieldSpec ]
     const
-      o              = mutate ? this : this |> shallow,
+      o = mutate ? this : this |> shallow,
       { head, rows } = o,
-      y              = nextTo ? (this.coin(nextTo) + 1) : 0
+      y = nextTo ? (this.coin(nextTo) + 1) : 0
     fieldSpec.forEach(o => o.index = this.coin(o.key))
     if (fieldSpec?.length === 1) {
       const [ { index, to, as } ] = fieldSpec
