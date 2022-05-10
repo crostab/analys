@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-init",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {

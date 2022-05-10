@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-timeseries-differential",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "A crawler",
   "main": "./dist/index.cjs",
   "exports": {
