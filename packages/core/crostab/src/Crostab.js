@@ -163,7 +163,9 @@ export class Crostab {
   mapSide(fn, { mutate = true } = {}) { return this.boot({ side: mapper(this.side, fn) }, mutate) }
   mapBanner(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
   mutate(fn) { return mutateMatrix(this.rows, fn, this.height, this.width), this }
+  mutateLabel(fn) { return mutate(this.side, fn), mutate(this.head, fn), this }
   mutateSide(fn) { return mutate(this.side, fn), this }
+  mutateHead(fn) { return mutate(this.head, fn), this }
   mutateBanner(fn) { return mutate(this.head, fn), this }
 
   pushRow(label, row) { return this.side.push(label), this.rows.push(row), this }

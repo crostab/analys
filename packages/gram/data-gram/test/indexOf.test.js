@@ -6,5 +6,5 @@ const vec = [
 ]
 
 for (let n of vec) {
-  `[n] (${n}) [!~] (${~n}) [!~] (${~n ? 1 : 0})` |> console.log
+  `[n] (${n}) [~] (${~n}) [~] (${~n ? 't' : 'f'})` |> console.log
 }
