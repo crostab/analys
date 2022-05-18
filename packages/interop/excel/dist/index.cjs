@@ -18,7 +18,7 @@ const collectionToWorkbook = (collection, toWorksheet) => {
 };
 const readCollection = (filename, csvParser) => {
   const workbook = xlsx.readFile(filename);
-  return objectMapper.mapKeyValue(workbook.Sheets, (name, sheet) => {
+  return objectMapper.mapKeyVal(workbook.Sheets, (name, sheet) => {
     var _utils$sheet_to_csv;
 
     return _utils$sheet_to_csv = xlsx.utils.sheet_to_csv(sheet), csvParser(_utils$sheet_to_csv);

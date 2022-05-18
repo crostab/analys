@@ -1,6 +1,6 @@
-import { CrostabCollection }         from '@foba/crostab'
-import { TableCollection }           from '@foba/table'
-import { delogger }                  from '@spare/deco'
+import { CrostabCollection }                                      from '@foba/crostab'
+import { TableCollection }                                        from '@foba/table'
+import { delogger }                                               from '@spare/deco'
 import xlsx                                                       from 'xlsx'
 import { crostabCollectionToWorkbook, tableCollectionToWorkbook } from '../index'
 
