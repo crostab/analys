@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-pivot",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "A cross-table-pivot analytics tool",
   "main": "dist/index.cjs",
   "exports": {
@@ -18,9 +18,9 @@
     "test": "node -r @babel/register test/alpha/simple.pivot.test.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.6.9",
+    "@analys/crostab": "^0.6.10",
     "@analys/cubic": "^0.6.8",
-    "@analys/tablespec": "^0.6.9"
+    "@analys/tablespec": "^0.6.10"
   },
   "repository": {
     "type": "git",

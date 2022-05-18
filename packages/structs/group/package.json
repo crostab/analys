@@ -1,6 +1,6 @@
 {
   "name": "@analys/group",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.6.9",
+    "@analys/enum-pivot-mode": "^0.6.10",
     "@analys/util-pivot": "^0.6.8",
     "@vect/object-init": "^0.7.3",
     "@vect/vector-algebra": "^0.7.3",
