@@ -335,9 +335,9 @@ const MAX = 'max';
 const MIN = 'min';
 const FIRST = 'first';
 const LAST = 'last';
-const ZERO$1 = 'zero';
+const ZERO = 'zero';
 
-class DataGram$1 {
+class DataGram {
   /** @type {*[]}      */
   side = [];
   /** @type {*[]}      */
@@ -358,7 +358,7 @@ class DataGram$1 {
   }
 
   static build(element) {
-    return new DataGram$1(element);
+    return new DataGram(element);
   }
 
   get zero() {
@@ -370,7 +370,7 @@ class DataGram$1 {
   roin(x) {
     const i = this.side.indexOf(x);
     if (~i) return i;
-    this.rows.push(collect.call(this, ZERO$1, this.head.length));
+    this.rows.push(collect.call(this, ZERO, this.head.length));
     return i + this.side.push(x);
   }
 
@@ -423,7 +423,7 @@ const nullish = x => x === null || x === void 0;
 
 const valid = x => x !== null && x !== void 0;
 
-class ListGram extends DataGram$1 {
+class ListGram extends DataGram {
   constructor(listInit = List.build) {
     super(listInit);
   }
@@ -446,7 +446,7 @@ class ListGram extends DataGram$1 {
 
 }
 
-class MaxGram extends DataGram$1 {
+class MaxGram extends DataGram {
   constructor() {
     super(Number.NEGATIVE_INFINITY);
   }
@@ -463,7 +463,7 @@ class MaxGram extends DataGram$1 {
 
 }
 
-class MinGram extends DataGram$1 {
+class MinGram extends DataGram {
   constructor() {
     super(Number.POSITIVE_INFINITY);
   }
@@ -480,7 +480,7 @@ class MinGram extends DataGram$1 {
 
 }
 
-class SumGram extends DataGram$1 {
+class SumGram extends DataGram {
   constructor() {
     super(0);
   }
@@ -495,7 +495,7 @@ class SumGram extends DataGram$1 {
 
 }
 
-class CountGram extends DataGram$1 {
+class CountGram extends DataGram {
   constructor() {
     super(0);
   }
@@ -510,7 +510,7 @@ class CountGram extends DataGram$1 {
 
 }
 
-class FirstGram extends DataGram$1 {
+class FirstGram extends DataGram {
   constructor() {
     super(null);
   }
@@ -527,7 +527,7 @@ class FirstGram extends DataGram$1 {
 
 }
 
-class LastGram extends DataGram$1 {
+class LastGram extends DataGram {
   constructor() {
     super(null);
   }
