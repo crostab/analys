@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vect/clone": "^0.7.1"
+    "@vect/clone": "^0.7.3"
   },
   "publishConfig": {
     "access": "public"

@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vect/columns-mapper": "^0.7.1"
+    "@vect/columns-mapper": "^0.7.3"
   },
   "scripts": {
     "pub": "npm publish",

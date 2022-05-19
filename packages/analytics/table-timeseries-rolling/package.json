@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@aryth/math": "^0.5.10",
-    "@vect/vector-algebra": "^0.7.1",
-    "@vect/vector-mapper": "^0.7.1",
+    "@vect/vector-algebra": "^0.7.3",
+    "@vect/vector-mapper": "^0.7.3",
     "@vect/vector-roller": "^0.6.13"
   },
   "repository": {

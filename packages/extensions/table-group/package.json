@@ -23,8 +23,8 @@
     "@analys/table-find": "^0.6.8",
     "@analys/table-init": "^0.6.8",
     "@analys/tablespec": "^0.6.8",
-    "@vect/matrix": "^0.7.1",
-    "@vect/vector-algebra": "^0.7.1"
+    "@vect/matrix": "^0.7.3",
+    "@vect/vector-algebra": "^0.7.3"
   },
   "repository": {
     "type": "git",
