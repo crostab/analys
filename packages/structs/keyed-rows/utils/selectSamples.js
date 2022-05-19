@@ -1,5 +1,5 @@
 import { iterate, mapper } from '@vect/vector-mapper'
-import { transpose } from '@vect/matrix-transpose'
+import { transpose } from '@vect/matrix-algebra'
 
 export const selectSamples = function (fieldIndexPairs) {
   const { rows } = this, columns = transpose(rows), depth = fieldIndexPairs?.length

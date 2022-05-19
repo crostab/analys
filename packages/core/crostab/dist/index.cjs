@@ -13,10 +13,10 @@ var columnsUpdate = require('@vect/columns-update');
 var enumMatrixDirections = require('@vect/enum-matrix-directions');
 var matrixInit = require('@vect/matrix-init');
 var matrixMapper = require('@vect/matrix-mapper');
-var matrixTranspose = require('@vect/matrix-transpose');
+var matrixAlgebra = require('@vect/matrix-algebra');
 var objectInit = require('@vect/object-init');
 var vectorMapper = require('@vect/vector-mapper');
-var vectorMerge = require('@vect/vector-merge');
+var vectorAlgebra = require('@vect/vector-algebra');
 var vectorZipper = require('@vect/vector-zipper');
 
 /**
@@ -108,8 +108,8 @@ class Crostab {
   }
 
   toTable(sideLabel) {
-    const head = vectorMerge.acquire([sideLabel], this.head);
-    const rows = vectorZipper.zipper(this.side, this.rows, (x, row) => vectorMerge.acquire([x], row));
+    const head = vectorAlgebra.acquire([sideLabel], this.head);
+    const rows = vectorZipper.zipper(this.side, this.rows, (x, row) => vectorAlgebra.acquire([x], row));
     return {
       head,
       rows
@@ -119,7 +119,7 @@ class Crostab {
 
 
   get columns() {
-    return matrixTranspose.transpose(this.rows);
+    return matrixAlgebra.transpose(this.rows);
   }
 
   get size() {
@@ -232,8 +232,16 @@ class Crostab {
     return matrixMapper.mutate(this.rows, fn, this.height, this.width), this;
   }
 
+  mutateLabel(fn) {
+    return vectorMapper.mutate(this.side, fn), vectorMapper.mutate(this.head, fn), this;
+  }
+
   mutateSide(fn) {
     return vectorMapper.mutate(this.side, fn), this;
+  }
+
+  mutateHead(fn) {
+    return vectorMapper.mutate(this.head, fn), this;
   }
 
   mutateBanner(fn) {

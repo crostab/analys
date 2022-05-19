@@ -1,4 +1,4 @@
-import { acquire } from '@vect/vector-merge'
+import { acquire } from '@vect/vector-algebra'
 import { zipper }  from '@vect/vector-zipper'
 
 

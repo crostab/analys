@@ -1,5 +1,5 @@
 import { mapper, iterate } from '@vect/vector-mapper';
-import { transpose } from '@vect/matrix-transpose';
+import { transpose } from '@vect/matrix-algebra';
 import { unwind } from '@vect/entries-unwind';
 import { select } from '@vect/vector-select';
 import { toKeyComparer } from '@analys/util-keyed-vectors';

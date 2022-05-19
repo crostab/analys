@@ -1,0 +1,49 @@
+{
+  "name": "@analys/table-join",
+  "version": "0.6.8",
+  "description": "A cross-table analytics tool",
+  "main": "dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/test.index.js"
+  },
+  "dependencies": {
+    "@analys/enum-join-modes": "^0.6.8",
+    "@aryth/comparer": "^0.5.10",
+    "@vect/vector-init": "^0.7.0",
+    "@vect/vector-mapper": "^0.7.0",
+    "@vect/vector-select": "^0.7.0",
+    "@vect/vector-update": "^0.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table",
+    "crostab",
+    "cross-table",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme",
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+}

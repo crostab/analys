@@ -19,13 +19,13 @@
   },
   "dependencies": {
     "@analys/util-keyed-vectors": "^0.6.8",
-    "@vect/column-getter": "^0.6.6",
-    "@vect/columns-select": "^0.6.6",
-    "@vect/entries-unwind": "^0.6.6",
-    "@vect/matrix-transpose": "^0.6.6",
-    "@vect/object-init": "^0.6.6",
-    "@vect/vector-mapper": "^0.6.6",
-    "@vect/vector-zipper": "^0.6.6"
+    "@vect/column-getter": "^0.6.13",
+    "@vect/columns-select": "^0.7.1",
+    "@vect/entries-unwind": "^0.6.13",
+    "@vect/matrix-algebra": "^0.7.1",
+    "@vect/object-init": "^0.7.1",
+    "@vect/vector-mapper": "^0.7.1",
+    "@vect/vector-zipper": "^0.7.1"
   },
   "repository": {
     "type": "git",

@@ -52,7 +52,7 @@ import {
 }                         from '@vect/matrix-mapper'
 import {
   transpose
-}                         from '@vect/matrix-transpose'
+}                         from '@vect/matrix-algebra'
 import {
   pair
 }                         from '@vect/object-init'
@@ -62,7 +62,7 @@ import {
 }                         from '@vect/vector-mapper'
 import {
   acquire
-}                         from '@vect/vector-merge'
+}                         from '@vect/vector-algebra'
 import {
   zipper
 }                         from '@vect/vector-zipper'

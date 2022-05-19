@@ -1,6 +1,6 @@
 import { mapper } from '@vect/vector-mapper'
 import { unwind } from '@vect/entries-unwind'
-import { select as selectVecs } from '@vect/vector-select'
+import { select } from '@vect/vector-select'
 
 /**
  * @param {(str|[*,*])[]} labels
@@ -8,8 +8,8 @@ import { select as selectVecs } from '@vect/vector-select'
  */
 export const selectKeyedRows = function (labels) {
   let indexes;
-  [this.side, indexes] = lookupIndexes.call(this, labels) |> unwind
-  this.rows = selectVecs(this.rows, indexes)
+  [ this.side, indexes ] = lookupIndexes.call(this, labels) |> unwind
+  this.rows = select(this.rows, indexes)
   return this
 }
 
@@ -29,7 +29,7 @@ export const lookupIndexes = function (labels) {
  */
 export const lookupIndex = function (label) {
   const { side } = this
-  if (!Array.isArray(label)) return [label, side.indexOf(label)]
-  let [current, projected] = label
-  return [projected, side.indexOf(current)]
+  if (!Array.isArray(label)) return [ label, side.indexOf(label) ]
+  let [ current, projected ] = label
+  return [ projected, side.indexOf(current) ]
 }

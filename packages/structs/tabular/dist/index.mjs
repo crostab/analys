@@ -2,7 +2,7 @@ import { mapper, iterate } from '@vect/vector-mapper';
 import { wind } from '@vect/object-init';
 import { select } from '@vect/columns-select';
 import { unwind } from '@vect/entries-unwind';
-import { transpose } from '@vect/matrix-transpose';
+import { transpose } from '@vect/matrix-algebra';
 import { zipper } from '@vect/vector-zipper';
 import { toKeyComparer } from '@analys/util-keyed-vectors';
 import { Columns } from '@vect/column-getter';

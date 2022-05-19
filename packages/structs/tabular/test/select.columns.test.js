@@ -12,7 +12,7 @@ const pickFields = ['director', 'name', 'boxoffice', 'year']
 table |> decoT |> says.original
 
 selectTabular.call(table, pickFields) |> decoT |> says.selected
-// selectTabular.call(table |> sliceTable, pickFields) |> decoT |> says.selected
+// selectTabular.call(util-table |> sliceTable, pickFields) |> decoT |> says.selected
 
 selectTabular.call(table, ['boxoffice']) |> decoT |> says.selected
 

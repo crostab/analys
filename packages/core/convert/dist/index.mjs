@@ -7,18 +7,18 @@ import { Table } from '@analys/table';
 import { CrosTab, Crostab } from '@analys/crostab';
 import { selectValues, SelectValues } from '@vect/object-select';
 import { first } from '@vect/vector-index';
-import { acquire } from '@vect/vector-merge';
+import { acquire } from '@vect/vector-algebra';
 import { indexed } from '@vect/object-mapper';
 import { appendValue } from '@vect/object-update';
 import { filterIndexed, simpleIndexed, updateCell, indexed as indexed$2 } from '@vect/nested';
-import { indexed as indexed$1 } from '@analys/crostab-indexed';
+import { indexed as indexed$1 } from '@analys/crostab-mapper';
 import '@typen/nullish';
 
 /**
  *
  * @param {TableObject} table
  * @param {(str|[str,str])[]} [fields]
- * @returns {Object[]} samples
+ * @returns {Object[]} util-samples
  */
 
 const tableToSamples = (table, fields) => fields !== null && fields !== void 0 && fields.length ? selectTabularToSamples.call(matchSlice(table), fields) : tabularToSamples.call(matchSlice(table));
@@ -272,6 +272,7 @@ const crostabToNested = (crostab, by, to) => {
  * @param {number} [w]
  * @returns {*[]}
  */
+
 const mapper = (mx, fn, h, w) => {
   var _mx$;
 
@@ -330,9 +331,9 @@ const MAX = 'max';
 const MIN = 'min';
 const FIRST = 'first';
 const LAST = 'last';
-const ZERO = 'zero';
+const ZERO$1 = 'zero';
 
-class DataGram {
+class DataGram$1 {
   /** @type {*[]}      */
   side = [];
   /** @type {*[]}      */
@@ -353,7 +354,7 @@ class DataGram {
   }
 
   static build(element) {
-    return new DataGram(element);
+    return new DataGram$1(element);
   }
 
   get zero() {
@@ -365,7 +366,7 @@ class DataGram {
   roin(x) {
     const i = this.side.indexOf(x);
     if (~i) return i;
-    this.rows.push(collect.call(this, ZERO, this.head.length));
+    this.rows.push(collect.call(this, ZERO$1, this.head.length));
     return i + this.side.push(x);
   }
 
@@ -418,7 +419,7 @@ const nullish = x => x === null || x === void 0;
 
 const valid = x => x !== null && x !== void 0;
 
-class ListGram extends DataGram {
+class ListGram extends DataGram$1 {
   constructor(listInit = List.build) {
     super(listInit);
   }
@@ -441,7 +442,7 @@ class ListGram extends DataGram {
 
 }
 
-class MaxGram extends DataGram {
+class MaxGram extends DataGram$1 {
   constructor() {
     super(Number.NEGATIVE_INFINITY);
   }
@@ -458,7 +459,7 @@ class MaxGram extends DataGram {
 
 }
 
-class MinGram extends DataGram {
+class MinGram extends DataGram$1 {
   constructor() {
     super(Number.POSITIVE_INFINITY);
   }
@@ -475,7 +476,7 @@ class MinGram extends DataGram {
 
 }
 
-class SumGram extends DataGram {
+class SumGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -490,7 +491,7 @@ class SumGram extends DataGram {
 
 }
 
-class CountGram extends DataGram {
+class CountGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -505,7 +506,7 @@ class CountGram extends DataGram {
 
 }
 
-class FirstGram extends DataGram {
+class FirstGram extends DataGram$1 {
   constructor() {
     super(null);
   }
@@ -522,7 +523,7 @@ class FirstGram extends DataGram {
 
 }
 
-class LastGram extends DataGram {
+class LastGram extends DataGram$1 {
   constructor() {
     super(null);
   }

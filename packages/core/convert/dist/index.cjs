@@ -11,18 +11,18 @@ var table = require('@analys/table');
 var crostab = require('@analys/crostab');
 var objectSelect = require('@vect/object-select');
 var vectorIndex = require('@vect/vector-index');
-var vectorMerge = require('@vect/vector-merge');
+var vectorAlgebra = require('@vect/vector-algebra');
 var objectMapper = require('@vect/object-mapper');
 var objectUpdate = require('@vect/object-update');
 var nested = require('@vect/nested');
-var crostabIndexed = require('@analys/crostab-indexed');
+var crostabMapper = require('@analys/crostab-mapper');
 require('@typen/nullish');
 
 /**
  *
  * @param {TableObject} table
  * @param {(str|[str,str])[]} [fields]
- * @returns {Object[]} samples
+ * @returns {Object[]} util-samples
  */
 
 const tableToSamples = (table, fields) => fields !== null && fields !== void 0 && fields.length ? tabular.selectTabularToSamples.call(tableInit.matchSlice(table), fields) : tabular.tabularToSamples.call(tableInit.matchSlice(table));
@@ -166,8 +166,8 @@ const zipper = (a, b, fn, hi) => duozipper.call({
 }, a, b);
 
 const crostabToTable = (crostab, title) => {
-  const head = vectorMerge.acquire([title ?? crostab.title ?? ''], crostab.head);
-  const rows = zipper(crostab.side, crostab.rows, (x, row) => vectorMerge.acquire([x], row));
+  const head = vectorAlgebra.acquire([title ?? crostab.title ?? ''], crostab.head);
+  const rows = zipper(crostab.side, crostab.rows, (x, row) => vectorAlgebra.acquire([x], row));
   return {
     head,
     rows
@@ -178,7 +178,7 @@ const tableToMatrix = table => {
     head,
     rows
   } = table;
-  return vectorMerge.acquire([head], rows);
+  return vectorAlgebra.acquire([head], rows);
 };
 const crostabToMatrix = (crostab, title) => {
   var _crostabToTable;
@@ -263,7 +263,7 @@ const tableToNested = (table, {
 const crostabToNested = (crostab, by, to) => {
   const o = {};
 
-  for (const [x, y, v] of crostabIndexed.indexed(crostab, by, to)) nested.updateCell.call(o, x, y, v);
+  for (const [x, y, v] of crostabMapper.indexed(crostab, by, to)) nested.updateCell.call(o, x, y, v);
 
   return o;
 };
@@ -276,6 +276,7 @@ const crostabToNested = (crostab, by, to) => {
  * @param {number} [w]
  * @returns {*[]}
  */
+
 const mapper = (mx, fn, h, w) => {
   var _mx$;
 
@@ -334,9 +335,9 @@ const MAX = 'max';
 const MIN = 'min';
 const FIRST = 'first';
 const LAST = 'last';
-const ZERO = 'zero';
+const ZERO$1 = 'zero';
 
-class DataGram {
+class DataGram$1 {
   /** @type {*[]}      */
   side = [];
   /** @type {*[]}      */
@@ -357,7 +358,7 @@ class DataGram {
   }
 
   static build(element) {
-    return new DataGram(element);
+    return new DataGram$1(element);
   }
 
   get zero() {
@@ -369,7 +370,7 @@ class DataGram {
   roin(x) {
     const i = this.side.indexOf(x);
     if (~i) return i;
-    this.rows.push(collect.call(this, ZERO, this.head.length));
+    this.rows.push(collect.call(this, ZERO$1, this.head.length));
     return i + this.side.push(x);
   }
 
@@ -422,7 +423,7 @@ const nullish = x => x === null || x === void 0;
 
 const valid = x => x !== null && x !== void 0;
 
-class ListGram extends DataGram {
+class ListGram extends DataGram$1 {
   constructor(listInit = List.build) {
     super(listInit);
   }
@@ -445,7 +446,7 @@ class ListGram extends DataGram {
 
 }
 
-class MaxGram extends DataGram {
+class MaxGram extends DataGram$1 {
   constructor() {
     super(Number.NEGATIVE_INFINITY);
   }
@@ -462,7 +463,7 @@ class MaxGram extends DataGram {
 
 }
 
-class MinGram extends DataGram {
+class MinGram extends DataGram$1 {
   constructor() {
     super(Number.POSITIVE_INFINITY);
   }
@@ -479,7 +480,7 @@ class MinGram extends DataGram {
 
 }
 
-class SumGram extends DataGram {
+class SumGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -494,7 +495,7 @@ class SumGram extends DataGram {
 
 }
 
-class CountGram extends DataGram {
+class CountGram extends DataGram$1 {
   constructor() {
     super(0);
   }
@@ -509,7 +510,7 @@ class CountGram extends DataGram {
 
 }
 
-class FirstGram extends DataGram {
+class FirstGram extends DataGram$1 {
   constructor() {
     super(null);
   }
@@ -526,7 +527,7 @@ class FirstGram extends DataGram {
 
 }
 
-class LastGram extends DataGram {
+class LastGram extends DataGram$1 {
   constructor() {
     super(null);
   }

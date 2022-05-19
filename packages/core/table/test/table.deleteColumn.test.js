@@ -23,5 +23,5 @@ import { Table }                                           from '../src/Table'
 
   table.deleteColumn([ 'companyName', 'price', 'mktCap' ], { mutate: true }) |> decoT |> says.splice
 
-  table.toSamples() |> decoSamples |> says['original samples']
+  table.toSamples() |> decoSamples |> says['original util-samples']
 }

@@ -12,6 +12,6 @@ let crostab = Foba[MARKET_CAP] |> matchSlice
 crostab |> decoX |> says.original
 
 sortKeyedRows.call(crostab, NUM_DESC, 0) |> decoX |> says['sorted rows by row[0] on each rows']
-// sortKeyedRows.call(crostab |> matchSlice, NUM_DESC, 0) |> decoX |> says['sorted rows by row[0] on each rows']
+// sortKeyedRows.call(util-crostab |> matchSlice, NUM_DESC, 0) |> decoX |> says['sorted rows by row[0] on each rows']
 
 crostab |> decoX |> says.original

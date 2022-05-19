@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vectorMapper = require('@vect/vector-mapper');
-var matrixTranspose = require('@vect/matrix-transpose');
+var matrixAlgebra = require('@vect/matrix-algebra');
 var entriesUnwind = require('@vect/entries-unwind');
 var vectorSelect = require('@vect/vector-select');
 var utilKeyedVectors = require('@analys/util-keyed-vectors');
@@ -14,7 +14,7 @@ const selectSamples = function (fieldIndexPairs) {
   const {
     rows
   } = this,
-        columns = matrixTranspose.transpose(rows),
+        columns = matrixAlgebra.transpose(rows),
         depth = fieldIndexPairs === null || fieldIndexPairs === void 0 ? void 0 : fieldIndexPairs.length;
   return vectorMapper.mapper(columns, column => {
     let o = {};

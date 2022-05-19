@@ -1,0 +1,41 @@
+{
+  "name": "@analys/table-filter",
+  "version": "0.6.8",
+  "description": "A cross-table-filter analytics tool",
+  "main": "dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node -r @babel/register test/table.filter.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table-filter",
+    "crostab",
+    "cross-table-filter",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": "Hoyeung Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme",
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+}

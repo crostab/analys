@@ -5,7 +5,7 @@ import { xr }                     from '@spare/xr'
 import axios                      from 'axios'
 import { promises as fsPromises } from 'fs'
 
-const target = 'packages/table/test/assets/'
+const target = 'packages/util-table/test/assets/'
 const FORMAT_JSON = 'json'
 const MILLION = 1e+6
 const Indicators = {

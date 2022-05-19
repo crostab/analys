@@ -6,7 +6,7 @@ var vectorMapper = require('@vect/vector-mapper');
 var objectInit = require('@vect/object-init');
 var columnsSelect = require('@vect/columns-select');
 var entriesUnwind = require('@vect/entries-unwind');
-var matrixTranspose = require('@vect/matrix-transpose');
+var matrixAlgebra = require('@vect/matrix-algebra');
 var vectorZipper = require('@vect/vector-zipper');
 var utilKeyedVectors = require('@analys/util-keyed-vectors');
 var columnGetter = require('@vect/column-getter');
@@ -98,9 +98,9 @@ const sortTabularByKeys$1 = function (comparer) {
     head,
     rows
   } = this,
-      columns = matrixTranspose.transpose(rows);
+      columns = matrixAlgebra.transpose(rows);
   [this.head, columns] = (_zipper$sort = vectorZipper.zipper(head, columns, (key, row) => [key, row]).sort(utilKeyedVectors.toKeyComparer(comparer)), entriesUnwind.unwind(_zipper$sort));
-  this.rows = matrixTranspose.transpose(columns);
+  this.rows = matrixAlgebra.transpose(columns);
   return this;
 };
 
@@ -119,11 +119,11 @@ const sortTabular = function (comparer, index) {
     head,
     rows
   } = this,
-      columns = matrixTranspose.transpose(rows);
+      columns = matrixAlgebra.transpose(rows);
   /** [column[i]s, head, columns]  */
 
   const Keyed = (_zipper$sort = vectorZipper.zipper(head, columns, (key, column) => [column[index], key, column]).sort(utilKeyedVectors.toKeyComparer(comparer)), columnGetter.Columns(_zipper$sort));
-  return this.head = Keyed(1), this.rows = matrixTranspose.transpose(Keyed(2)), this;
+  return this.head = Keyed(1), this.rows = matrixAlgebra.transpose(Keyed(2)), this;
 };
 
 const voidTabular = () => ({

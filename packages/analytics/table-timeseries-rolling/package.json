@@ -1,0 +1,51 @@
+{
+  "name": "@analys/table-timeseries-rolling",
+  "version": "0.6.8",
+  "description": "A crawler",
+  "main": "./dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pub": "npm publish",
+    "test": "node test"
+  },
+  "dependencies": {
+    "@aryth/math": "^0.5.10",
+    "@vect/vector-algebra": "^0.7.1",
+    "@vect/vector-mapper": "^0.7.1",
+    "@vect/vector-roller": "^0.6.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyeungw/analys.git"
+  },
+  "keywords": [
+    "table-types",
+    "crostab",
+    "cross-table-types",
+    "pivot",
+    "pivotal",
+    "analyse",
+    "analytics",
+    "business intelligence"
+  ],
+  "author": {
+    "name": "Hoyeung Wong",
+    "email": "hoyeungw@outlook.com",
+    "url": "https://github.com/hoyeungw"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoyeungw/analys.git"
+  },
+  "homepage": "https://github.com/hoyeungw/analys#readme",
+  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+}

@@ -11,7 +11,7 @@ import ora                                                    from 'ora'
 import { Table }                                              from '../src/Table'
 
 const spn = ora()
-const WORKSPACE = './packages/core/table/'
+const WORKSPACE = './packages/core/util-table/'
 const SOURCE = WORKSPACE + 'test/assets/big-mac-source-data.csv'
 const TARGET_TABLE = WORKSPACE + 'test/assets/out/BigMacIndex.Table.json'
 const TARGET_SAMPLES = WORKSPACE + 'test/assets/out/BigMacIndex.Samples.json'

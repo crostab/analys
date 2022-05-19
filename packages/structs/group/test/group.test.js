@@ -21,4 +21,4 @@ const group = Group.build({
 
 group.record(table.rows).toRows() |> decoVector |> says['group rows']
 group.record(table.rows).toObject() |> decoObject |> says['group object']
-group.record(table.rows).toSamples() |> decoSamples |> says['group samples']
+group.record(table.rows).toSamples() |> decoSamples |> says['group util-samples']

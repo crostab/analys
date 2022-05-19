@@ -12,7 +12,7 @@ let crostab = Foba[MARKET_CAP] |> sliceCrostab
 crostab |> decoX |> says.original
 
 sortTabular.call(crostab, NUM_DESC, 0) |> decoX |> says['sorted columns by column[0] on each columns']
-// sortTabular.call(crostab |> sliceCrostab, NUM_DESC, 0) |> decoX |> says['sorted columns by column[0] on each columns']
+// sortTabular.call(util-crostab |> sliceCrostab, NUM_DESC, 0) |> decoX |> says['sorted columns by column[0] on each columns']
 
 crostab |> decoX |> says.original
 

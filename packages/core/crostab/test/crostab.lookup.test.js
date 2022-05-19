@@ -15,10 +15,10 @@ const crostab = Crostab.from({
 crostab |> DecoCrostab() |> says['crostab']
 
 const vlkpTable = crostab.vlookupTable('RG', 'R')
-vlkpTable |> deco |> says['vlookup table']
+vlkpTable |> deco |> says['vlookup util-table']
 
 const hlkpTable = crostab.hlookupTable('RG', 'B')
-hlkpTable |> deco |> says['hlookup table']
+hlkpTable |> deco |> says['hlookup util-table']
 
 crostab.vlookupMany(['UK', 'DE'], 'RG', 'M') |> deco |> says['vlookup many']
 

@@ -1,5 +1,5 @@
 import { tableToSamples } from '@analys/convert'
-import { transpose }      from '@vect/matrix-transpose'
+import { transpose }      from '@vect/matrix-algebra'
 import { decode }         from 'iconv-lite'
 import { parseCsvMap }    from './parseCsvMap'
 import { parseCsvReg }    from './parseCsvReg'

@@ -7,7 +7,7 @@ const table = Table.from(Foba[US_TECH])
 
 table |> decoTable |> says.original
 
-// table.find(['symbol', 'ceo', 'price'], { mutate: true }) |> decoT |> says.selected
+// util-table.find(['symbol', 'ceo', 'price'], { mutate: true }) |> decoT |> says.selected
 const filter = { industry: x => x === 'Online Media' }
 table.find(filter, { mutate: true })
   |> decoTable |> says.original

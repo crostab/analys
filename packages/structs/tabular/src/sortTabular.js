@@ -1,7 +1,7 @@
 import { toKeyComparer } from '@analys/util-keyed-vectors'
 import { zipper } from '@vect/vector-zipper'
 import { Columns } from '@vect/column-getter'
-import { transpose } from '@vect/matrix-transpose'
+import { transpose } from '@vect/matrix-algebra'
 
 /**
  * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.

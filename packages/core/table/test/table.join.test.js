@@ -39,7 +39,7 @@ function test() {
   })
   empty.join(income, [ 'date', 'symbol' ], UNION) |> decoTable |> says['empty join income']
 
-  // 'Original balance table' |> console.log
+  // 'Original balance util-table' |> console.log
   // balance |> TableX.brief |> console.log
 }
 

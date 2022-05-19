@@ -5,7 +5,7 @@ import { matchSlice }                               from '@analys/table-init'
  *
  * @param {TableObject} table
  * @param {(str|[str,str])[]} [fields]
- * @returns {Object[]} samples
+ * @returns {Object[]} util-samples
  */
 export const tableToSamples = (table, fields) =>
   fields?.length

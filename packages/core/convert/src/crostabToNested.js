@@ -1,4 +1,4 @@
-import { indexed }    from '@analys/crostab-indexed'
+import { indexed }    from '@analys/crostab-mapper'
 import { updateCell } from '@vect/nested'
 
 export const crostabToNested = (crostab, by, to) => {

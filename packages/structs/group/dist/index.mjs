@@ -1,5 +1,5 @@
 import { modeToTally, modeToInit } from '@analys/util-pivot';
-import { acquire } from '@vect/vector-merge';
+import { acquire } from '@vect/vector-algebra';
 import { pair, wind } from '@vect/object-init';
 import { mapper, iterate } from '@vect/vector-mapper';
 import { mutazip } from '@vect/vector-zipper';

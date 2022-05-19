@@ -12,6 +12,6 @@ let crostab = Foba[MARKET_CAP] |> matchSlice
 crostab |> decoX |> says.original
 
 sortRowsByKeys.call(crostab, NUM_ASC) |> decoX |> says['sorted rows by side elements']
-// sortRowsByKeys.call(crostab |> matchSlice, NUM_ASC) |> decoX |> says['sorted rows by side elements']
+// sortRowsByKeys.call(util-crostab |> matchSlice, NUM_ASC) |> decoX |> says['sorted rows by side elements']
 
 crostab |> decoX |> says.original

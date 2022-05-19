@@ -12,6 +12,6 @@ let crostab = Foba[MARKET_CAP] |> sliceCrostab
 crostab |> decoX |> says.original
 
 sortTabularByKeys.call(crostab, STR_DESC) |> decoX |> says['sorted columns by head elements']
-// sortTabularByKeys.call(crostab |> sliceCrostab, NUM_DESC) |> decoX |> says['sorted columns by head elements']
+// sortTabularByKeys.call(util-crostab |> sliceCrostab, NUM_DESC) |> decoX |> says['sorted columns by head elements']
 
 crostab |> decoX |> says.original

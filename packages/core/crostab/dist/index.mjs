@@ -9,10 +9,10 @@ import { push, unshift, pop, shift } from '@vect/columns-update';
 import { ROWWISE, COLUMNWISE } from '@vect/enum-matrix-directions';
 import { draft, init, iso } from '@vect/matrix-init';
 import { mapper, mutate as mutate$2 } from '@vect/matrix-mapper';
-import { transpose } from '@vect/matrix-transpose';
+import { transpose } from '@vect/matrix-algebra';
 import { pair } from '@vect/object-init';
 import { mutate, mapper as mapper$1 } from '@vect/vector-mapper';
-import { acquire } from '@vect/vector-merge';
+import { acquire } from '@vect/vector-algebra';
 import { zipper } from '@vect/vector-zipper';
 
 /**
@@ -228,8 +228,16 @@ class Crostab {
     return mutate$2(this.rows, fn, this.height, this.width), this;
   }
 
+  mutateLabel(fn) {
+    return mutate(this.side, fn), mutate(this.head, fn), this;
+  }
+
   mutateSide(fn) {
     return mutate(this.side, fn), this;
+  }
+
+  mutateHead(fn) {
+    return mutate(this.head, fn), this;
   }
 
   mutateBanner(fn) {

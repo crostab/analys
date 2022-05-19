@@ -13,4 +13,4 @@ const formula = Formula.build(
 )
 
 formula.calculate(table.rows).toRows() |> decoVector |> says['group rows']
-formula.calculate(table.rows).toSamples() |> decoSamples |> says['group samples']
+formula.calculate(table.rows).toSamples() |> decoSamples |> says['group util-samples']

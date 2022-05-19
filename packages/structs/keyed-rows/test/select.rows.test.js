@@ -13,6 +13,6 @@ let crostab = Foba[MARKET_CAP] |> sliceCrostab
 crostab |> decoX |> says.original
 
 selectKeyedRows.call(crostab, pickFields) |> decoX |> says.selected
-// selectKeyedRows.call(crostab |> sliceCrostab, pickFields) |> decoX |> says.selected
+// selectKeyedRows.call(util-crostab |> sliceCrostab, pickFields) |> decoX |> says.selected
 
 crostab |> decoX |> says.original
