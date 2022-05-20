@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-pivot",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "A cross-samples-pivot analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -20,8 +20,8 @@
   "dependencies": {
     "@analys/cubic": "^0.6.8",
     "@analys/pivot": "^0.6.8",
-    "@analys/samples-find": "^0.6.9",
-    "@analys/tablespec": "^0.6.9",
+    "@analys/samples-find": "^0.6.10",
+    "@analys/tablespec": "^0.6.10",
     "@vect/matrix-mapper": "^0.7.3"
   },
   "repository": {
