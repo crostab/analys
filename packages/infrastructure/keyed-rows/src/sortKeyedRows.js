@@ -1,6 +1,7 @@
-import { toKeyComparer } from '@analys/util-keyed-vectors'
-import { zipper } from '@vect/vector-zipper'
-import { Columns } from '@vect/column-getter'
+import { toKeyComparer }  from '@analys/util-keyed-vectors'
+import { zipper }         from '@vect/vector-zipper'
+import { Columns }        from '@vect/column-getter'
+import { sortRowsByKeys } from './sortRowsByKeys'
 
 /**
  * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
@@ -10,10 +11,10 @@ import { Columns } from '@vect/column-getter'
  */
 export const sortKeyedRows = function (comparer, index) {
   if (index < 0) return sortRowsByKeys.call(this, comparer)
-  let { side, rows } = this
+  let {side, rows} = this
   /** Columns of [row[i]s, side, rows]  */
   const Cols = zipper(side, rows,
-    (key, row) => [row[index], key, row]
+    (key, row) => [ row[index], key, row ]
   ).sort(
     toKeyComparer(comparer)
   ) |> Columns
