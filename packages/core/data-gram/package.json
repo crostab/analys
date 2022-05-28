@@ -19,11 +19,11 @@
   },
   "dependencies": {
     "@typen/enum-data-types": "^0.1.19",
-    "@vect/matrix-mapper": "^0.7.3",
-    "@vect/vector-init": "^0.7.3"
+    "@vect/matrix-mapper": "^0.7.11",
+    "@vect/vector-init": "^0.7.11"
   },
   "devDependencies": {
-    "@vect/nested": "^0.7.3"
+    "@vect/nested": "^0.7.11"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,10 @@
-import { Table }                        from '@analys/table'
-import { filterIndexed, simpleIndexed } from '@vect/nested'
+import { Table }   from '@analys/table'
+import { indexed } from '@vect/nested'
 
-export const nestedToTable = (nested, { head, title, filter }) => {
-  const enumerator = filter ? filterIndexed(nested, filter) : simpleIndexed(nested)
+export const nestedToTable = (nested, {head, title, by, to}) => {
   return Table.from({
     head: head,
-    rows: [ ...enumerator ],
+    rows: [ ...indexed(nested, by, to) ],
     title: title
   })
 }

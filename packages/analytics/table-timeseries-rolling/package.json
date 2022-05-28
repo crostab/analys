@@ -18,9 +18,9 @@
     "test": "node test"
   },
   "dependencies": {
-    "@aryth/math": "^0.5.10",
-    "@vect/vector-algebra": "^0.7.3",
-    "@vect/vector-mapper": "^0.7.3",
+    "@aryth/math": "^0.6.0",
+    "@vect/vector-algebra": "^0.7.11",
+    "@vect/vector-mapper": "^0.7.11",
     "@vect/vector-roller": "^0.6.13"
   },
   "repository": {

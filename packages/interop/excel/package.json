@@ -20,7 +20,7 @@
   "dependencies": {
     "@analys/convert": "^0.6.10",
     "@analys/csv": "^0.6.10",
-    "@vect/object-mapper": "^0.7.3",
+    "@vect/object-mapper": "^0.7.11",
     "xlsx": "^0.18.5"
   },
   "repository": {

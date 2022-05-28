@@ -18,10 +18,10 @@
     "test": "node test"
   },
   "dependencies": {
-    "@aryth/math": "^0.5.10",
+    "@aryth/math": "^0.6.0",
     "@typen/num-strict": "^0.1.19",
     "@vect/vector-differentiator": "^0.6.13",
-    "@vect/vector-mapper": "^0.7.3"
+    "@vect/vector-mapper": "^0.7.11"
   },
   "repository": {
     "type": "git",

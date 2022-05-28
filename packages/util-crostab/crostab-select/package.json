@@ -21,8 +21,8 @@
     "@analys/crostab-init": "^0.6.10",
     "@analys/keyed-rows": "^0.6.10",
     "@analys/tabular": "^0.6.10",
-    "@aryth/rand": "^0.5.10",
-    "@vect/vector-select": "^0.7.3"
+    "@aryth/rand": "^0.6.0",
+    "@vect/vector-select": "^0.7.11"
   },
   "repository": {
     "type": "git",
