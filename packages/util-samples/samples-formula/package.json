@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-formula",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "description": "A cross-samples-formula analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,8 +18,8 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/formula": "^0.6.10",
-    "@analys/samples-find": "^0.6.10",
+    "@analys/formula": "^0.6.11",
+    "@analys/samples-find": "^0.6.11",
     "@spare/deco-func": "^0.14.1",
     "@vect/vector-zipper": "^0.7.11"
   },

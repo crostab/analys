@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-mapper",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {

@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-group",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "description": "A cross-samples-group analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@analys/chips": "^0.6.8",
-    "@analys/group": "^0.6.10",
-    "@analys/samples-find": "^0.6.10",
-    "@analys/tablespec": "^0.6.10",
+    "@analys/group": "^0.6.11",
+    "@analys/samples-find": "^0.6.11",
+    "@analys/tablespec": "^0.6.11",
     "@vect/matrix": "^0.7.11"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-timeseries-rolling",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "description": "A crawler",
   "main": "./dist/index.cjs",
   "exports": {

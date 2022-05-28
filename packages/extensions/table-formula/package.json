@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-formula",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "description": "Table formula",
   "main": "dist/index.cjs",
   "exports": {
@@ -18,9 +18,9 @@
     "test": "node -r @babel/register test/table.filter.test.js"
   },
   "dependencies": {
-    "@analys/formula": "^0.6.10",
-    "@analys/table-find": "^0.6.10",
-    "@analys/table-init": "^0.6.10",
+    "@analys/formula": "^0.6.11",
+    "@analys/table-find": "^0.6.11",
+    "@analys/table-init": "^0.6.11",
     "@analys/table-merge": "^0.6.8",
     "@spare/deco-func": "^0.14.1"
   },
