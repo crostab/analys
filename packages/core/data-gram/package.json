@@ -1,6 +1,6 @@
 {
   "name": "@analys/data-gram",
-  "version": "0.6.13",
+  "version": "0.6.14",
   "description": "A debugging tool",
   "main": "dist/index.cjs",
   "exports": {
@@ -41,5 +41,5 @@
     "url": "https://github.com/hoyeungw/vect"
   },
   "homepage": "https://github.com/hoyeungw/vect#readme",
-  "gitHead": "514f00566a06ef33a7e2c86b0e06f1ba18664f70"
+  "gitHead": "25741a60101aa28261133de365bcfd032cb351de"
 }

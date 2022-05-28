@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-group",
-  "version": "0.6.13",
+  "version": "0.6.14",
   "description": "A cross-samples-group analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@analys/chips": "^0.6.8",
-    "@analys/group": "^0.6.13",
-    "@analys/samples-find": "^0.6.13",
-    "@analys/tablespec": "^0.6.13",
+    "@analys/group": "^0.6.14",
+    "@analys/samples-find": "^0.6.14",
+    "@analys/tablespec": "^0.6.14",
     "@vect/matrix": "^0.7.11"
   },
   "repository": {
@@ -44,5 +44,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "514f00566a06ef33a7e2c86b0e06f1ba18664f70"
+  "gitHead": "25741a60101aa28261133de365bcfd032cb351de"
 }

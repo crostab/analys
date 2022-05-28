@@ -1,6 +1,6 @@
 {
   "name": "@analys/convert",
-  "version": "0.6.13",
+  "version": "0.6.14",
   "description": "A cross-convert analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,12 +18,12 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.6.13",
-    "@analys/crostab-mapper": "^0.6.13",
-    "@analys/table": "^0.6.13",
-    "@analys/table-index": "^0.6.13",
-    "@analys/table-init": "^0.6.13",
-    "@analys/tabular": "^0.6.13",
+    "@analys/crostab": "^0.6.14",
+    "@analys/crostab-mapper": "^0.6.14",
+    "@analys/table": "^0.6.14",
+    "@analys/table-index": "^0.6.14",
+    "@analys/table-init": "^0.6.14",
+    "@analys/tabular": "^0.6.14",
     "@typen/nullish": "^0.1.19",
     "@vect/column-getter": "^0.6.13",
     "@vect/entries-init": "^0.7.11",
@@ -63,5 +63,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "514f00566a06ef33a7e2c86b0e06f1ba18664f70"
+  "gitHead": "25741a60101aa28261133de365bcfd032cb351de"
 }
