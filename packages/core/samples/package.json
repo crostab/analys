@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples",
-  "version": "0.6.12",
+  "version": "0.6.13",
   "description": "A cross-samples analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,11 +18,11 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/samples-find": "^0.6.12",
-    "@analys/samples-formula": "^0.6.12",
-    "@analys/samples-group": "^0.6.12",
-    "@analys/samples-pivot": "^0.6.12",
-    "@analys/samples-select": "^0.6.12"
+    "@analys/samples-find": "^0.6.13",
+    "@analys/samples-formula": "^0.6.13",
+    "@analys/samples-group": "^0.6.13",
+    "@analys/samples-pivot": "^0.6.13",
+    "@analys/samples-select": "^0.6.13"
   },
   "repository": {
     "type": "git",
@@ -44,5 +44,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "3ae5fd0617e52cb85788db77e6d69f0a79d6a3cd"
+  "gitHead": "514f00566a06ef33a7e2c86b0e06f1ba18664f70"
 }

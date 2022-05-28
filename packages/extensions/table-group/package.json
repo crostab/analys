@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-group",
-  "version": "0.6.12",
+  "version": "0.6.13",
   "description": "A cross-table-chips analytics tool",
   "main": "dist/index.cjs",
   "exports": {
@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@analys/chips": "^0.6.8",
-    "@analys/group": "^0.6.12",
-    "@analys/table-find": "^0.6.12",
-    "@analys/table-init": "^0.6.12",
-    "@analys/tablespec": "^0.6.12",
+    "@analys/group": "^0.6.13",
+    "@analys/table-find": "^0.6.13",
+    "@analys/table-init": "^0.6.13",
+    "@analys/tablespec": "^0.6.13",
     "@vect/matrix": "^0.7.11",
     "@vect/vector-algebra": "^0.7.11"
   },
@@ -46,5 +46,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "3ae5fd0617e52cb85788db77e6d69f0a79d6a3cd"
+  "gitHead": "514f00566a06ef33a7e2c86b0e06f1ba18664f70"
 }
