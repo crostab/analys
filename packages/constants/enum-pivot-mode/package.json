@@ -1,6 +1,6 @@
 {
   "name": "@analys/enum-pivot-mode",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "description": "Enums for analys toolkit",
   "main": "./dist/index.cjs",
   "exports": {
@@ -33,5 +33,5 @@
     "url": "https://github.com/hoyeungw/vect"
   },
   "homepage": "https://github.com/hoyeungw/vect#readme",
-  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+  "gitHead": "3ae5fd0617e52cb85788db77e6d69f0a79d6a3cd"
 }

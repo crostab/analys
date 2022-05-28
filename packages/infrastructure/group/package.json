@@ -1,6 +1,6 @@
 {
   "name": "@analys/group",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "description": "A debugging tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/util-cubic.test.js"
   },
   "dependencies": {
-    "@analys/enum-pivot-mode": "^0.6.11",
+    "@analys/enum-pivot-mode": "^0.6.12",
     "@analys/util-pivot": "^0.6.8",
     "@vect/object-init": "^0.7.11",
     "@vect/vector-algebra": "^0.7.11",
@@ -41,5 +41,5 @@
     "url": "https://github.com/hoyeungw/vect"
   },
   "homepage": "https://github.com/hoyeungw/vect#readme",
-  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+  "gitHead": "3ae5fd0617e52cb85788db77e6d69f0a79d6a3cd"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@analys/crostab-init",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "description": "A cross-table analytics tool",
   "main": "./dist/index.cjs",
   "exports": {
@@ -40,5 +40,5 @@
     "url": "https://github.com/hoyeungw/analys"
   },
   "homepage": "https://github.com/hoyeungw/analys#readme",
-  "gitHead": "beb3a82b304e4427a31c7f1c6d4a32de22d39301"
+  "gitHead": "3ae5fd0617e52cb85788db77e6d69f0a79d6a3cd"
 }
