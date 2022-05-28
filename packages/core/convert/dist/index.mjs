@@ -10,8 +10,8 @@ import { first } from '@vect/vector-index';
 import { acquire } from '@vect/vector-algebra';
 import { indexed } from '@vect/object-mapper';
 import { appendValue } from '@vect/object-update';
-import { filterIndexed, simpleIndexed, updateCell, indexed as indexed$2 } from '@vect/nested';
-import { indexed as indexed$1 } from '@analys/crostab-mapper';
+import { indexed as indexed$1, updateCell } from '@vect/nested';
+import { indexed as indexed$2 } from '@analys/crostab-mapper';
 import '@typen/nullish';
 
 /**
@@ -219,12 +219,12 @@ const surjectToGrouped = (surject, by, to) => {
 const nestedToTable = (nested, {
   head,
   title,
-  filter
+  by,
+  to
 }) => {
-  const enumerator = filter ? filterIndexed(nested, filter) : simpleIndexed(nested);
   return Table.from({
     head: head,
-    rows: [...enumerator],
+    rows: [...indexed$1(nested, by, to)],
     title: title
   });
 };
@@ -259,7 +259,7 @@ const tableToNested = (table, {
 const crostabToNested = (crostab, by, to) => {
   const o = {};
 
-  for (const [x, y, v] of indexed$1(crostab, by, to)) updateCell.call(o, x, y, v);
+  for (const [x, y, v] of indexed$2(crostab, by, to)) updateCell.call(o, x, y, v);
 
   return o;
 };
@@ -273,7 +273,7 @@ const crostabToNested = (crostab, by, to) => {
  * @returns {*[]}
  */
 
-const mapper = (mx, fn, h, w) => {
+function mapper(mx, fn, h, w) {
   var _mx$;
 
   h = h || (mx === null || mx === void 0 ? void 0 : mx.length), w = w || h && ((_mx$ = mx[0]) === null || _mx$ === void 0 ? void 0 : _mx$.length);
@@ -282,7 +282,7 @@ const mapper = (mx, fn, h, w) => {
   for (let i = 0, j, r, tr; i < h; i++) for (tx[i] = tr = Array(w), r = mx[i], j = 0; j < w; j++) tr[j] = fn(r[j], i, j);
 
   return tx;
-};
+}
 
 function collect(key, size) {
   const vec = Array(size);
@@ -561,7 +561,7 @@ class GramUtil {
 function nestedToCrostab(nested, mode, by, to, po) {
   const gram = GramUtil.factory(mode);
 
-  for (let [x, y, v] of indexed$2(nested, by, to)) {
+  for (let [x, y, v] of indexed$1(nested, by, to)) {
     gram.update(x, y, v);
   }
 
@@ -570,7 +570,7 @@ function nestedToCrostab(nested, mode, by, to, po) {
 function nestedToListGram(nested, by, to) {
   const gram = ListGram.build();
 
-  for (let [x, y, v] of indexed$2(nested, by, to)) {
+  for (let [x, y, v] of indexed$1(nested, by, to)) {
     gram.append(x, y, v);
   }
 

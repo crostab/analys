@@ -223,12 +223,12 @@ const surjectToGrouped = (surject, by, to) => {
 const nestedToTable = (nested$1, {
   head,
   title,
-  filter
+  by,
+  to
 }) => {
-  const enumerator = filter ? nested.filterIndexed(nested$1, filter) : nested.simpleIndexed(nested$1);
   return table.Table.from({
     head: head,
-    rows: [...enumerator],
+    rows: [...nested.indexed(nested$1, by, to)],
     title: title
   });
 };
@@ -277,7 +277,7 @@ const crostabToNested = (crostab, by, to) => {
  * @returns {*[]}
  */
 
-const mapper = (mx, fn, h, w) => {
+function mapper(mx, fn, h, w) {
   var _mx$;
 
   h = h || (mx === null || mx === void 0 ? void 0 : mx.length), w = w || h && ((_mx$ = mx[0]) === null || _mx$ === void 0 ? void 0 : _mx$.length);
@@ -286,7 +286,7 @@ const mapper = (mx, fn, h, w) => {
   for (let i = 0, j, r, tr; i < h; i++) for (tx[i] = tr = Array(w), r = mx[i], j = 0; j < w; j++) tr[j] = fn(r[j], i, j);
 
   return tx;
-};
+}
 
 function collect(key, size) {
   const vec = Array(size);

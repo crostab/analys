@@ -24,41 +24,36 @@ const selectSamples = function (fieldIndexPairs) {
 };
 
 /**
- * @param {(str|[*,*])[]} labels
+ * @param {(string|[*,*])[]} labels
  * @return {KeyedRows} - mutated 'this' {side, rows}
  */
 
-const selectKeyedRows = function (labels) {
+function selectKeyedRows(labels) {
   var _lookupIndexes$call;
 
   let indexes;
   [this.side, indexes] = (_lookupIndexes$call = lookupIndexes.call(this, labels), entriesUnwind.unwind(_lookupIndexes$call));
   this.rows = vectorSelect.select(this.rows, indexes);
   return this;
-};
+}
 /**
  *
- * @param {(str|[*,*])[]} labels
- * @returns {[str,number][]}
+ * @param {(string|[*,*])[]} labels
+ * @returns {[string,number][]}
  */
 
-const lookupIndexes = function (labels) {
+function lookupIndexes(labels) {
   return vectorMapper.mapper.call(this, labels, lookupIndex);
-};
+}
 /**
  *
- * @param {str|[*,*]} [label]
- * @returns {[str,number]}
+ * @param {string|[*,*]} [label]
+ * @returns {[string,number]}
  */
 
-const lookupIndex = function (label) {
-  const {
-    side
-  } = this;
-  if (!Array.isArray(label)) return [label, side.indexOf(label)];
-  let [current, projected] = label;
-  return [projected, side.indexOf(current)];
-};
+function lookupIndex(label) {
+  return Array.isArray(label) ? [label[1], this.side.indexOf(label[0])] : [label, this.side.indexOf(label)];
+}
 
 /**
  * @param {(str|[*,*])[]} labels
@@ -69,6 +64,23 @@ const selectSamplesBySide = function (labels) {
   const fieldIndexes = lookupIndexes.call(this, labels);
   return selectSamples.call(this, fieldIndexes);
 };
+
+/**
+ *
+ * @param comparer
+ * @returns {{side:*[], rows:*[][]}}
+ */
+
+function sortRowsByKeys(comparer) {
+  var _zipper$sort;
+
+  let {
+    side,
+    rows
+  } = this;
+  [this.side, this.rows] = (_zipper$sort = vectorZipper.zipper(side, rows, (key, row) => [key, row]).sort(utilKeyedVectors.toKeyComparer(comparer)), entriesUnwind.unwind(_zipper$sort));
+  return this;
+}
 
 /**
  * If y >= 0 then sort by vector[y] for each vectors, else (e.g. y===undefined) sort by keys.
@@ -91,24 +103,7 @@ const sortKeyedRows = function (comparer, index) {
   return this.side = Cols(1), this.rows = Cols(2), this;
 };
 
-/**
- *
- * @param comparer
- * @returns {{side:*[], rows:*[][]}}
- */
-
-const sortRowsByKeys$1 = function (comparer) {
-  var _zipper$sort;
-
-  let {
-    side,
-    rows
-  } = this;
-  [this.side, this.rows] = (_zipper$sort = vectorZipper.zipper(side, rows, (key, row) => [key, row]).sort(utilKeyedVectors.toKeyComparer(comparer)), entriesUnwind.unwind(_zipper$sort));
-  return this;
-};
-
 exports.selectKeyedRows = selectKeyedRows;
 exports.selectSamplesBySide = selectSamplesBySide;
 exports.sortKeyedRows = sortKeyedRows;
-exports.sortRowsByKeys = sortRowsByKeys$1;
+exports.sortRowsByKeys = sortRowsByKeys;
