@@ -1,12 +1,9 @@
 {
   "name": "@analys/table-pivot",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "A cross-table-pivot analytics tool",
-  "main": "dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+  "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -20,7 +17,7 @@
   "dependencies": {
     "@analys/crostab": "workspace:^",
     "@analys/cubic": "^0.6.8",
-    "@analys/tablespec": "^0.7.0"
+    "@analys/tablespec": "workspace:^"
   },
   "repository": {
     "type": "git",

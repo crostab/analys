@@ -16,8 +16,8 @@
     "watch": "rollup -c rollup.config.js -w"
   },
   "devDependencies": {
-    "@acq/path": "^0.3.32",
-    "@analys/convert": "^0.6.2",
+    "@acq/path": "^0.4.0",
+    "@analys/convert": "workspace:^",
     "@aryth/math": "^0.7.0",
     "@aryth/rand": "^0.7.0",
     "@changesets/cli": "^2.27.9",
@@ -45,7 +45,7 @@
     "axios": "^1.7.7",
     "naivecsv": "^0.2.2",
     "ora": "^8.1.0",
-    "rollup": "^4.24.0",
+    "rollup": "^4.24.1",
     "rollup-plugin-fileinfo": "^0.3.1"
   }
 }

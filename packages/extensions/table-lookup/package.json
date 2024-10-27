@@ -1,12 +1,9 @@
 {
   "name": "@analys/table-lookup",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "A cross-table-lookup analytics tool",
-  "main": "dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+  "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],

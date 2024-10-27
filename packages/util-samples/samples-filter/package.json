@@ -1,6 +1,6 @@
 {
   "name": "@analys/samples-filter",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "A cross-samples analytics tool",
   "type": "module",
   "exports": "./dist/index.js",
