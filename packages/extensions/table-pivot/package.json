@@ -18,7 +18,7 @@
     "test": "node -r @babel/register test/alpha/simple.pivot.test.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.6.14",
+    "@analys/crostab": "workspace:^",
     "@analys/cubic": "^0.6.8",
     "@analys/tablespec": "^0.6.14"
   },

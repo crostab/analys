@@ -115,8 +115,8 @@ const VOWELS = [
 ]
 
 export const pseudoWord = (width) => {
-  let word = INITS |> flop, vowel = false
+  let word = flop(INITS), vowel = false
   while (word.length < width)
-    word += ((vowel = !vowel) ? VOWELS : NON_VOWELS)|> flop
+    word += flop(((vowel = !vowel) ? VOWELS : NON_VOWELS))
   return word
 }

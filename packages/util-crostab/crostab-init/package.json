@@ -2,11 +2,8 @@
   "name": "@analys/crostab-init",
   "version": "0.6.14",
   "description": "A cross-table analytics tool",
-  "main": "./dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+    "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],

@@ -2,11 +2,8 @@
   "name": "@analys/samples-group",
   "version": "0.6.14",
   "description": "A cross-samples-group analytics tool",
-  "main": "./dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+    "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -19,9 +16,9 @@
   },
   "dependencies": {
     "@analys/chips": "^0.6.8",
-    "@analys/group": "^0.6.14",
-    "@analys/samples-find": "^0.6.14",
-    "@analys/tablespec": "^0.6.14",
+    "@analys/group": "workspace:^",
+    "@analys/samples-find": "workspace:^",
+    "@analys/tablespec": "workspace:^",
     "@vect/matrix": "^0.7.11"
   },
   "repository": {

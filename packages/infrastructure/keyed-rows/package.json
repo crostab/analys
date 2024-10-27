@@ -2,11 +2,8 @@
   "name": "@analys/keyed-rows",
   "version": "0.6.14",
   "description": "A cross-keyed-rows analytics tool",
-  "main": "./dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+    "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -18,7 +15,7 @@
     "test": "node -r @babel/register test/keyed-rows.test.js"
   },
   "dependencies": {
-    "@analys/util-keyed-vectors": "^0.6.14",
+    "@analys/util-keyed-vectors": "workspace:^",
     "@vect/column-getter": "^0.6.13",
     "@vect/entries-unwind": "^0.6.13",
     "@vect/matrix-algebra": "^0.7.11",

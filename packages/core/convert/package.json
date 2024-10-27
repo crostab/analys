@@ -2,11 +2,8 @@
   "name": "@analys/convert",
   "version": "0.6.14",
   "description": "A cross-convert analytics tool",
-  "main": "./dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
+    "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -18,12 +15,12 @@
     "test": "node -r @babel/register test/test.index.js"
   },
   "dependencies": {
-    "@analys/crostab": "^0.6.14",
-    "@analys/crostab-mapper": "^0.6.14",
-    "@analys/table": "^0.6.14",
-    "@analys/table-index": "^0.6.14",
-    "@analys/table-init": "^0.6.14",
-    "@analys/tabular": "^0.6.14",
+    "@analys/crostab": "workspace:^",
+    "@analys/crostab-mapper": "workspace:^",
+    "@analys/table": "workspace:^",
+    "@analys/table-index": "workspace:^",
+    "@analys/table-init": "workspace:^",
+    "@analys/tabular": "workspace:^",
     "@typen/nullish": "^0.1.19",
     "@vect/column-getter": "^0.6.13",
     "@vect/entries-init": "^0.7.11",
