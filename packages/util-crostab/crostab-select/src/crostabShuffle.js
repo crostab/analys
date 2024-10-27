@@ -7,7 +7,7 @@ import { leap, shuffle }       from '@vect/vector-select'
 const MEAN = 4
 
 export function crostabShuffle(crostab, { h, w, oscillate } = {}) {
-  crostab = crostab |> matchSlice
+  crostab = matchSlice(crostab)
   if (!h || oscillate) h = randBetw(MEAN - 1, MEAN + 4)
   if (!w || oscillate) w = randBetw(MEAN - 1, MEAN + 1)
   const

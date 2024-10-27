@@ -14,5 +14,5 @@ export const tableToMatrix = table => {
 }
 
 export const crostabToMatrix = (crostab, title) => {
-  return crostabToTable(crostab, title) |> tableToMatrix
+  return tableToMatrix(crostabToTable(crostab, title))
 }

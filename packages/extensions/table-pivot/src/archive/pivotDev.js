@@ -24,7 +24,7 @@ export const pivotDev = (
     filter,
     formula
   }) => {
-  if (filter) { table = tableFilter.call(table |> slice, filter) }
+  if (filter) { table = tableFilter.call(slice(table), filter) }
   const { head, rows } = table, [x, y] = [head.indexOf(side), head.indexOf(banner)]
   let pivotter
   const pivot = Array.isArray(cell = parseCell(cell, side))

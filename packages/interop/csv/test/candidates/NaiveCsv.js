@@ -30,10 +30,10 @@ export class NaiveCsv {
       ? parseCsvReg(csvText, de, qt)
       : parseCsvMap(csvText, de, lf)
     if (tp) mx = pb
-      ? mx|> popBlank |> transpose
-      : mx|> transpose
+      ? transpose(popBlank(mx))
+      : transpose(mx)
     return pb
-      ? mx|> popBlank
+      ? popBlank(mx)
       : mx
   }
 

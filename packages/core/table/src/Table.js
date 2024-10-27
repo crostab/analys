@@ -56,7 +56,7 @@ export class Table {
   static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
 
   toSamples(fields) { return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this) }
-  toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
+  toObject(mutate = false) { return mutate ? slice(this) : shallow(this) }
 
   setTitle(title) { return this.title = title, this }
   get size() { return size(this.rows) }
@@ -134,7 +134,7 @@ export class Table {
    */
   divideColumn(field, splitter, { fields, mutate = false } = {}) {
     const
-      o = mutate ? this : this |> shallow,
+      o = mutate ? this : shallow(this),
       y = this.coin(field)
     o.head.splice(y, 1, ...(fields ?? splitter(field)))
     iterate(o.rows, row => row.splice(y, 1, ...splitter(row[y])))
@@ -151,7 +151,7 @@ export class Table {
   proliferateColumn(fieldSpec, { nextTo, mutate = false } = {}) {
     if (!Array.isArray(fieldSpec)) fieldSpec = [ fieldSpec ]
     const
-      o = mutate ? this : this |> shallow,
+      o = mutate ? this : shallow(this),
       { head, rows } = o,
       y = nextTo ? (this.coin(nextTo) + 1) : 0
     fieldSpec.forEach(o => o.index = this.coin(o.key))
@@ -180,7 +180,7 @@ export class Table {
    * @returns {Table}
    */
   insertColumn(newField, column, { nextTo, mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow, y = nextTo ? (this.coin(nextTo) + 1) : 0
+    const o = mutate ? this : shallow(this), y = nextTo ? (this.coin(nextTo) + 1) : 0
     if (Array.isArray(newField)) {
       o.head.splice(y, 0, ...newField)
       iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]))
@@ -199,7 +199,7 @@ export class Table {
    * @returns {Table}
    */
   deleteColumn(field, { mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow
+    const o = mutate ? this : shallow(this)
     const { head, rows } = o
     if (Array.isArray(field)) {
       const indexes = this.columnIndexes(field).filter(i => i >= 0).sort(NUM_ASC)
@@ -215,7 +215,7 @@ export class Table {
   }
 
   divide(fields, { mutate = false } = {}) {
-    const o = mutate ? this : this |> shallow
+    const o = mutate ? this : shallow(this)
     const { pick, rest } = tableDivide.call(o, fields)
     return { pick: Table.from(pick), rest: mutate ? this : Table.from(rest) }
   }
@@ -227,7 +227,7 @@ export class Table {
    * @return {Table}
    */
   filter(filterCollection, { mutate = true } = {}) {
-    const o = mutate ? this : this |> slice
+    const o = mutate ? this : slice(this)
     tableFilter.call(o, filterCollection)
     return mutate ? this : this.copy(o)
   }
@@ -239,14 +239,14 @@ export class Table {
    * @return {Table}
    */
   find(filter, { mutate = true } = {}) {
-    const o = mutate ? this : this |> slice
+    const o = mutate ? this : slice(this)
     tableFind.call(o, filter)
     return mutate ? this : this.copy(o)
   }
 
   //TODO: supposedly returns rows, currently only returns specific column
   distinct(fields, { mutate = true } = {}) {
-    const o = mutate ? this : this |> slice
+    const o = mutate ? this : slice(this)
     for (let field of fields) o.rows = distinctByColumn.call(o.rows, this.coin(field))
     return mutate ? this : this.copy(o)
   }
@@ -274,7 +274,7 @@ export class Table {
   sort(field, comparer, { mutate = true } = {}) {
     const y = this.coin(field)
     const rowComparer = (a, b) => comparer(a[y], b[y])
-    const o = mutate ? this : this |> slice
+    const o = mutate ? this : slice(this)
     o.rows.sort(rowComparer)
     return mutate ? this : this.copy(o)
   }
@@ -286,7 +286,7 @@ export class Table {
    * @returns {Table|*}
    */
   sortLabel(comparer, { mutate = true } = {}) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     sortTabularByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)
   }

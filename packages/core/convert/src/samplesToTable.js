@@ -11,7 +11,7 @@ import { toTable }         from './tabularToTable'
  * @returns {Table}
  */
 export const samplesToTable = (samples, fields) =>
-  samplesToTabular(samples, fields) |> toTable
+  toTable(samplesToTabular(samples, fields))
 
 /**
  *
@@ -23,7 +23,7 @@ export function samplesToTabular(samples, fields) {
   let height, width
   if (!(height = samples?.length)) return voidTabular()
   if (!fields?.length) return convertSamplesToTabular(samples)
-  const [keys, head] = selectFieldMapping.call(samples[0], fields) |> unwind
+  const [keys, head] = unwind(selectFieldMapping.call(samples[0], fields))
   if (!(width = keys?.length)) return voidTabular()
   const rows = mapper(samples, sample => select(sample, keys, width), height)
   return { head, rows }
@@ -58,7 +58,7 @@ export function convertSamplesToTabular(samples) {
   if (!height) return voidTabular()
   const rows = Array(height)
   let head;
-  [head, rows[0]] = Object.entries(samples[0]) |> unwind
+  [head, rows[0]] = unwind(Object.entries(samples[0]))
   for (let i = 1, w = head?.length; i < height; i++) rows[i] = select(samples[i], head, w)
   return { head, rows }
 }

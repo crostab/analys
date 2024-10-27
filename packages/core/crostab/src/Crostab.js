@@ -128,7 +128,7 @@ export class Crostab {
     const samples = selectSamplesBySide.call(this, sideFields)
     return indexed ? zipper(this.head, samples, (l, s) => Object.assign(pair(indexName, l), s)) : samples
   }
-  toObject(mutate = false) { return mutate ? this |> slice : this |> shallow }
+  toObject(mutate = false) { return mutate ? slice(this) : shallow(this) }
   toTable(sideLabel) {
     const head = acquire([ sideLabel ], this.head)
     const rows = zipper(this.side, this.rows, (x, row) => acquire([ x ], row))
@@ -193,32 +193,32 @@ export class Crostab {
   hlookupTable(keyField, valueField) { return hlookupTable.call(this, keyField, valueField) }
 
   selectRows(sideLabels, mutate = false) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     selectKeyedRows.call(o, sideLabels)
     return mutate ? this : this.copy(o)
   }
 
   selectColumns(headLabels, mutate = false) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     selectTabular.call(this, headLabels)
     return mutate ? this : this.copy(o)
   }
 
   select({ side, head, mutate = false } = {}) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     if (head?.length) selectTabular.call(o, head)
     if (side?.length) selectKeyedRows.call(o, side)
     return mutate ? this : this.copy(o)
   }
 
   sort({ direct = ROWWISE, field, comparer = NUM_ASC, mutate = false } = {}) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     if (direct === ROWWISE) sortKeyedRows.call(o, comparer, this.coin(field))
     if (direct === COLUMNWISE) sortTabular.call(o, comparer, this.roin(field))
     return mutate ? this : this.copy(o)
   }
   sortByLabels({ direct = ROWWISE, comparer = STR_ASC, mutate = false }) {
-    let o = mutate ? this : this |> slice
+    let o = mutate ? this : slice(this)
     if (direct === ROWWISE) sortRowsByKeys.call(o, comparer)
     if (direct === COLUMNWISE) sortTabularByKeys.call(o, comparer)
     return mutate ? this : this.copy(o)

@@ -10,11 +10,11 @@ import { unwind } from '@vect/entries-unwind'
  */
 export const sortTabularByKeys = function (comparer) {
   let { head, rows } = this, columns = transpose(rows);
-  [this.head, columns] = zipper(head, columns,
-    (key, row) => [key, row]
+  [this.head, columns] = unwind(zipper(head, columns,
+    (key, row) => [ key, row ]
   ).sort(
     toKeyComparer(comparer)
-  ) |> unwind
+  ))
   this.rows = transpose(columns)
   return this
 }

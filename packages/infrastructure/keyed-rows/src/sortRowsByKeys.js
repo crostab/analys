@@ -10,10 +10,10 @@ import { unwind }        from '@vect/entries-unwind'
  */
 export function sortRowsByKeys(comparer) {
   let { side, rows } = this;
-  [ this.side, this.rows ] = zipper(side, rows,
+  [ this.side, this.rows ] = unwind(zipper(side, rows,
     (key, row) => [ key, row ]
   ).sort(
     toKeyComparer(comparer)
-  ) |> unwind
+  ))
   return this
 }

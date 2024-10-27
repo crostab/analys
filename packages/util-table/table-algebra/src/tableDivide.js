@@ -10,8 +10,8 @@ import { NUM_ASC } from '@aryth/comparer'
  * @return {{ pick:TableObject, rest:TableObject }} - mutated 'this' {head, rows}
  */
 export const tableDivide = function (fields) {
-  /** @type {Table|TableObject} */ const rs = this |> slice
-  /** @type {Table|TableObject} */ const pk = this |> slice
+  /** @type {Table|TableObject} */ const rs = slice(this)
+  /** @type {Table|TableObject} */ const pk = slice(this)
   const { head, rows } = this
   const indexes = mapper(fields, label => head.indexOf(label)).sort(NUM_ASC);
   ({ pick: pk.head, rest: rs.head } = divideVector(head, indexes));

@@ -10,7 +10,7 @@ export const readTableCollection = (filename) => {
 }
 
 export const tableToWorksheet = (table) => {
-  const matrix = table|> tableToMatrix
+  const matrix = tableToMatrix(table)
   return XL.aoa_to_sheet(matrix)
 }
 

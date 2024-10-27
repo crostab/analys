@@ -11,5 +11,5 @@ export const collectionToWorkbook = (collection, toWorksheet) => {
 
 export const readCollection = (filename, csvParser) => {
   const workbook = readFile(filename)
-  return mapKeyVal(workbook.Sheets, (name, sheet) => utils.sheet_to_csv(sheet) |> csvParser)
+  return mapKeyVal(workbook.Sheets, (name, sheet) => csvParser(utils.sheet_to_csv(sheet)))
 }

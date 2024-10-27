@@ -8,7 +8,7 @@ import { unwind } from '@vect/entries-unwind'
  */
 export const selectTabular = function (labels) {
   let { rows } = this, indexes;
-  [this.head, indexes] = lookupIndexes.call(this, labels)|> unwind;
+  [this.head, indexes] = unwind(lookupIndexes.call(this, labels));
   this.rows = selectCols(rows, indexes)
   return this
 }

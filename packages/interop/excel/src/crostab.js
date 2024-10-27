@@ -10,7 +10,7 @@ export const readCrostabCollection = (filename) => {
 }
 
 export const crostabToWorksheet = (table) => {
-  const matrix = table|> crostabToMatrix
+  const matrix = crostabToMatrix(table)
   return XL.aoa_to_sheet(matrix)
 }
 

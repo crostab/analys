@@ -9,7 +9,7 @@ import { select } from '@vect/vector-select'
  */
 export function selectKeyedRows(labels) {
   let indexes;
-  [ this.side, indexes ] = lookupIndexes.call(this, labels) |> unwind
+  [ this.side, indexes ] = unwind(lookupIndexes.call(this, labels))
   this.rows = select(this.rows, indexes)
   return this
 }

@@ -13,11 +13,11 @@ export const sortKeyedRows = function (comparer, index) {
   if (index < 0) return sortRowsByKeys.call(this, comparer)
   let {side, rows} = this
   /** Columns of [row[i]s, side, rows]  */
-  const Cols = zipper(side, rows,
+  const Cols = Columns(zipper(side, rows,
     (key, row) => [ row[index], key, row ]
   ).sort(
     toKeyComparer(comparer)
-  ) |> Columns
+  ))
   return this.side = Cols(1), this.rows = Cols(2), this
 }
 

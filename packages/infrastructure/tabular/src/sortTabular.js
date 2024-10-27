@@ -13,11 +13,11 @@ export const sortTabular = function (comparer, index) {
   if (index < 0) return sortTabularByKeys.call(this, comparer)
   let { head, rows } = this, columns = transpose(rows)
   /** [column[i]s, head, columns]  */
-  const Keyed = zipper(head, columns,
-    (key, column) => [column[index], key, column]
+  const Keyed = Columns(zipper(head, columns,
+    (key, column) => [ column[index], key, column ]
   ).sort(
     toKeyComparer(comparer)
-  ) |> Columns
+  ))
   return this.head = Keyed(1), this.rows = transpose(Keyed(2)), this
 }
 

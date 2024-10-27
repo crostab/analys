@@ -9,7 +9,7 @@ import { selectTabular } from '@analys/tabular'
  * @returns {TableObject}
  */
 export const tableSelect = function (table, fields, { mutate = false } = {}) {
-  let o = mutate ? table : table |> slice
+  let o = mutate ? table : slice(table)
   if (fields?.length) selectTabular.call(o, fields)
   return o
 }
