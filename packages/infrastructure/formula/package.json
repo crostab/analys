@@ -2,7 +2,7 @@
   "name": "@analys/formula",
   "version": "0.6.14",
   "description": "Formula for algebra of columns in matrix",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -15,9 +15,9 @@
     "test": "node -r @babel/register test/formula.test.js"
   },
   "dependencies": {
-    "@vect/object-init": "^0.7.11",
-    "@vect/vector-mapper": "^0.7.11",
-    "@vect/vector-select": "^0.7.11"
+    "@vect/object-init": "^0.8.0",
+    "@vect/vector-mapper": "^0.8.0",
+    "@vect/vector-select": "^0.8.0"
   },
   "repository": {
     "type": "git",

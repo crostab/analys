@@ -2,7 +2,7 @@
   "name": "@analys/crostab-mapper",
   "version": "0.6.14",
   "description": "A cross-table analytics tool",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -11,7 +11,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vect/columns-mapper": "^0.7.11"
+    "@vect/columns-mapper": "^0.8.0"
   },
   "scripts": {
     "pub": "npm publish",

@@ -2,7 +2,7 @@
   "name": "@analys/tabular",
   "version": "0.6.14",
   "description": "Skeleton for table",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -17,12 +17,12 @@
   "dependencies": {
     "@analys/util-keyed-vectors": "workspace:^",
     "@vect/column-getter": "^0.6.13",
-    "@vect/columns-select": "^0.7.11",
+    "@vect/columns-select": "^0.8.0",
     "@vect/entries-unwind": "^0.6.13",
-    "@vect/matrix-algebra": "^0.7.11",
-    "@vect/object-init": "^0.7.11",
-    "@vect/vector-mapper": "^0.7.11",
-    "@vect/vector-zipper": "^0.7.11"
+    "@vect/matrix-algebra": "^0.8.0",
+    "@vect/object-init": "^0.8.0",
+    "@vect/vector-mapper": "^0.8.0",
+    "@vect/vector-zipper": "^0.8.0"
   },
   "repository": {
     "type": "git",

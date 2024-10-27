@@ -2,7 +2,7 @@
   "name": "@analys/util-keyed-vectors",
   "version": "0.6.14",
   "description": "A debugging tool",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@analys/enum-pivot-mode": "workspace:^",
-    "@vect/vector-init": "^0.7.11",
-    "@vect/vector-mapper": "^0.7.11",
-    "@vect/vector-zipper": "^0.7.11"
+    "@vect/vector-init": "^0.8.0",
+    "@vect/vector-mapper": "^0.8.0",
+    "@vect/vector-zipper": "^0.8.0"
   },
   "repository": {
     "type": "git",

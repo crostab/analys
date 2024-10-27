@@ -21,8 +21,8 @@
     "@analys/enum-lookups": "workspace:^",
     "@analys/table-index": "workspace:^",
     "@vect/column-getter": "^0.6.13",
-    "@vect/entries-init": "^0.7.11",
-    "@vect/object-init": "^0.7.11"
+    "@vect/entries-init": "^0.8.0",
+    "@vect/object-init": "^0.8.0"
   },
   "repository": {
     "type": "git",

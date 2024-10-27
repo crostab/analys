@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@analys/data-gram": "workspace:^",
-    "@vect/vector-init": "^0.7.11"
+    "@vect/vector-init": "^0.8.0"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
   "name": "@analys/samples-group",
   "version": "0.6.14",
   "description": "A cross-samples-group analytics tool",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -19,7 +19,7 @@
     "@analys/group": "workspace:^",
     "@analys/samples-find": "workspace:^",
     "@analys/tablespec": "workspace:^",
-    "@vect/matrix": "^0.7.11"
+    "@vect/matrix": "^0.8.0"
   },
   "repository": {
     "type": "git",

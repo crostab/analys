@@ -2,7 +2,7 @@
   "name": "@analys/samples-formula",
   "version": "0.6.14",
   "description": "A cross-samples-formula analytics tool",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -17,8 +17,8 @@
   "dependencies": {
     "@analys/formula": "workspace:^",
     "@analys/samples-find": "workspace:^",
-    "@spare/deco-func": "^0.14.1",
-    "@vect/vector-zipper": "^0.7.11"
+    "@spare/deco-func": "^0.15.16",
+    "@vect/vector-zipper": "^0.8.0"
   },
   "repository": {
     "type": "git",

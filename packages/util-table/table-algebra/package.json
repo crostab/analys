@@ -2,7 +2,7 @@
   "name": "@analys/table-algebra",
   "version": "0.6.14",
   "description": "A cross-table analytics tool",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"
@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "@analys/enum-join-modes": "workspace:^",
-    "@aryth/comparer": "^0.6.0",
-    "@vect/vector-init": "^0.7.11",
-    "@vect/vector-mapper": "^0.7.11",
-    "@vect/vector-select": "^0.7.11",
-    "@vect/vector-update": "^0.7.11"
+    "@aryth/comparer": "^0.7.0",
+    "@vect/vector-init": "^0.8.0",
+    "@vect/vector-mapper": "^0.8.0",
+    "@vect/vector-select": "^0.8.0",
+    "@vect/vector-update": "^0.8.0"
   },
   "repository": {
     "type": "git",

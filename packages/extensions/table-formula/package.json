@@ -22,7 +22,7 @@
     "@analys/table-find": "workspace:^",
     "@analys/table-init": "workspace:^",
     "@analys/table-merge": "^0.6.8",
-    "@spare/deco-func": "^0.14.1"
+    "@spare/deco-func": "^0.15.16"
   },
   "repository": {
     "type": "git",
