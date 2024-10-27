@@ -1,0 +1,15 @@
+# @analys/crostab
+
+## 0.7.0
+
+### Minor Changes
+
+- migrate monorepo management from (yarn + lerna) to (pnpm + changesets)
+
+### Patch Changes
+
+- Updated dependencies
+  - @analys/keyed-rows@0.7.0
+  - @analys/tabular@0.7.0
+  - @analys/crostab-init@0.7.0
+  - @analys/crostab-lookup@0.7.0

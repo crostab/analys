@@ -1,8 +1,8 @@
 {
   "name": "@analys/enum-pivot-mode",
-  "version": "0.6.14",
+  "version": "0.7.0",
   "description": "Enums for analys toolkit",
-    "type": "module",
+  "type": "module",
   "exports": "./dist/index.js",
   "files": [
     "dist"

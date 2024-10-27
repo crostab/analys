@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-formula",
-  "version": "0.6.14",
+  "version": "0.7.0",
   "description": "Table formula",
   "main": "dist/index.cjs",
   "exports": {
