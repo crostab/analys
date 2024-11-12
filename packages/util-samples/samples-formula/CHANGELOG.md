@@ -1,5 +1,14 @@
 # @analys/samples-formula
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/formula@0.7.3
+  - @analys/samples-find@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

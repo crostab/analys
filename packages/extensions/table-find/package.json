@@ -1,6 +1,6 @@
 {
   "name": "@analys/table-find",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "A cross-table-find analytics tool",
   "type": "module",
   "exports": "./dist/index.js",

@@ -1,5 +1,15 @@
 # @analys/table-select
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/tabular@0.7.3
+  - @analys/table-index@0.7.3
+  - @analys/table-init@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

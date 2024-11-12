@@ -1,5 +1,14 @@
 # @analys/excel
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/convert@0.7.3
+  - @analys/csv@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

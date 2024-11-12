@@ -1,5 +1,16 @@
 # @analys/table-group
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/table-find@0.7.3
+  - @analys/group@0.7.3
+  - @analys/tablespec@0.7.3
+  - @analys/table-init@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

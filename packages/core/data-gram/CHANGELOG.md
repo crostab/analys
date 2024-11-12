@@ -1,5 +1,14 @@
 # @analys/data-gram
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/enum-pivot-mode@0.7.3
+  - @analys/data-gram@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

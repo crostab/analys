@@ -1,5 +1,13 @@
 # @analys/keyed-rows
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/util-keyed-vectors@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@analys/formula",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Formula for algebra of columns in matrix",
   "type": "module",
   "exports": "./dist/index.js",

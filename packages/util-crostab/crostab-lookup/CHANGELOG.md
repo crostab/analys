@@ -1,5 +1,14 @@
 # @analys/crostab-lookup
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/enum-lookups@0.7.3
+  - @analys/table-lookup@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

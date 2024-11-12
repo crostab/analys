@@ -1,5 +1,15 @@
 # @analys/table-differential
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/table-timeseries-differential@0.7.3
+  - @analys/table-timeseries-rolling@0.7.3
+  - @analys/enum-difference-modes@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

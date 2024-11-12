@@ -1,5 +1,23 @@
 # @analys/table
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/table-chips@0.7.3
+  - @analys/table-find@0.7.3
+  - @analys/table-formula@0.7.3
+  - @analys/table-group@0.7.3
+  - @analys/table-lookup@0.7.3
+  - @analys/table-pivot@0.7.3
+  - @analys/tabular@0.7.3
+  - @analys/table-algebra@0.7.3
+  - @analys/table-init@0.7.3
+  - @analys/table-select@0.7.3
+  - @analys/table-types@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

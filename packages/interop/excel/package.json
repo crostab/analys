@@ -1,6 +1,6 @@
 {
   "name": "@analys/excel",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Convert table to excel based on npm package 'xlsx'",
   "type": "module",
   "exports": "./dist/index.js",

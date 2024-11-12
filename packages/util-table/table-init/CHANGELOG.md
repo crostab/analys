@@ -1,5 +1,11 @@
 # @analys/table-init
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+
 ## 0.7.2
 
 ### Patch Changes

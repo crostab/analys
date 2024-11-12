@@ -1,5 +1,11 @@
 # @analys/samples-select
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+
 ## 0.7.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @analys/crostab-select
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/keyed-rows@0.7.3
+  - @analys/tabular@0.7.3
+  - @analys/crostab-init@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

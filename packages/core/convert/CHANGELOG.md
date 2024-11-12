@@ -1,5 +1,19 @@
 # @analys/convert
 
+## 0.7.3
+
+### Patch Changes
+
+- minor fix
+- Updated dependencies
+  - @analys/crostab@0.7.3
+  - @analys/data-gram@0.7.3
+  - @analys/table@0.7.3
+  - @analys/tabular@0.7.3
+  - @analys/crostab-mapper@0.7.3
+  - @analys/table-index@0.7.3
+  - @analys/table-init@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes
