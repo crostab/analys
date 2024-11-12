@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -18,8 +21,8 @@
     "@analys/table-index": "workspace:^",
     "@analys/table-init": "workspace:^",
     "@analys/tabular": "workspace:^",
-    "@aryth/rand": "^0.7.0",
-    "@typen/nullish": "^0.1.19",
+    "@aryth/rand": "^0.7.3",
+    "@typen/nullish": "^0.2.0",
     "@vect/column-getter": "^0.6.13",
     "@vect/entries-init": "^0.8.0",
     "@vect/object-init": "^0.8.0",

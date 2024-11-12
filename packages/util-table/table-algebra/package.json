@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -16,11 +19,15 @@
   },
   "dependencies": {
     "@analys/enum-join-modes": "workspace:^",
-    "@aryth/comparer": "^0.7.0",
+    "@analys/table-init": "workspace:^",
+    "@aryth/comparer": "^0.7.3",
+    "@vect/columns-select": "^0.8.0",
     "@vect/vector-init": "^0.8.0",
     "@vect/vector-mapper": "^0.8.0",
     "@vect/vector-select": "^0.8.0",
-    "@vect/vector-update": "^0.8.0"
+    "@vect/vector-update": "^0.8.0",
+    "@vect/vector-algebra": "^0.8.0",
+    "@vect/vector-zipper": "^0.8.0"
   },
   "repository": {
     "type": "git",

@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -17,12 +20,12 @@
   "dependencies": {
     "@analys/crostab": "workspace:^",
     "@analys/crostab-mapper": "workspace:^",
+    "@analys/data-gram": "workspace:^",
     "@analys/table": "workspace:^",
     "@analys/table-index": "workspace:^",
     "@analys/table-init": "workspace:^",
-    "@analys/data-gram": "workspace:^",
     "@analys/tabular": "workspace:^",
-    "@typen/nullish": "^0.1.19",
+    "@typen/nullish": "^0.2.0",
     "@vect/column-getter": "^0.6.13",
     "@vect/entries-init": "^0.8.0",
     "@vect/entries-unwind": "^0.6.13",
@@ -39,7 +42,7 @@
   },
   "devDependencies": {
     "@flua/vinylize": "^0.3.3",
-    "@spare/markdown": "^0.15.16",
+    "@spare/markdown": "^0.16.1",
     "gulp": "^5.0.0"
   },
   "repository": {

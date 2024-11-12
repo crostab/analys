@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -20,7 +23,7 @@
   },
   "devDependencies": {
     "@analys/convert": "workspace:^",
-    "@spare/enum-chars": "^0.15.16",
+    "@spare/enum-chars": "^0.16.1",
     "iconv-lite": "^0.6.3"
   },
   "repository": {

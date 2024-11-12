@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -18,7 +21,7 @@
     "@analys/crostab-init": "workspace:^",
     "@analys/keyed-rows": "workspace:^",
     "@analys/tabular": "workspace:^",
-    "@aryth/rand": "^0.7.0",
+    "@aryth/rand": "^0.7.3",
     "@vect/vector-select": "^0.8.0"
   },
   "repository": {

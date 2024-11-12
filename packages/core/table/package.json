@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -16,23 +19,20 @@
   },
   "dependencies": {
     "@analys/table-chips": "workspace:^",
-    "@analys/table-divide": "^0.6.8",
-    "@analys/table-filter": "^0.6.8",
+    "@analys/table-algebra": "workspace:^",
     "@analys/table-find": "workspace:^",
     "@analys/table-formula": "workspace:^",
     "@analys/table-group": "workspace:^",
     "@analys/table-init": "workspace:^",
-    "@analys/table-join": "^0.6.8",
     "@analys/table-lookup": "workspace:^",
-    "@analys/table-merge": "^0.6.8",
     "@analys/table-pivot": "workspace:^",
     "@analys/table-select": "workspace:^",
     "@analys/table-types": "workspace:^",
     "@analys/tabular": "workspace:^",
-    "@aryth/comparer": "^0.7.0",
-    "@aryth/distinct-column": "^0.7.0",
-    "@aryth/distinct-matrix": "^0.7.0",
-    "@typen/enum-data-types": "^0.1.19",
+    "@aryth/comparer": "^0.7.3",
+    "@aryth/distinct-column": "^0.7.3",
+    "@aryth/distinct-matrix": "^0.7.3",
+    "@typen/enum-data-types": "^0.2.0",
     "@vect/column-getter": "^0.6.13",
     "@vect/column-mapper": "^0.8.0",
     "@vect/columns-update": "^0.8.0",

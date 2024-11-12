@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "dependencies": {
     "@vect/clone": "^0.8.0"
   },

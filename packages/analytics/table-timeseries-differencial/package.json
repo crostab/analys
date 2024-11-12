@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -15,8 +18,8 @@
     "test": "node test"
   },
   "dependencies": {
-    "@aryth/math": "^0.7.0",
-    "@typen/num-strict": "^0.1.19",
+    "@aryth/math": "^0.7.3",
+    "@typen/num-strict": "^0.2.0",
     "@vect/vector-differentiator": "^0.6.13",
     "@vect/vector-mapper": "^0.8.0"
   },
