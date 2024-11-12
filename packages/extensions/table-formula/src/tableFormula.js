@@ -1,7 +1,7 @@
-import { Formula }   from '@analys/formula'
-import { tableFind } from '@analys/table-find'
-import { slice }     from '@analys/table-init'
-import { tableAcquire } from '@analys/table-merge'
+import { Formula }      from '@analys/formula'
+import { tableFind }    from '@analys/table-find'
+import { slice }        from '@analys/table-init'
+import { tableAcquire } from '@analys/table-algebra'
 import { argnames }     from '@spare/deco-func'
 
 export const tableFormula = function (formulae, {
@@ -16,7 +16,7 @@ export const tableFormula = function (formulae, {
       const func = formulae[indicator]
       const fields = argnames(func)
       const indexes = fields.map(name => head.indexOf(name), this)
-      formulae[indicator] = [indexes, func]
+      formulae[indicator] = [ indexes, func ]
     }
   const formulaEngine = new Formula(formulae)
   const calc = {

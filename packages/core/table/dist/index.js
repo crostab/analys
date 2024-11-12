@@ -1,15 +1,12 @@
+import { tableDivide, tableJoin, tableAcquire, tableMerge } from '@analys/table-algebra';
 import { tableChips } from '@analys/table-chips';
-import { tableDivide } from '@analys/table-divide';
-import { tableFilter } from '@analys/table-filter';
 import { tableFind } from '@analys/table-find';
 import { tableFormula } from '@analys/table-formula';
 import { tableGroup } from '@analys/table-group';
 import { slice, shallow } from '@analys/table-init';
-import { tableJoin } from '@analys/table-join';
 import { lookupCached, lookup, lookupMany } from '@analys/table-lookup';
-import { tableAcquire, tableMerge } from '@analys/table-merge';
 import { tablePivot } from '@analys/table-pivot';
-import { tableToObject } from '@analys/table-select';
+import { tableToObject, tableFilter } from '@analys/table-select';
 import { inferTypes } from '@analys/table-types';
 import { selectTabularToSamples, tabularToSamples, selectTabular, sortTabularByKeys } from '@analys/tabular';
 import { NUM_ASC } from '@aryth/comparer';
@@ -46,38 +43,62 @@ class Table {
   }
 
   static build(head, rows, title, types) { return new Table(head, rows, title, types) }
+
   static gather(head, iter, title, types) { return new Table(head, gather(iter), title, types) }
+
   static from(o) { return new Table(o.head || o.banner, o.rows || o.matrix, o.title, o.types) }
 
   toSamples(fields) { return fields ? selectTabularToSamples.call(this, fields) : tabularToSamples.call(this) }
+
   toObject(mutate = false) { return mutate ? slice(this) : shallow(this) }
 
   setTitle(title) { return this.title = title, this }
+
   get size() { return size(this.rows) }
+
   get ht() { return this.rows?.length }
+
   get wd() { return this.head?.length }
+
   get height() { return this.rows?.length }
+
   get width() { return this.head?.length }
+
   get columns() { return transpose(this.rows) }
+
   cell(x, field) { return (x in this.rows) ? this.rows[x][this.coin(field)] : undefined }
+
   coin(field) { return this.head.indexOf(field) }
+
   columnIndexes(fields) { return fields.map(this.coin, this) }
+
   row(field, value, objectify) {
     const vector = this.rows.find(row => row[this.coin(field)] === value);
     return vector && objectify ? wind(this.head, vector) : vector
   }
+
   column(field) { return column(this.rows, this.coin(field), this.height) }
+
   setColumn(field, column) { return mutate(this.rows, this.coin(field), (_, i) => column[i], this.height), this }
+
   mutateColumn(field, fn) { return mutate(this.rows, this.coin(field), (x, i) => fn(x, i), this.height), this }
 
   pushRow(row) { return this.rows.push(row), this }
+
   unshiftRow(row) { return this.rows.unshift(row), this }
+
   pushColumn(label, column) { return this.head.push(label), push(this.rows, column), this }
+
   unshiftColumn(label, column) { return this.head.unshift(label), unshift(this.rows, column), this }
+
   popRow() { return this.rows.pop() }
+
   shiftRow() { return this.rows.shift() }
+
   popColumn() { return [ this.head.pop(), pop(this.rows) ] }
+
   shiftColumn() { return [ this.head.shift(), shift(this.rows) ] }
+
   renameColumn(field, newName) {
     const ci = this.coin(field);
     if (ci >= 0) this.head[ci] = newName;
@@ -85,8 +106,11 @@ class Table {
   }
 
   mapHead(fn, { mutate = true } = {}) { return this.boot({ head: mapper(this.head, fn) }, mutate) }
+
   mutateHead(fn) { return mutate$1(this.head, fn), this }
+
   map(fn, { mutate = true } = {}) { return this.boot({ rows: mapper$1(this.rows, fn, this.height, this.width) }, mutate) }
+
   mutate(fn, { fields, exclusive } = {}) {
     if (!fields && !exclusive) return mutate$2(this.rows, fn, this.height, this.width), this
     fields = fields ?? this.head;
@@ -95,6 +119,7 @@ class Table {
   }
 
   lookupOne(valueToFind, key, field, cached = true) { return (cached ? lookupCached : lookup).call(this, valueToFind, key, field) }
+
   lookupMany(valuesToFind, key, field) { return lookupMany.call(this, valuesToFind, key, field) }
 
   /**
@@ -155,8 +180,7 @@ class Table {
       iterate(rows,
         row => row.splice(y, 0, to(row[index]))
       );
-    }
-    else {
+    } else {
       head.splice(y, 0, ...fieldSpec.map(({ as }) => as));
       iterate(rows,
         row => row.splice(y, 0, ...fieldSpec.map(({ index, to }) => to(row[index])))
@@ -178,8 +202,7 @@ class Table {
     if (Array.isArray(newField)) {
       o.head.splice(y, 0, ...newField);
       iterate(o.rows, (row, i) => row.splice(y, 0, ...column[i]));
-    }
-    else {
+    } else {
       o.head.splice(y, 0, newField);
       iterate(o.rows, (row, i) => row.splice(y, 0, column[i]));
     }
@@ -199,8 +222,7 @@ class Table {
       const indexes = this.columnIndexes(field).filter(i => i >= 0).sort(NUM_ASC);
       splices(head, indexes);
       splices$1(rows, indexes);
-    }
-    else {
+    } else {
       const index = this.coin(field);
       head.splice(index, 1);
       rows.forEach(row => row.splice(index, 1));
@@ -361,8 +383,7 @@ class Table {
       if (rows) this.rows = rows;
       if (types) this.types = types;
       return this
-    }
-    else {
+    } else {
       return this.copy({ head, rows, types })
     }
   }

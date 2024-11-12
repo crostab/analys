@@ -1,9 +1,13 @@
 import { UNION, LEFT, RIGHT, INTERSECT } from '@analys/enum-join-modes';
 import { NUM_ASC } from '@aryth/comparer';
-import { select } from '@vect/vector-select';
+import { select, divide } from '@vect/vector-select';
 import { splices } from '@vect/vector-update';
 import { iso } from '@vect/vector-init';
-import { iterate } from '@vect/vector-mapper';
+import { iterate, mapper } from '@vect/vector-mapper';
+import { divide as divide$1 } from '@vect/columns-select';
+import { slice } from '@analys/table-init';
+import { acquire, merge as merge$1 } from '@vect/vector-algebra';
+import { mutazip, zipper } from '@vect/vector-zipper';
 
 const selectKeyedVector = function (vec) {
   let { indexes, asc, depth } = this;
@@ -154,6 +158,45 @@ function tableJoin(
 // xr().fields(fields)['leftIndexes'](ascL)['rightIndexes'](ascR) |> logger
 // xr().head(head |> deco) |> logger
 
+/**
+ * Divide a util-table by fields
+ * @param {*[]} fields
+ * @return {{ pick:TableObject, rest:TableObject }} - mutated 'this' {head, rows}
+ */
+const tableDivide = function (fields) {
+  /** @type {Table|TableObject} */ const rs = slice(this);
+  /** @type {Table|TableObject} */ const pk = slice(this);
+  const { head, rows } = this;
+  const indexes = mapper(fields, label => head.indexOf(label)).sort(NUM_ASC);
+  ({ pick: pk.head, rest: rs.head } = divide(head, indexes));
+  ({ pick: pk.rows, rest: rs.rows } = divide$1(rows, indexes));
+  return { pick: pk, rest: rs }
+};
+
+/**
+ *
+ * @param {Object|Table} ta
+ * @param {Object|Table} tb
+ * @returns {Object|Table}
+ */
+const tableAcquire = (ta, tb) => {
+  acquire(ta.head, tb.head);
+  mutazip(ta.rows, tb.rows, (va, vb) => acquire(va, vb));
+  return ta
+};
+
+/**
+ *
+ * @param {Object|Table} ta
+ * @param {Object|Table} tb
+ * @returns {Object|Table}
+ */
+const tableMerge = (ta, tb) => {
+  const head = merge$1(ta.head, tb.head);
+  const rows = zipper(ta.rows, tb.rows, (va, vb) => merge$1(va, vb));
+  return ta.copy ? ta.copy({ head, rows }) : { head, rows }
+};
+
 function merge(...tables) {
   const { fields, joinType, fillEmpty } = this;
   const n = tables.length;
@@ -163,4 +206,4 @@ function merge(...tables) {
   return tables.reduce((accum, next) => tableJoin(accum, next, fields, joinType, fillEmpty))
 }
 
-export { merge, tableJoin };
+export { Joiner, merge, tableAcquire, tableDivide, tableJoin, tableMerge };

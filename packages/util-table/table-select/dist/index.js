@@ -9,6 +9,26 @@ import { wind as wind$1 } from '@vect/entries-init';
 import { wind } from '@vect/object-init';
 
 /**
+ * @param {Filter[]|Filter} filterCollection
+ * @return {Table} - mutated 'this' {head, rows}
+ */
+const tableFilter = function (filterCollection) {
+  if (!Array.isArray(filterCollection)) return tableFilterOnce.call(this, filterCollection)
+  for (let filterConfig of filterCollection) tableFilterOnce.call(this, filterConfig);
+  return this
+};
+
+/**
+ * @param {Filter} filterConfig
+ * @return {Table} - mutated 'this' {head, rows}
+ */
+const tableFilterOnce = function ({ field, filter }) {
+  let j = this.head.indexOf(field);
+  if (j >= 0) this.rows = this.rows.filter(row => filter(row[j]));
+  return this
+};
+
+/**
  *
  * @param {TableObject} table
  * @param {(str|[str,str])[]} [fields]
@@ -61,4 +81,4 @@ const tableToObject = function (key, field, objectify = true) {
       : []
 };
 
-export { tableSelect, tableShuffle, tableToObject };
+export { tableFilter, tableFilterOnce, tableSelect, tableShuffle, tableToObject };
