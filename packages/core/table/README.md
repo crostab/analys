@@ -1,30 +1,25 @@
-# @analys/table
+<div align="center">
+  <img alt="banner" src="../../../media/analys-banner.svg">
+  <p align="center">@analys/table</p>
+</div>
 
-[![npm version][badge-npm-version]][url-npm]
-[![npm download monthly][badge-npm-download-monthly]][url-npm]
-[![npm download total][badge-npm-download-total]][url-npm]
-[![npm dependents][badge-npm-dependents]][url-github]
-[![npm license][badge-npm-license]][url-npm]
-[![pp install size][badge-pp-install-size]][url-pp]
-[![github commit last][badge-github-last-commit]][url-github]
-[![github commit total][badge-github-commit-count]][url-github]
-
-[//]: <> (Shields)
-[badge-npm-version]: https://flat.badgen.net/npm/cell/@analys/table
-[badge-npm-download-monthly]: https://flat.badgen.net/npm/dm/@analys/table
-[badge-npm-download-total]:https://flat.badgen.net/npm/dt/@analys/table
-[badge-npm-dependents]: https://flat.badgen.net/npm/dependents/@analys/table
-[badge-npm-license]: https://flat.badgen.net/npm/license/@analys/table
-[badge-pp-install-size]: https://flat.badgen.net/packagephobia/install/@analys/table
-[badge-github-last-commit]: https://flat.badgen.net/github/last-commit/hoyeungw/analys
-[badge-github-commit-count]: https://flat.badgen.net/github/commits/hoyeungw/analys
+[![npm-version](https://img.shields.io/npm/v/@analys/table?logo=npm&style=flat-square)][url-npm]
+[![npm-downloads](https://img.shields.io/npm/dm/@analys/table?logo=npm&style=flat-square)]()
+[![npm-dependents](https://img.shields.io/librariesio/dependents/npm/@analys/table?logo=npm&style=flat-square)]()
+[![npm-last-update](https://img.shields.io/npm/last-update/@analys/table?logo=npm&style=flat-square)]()
+[![npm-maintenance](https://img.shields.io/npms-io/maintenance-score/@analys/table?logo=npm&style=flat-square)]()
+[![npm-license](https://img.shields.io/npm/l/@analys/table?logo=npm&style=flat-square)]()
+[![node-version](https://img.shields.io/node/v/@analys/table/latest?logo=node.js&style=flat-square)]()
+[![lang-version](https://img.shields.io/badge/ECMAScript-6-F7DF1E?logo=javascript&style=flat-square)]()
+[![npm-unpacked-size](https://img.shields.io/npm/unpacked-size/@analys/table?logo=hackthebox&style=flat-square)]()
+[![pp-install-size](https://flat.badgen.net/packagephobia/install/@analys/table?icon=npm)]()
+[![pp-publish-size](https://flat.badgen.net/packagephobia/publish/@analys/table?icon=npm)]()
 
 [//]: <> (Link)
-[url-npm]: https://npmjs.org/package/@analys/table
-[url-pp]: https://packagephobia.now.sh/result?p=@analys/table
-[url-github]: https://github.com/hoyeungw/analys
 
-##### Cross-table analytics tool
+[url-github]: https://github.com/crostab/analys
+
+[url-npm]: https://npmjs.org/package/@analys/table
 
 #### Features
 

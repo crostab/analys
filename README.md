@@ -10,11 +10,12 @@
 [![github last commit](https://img.shields.io/github/last-commit/gadge/ject?logo=github&style=flat-square)][url-github]
 [![github commits](https://img.shields.io/github/commit-activity/t/gadge/ject?logo=github&style=flat-square)][url-github]
 [![node version](https://img.shields.io/node/v/@analys/table/latest?logo=node.js&style=flat-square)]()
+[![github repo size](https://img.shields.io/github/repo-size/crostab/analys)]()
+[![github code size](https://img.shields.io/github/languages/code-size/crostab/analys)]()
 
 [//]: <> (Link)
 
 [url-github]: https://github.com/hoyeungw/analys
-
 [url-npm]: https://npmjs.org/package/@analys/vector
 
 #### Features
